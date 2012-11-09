@@ -1,0 +1,8 @@
+# gpg2 -k --with-colons --with-fingerprint <key>
+#  --or--
+# gpg-fpr
+
+tru::1:1352494921:1436970784:3:1:5
+pub:m:4096:1:179DC3726ECA9D02:1352420556:::m:::escaESCA:
+fpr:::::::::10E1D37019ABD9A5F7A47603179DC3726ECA9D02:
+uid:m::::1352420556::A539D1EFE2AF3C5F8B2C0F8CC372AEB6E591B0C2::Johannes (Restricted Access on debussy) <j1@debussy>:
