@@ -1,0 +1,2 @@
+*.gpg -delta
+*.asc -delta
