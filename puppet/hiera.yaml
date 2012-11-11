@@ -1,0 +1,16 @@
+---
+:backends:
+  - yaml
+  - gpg
+
+:logger: console
+
+:hierarchy:
+  - "%{cbi::machine}"
+  - common
+
+:yaml:
+   :datadir: "%{cbi::root}/hieradata"
+:gpg:
+   :datadir: "%{cbi::root}/hieradata"
+
