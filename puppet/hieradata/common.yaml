@@ -1,6 +1,0 @@
-ntpserver: ntp1.dc1.example.com
-sysadmin: dc1noc@example.com
-
-test: - a
-      - b
-      - c

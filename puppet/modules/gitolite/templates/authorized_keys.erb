@@ -1,0 +1,2 @@
+<% ssh_keys.each do |key| %>
+command="<%=gitolite_checkout %>/src/gitolite-shell <%=key %>",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty <%=File.read(scope.lookupvar('cbi::config::ssh_key_dir')+"/"+key)%><% end %>
