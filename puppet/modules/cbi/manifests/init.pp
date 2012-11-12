@@ -1,19 +1,17 @@
-class cbi ($root){
+class cbi (){
 
   class { 'config':}
-  $machine = file("$root/machine_name")
-  notify{ "cbi/puppet: '$root'. Machine: '$machine'":}
 
-  notify {"a" :
-    #    message => decrypt_file("/root/cbi/puppet/hieradata/strauss.yaml.gpg")
-  }
-  
-  case $machine {
+  class { 'users': }
+
+  case $cbimachine {
     strauss: {
       
       class { 'gitolite':
         home=>"/var/jo/git",
       }
+
+      zsh { 'root' :}
     }
   }
 

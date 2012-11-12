@@ -1,0 +1,5 @@
+users: - root
+       - git
+
+root_user:
+  home: %{root_home}
