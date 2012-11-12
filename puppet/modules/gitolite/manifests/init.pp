@@ -10,11 +10,10 @@ class gitolite (
   $dot_gitolite ="$home/.gitolite"
   $dot_conf = "$dot_gitolite/conf/gitolite.conf"
 
-  
-  user { $gituser:
-    ensure => present,
+  ensure_resource(user, $gituser,
+  { ensure => present,
     home => $home,
-  }
+  })
 
   
   file { [ $home, "$home/bin" ] :
