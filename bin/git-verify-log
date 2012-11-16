@@ -1,9 +1,9 @@
 #!/usr/bin/perl
-# Passes all its args to `git log` and puts <OK> behind every commit, that is verified by git-verify-commit-signature.sh
+# Passes all its args to `git log` and puts <OK> behind every commit, that is verified by git-verify-commit-signature
 sub check{
 		my ($H)=@_;
 		return substr($H,0,8).
-				(system("git-verify-commit-signature.sh $H > /dev/null")==0 ?
+				(system("git-verify-commit-signature $H > /dev/null")==0 ?
 				 "<OK>" : "");
 }
 

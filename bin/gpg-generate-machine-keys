@@ -1,0 +1,43 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
+
+number=$1
+machine=$2
+master=3F32253F910D2BB2B20742BCA7942AEDE1A4B3DB
+
+if [[ $# -ne 2  ]]; then
+		echo wrong args
+    exit 1;$(( $# ? 0 : 1 ))
+fi
+
+target=$DIR/gpg/public-keys
+
+_gen(){
+    local descr[0]="Local Access on $machine"
+    local descr[1]="Restricted Access on $machine"
+    local descr[2]="Private Access on $machine"
+    local email=j$number@$machine
+gpg --batch --status-fd 1 --s2k-cipher-algo AES256 --s2k-digest-algo SHA512 --default-preference-list "SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed" --gen-key > /tmp/gpg_gen_output <<EOF
+%no-protection
+Key-Type: RSA
+Key-Length: 4096
+Name-Real: Johannes
+Name-Comment: ${descr[$number]} 
+Name-Email: $email
+EOF
+
+id=0x$(sed -ne 's/.*KEY_CREATED.*\([0-9A-F]\{8\}\)$/\1/p' /tmp/gpg_gen_output)
+
+sc=$DIR/backup-vault/$email-$id-sec.asc
+pc=$target/$email-$id-pub.as
+gpg -a --export-secret-keys -o - "<$email>" | gpg -e -a -r master > $sc
+gpg -a --export -o $pc "<$email>"
+if [ $number -gt 0 ]; then gpg2 --passwd "<$email>" ; fi
+
+echo "Created files:
+$pc
+$sc"
+}
+
+_gen

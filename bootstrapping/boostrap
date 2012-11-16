@@ -3,19 +3,24 @@ set -e
 
 cbi=git://github.com/kuerzn/cbi.git
 suparch="[none|arch|ubuntu]"
-user=$2
+rev=$2
+machine=$3
+user=$4
+#dd4c4d687fcde705bd061a45927386c936d006b7
 
 #taken from https://github.com/falconindy/arch-install-scripts/blob/master/genfstab.in
 usage() {
     cat <<EOF
 
-     usage: ${0##*/} $suparch <user>
+     usage: ${0##*/} $suparch <revision> <machine> <user>
      
      This script does:
 
        - install Salt (from GIT, master-less minion, no service)
          unless <none>.
-       - check out the CBI into <user>'s home dir.
+       - create GPG Machine Key  "j0@<machine>"
+       - check out the CBI <revision> into <user>'s HOME
+       - state.HighState from CBI
      
 EOF
 }
@@ -26,14 +31,41 @@ if (( EUID != 0 )); then
 fi
 
 
-if [[ $# -ne 2  ]]; then
+if [[ $# -ne 3  ]]; then
     usage
     exit $(( $# ? 0 : 1 ))
 fi
 
 
 checkout_cbi(){
-		salt-call state.single git.latest name=$cbi target=`bash -c "echo ~$user"`/cbi runas=$user
+		# 1. install git
+		salt-call state.single pkg.installed name=git
+		
+		# 2. create user
+		salt-call state.single user.present name=$user
+		
+		# 3. clone cbi
+		$home_cbi=`bash -c "echo ~$user"`/cbi
+		git clone $cbi $home_cbi && \
+				cd $home_cbi && \
+				(	git checkout $rev
+		if [ "$rev" = `git rev-parse HEAD` ]; then
+				echo "OK"
+				PATH=$PATH:$home_cbi/bin
+
+		# 4. generate machine key
+				su -c "gpg-generate-machine-keys 0 $machine" $user
+
+				
+		fi
+		)
+		
+		# salt-call state.single \
+		# 		git.latest \
+		# 		name=$cbi \
+		# 		target=``/cbi \
+		# 		runas=$user \
+		# 		rev=dd4c4d687fcde705bd061a45927386c936d006b7
 }
 
 configure_salt() {
@@ -42,10 +74,12 @@ master: localhost
 file_client: local
 file_roots:
   base:
-    - /srv/salt
+    - $cbi_temp/salt
 pillar_roots:
   base:
-    - /home/johannes/cbi/pillar
+    - $cbi_temp/pillar
+grains:
+  cbi_machine: $machine
 EOF
 
 checkout_cbi
