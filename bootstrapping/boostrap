@@ -1,0 +1,101 @@
+#!/bin/bash
+set -e
+
+cbi=git://github.com/kuerzn/cbi.git
+suparch="[none|arch|ubuntu]"
+user=$2
+
+#taken from https://github.com/falconindy/arch-install-scripts/blob/master/genfstab.in
+usage() {
+    cat <<EOF
+
+     usage: ${0##*/} $suparch <user>
+     
+     This script does:
+
+       - install Salt (from GIT, master-less minion, no service)
+         unless <none>.
+       - check out the CBI into <user>'s home dir.
+     
+EOF
+}
+
+if (( EUID != 0 )); then
+    echo "Run this script as root." 1>&2
+    exit 100
+fi
+
+
+if [[ $# -ne 2  ]]; then
+    usage
+    exit $(( $# ? 0 : 1 ))
+fi
+
+
+checkout_cbi(){
+		salt-call state.single git.latest name=$cbi target=`bash -c "echo ~$user"`/cbi runas=$user
+}
+
+configure_salt() {
+		cat <<EOF > /etc/salt/minion
+master: localhost
+file_client: local
+file_roots:
+  base:
+    - /srv/salt
+pillar_roots:
+  base:
+    - /home/johannes/cbi/pillar
+EOF
+
+checkout_cbi
+}
+
+if command -v salt-call; then
+		checkout_cbi
+		exit $?
+fi
+
+case $1 in
+    arch)
+				(! grep -q  '#BOOTSTRAP' /etc/pacman.d/mirrorlist ) && \
+						sed -i '1i Server = http://ftp.spline.inf.fu-berlin.de/mirrors/archlinux/$repo/os/$arch\n#BOOTSTRAP' /etc/pacman.d/mirrorlist
+				pacman -Syy
+				
+				tp=/tmp/packer_tmp
+				
+				#packer
+				rm -rf $tp
+				mkdir $tp && \
+				(
+						cd $tp && \
+								curl -o PKGBUILD https://aur.archlinux.org/packages/pa/packer/PKGBUILD && \
+								makepkg -s --asroot && \
+								pacman --noconfirm -U *.tar.xz && \
+								packer --noconfirm --noedit -S salt-git && \
+								configure_salt
+						rm -rf $tp
+				)
+        ;;
+		
+    ubuntu)
+				install_path=/usr/share/salt-cbi
+        apt-get update 
+				apt-get install python python-jinja2 python-m2crypto python-support python-yaml python-zmq msgpack-python && \
+						(rm $install_path -fr 
+						mkdir $install_path -p
+						cd $install_path
+						git clone git://github.com/saltstack/salt.git && \
+								cd salt && \
+								python setup.py install && \
+								configure_salt
+				)
+        ;;
+		none)
+				echo "Skipping Salt installation"
+				;;
+    *)
+        echo "First argument must be one of $suparch not  '$1'"
+        ;;
+esac
+
