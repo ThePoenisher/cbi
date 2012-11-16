@@ -32,13 +32,11 @@ id=0x$(sed -ne 's/.*KEY_CREATED.*\([0-9A-F]\{8\}\)$/\1/p' $tm )
 rm $tm
 sc=$DIR/backup-vault/$email-$id-sec.asc
 pc=$target/$email-$id-pub.as
-gpg -a --export-secret-keys -o - "<$email>" | gpg -e -a -r master > $sc
-gpg -a --export -o $pc "<$email>"
+gpg -a --export-secret-keys -o - "<$email>" | gpg --homedir $DIR/gpg/home -e -a -r master > $sc && echo "Created files: $sc"
+gpg -a --export -o $pc "<$email>" && echo "Created files: $pc"
+
 if [ $number -gt 0 ]; then gpg2 --passwd "<$email>" ; fi
 
-echo "Created files:
-$pc
-$sc"
 }
 
 _gen

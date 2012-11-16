@@ -46,27 +46,21 @@ checkout_cbi(){
 
     # 3. clone cbi
 		home_cbi=`bash -c "echo ~$user"`/cbi
-		git clone $cbi $home_cbi
-		echo "asd"
-				cd $home_cbi && \
-				(	git checkout $rev
+		salt-call state.single \
+				git.latest \
+				name=$cbi \
+				target=$home_cbi \
+				runas=$user \
+				rev=$rev
+		(	cd $home_cbi && \
 		if [ "$rev" = `git rev-parse HEAD` ]; then
 				echo "OK"
-				export PATH=$PATH:$home_cbi/bin
 
 		# 4. generate machine key
 				su -c "PATH=\$PATH:$home_cbi/bin; gpg-generate-machine-keys 0 $machine" $user
-
 				
 		fi
 		)
-		
-		# salt-call state.single \
-		# 		git.latest \
-		# 		name=$cbi \
-		# 		target=``/cbi \
-		# 		runas=$user \
-		# 		rev=dd4c4d687fcde705bd061a45927386c936d006b7
 }
 
 configure_salt() {
