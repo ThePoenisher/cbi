@@ -12,12 +12,16 @@ user=$4
 usage() {
     cat <<EOF
 
+     #### EXECUTE FROM TRUSTED SOURCE ####
+     #### WITH VERIFIED SIGNATURES    ####
+
      usage: ${0##*/} $suparch <revision> <machine> <user>
      
      This script does:
 
        - install Salt (from GIT, master-less minion, no service)
-         unless <none>.
+          unless <none>.
+       - configure SALT: file_root <user>'s home/cbi/salt
        - create GPG Machine Key  "j0@<machine>"
        - check out the CBI <revision> into <user>'s HOME
        - state.HighState from CBI
@@ -45,26 +49,29 @@ checkout_cbi(){
 		salt-call state.single user.present name=$user
 
     # 3. clone cbi
-		home_cbi=`bash -c "echo ~$user"`/cbi
-		salt-call state.single \
-				git.latest \
-				name=$cbi \
-				target=$home_cbi \
-				runas=$user \
-				rev=$rev
-		(	cd $home_cbi && \
+		home=`bash -c "echo ~$user"`
+		cd $home
+		sudo -u $user git clone $cbi cbi && \
+				cd cbi && \
+				(	sudo -u $user git checkout $rev
 		if [ "$rev" = `git rev-parse HEAD` ]; then
 				echo "OK"
 
 		# 4. generate machine key
-				su -c "PATH=\$PATH:$home_cbi/bin; gpg-generate-machine-keys 0 $machine" $user
-				
+				su -c "PATH=\$PATH:$home/cbi/bin; gpg-generate-machine-keys 0 $machine" $user
+
+				grain=`salt-call grains.item cbi_machine` 
+				if [ "$grain" = "local: $machine" ];then
+						echo "SETUP COMPLETE! Use salt to configure the system!"
+				else
+						echo "Problem with cbi_machine grain:
+						$grain"
+				fi
 		fi
 		)
 }
 
-configure_salt() {
-		cat <<EOF > /etc/salt/minion
+cat <<EOF > /etc/salt/minion
 master: localhost
 file_client: local
 file_roots:
@@ -77,8 +84,6 @@ grains:
   cbi_machine: $machine
 EOF
 
-checkout_cbi
-}
 
 if command -v salt-call; then
 		checkout_cbi
@@ -102,7 +107,7 @@ case $1 in
 								makepkg -s --asroot && \
 								pacman --noconfirm -U *.tar.xz && \
 								packer --noconfirm --noedit -S salt-git && \
-								configure_salt
+								checkout_cbi
 						rm -rf $tp
 				)
         ;;
@@ -117,7 +122,7 @@ case $1 in
 						git clone git://github.com/saltstack/salt.git && \
 								cd salt && \
 								python setup.py install && \
-								configure_salt
+								checkout_cbi
 				)
         ;;
 		none)
