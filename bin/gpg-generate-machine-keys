@@ -18,7 +18,8 @@ _gen(){
     local descr[1]="Restricted Access on $machine"
     local descr[2]="Private Access on $machine"
     local email=j$number@$machine
-gpg --batch --status-fd 1 --s2k-cipher-algo AES256 --s2k-digest-algo SHA512 --default-preference-list "SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed" --gen-key > /tmp/gpg_gen_output <<EOF
+		tm=/tmp/gpg_gen_output`uuidgen`
+gpg --batch --status-fd 1 --s2k-cipher-algo AES256 --s2k-digest-algo SHA512 --default-preference-list "SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed" --gen-key > $tm <<EOF
 %no-protection
 Key-Type: RSA
 Key-Length: 4096
@@ -27,8 +28,8 @@ Name-Comment: ${descr[$number]}
 Name-Email: $email
 EOF
 
-id=0x$(sed -ne 's/.*KEY_CREATED.*\([0-9A-F]\{8\}\)$/\1/p' /tmp/gpg_gen_output)
-
+id=0x$(sed -ne 's/.*KEY_CREATED.*\([0-9A-F]\{8\}\)$/\1/p' $tm )
+rm $tm
 sc=$DIR/backup-vault/$email-$id-sec.asc
 pc=$target/$email-$id-pub.as
 gpg -a --export-secret-keys -o - "<$email>" | gpg -e -a -r master > $sc

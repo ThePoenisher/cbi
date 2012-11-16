@@ -31,7 +31,7 @@ if (( EUID != 0 )); then
 fi
 
 
-if [[ $# -ne 3  ]]; then
+if [[ $# -ne 4  ]]; then
     usage
     exit $(( $# ? 0 : 1 ))
 fi
@@ -43,18 +43,19 @@ checkout_cbi(){
 		
 		# 2. create user
 		salt-call state.single user.present name=$user
-		
-		# 3. clone cbi
-		$home_cbi=`bash -c "echo ~$user"`/cbi
-		git clone $cbi $home_cbi && \
+
+    # 3. clone cbi
+		home_cbi=`bash -c "echo ~$user"`/cbi
+		git clone $cbi $home_cbi
+		echo "asd"
 				cd $home_cbi && \
 				(	git checkout $rev
 		if [ "$rev" = `git rev-parse HEAD` ]; then
 				echo "OK"
-				PATH=$PATH:$home_cbi/bin
+				export PATH=$PATH:$home_cbi/bin
 
 		# 4. generate machine key
-				su -c "gpg-generate-machine-keys 0 $machine" $user
+				su -c "PATH=\$PATH:$home_cbi/bin; gpg-generate-machine-keys 0 $machine" $user
 
 				
 		fi
@@ -96,7 +97,7 @@ case $1 in
 						sed -i '1i Server = http://ftp.spline.inf.fu-berlin.de/mirrors/archlinux/$repo/os/$arch\n#BOOTSTRAP' /etc/pacman.d/mirrorlist
 				pacman -Syy
 				
-				tp=/tmp/packer_tmp
+				tp=/tmp/packer_tmp`uuidgen`
 				
 				#packer
 				rm -rf $tp
