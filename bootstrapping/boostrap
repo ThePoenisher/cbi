@@ -28,6 +28,7 @@ usage() {
      usage <user> <machine>
 
        - configure SALT: file_root <user's home>/cbi/salt
+
 EOF
 }
 
@@ -52,6 +53,9 @@ EOF
 
 
 checkout_cbi(){
+		
+		configure_salt
+		
 		# 1. install git
 		salt-call state.single pkg.installed name=git
 		
@@ -64,7 +68,7 @@ checkout_cbi(){
 		
     # 3. clone cbi
 		cd $home
-		mv cbi cbi_backup_`uuidgen`
+		if [ -e cbi ]; then mv cbi cbi_backup_`uuidgen`; fi
 		sudo -u $user git clone $cbi cbi --config branch.master.merge= && \
 				cd cbi && \
 				git config  --unset branch.master.merge
@@ -143,8 +147,9 @@ case $1 in
 		
     ubuntu)
 				install_path=/usr/share/salt-cbi
-        apt-get update 
-				apt-get install python python-gnupg python-jinja2 python-m2crypto python-support python-yaml python-zmq msgpack-python && \
+        apt-get update
+#				python-gnupg
+				apt-get install python  python-jinja2 python-m2crypto python-support python-yaml python-zmq msgpack-python && \
 						(rm $install_path -fr 
 						mkdir $install_path -p
 						cd $install_path
