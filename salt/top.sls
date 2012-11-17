@@ -1,4 +1,5 @@
+#state
 base:
   '*':
-#    - zsh
-    - cc
+    - zsh
+    - main

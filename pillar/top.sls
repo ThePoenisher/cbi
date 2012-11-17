@@ -1,3 +1,4 @@
+#pillar
 base:
   '*':
     - {{ grains['cbi_machine'] }}

@@ -16,33 +16,25 @@ usage() {
      #### WITH VERIFIED SIGNATURES    ####
 
      usage: ${0##*/} $suparch <revision> <machine> <user>
-     
+    
      This script does:
 
        - install Salt (from GIT, master-less minion, no service)
           unless <none>.
-       - configure SALT: file_root <user>'s home/cbi/salt
+       - configure SALT: file_root <user's home>/cbi/salt
        - create GPG Machine Key  "j0@<machine>"
        - check out the CBI <revision> into <user>'s HOME
-       - state.HighState from CBI
-     
+
+     usage <user> <machine>
+
+       - configure SALT: file_root <user's home>/cbi/salt
 EOF
 }
-
-if (( EUID != 0 )); then
-    echo "Run this script as root." 1>&2
-    exit 100
-fi
-
-
-if [[ $# -ne 4  ]]; then
-    usage
-    exit $(( $# ? 0 : 1 ))
-fi
 
 configure_salt ()  {
 mkdir /etc/salt -p
 cat <<EOF > /etc/salt/minion
+# -*- mode: yaml; -*-
 master: localhost
 file_client: local
 file_roots:
@@ -53,10 +45,11 @@ pillar_roots:
     - $1/cbi/pillar
 grains:
   cbi_machine: $machine
-gnupg.home: $1/.gnupg
+  cbi_home: $1/cbi
 
 EOF
 }
+
 
 checkout_cbi(){
 		# 1. install git
@@ -71,13 +64,21 @@ checkout_cbi(){
 		
     # 3. clone cbi
 		cd $home
+		mv cbi cbi_backup_`uuidgen`
 		sudo -u $user git clone $cbi cbi --config branch.master.merge= && \
 				cd cbi && \
 				git config  --unset branch.master.merge
 				(	sudo -u $user git checkout $rev
+		# check for correct REV
 		if [ "$rev" = `git rev-parse HEAD` ]; then
 				echo "OK"
 
+		# check out newest master
+				( sudo -u $user $home/cbi/bin/git-verify-commit-signature master &&
+				sudo -u $user git checkout master ) || echo "
+#### COULD NOT SWITCH TO BRANCH MASTER #####
+"
+				
 		# 4. generate machine key
 				su -c "PATH=\$PATH:$home/cbi/bin; gpg-generate-machine-keys 0 $machine" $user
 
@@ -92,6 +93,26 @@ checkout_cbi(){
 		)
 }
 
+
+###################################
+##################################
+#####  Start
+
+if (( EUID != 0 )); then
+    echo "Run this script as root." 1>&2
+    exit 100
+fi
+
+
+if [[ $# -eq 2 ]]; then
+		home=`bash -c "echo ~$1"`
+		machine=$2
+		configure_salt $home
+		exit 0
+elif [[ $# -ne 4  ]]; then
+    usage
+    exit $(( $# ? 0 : 1 ))
+fi
 
 if command -v salt-call; then
 		checkout_cbi

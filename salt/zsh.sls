@@ -1,6 +1,4 @@
-#!jinja | yaml
-
-
+#shebang jinja | yaml
 
 git://github.com/robbyrussell/oh-my-zsh.git:
   git.latest:
@@ -9,20 +7,13 @@ git://github.com/robbyrussell/oh-my-zsh.git:
     - force:
 
 
-        
-test.echo:
-  module.run:    
-    - text: testings
-wow123:
-  module.run:
-    - name: test.echo
-    - text: {{ salt['network.ip_addrs']() }}
+{% for usr in pillar['zsh_users'] %}
+{% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
+{{ home }}/.zshrc:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/zshrc
+    - require:
+        - user: {{ usr }}
+{% endfor %}
 
       
-{% set testing = 'it worked' %}
-/tmp/asd123:
-  file.managed:
-    - source: salt://asd
-    - context:
-        testing2:  {{ testing }}
-    - template: jinja
