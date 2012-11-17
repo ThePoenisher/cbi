@@ -51,8 +51,9 @@ checkout_cbi(){
     # 3. clone cbi
 		home=`bash -c "echo ~$user"`
 		cd $home
-		sudo -u $user git clone $cbi cbi && \
+		sudo -u $user git clone $cbi cbi --config branch.master.merge= && \
 				cd cbi && \
+				git config  --unset branch.master.merge
 				(	sudo -u $user git checkout $rev
 		if [ "$rev" = `git rev-parse HEAD` ]; then
 				echo "OK"
@@ -71,19 +72,22 @@ checkout_cbi(){
 		)
 }
 
+configure_salt ()  {
+mkdir /etc/salt
 cat <<EOF > /etc/salt/minion
 master: localhost
 file_client: local
 file_roots:
   base:
-    - $cbi_temp/salt
+    - $1/cbi/salt
 pillar_roots:
   base:
-    - $cbi_temp/pillar
+    - $1/cbi/pillar
 grains:
   cbi_machine: $machine
+gnupg.home: $1/.gnupg
 EOF
-
+}
 
 if command -v salt-call; then
 		checkout_cbi
@@ -106,7 +110,7 @@ case $1 in
 								curl -o PKGBUILD https://aur.archlinux.org/packages/pa/packer/PKGBUILD && \
 								makepkg -s --asroot && \
 								pacman --noconfirm -U *.tar.xz && \
-								packer --noconfirm --noedit -S salt-git && \
+								packer --noconfirm --noedit -S salt-git python-gnupg && \
 								checkout_cbi
 						rm -rf $tp
 				)
@@ -115,7 +119,7 @@ case $1 in
     ubuntu)
 				install_path=/usr/share/salt-cbi
         apt-get update 
-				apt-get install python python-jinja2 python-m2crypto python-support python-yaml python-zmq msgpack-python && \
+				apt-get install python python-gnupg python-jinja2 python-m2crypto python-support python-yaml python-zmq msgpack-python && \
 						(rm $install_path -fr 
 						mkdir $install_path -p
 						cd $install_path

@@ -1,0 +1,1 @@
+wow: {{ salt['network.ip_addrs']() }}
