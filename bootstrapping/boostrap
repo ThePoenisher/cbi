@@ -28,6 +28,7 @@ usage() {
      usage <user> <machine>
 
        - configure SALT: file_root <user's home>/cbi/salt
+
 EOF
 }
 
