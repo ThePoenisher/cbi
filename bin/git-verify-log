@@ -8,7 +8,7 @@ sub check{
 }
 
 my $a=join(" ",@ARGV);
-my $r=`git log --color $a`;
+my $r=`git log --color --graph --decorate $a`;
 		
 $r =~ s/([0-9a-f]{40})/check($1)/ge;
 print $r;

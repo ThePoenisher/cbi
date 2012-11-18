@@ -3,5 +3,5 @@ base:
   '*':
     - zsh
     - main
-    - gitolite
+    - gitolite.main
     - python
