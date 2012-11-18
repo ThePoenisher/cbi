@@ -10,7 +10,7 @@ rev=`git rev-parse $rev`
 key=$(git log --format="format:" -n 1 --show-signature $rev | sed -nr 's/^\[GNUPG:\] VALIDSIG ([0-9A-F]{40}) .*/\1/p')
 echo "The commit $rev is signed by the following maintainer:"
 if [ -n "$key" ]; then gpg2 -k $key; fi
-test -n "$key" && grep -q $key $DIR/repo_maintainers
+test -n "$key" && ( grep -q $key $DIR/repo_maintainers ||  grep -q $key $DIR/local_maintainers )
 
 # !!!!!!
 # NEEDS TO RETURN non zero if the commit is not signed by a maintainer
