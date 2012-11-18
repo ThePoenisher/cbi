@@ -1,3 +1,3 @@
 #!/bin/bash
-git commit -S -a && git push
+git commit $1 -S -a && git push
 
