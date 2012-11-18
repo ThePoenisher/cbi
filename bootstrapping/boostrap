@@ -56,8 +56,9 @@ checkout_cbi(){
 		
 		configure_salt
 		
-		# 1. install git
+		# 1. install git and python stuff
 		salt-call state.single pkg.installed name=git
+		salt-call state.sls python
 		
 		# 2. create user
 		salt-call state.single user.present name=$user
@@ -153,8 +154,7 @@ case $1 in
 						(rm $install_path -fr 
 						mkdir $install_path -p
 						cd $install_path
-						git clone git://github.com/saltstack/salt.git && \
-								cd salt && \
+						git clone git://github.com/kuerzn/salt.git $install_path && \
 								python setup.py install && \
 								checkout_cbi
 				)
