@@ -17,3 +17,4 @@ johannes:
   user.present:
     - shell: /bin/zsh
 {% endif %}
+
