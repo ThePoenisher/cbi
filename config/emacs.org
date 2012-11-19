@@ -1,0 +1,2358 @@
+#+PROPERTY: results silent tangle yes
+# CAREFULL: the global "tanlge yes" seems only to work for 
+#           org-babel-file-load and not org-babel-tangle
+#+CATEGORY: emacs-config
+#+TAGS: keys(k)
+* Installing Emacs
+** Ubuntu:
+#+begin_src sh :tangle no
+  sudo add-apt-repository ppa:cassou/emacs
+  sudo apt-get update
+  sudo apt-get install emacs-snapshot-el emacs-snapshot
+  # for GTK version:
+  #sudo apt-get install emacs-snapshot-el emacs-snapshot-gtk emacs-snapshot
+  cd /usr/share/emacs/24.1.50/etc
+  sudo ln -s DOC-24.1.50.2 DOC-24.1.50.1
+  cd -
+#+end_src
+  
+* Installing the Literate Emacs Configuration System
+:PROPERTIES:
+:ORDERED:  t
+:END:
+** How-To install
+Run
+#+begin_src emacs-lisp :tangle no
+(let ((org-confirm-babel-evaluate nil))
+    (org-babel-tangle)
+)
+#+end_src
+which will install the following loader into ~/.emacs.d/init.el:
+** The script
+#+NAME: orgfile
+#+BEGIN_SRC emacs-lisp
+  (make-directory "~/.emacs.d/" t) 
+  (or (buffer-file-name) load-file-name)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el :noweb yes
+  ;;;;;;;;;    IMPORTANT    CAUTION  ;;;;;;;;;;;
+  ;; This file is automatically tangled from <<orgfile()>>
+  ;; Manual changes to this file will be overwritten.
+  
+  ;;;;;;;;;;
+  ;; load config file using org-mode babel
+  (require 'org)
+  (let ((org-confirm-babel-evaluate nil))
+    (org-babel-load-file "<<orgfile()>>")
+    )
+#+END_SRC
+
+** Trouble-shooting
+*** (require 'org) has to be done explicitly
+This is to assure, that org-confirm-babel-evaluate is loaded
+correctly, which would not happen, if org was autoloaded within the
+(let ((org-confirm-babel-evaluate nil))).
+*** org-load-hook also does not work, as it is already to late, when registered
+- Use eval-after-load instead
+- org-mode-hook?
+
+* Package Managers
+** DONE ELPA / packages.el 
+:LOGBOOK:
+:END:
+*** List of selected packages
+#+BEGIN_SRC emacs-lisp
+  (setq prelude-packages  '(  auto-complete
+                              bookmark+
+                              js2-mode
+                              lua-mode
+                              move-text
+                              popup
+                              color-theme
+                              puppet-mode
+                              icicles
+                              w3m
+                              evil
+                              goto-chg
+                             ; evil-leader
+                              haskell-mode
+                              pandoc-mode
+                              yaml-mode
+                             ;helm
+                              )
+        )
+#+END_SRC
+*** Loading /Configuration
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+
+;;;;;;;;;;;;
+;; Archives:
+;;;;;;;;;;;;
+;; http://emacswiki.org/emacs/ELPA
+;; automatically build packages from recipies
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;not needed (because included) (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+;; out of date (sometimes)
+;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+
+
+;; from http://batsov.com/articles/2012/02/19/package-management-in-emacs-the-good-the-bad-and-the-ugly/
+
+(defun prelude-packages-installed-p ()
+	(require 'cl)
+  (loop for p in prelude-packages
+        when (not (package-installed-p p)) do (return nil)
+        finally (return t)))
+
+(package-initialize)
+;; see (info "(emacs)Package Installation")
+(setq package-enable-at-startup nil)
+
+(unless (prelude-packages-installed-p)
+  ;; check for new packages (package versions)
+  (message "%s" "Emacs Prelude is now refreshing its package database...")
+  (package-refresh-contents)
+  (message "%s" " done.")
+  ;; install the missing packages
+  (dolist (p prelude-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
+
+#+END_SRC
+** TODO el-get
+:PROPERTIES:
+:ID:       fdc291e0-7520-4906-85a4-52ba4c29b583
+:END:
+*** Material
+https://github.com/dimitri/el-get
+(info "el-get")
+*** Custom recipes
+- [[info:el-get#Distributed%20Setup][info:el-get#Distributed Setup]]:
+- ~/.emacs.d/el-get/.status.el
+- Decsription of the recpipe's plist attributes:
+  (describe-variable 'el-get-sources)
+#+BEGIN_SRC emacs-lisp :noweb yes :tangle no
+  (setq el-get-sources
+        '(
+          <<evil-org-recipe>>
+          ))  
+#+END_SRC
+*** List of selected packages
+use (<package> t) if a (require '<packacage>) is needed (which is the
+case for packages that overwrite already defined functions, and
+consequently non-working autoloaders!)
+
+#+BEGIN_SRC emacs-lisp
+  (setq my-packages '(el-get
+                      mingus
+                      ;(help+ t)
+                      ;(help-fns+ t)
+                      ;(help-macro+ t)
+                      ;(help-mode+ t)
+                      nxhtml
+                      replace+
+                      ;evil-org
+                      )
+        )
+#+END_SRC
+*** Loading / Configuration
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+  ;; auto install
+  (if (require 'el-get nil t)
+      (progn 
+  
+        ;; load el-get packages
+        (el-get 'sync (mapcar (lambda(a) (if (listp a) (car a) a)) my-packages))
+  
+        ;; require selected packages
+        (when t
+          (mapc (lambda(a) 
+                  (if (and (listp a) (cdr a))
+                      (require (car a))
+                    )
+                  )
+                my-packages)
+          )
+        )
+    (url-retrieve
+     "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
+     (lambda (s)
+       (let (el-get-install-skip-emacswiki-recipes) ; takes to long, so do it async (see below)
+         (goto-char (point-max))
+         (eval-print-last-sexp))
+       (el-get-emacswiki-refresh el-get-recipe-path-emacswiki) ; async (use second arg for sync)
+       ))
+    )
+#+END_SRC
+* TODO Keys
+:PROPERTIES:
+:ID:       341f6133-92d1-4f8d-a91f-b2529b30927f
+:END:
+** Custom Settings
+#+BEGIN_SRC emacs-lisp
+
+  (when t
+  
+          (global-set-key (kbd "M-s 7") 'my-multi-occur-in-matching-buffers)
+          (define-key ctl-x-4-map "t" 'toggle-window-split)
+          (global-set-key (kbd "C-x C-,") 'comment-or-uncomment-region)
+          (global-set-key (kbd "<C-tab>") 'other-window)
+          (global-set-key (kbd "M-D") 'backward-kill-word)
+          (global-set-key (kbd "M-n") 'clone-indirect-buffer)
+          (global-set-key (kbd "C-x C-b") 'bs-show)
+          (global-set-key (kbd "M-# M-s") 
+                                                                          (lambda()(interactive) (find-file "~/emacs/org-notes/LinuxAdoption.org")))
+          (global-set-key (kbd "M-# M-e") 'dotemacs)
+          (global-set-key (kbd "C-# C-c") 'dotemacs-commit)
+          (global-set-key [S-f1] 'browse-url-at-point)
+          (global-set-key [f1] 'browse-url-default-windows-browser)
+          (global-set-key [f2] 'grep-find)
+          ;;      (global-set-key [f3] 'isearch-forward)
+          (global-set-key [f3] 'bubble-buffer)
+          (global-set-key [M-f4] 'save-and-kill)
+          (global-set-key (kbd "C-x k") 'save-and-kill)
+          ;;(global-set-key [f5] 'asd)
+          ;;(global-set-key [f6] 'compile)
+          ;;(global-set-key [f7] 'recompile)
+          (global-set-key [f8] 'shell)
+          (global-set-key [f9] 'find-next-matching-tag)
+          (global-set-key [f12] 'ansi-term)
+          )
+  
+
+#+END_SRC
+
+** Material / Understanding
+- substitute-key-definition vs. define-key MAP [remap ...]
+http://lists.gnu.org/archive/html/emacs-devel/2010-07/msg00747.html
+- http://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Key-Bindings.html
+- http://www.gnu.org/software/emacs/manual/html_node/elisp/Remapping-Commands.html#Remapping-Commands
+* Emacs
+:LOGBOOK:
+:END:
+** Hooks
+*** Point Movement
+**** https://mail.cs.drexel.edu/pipermail/unix-dev/2005-August/000894.html
+**** http://www.gnu.org/software/emacs/manual/html_node/elisp/Special-Properties.html#Inhibit%20point%20motion%20hooks
+** Client / Server
+*** General 
+Start server, so that the external commands can open docs in
+existing emacs instance using EmacsClient
+http://www.emacswiki.org/emacs/EmacsClienta
+(info "(emacs)Emacs Server")
+
+
+#+BEGIN_SRC emacs-lisp
+  (server-start)
+#+END_SRC
+*** Nützlich:
+- nw :: in console
+- c :: create new window
+- C-x # :: close externally opened buffer and kill client
+- C-x 5 0 :: close newly created frame (only after e.g. -c or -nw)
+** Weiterentwicklungen
+Guile
+** Configuration
+*** Miscellaneous
+#+BEGIN_SRC emacs-lisp
+   (setq inhibit-startup-screen t)
+#+END_SRC
+*** Parenthesis
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode t)
+#+END_SRC
+*** Reduce the number of warnings
+from http://www.emacswiki.org/emacs/AlarmBell
+
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 
+        (lambda ()
+          (unless (memq this-command '(isearch-abort
+                                       abort-recursive-edit exit-minibuffer
+                                       keyboard-quit))
+            (ding))))
+  
+  (setq visible-bell t)
+#+END_SRC
+*** Buffer selection
+Add dired mode to buffer selection configurations (use C or c to select)
+(from http://www.emacswiki.org/emacs/BufferSelection)
+#+BEGIN_SRC emacs-lisp 
+  (eval-after-load 'bs
+    '(add-to-list 'bs-configurations
+                 '("dired" nil nil nil
+                   (lambda (buf)
+                     (with-current-buffer buf
+                       (not (eq major-mode 'dired-mode)))) nil)))
+#+END_SRC
+*** Windows
+**** Winner Mode                                                    :keys:
+(info "(Emacs)Window Convenience")
+http://www.emacswiki.org/emacs/WinnerMode
+#+BEGIN_SRC emacs-lisp
+  (winner-mode 1)
+  (windmove-default-keybindings 'super)  
+#+END_SRC
+**** TODO Window navigation
+:PROPERTIES:
+:ID:       f961b74d-674a-4d7b-80e0-435aebc30d76
+:END:
+***** DONE full screen                                             :keys:
+http://emacswiki.org/emacs/FullScreen
+#+BEGIN_SRC emacs-lisp
+  (defun jo/toggle-fullscreen nil
+    (interactive)
+    (unless (boundp 'jo/next-fullscreen-mode)
+      (setq jo/next-fullscreen-mode 'fullboth)
+      )
+    (let ((tempmode jo/next-fullscreen-mode))
+      (setq jo/next-fullscreen-mode (frame-parameter nil 'fullscreen))  
+      (set-frame-parameter nil 'fullscreen tempmode)
+      )
+    )
+  (define-key global-map [f11] 'jo/toggle-fullscreen)
+#+END_SRC
+****** frame-cmds
+schonmal für fullscreen getestet, dann aber selbst implimientiert
+
+***** Use a good window manager to manage ALL windos (emacs buffers and terminals, browser,...)
+*** Text editing
+**** moving text                                                    :keys:
+Bind `move-text-up' and `move-text-down' to M-up and M-down.
+#+BEGIN_SRC emacs-lisp 
+(move-text-default-bindings)
+#+END_SRC
+***** DONE Does not work in org-mode
+von alleine erledigt ...
+
+*** Colors
+**** color-themes (ELPA)
+http://www.nongnu.org/color-theme/#sec4
+#+BEGIN_SRC emacs-lisp
+ (require 'color-theme)
+ (color-theme-initialize)
+#+END_SRC
+***** Schöne Themes: 
+****** color-theme-dark-laptop
+****** color-theme-solarized
+https://github.com/sellout/emacs-color-theme-solarized (ELPA)
+http://ethanschoonover.com/solarized
+
+***** TODO Testen
+:PROPERTIES:
+:ID:       c565a3e5-a270-4047-9f2b-cad4a7c21ad3
+:END:
+****** http://orgmode.org/worg/color-themes-screenshot.html
+
+*** TODO Searching / Replace
+:PROPERTIES:
+:ID:       3dc7a3cd-15d2-4fd1-b235-514ff0c0bd2f
+:END:
+http://stackoverflow.com/questions/8257009/emacs-insert-word-at-point-into-replace-string-query
+**** replace+ (el-get)
+#+BEGIN_SRC emacs-lisp
+    (require 'replace+)
+#+END_SRC
+" This means that the symbol or word near or at the cursor is the
+default value. " http://www.emacswiki.org/emacs/ReplacePlus
+**** LazySearch ?
+
+**** TODO better search at point than C-w
+:PROPERTIES:
+:ID:       89f2518c-05cb-489b-b3bf-1a8b3fa58a0d
+:END:
+**** grep(-file)
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "grep"
+    '(grep-apply-setting
+      'grep-find-command
+      "find . ! -name \"*~\" ! -name \"#*#\" ! -path \"*/.svn/*\" -type f -print0 | xargs -0 -e grep -nH -e " )
+    )
+#+END_SRC
+***** TODO use parallel / xargs -P ?
+** Editor Cursor Movement
+http://ergoemacs.org/emacs/text_editor_cursor_behavior.html
+** Help / Hilfe
+*** ehelp (electric help)
+- http://emacswiki.org/emacs/ElectricHelp
+- eher nervig 
+- OBSOLETE? :: help-mode bekommt meistens eh den focus und kann dann
+               mit `q' geschlossen werden. FALSCH! (zumindest kann
+               ichs nicht reproduzieren)
+#+BEGIN_SRC emacs-lisp 
+  (define-key global-map "\C-h" 'ehelp-command)
+  (require 'ehelp)
+#+END_SRC
+
+*** http://www.emacswiki.org/HelpPlus (el-get)
+:PROPERTIES:
+:ID:       3e67a014-dbd0-4617-a0a9-efb47f4b974d
+:END:
+
+Very nice. If info cannot be found, add the corresponding file to 
+help-cross-reference-manuals
+To find it, you might need to enable all manuals (just temporarily)
+
+[2012-10-28 Sun 01:54]: Bringt alles in allem eher wenig, weil
+es meisten nicht gut funktioniert oder nicht benötigt wird. Außerdem stört der fehlende Autovorschlag schon enorm (siehe Bug unten)
+**** DONE BUG: default variables/functions at point are not longer suggested
+yes they are available using M-n
+*** TODO Find sth. like help at point (which can itself decide, wheither its a variable or function)
+:PROPERTIES:
+:ID:       4f0652c8-4204-4742-87dc-d0e41f7a4d42
+:END:
+
+** Ergonomie, RSI
+*** 10 Finger System                                               :ATTACH:
+:PROPERTIES:
+:Attachments: 10FingerSystemQWERTZ.png
+
+:ID:       1545d644-8542-4158-ab65-38886f4ad0c6
+:END: 
+http://wiki.zum.de/10-Finger-System
+
+*** Probleme, RSI
+http://ergoemacs.org/emacs/emacs_pinky.html
+http://ergoemacs.org/emacs/ergonomic_emacs_keybinding.html
+http://xahlee.info/kbd/keyboard_Kinesis.html
+http://xahlee.info/kbd/ms_keyboard/ms_natural_keyboard_4000.html
+http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html
+http://www.emacswiki.org/emacs/RepeatedStrainInjuryb
+http://ergoemacs.org/emacs/emacs_rsi_my_experiences.html
+
+*** Key re-mapping remapping
+- https://gitorious.org/at-home-modifier/pages/Home
+- http://www.emacswiki.org/emacs/MovingTheCtrlKey
+**** DONE make CAPS LOCK -> Control!!
+#+BEGIN_SRC sh
+  setxkbmap -layout "$(setxkbmap -print | awk -F + '/xkb_symbols/ {print $2}')" -option ctrl:nocaps
+#+END_SRC
+from http://www.emacswiki.org/emacs/MovingTheCtrlKey
+
+Gegenargument: http://ergoemacs.org/emacs/swap_CapsLock_Ctrl.html
+**** TODO Space 2 CTRL
+:PROPERTIES:
+:ID:       1d97030e-577b-467a-867b-10a786b6bcd9
+:END:
+- https://github.com/r0adrunner/Space2Ctrl
+*** Sticky modifiers
+**** ESC for M-
+**** http://www.emacswiki.org/emacs/StickyModifiers
+**** Control-Lock (el-get)
+ http://www.emacswiki.org/emacs/ControlLock
+bringt nicht viel wegen combos: C-x 4 f
+*** Chording ist Scheiße 
+Stattdessen:
+- modal editing
+- sticky keys / prefix keys
+  
+Ich versuch es jetzt mal mit Model Editing durch den Einsatz von Evil
+** Vim
+:LOGBOOK:
+:END:
+*** Evil (MELPA)
+- http://www.emacswiki.org/emacs/Evil
+- auch PDF
+- keine Erklärung
+- -> Mir gehts eher darum, dass ich kürzere combos brauchr durch den einsatz von states.
+- https://gitorious.org/evil/evil/blobs/raw/doc/doc/evil.pdf
+**** Configuration / Customization
+:PROPERTIES:
+:ID:       94486aad-0d5d-4ca6-bedb-783e0755f1c4
+:END:
+- see: (require "evil-vars.el")
+http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
+#+BEGIN_SRC emacs-lisp
+  (require 'evil)
+  (setq evil-emacs-state-cursor '("blue" bar))
+  (evil-mode t)  
+  (setq evil-want-fine-undo t)
+  ;; "Whether motions may cross newlines."  
+  (setq evil-cross-lines t)
+#+END_SRC
+
+**** Keys                                                            :ATTACH:
+:PROPERTIES:
+:ID:       026ded4c-be19-4a12-8f0c-a702ef796ec8
+:Attachments: vi-vim-cheat-sheet.gif
+:END:
+***** Nützlich:
++ \ :: evil-execute-in-emacs-state (wird überschrieben von evil-leader)
++ :registers :: zeigt alle yanks und deletes
++ undo / redo :: C-r oder M-
++ scrolling :: down: C-f,C-d,C-e   up: C-b, ... , C-y
++ case insensitive search :: toogle with M-c
++ Searchging :: * - Search word under point
++ Block Visual :: Enter with C-v and then: I (insert) A (append)
++ g;  g, :: goto last change (requires ELPA package goto-chg)
++ D :: delete till end of line
++ man page :: K
++ i, a :: use the whole object (Word, paragraph, sentense, (, <, {, … )
++ gu, gU :: change case of selection
+
+***** Eigene
+#+BEGIN_SRC emacs-lisp
+(define-key evil-motion-state-map "y" 'evil-yank)
+(define-key evil-motion-state-map "Y" 'evil-yank-line)
+
+;; from http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
+(defun evil-undefine ()
+ (interactive)
+ (let (evil-mode-map-alist)
+   (call-interactively (key-binding (this-command-keys)))))
+
+;; Now, to make sure that Evil's normal state never touches TAB, just wire this fall-through binding like so:
+(define-key evil-motion-state-map (kbd "TAB") 'evil-undefine)
+
+(define-key evil-insert-state-map (kbd "C-ö") 'jo/enter-org-speed)
+(define-key evil-normal-state-map "ö" 'jo/enter-org-speed)
+#+END_SRC
+***** Material / Quellen
+- (load "evil-maps.el")
+- inner and outer blocks:
+  http://blog.interlinked.org/tutorials/vim_tutorial.html
+- altes VIP Emacs Package: http://sunsite.ualberta.ca/Documentation/Gnu/emacs-20.7/html_chapter/vip_3.html
+- http://stackoverflow.com/questions/1737163/vim-traversing-text-in-insert-mode
+- Surroundings: http://www.catonmat.net/blog/vim-plugins-surround-vim/
+- http://www.viemu.com/a_vi_vim_graphical_cheat_sheet_tutorial.html
+  ~/emacs/org-notes/data/02/6ded4c-be19-4a12-8f0c-a702ef796ec8/vi-vim-cheat-sheet.gif
+- http://michael.peopleofhonoronly.com/vim/
+  [[~/emacs/org-notes/data/02/6ded4c-be19-4a12-8f0c-a702ef796ec8/vim_cheat_sheet_for_programmers_screen.png]]
+- http://ergoemacs.org/emacs/emergency_vi.html
+
+***** Window Keys ? C-w ... (siehe evil-map)
+**** Initial state
+funkioniert irgendwie nicht in help-mode+
+#+BEGIN_SRC emacs-lisp 
+  (evil-set-initial-state 'image-mode 'emacs) 
+  ;; (evil-set-initial-state 'help-mode 'emacs) 
+  (evil-set-initial-state 'package-menu-mode 'emacs)
+  
+  (add-to-list 'evil-buffer-regexps '("\\*Mingus" . emacs))
+  (add-to-list 'evil-buffer-regexps '("\\*buffer-selection\\*" . emacs))
+#+END_SRC
+**** for Emacs Users:
+http://www.emacswiki.org/emacs/Evil
+***** Concrete Tipps:
+"Currently, most Evil users seem to come from the Vim camp. As a
+result, Evil's defaults skew towards Vim behavior. This makes it
+somewhat difficult to adopt for us Emacs users: we have to face the
+double task of learning Vim, as well as figuring out how to make the
+modal editing paradigm work smoothly with the existing Emacs usage
+patterns. As someone that has done this journey, I would like to share
+some tips."
+--http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
+***** https://lists.ourproject.org/pipermail/implementations-list/2012-February/001533.html
+***** http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
+***** gelesen
+****** http://blog.interlinked.org/tutorials/vim_tutorial.html (gute Ref, naja)
+****** http://jeetworks.org/grokking-the-zen-of-the-vi-wu-wei (Scheiße)
+
+****** http://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim/1220118#1220118 (ok)
+
+***** http://newbiedoc.sourceforge.net/text_editing/vim.html.en
+**** Search and Replace
+- /c :: confirmation
+- http://vim.wikia.com/wiki/Search_and_replace
+**** Probleme
+***** Select /cursor off by one: 
+(setq evil-want-visual-char-semi-exclusive t)  
+??
+http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
+- yank does NOT include the character under point (which is bad at the end of a lin). wheras visual mode includes it. (Scheint aber in VIM auch so zu sein)
+
+**** and Org
+Only thing currently used: jo/enter-org-speed
+***** not used
+****** bindings example by some one
+#+BEGIN_SRC emacs-lisp :tangle no
+(define-minor-mode evil-org-mode
+  "Buffer local minor mode for evil-org"
+  :init-value nil
+  :lighter " EvilOrg"
+  :keymap (make-sparse-keymap) ; defines evil-org-mode-map
+  :group 'evil-org)
+
+(add-hook 'org-mode-hook 'evil-org-mode) ;; only load with org-mode
+
+;; regular normal state shortcuts.
+(evil-define-key 'normal evil-org-mode-map
+  "gh" 'outline-up-heading
+  "gj" 'org-forward-same-level
+  "gk" 'org-backward-same-level
+  "gl" 'outline-next-visible-heading
+  "H" 'org-beginning-of-line
+  "L" 'org-end-of-line
+  "t" 'org-shiftright
+  "T" 'org-shiftleft
+  "$" 'org-end-of-line
+  "^" 'org-beginning-of-line
+  "-" 'org-ctrl-c-minus
+  "<" 'org-metaleft
+  ">" 'org-metaright)
+
+;; leader shortcuts in normal state. (disabled for now)
+;; (evil-leader/set-key 'normal evil-org-mode-map
+;;   "c" 'org-cycle
+;;   "e" 'org-export-dispatch
+;;   "n" 'outline-next-visible-heading
+;;   "p" 'outline-previous-visible-heading
+;;   "t" 'org-set-tags-command
+;;   "u" 'outline-up-heading)
+
+;; normal & insert state shortcuts.
+(mapcar (lambda (state)
+          (evil-define-key state evil-org-mode-map
+            (kbd "M-l") 'org-metaright
+            (kbd "M-h") 'org-metaleft
+            (kbd "M-k") 'org-metaup
+            (kbd "M-j") 'org-metadown
+            (kbd "M-L") 'org-shiftmetaright
+            (kbd "M-H") 'org-shiftmetaleft
+            (kbd "M-K") 'org-shiftmetaup
+            (kbd "M-J") 'org-shiftmetadown)) '(normal insert))
+#+END_SRC
+
+****** org-mode speed keys!
+:PROPERTIES:
+:ID:       eeaf1c28-5484-4594-9d41-332cb819b438
+:END:
+
+******* Versuch:
+#+BEGIN_SRC emacs-lisp :tangle no
+;;http://www.m17n.org/mlarchive/cgreek/200007/msg00011.html
+
+(setq mymode-map '(keymap))
+
+(jo/remap-keymap-org  
+	(append
+	 evil-normal-state-map 
+	 evil-motion-state-map 
+	 evil-outer-text-objects-map
+	 evil-inner-text-objects-map
+	 ))
+
+ 
+
+
+(defun jo/check-and-apply-org-speed ()
+"asd"
+	(interactive)
+	(print "a")
+	)	
+
+(commandp 'jo/check-and-apply-org-speed)
+
+(defun jo/remap-keymap-org (b)
+	(mapcar (lambda (a)
+						(when (listp a)
+							(lexical-let ((c (cdr a)))
+								(if (and (listp c) (eq (car c) 'keymap))
+										(jo/remap-keymap-org a)
+									(unless (vectorp c)											
+										(define-key
+											evil-org-mode-map;;										mymode-map
+											(vector 'remap c)
+											'jo/check-and-apply-org-speed
+											)
+										)
+									))))
+					b)
+	)
+;;	(lexical-let ((a (cdr c)))
+(print a)
+(when nil	(define-key
+						liste
+						(vector 'remap a)
+						(lambda () (interactive) (print a))
+						)
+			))
+																				;	)
+
+(defun asd () "a" (interactive)
+(message "a")
+(error "asd")
+	;; ((and org-use-speed-commands
+	;; 			(setq org-speed-command
+	;; 						(run-hook-with-args-until-success
+	;; 						 'org-speed-command-hook (this-command-keys))))
+	;;  (cond
+	;; 	((commandp org-speed-command)
+	;; 	 (setq this-command org-speed-command)
+	;; 	 (call-interactively org-speed-command))
+	;; 	((functionp org-speed-command)
+	;; 	 (funcall org-speed-command))
+	;; 	((and org-speed-command (listp org-speed-command))
+	;; 	 (eval org-speed-command))
+	;; 	(t (let (org-use-speed-commands)
+	;; 			 (call-interactively 'org-self-insert-command)))))
+	)
+
+(add-hook 'pre-command-hook 'asd)
+
+#+END_SRC
+****** evil-org (eigenes El-get Recipe, nicht installiert, sondern selbst implementiert (s.o.))
+(load "evil-org.el")
+#+NAME: evil-org-recipe
+#+BEGIN_SRC emacs-lisp :tangle no
+ (:name evil-org
+           :type github
+           :branch "master"
+           :pkgname "edwtjo/evil-org-mode"
+           :features evil-org
+           :website "https://github.com/edwtjo/evil-org-mode"
+           :load "evil-org.el"
+           )
+  #+END_SRC
+**** TODO TODOS
+:PROPERTIES:
+:ID:       771a7d4a-1d5d-421d-a102-76e6763ef62b
+:END:
+ESC -Key zu jk oder kj
+http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/
+**** Nachteile:
+http://lists.gnu.org/archive/html/emacs-orgmode/2011-01/msg00471.html
+**** TODO Check out: evil-numbers
+*** Vi keys
+http://www.emacswiki.org/emacs/ViKeys
+*** Nützliches Commands:
+- manually setting vim filetype :: :set filetype=xml
+- check yaml :: :se spell.
+*** Tutorials
+http://vimcasts.org/episodes/modal-editing-undo-redo-and-repeat/
+*** modal editing
+http://stackoverflow.com/questions/555470/semi-modal-editing-auto-prefixing-keys
+*** Good comparison
+http://mattbriggs.net/blog/2012/02/27/awesome-emacs-plugins-evil-mode/
+http://lists.gnu.org/archive/html/emacs-orgmode/2011-01/msg00498.html
+http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/
+** Remote (tramp)
+/prot:user@hoste:path/
+*** ftp: (ruft ange-ftp automatisch im Hintergrund auf)
+*** ssh -> /scpc
+**** Scheint ControlMaster selbst zu benutzen (sieht man an schneller performance)
+aber unterstützt nicht user definiert ControlPath, sodass verbindung auch außerhalb vom Tramp benutzt werden kann. (bzw. nicht weiter untersucht)
+http://www.gnu.org/software/tramp/#index-scpc-method-68
+*** ssh (unter WIndows via plink)
+...
+** TODO emacs –daemon
+:PROPERTIES:
+:ID:       4db98c61-84e7-40d9-a898-7ecd035c70d9
+:END:
+http://www.emacswiki.org/emacs/EmacsAsDaemon
+http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-TODO/
+** Mode Line
+*** Date and Time
+#+BEGIN_SRC emacs-lisp
+  (setq display-time-day-and-date nil)
+  (display-time-mode 1)
+#+END_SRC
+** Encoding
+http://ergoemacs.org/emacs/emacs_encoding_decoding_faq.html
+** Local Variables
+[[info:emacs#Specifying%20File%20Variables][info:emacs#Specifying File Variables]]
+- Reset major mode and variables in buffer:
+  M-x normal-mode
+- M-x add-file-local-variable
+- M-x add-file-local-variable-prop-line
+** Environment Variables
+- getenv
+- http://www.gnu.org/software/emacs/manual/html_node/emacs/Environment.html
+- initial-environment
+** File IO
+#+BEGIN_SRC emacs-lisp
+  (defun jo/read-lines (file)
+    "Return a list of lines in FILE."
+    (with-temp-buffer
+      (insert-file-contents file)
+      (split-string
+       (buffer-string) "\n" t)
+      ) )
+#+END_SRC
+** Editing
+*** Upper/lower case
+#+BEGIN_SRC emacs-lisp
+  (put 'upcase-region 'disabled nil)
+  (put 'downcase-region 'disabled nil)
+#+END_SRC
+** Bugs und Warnings
+*** (lambda (a) ...) quoted with ' rather than with #'
+Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
+* Org Mode
+:PROPERTIES:
+:ID:       f9fb5d47-51ce-43d1-bfcb-d2eb8dbdcca2
+:END:
+** Settings
+#+BEGIN_SRC emacs-lisp
+  ;; Log the time, when TODO is DONE
+  (setq org-log-done t) 
+  
+  ;; (info "(org)Breaking down tasks")
+  ;; If you would like a TODO entry to automatically change to DONE
+  ;; when all children are done, you can use the following setup:
+  
+  (defun org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let (org-log-done org-log-states)   ; turn off logging
+      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+  
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+  
+  
+  
+  ;; do not truncate lines:
+  (setq org-startup-truncated nil)
+  
+  (setq org-agenda-files '("~/cbi/config/"))
+  (setq org-agenda-files '("~/emacs/org-notes/"))
+  
+  
+  ;;               (eval-after-load 'org                   ;; too early
+  
+  ;; doesn't work, use custom-set-variables instead!
+  ;; (setq org-agenda-files '("~/emacs/org-notes/"))
+  ;; (info "(Org)Clean view") 
+  (setq org-startup-indented t)
+  ;; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+  (setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                   (org-agenda-files :maxlevel . 9))))
+  ;; this variable has its use, but needed to be set, due to errors in mobile org stuff
+  (setq org-directory "~/emacs/org-notes")
+  (setq org-mobile-inbox-for-pull "~/emacs/org-notes/mobile_inbox.org")
+  (setq org-mobile-directory "/scpc:root@2.josg.de:~/MobileOrg")
+  (setq org-support-shift-select t)
+  (setq org-log-refile t)
+  ;; Refile / Goto: Pfad konstruieren
+  (setq org-refile-use-outline-path nil)
+  
+  (setq org-startup-with-inline-images t)
+  
+  
+#+END_SRC
+** Keys                                                                :keys:
+*** Speedkeys
+- Speedkey SPC :: show path
+- Press ? in speed mode!
+- (org-speed-command-help)
+- (describe-variable 'org-speed-commands-default)
+#+BEGIN_SRC emacs-lisp
+  (defun jo/enter-org-speed () 
+    "moves point to nearest headline and switches to insert mode. 
+  This will enable access to org's speed keys through evil."
+    (interactive)
+    (unless (bolp) (move-beginning-of-line nil))
+    (unless (looking-at org-outline-regexp)
+      (outline-previous-visible-heading 1)
+      (unless (looking-at org-outline-regexp)
+        (outline-next-visible-heading 1)
+        )
+      )
+    (evil-insert-state)
+    )
+  (setq org-speed-commands-user
+        '(
+          ;; ("l" progn (message "asd") (evil-normal-state))
+          )
+        )
+  
+#+END_SRC
+*** Sonstiges
+- TAB :: springt zum parent, wenn im payload!
+- C-c ^ :: Sort region or children of current headline
+#+BEGIN_SRC emacs-lisp
+;; (info "(Org)Speed keys")
+(setq org-use-speed-commands t)
+(global-set-key "\C-cj" 'org-clock-goto)
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)  
+(eval-after-load 'org
+'(define-key org-mode-map (kbd "C-c C-#") 'org-edit-src-code)
+)
+(add-hook 'org-src-mode-hook 
+        (lambda () 
+          (define-key org-src-mode-map (kbd "C-c C-#") 'org-edit-src-exit)
+          ))
+#+END_SRC
+** Calendar:
+Keys: Datumsauswahl mit STRG
+
+** Source Code
+*** TODO Settings
+:PROPERTIES:
+:ID:       51b733a3-4536-46f1-bb3a-34368d55484e
+:END:
+[[info:org#Editing%20source%20code][info:org#Editing source code]]
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-ask-before-returning-to-edit-buffer nil)
+  (setq org-src-fontify-natively t)
+  (eval-after-load 'org
+    '(add-to-list 'org-structure-template-alist
+                  '("m" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC" "<src lang=\"emacs-lisp\">\n?\n</src>")
+                  ))
+  ;; Languages to execute
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (sh . t)))
+  
+  ;; allow file local custom noweb syntax
+  (add-to-list 'safe-local-variable-values '(org-babel-noweb-wrap-start . "«"))
+  (add-to-list 'safe-local-variable-values '(org-babel-noweb-wrap-end . "»"))
+
+  ;; This can be used in a file like this:
+  ;; Local Variables:
+  ;; org-babel-noweb-wrap-start: "«"
+  ;; org-babel-noweb-wrap-end: "»"
+  ;; End:
+  
+  ;; Puppet mode:
+  ;; add-to-list 'org-src-lang-modes '("puppet" . puppet-mode))
+  ;; ^ this is not needed due to: 
+  ;; (`org-src-lang-modes'
+  ;;      If an Emacs major-mode named `<lang>-mode' exists, where `<lang>'
+  ;;      is the language named in the header line of the code block, then
+  ;;      the edit buffer will be placed in that major-mode.  This variable
+  ;;      can be used to map arbitrary language names to existing major
+  ;;      modes.
+  
+#+END_SRC
+*** Batch Tangle: emacs -Q --batch --eval "(org-babel-tangle-file \"test.org\")"
+*** Evaluation (Allgemein):
+[[info:org#eval]]
+*** DONE Bugs [2/2]
+:PROPERTIES:
+:ID:       9b168284-0822-47b3-bdf9-6efadb77fb93
+:END: 
+**** DONE M-h :: function org-unescape-code-in-string void
+Lösung: Versions konflikt zwischen integriertem org und externen org (beide ELPA): jetzt nur noch integriert
+**** `C-c '' :: "org-babel-strip-protective-commas: Symbol's function
+definition is void: org-strip-protective-commas"
+WORKAROUND: M-x org-mode
+**** DONE C-c C-c :: org-confirm-babel-evaluate is void
+- Lösung :: Ich habe org-mode (über mehrere Ecken (durch ein babel-load im init) laden
+            lassen, innerhalb eines
+            : (let ((org-confirm-babel-evaluate nil)) 
+            Das hat dazu geführt, dass der default wert überschrieben
+            wurde.
+            Also lasse ich org einfach vorher laden.xs
+
+*** Babel / Literate /noweb
+**** Undocumented functions: 
+- org-babel-load-file (nur in http://orgmode.org/worg/org-contrib/babel/intro.html#sec-8-2-1)
+**** http://draketo.de/light/english/minimal-example-for-literate-programming-noweb-emacs-org-mode
+**** tangle with orig org mode text as comments: http://eschulte.me/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
+**** #+babel gibts nicht mehr http://lists.gnu.org/archive/html/emacs-orgmode/2011-10/msg00762.html
+**** Tangle kennt elisp nicht (nur emacs-lisp)
+**** Funtionen aufrufen im Code (auch inline): [[info:org#Evaluating%20code%20blocks][info:org#Evaluating code blocks]]
+http://doc.norang.ca/org-mode.org
+http://doc.norang.ca/org-mode.html
+***** auch während tanlge?
+Ja mit <<name()>> (also erweiterter Noweb ref)
+
+*** Header arguments and inheritance ( properties)
+[[info:org#Header%20arguments%20in%20Org%20mode%20properties][info:org#Header arguments in Org mode properties]]
+** Clocking
+[[info:org#Clocking%20work%20time][info:org#Clocking work time]]
+*** TODO Clock out to clock into parent or default task?
+:PROPERTIES:
+:ID:       8c9da650-71a9-4f11-b8c4-7947bd944185
+:END:
+http://doc.norang.ca/org-mode.html
+*** Settings
+#+BEGIN_SRC emacs-lisp
+  ;; To save the clock history across Emacs sessions, use 
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+  ;; When you clock into a new task after resuming Emacs, the
+  ;; incomplete clock(2) will be found (*note Resolving idle time::) and
+  ;; you will be prompted about what to do with it.
+  ;; (info "(Org)Resolving idle time")
+  (setq org-clock-idle-time 5)
+  (setq org-clock-into-drawer 2)
+#+END_SRC
+** Attachments
+C-c C-a org-attach  kann alles (hinzufügen, öffnen,  directory,.. )
+** Herausfinden und Verbesserungen
+*** TODO Navigation History
+:PROPERTIES:
+:ID:       e66768ab-f431-477b-b007-f1577beb1481
+:END:
+** Nützliches
+*** Doppel Punkt, Colon: [[info:org#Literal%20examples][info:org#Literal examples]]
+** Capture
+*** Templates
+[[info:org#Capture%20templates][info:org#Capture templates]]
+#+BEGIN_SRC emacs-lisp
+  (setq org-capture-templates                                          
+        '(("t" "Todo" entry (file+headline "~/emacs/org-notes/LinuxAdoption.org" "Tasks")
+           "* TODO %?\n  %i\n  %a")
+          ("j" "Journal" entry (file+datetree "~/emacs/org-notes/journal.org")
+           "* %?\nEntered on %U\n  %i\n  %a")
+          ))
+  #+END_SRC
+** alte Notizeqn
+- Refiled on [2012-10-17 Wed 01:08]
+:PROPERTIES:
+:ID:       98634f8f-2616-40cd-bb7a-e8eeb4067cf8
+:END:
+*** Buffer wide Properties (#+PROPERTY) are only evaluated at mode load time
+*** Anreize von anderen:
+**** http://orgmode.org/worg/org-screenshots.html
+**** http://orgmode.org/worg/org-contrib/babel/uses.html (Finance, Ledger)
+*** TODO check org-toodledo
+:PROPERTIES:
+:ID:       9c0f9d84-f084-412d-9835-1cf39c023b8a
+:END:
+*** DONE MobileOrg
+:PROPERTIES:
+:ID:       ffaddf39-fbb0-4fc2-9485-a441ae236f48
+:END:
+**** Shortcut:
+C-c C-x RET p (push) g (pull)
+**** TODO BUG: "Capture as node/child"'s changes in mobileorg.org are not integrated
+:PROPERTIES:
+:ID:       754f8434-c20b-42c8-ba01-6ac6b90248da
+:END:
+**** BUG: Filenames with white spaces cannot be handled (at least not via SSH)
+Already filed on github.
+*** DONE Images
+**** http://osdir.com/ml/emacs-orgmode-gnu/2010-05/msg00116.html (irrelevant)
+**** http://orgmode.org/manual/Handling-links.html#Handling-links
+**** [[Pictures/Selection_001.png]]
+**** Toggle Inline Display C-c C-x C-v
+*** DONE refile mode using paths?
+:PROPERTIES:
+:ID:       3bc6475f-b69a-4640-836e-e1caecdd27b4
+:END:
+
+*** TODO Open saved desktop session from org-mode
+:PROPERTIES:
+:ID:       437070c2-9d98-4d30-9417-ad36cfaf77ae
+:END:
+Use elisp form or command link type:
+http://orgmode.org/manual/External-links.html#External-links
+
+*** TODO [#A] TODO/orga System
+:LOGBOOK:
+:END:
+:PROPERTIES:
+:ID:       157055ce-35a2-46ad-9e25-fd358dab0f3d
+:END:
+**** http://www.suenkler.info/emacs-orgmode.html
+**** http://orgmode.org/worg/org-tutorials/ (unter Rukrik "power user", und GTD)
+**** http://doc.norang.ca/org-mode.html
+*** TODO Check out org-agenda-set-restriction-lock
+:PROPERTIES:
+:ID:       7a191df0-39e2-4b77-81c7-0e4dec2bb20f
+:END:
+*** TODO org-agenda-files is not set by .emacs
+:PROPERTIES:
+:ID:       d688ae44-de21-4a63-8bae-2f4e5c10e3a8
+:END:
+setq After eval-after-load does not work, because it is too early (?)
+"Arrange that if FILE is loaded, FORM will be run immediately afterwards."
+[[help:eval-after-load]]
+irgendwie nicht!
+*** Nachlesen in den Doks
+:PROPERTIES:
+:ID:       a81e11b3-97c0-499a-9750-fb3b77fc9e53
+:END:
+*** TODO Bugs [0/6]
+:PROPERTIES:
+:ID:       9da7a1d8-6221-403a-b30c-9b122ddae17b
+:END:
+**** TODO Empty clock display sums
+:PROPERTIES:
+:ID:       f3418ad9-559b-4e66-b7b9-0652b6bfb6e3
+:END:
+Does not work with org-indent-mode
+
+**** TODO Use M-x make-directory RET RET to create the directory and its parents
+- Note taken on [2012-10-17 Wed 18:33] \\
+  Der Fehler "Use M-x make-directory RET RET to create the directory and its parents" kommt auch, wenn man M-x find-file RET " /asd" macht
+     :PROPERTIES:
+:ID:       96aa3140-09eb-449d-8494-b3aedbea8503
+:END:
+Error: (error "No such directory found via CDPATH environment variable")
+cd: No such directory found via CDPATH environment variable
+
+**** TODO Push Mark von org-clock-goto
+:PROPERTIES:
+:ID:       278dcb95-42e6-414a-a6bf-e1ce82362700
+:END:
+
+**** TODO org-cycle should also work end of headline
+:PROPERTIES:
+:ID:       6da5be8e-2dd4-4b92-bbc3-08f87c08cb75
+:END:
+
+**** TODO some way to use speed keys after file load (e.g. by moving point to the first headline)
+:PROPERTIES:
+:ID:       11d3c1ab-e9d5-4838-a263-9db07f49cee9
+:END:
+*** TODO Create Graphics ditaa http://ditaa.sourceforge.net/
+:PROPERTIES:
+:ID:       45ff7e89-a4af-4748-809c-b33d77ffe118
+:END: 
+** Encryption
+org-de/encrypt-entries/entry
+[[info:org#org-crypt.el]]
+#+BEGIN_SRC emacs-lisp
+(require 'org-crypt) 
+(org-crypt-use-before-save-magic)
+(setq org-tags-exclude-from-inheritance (quote ("crypt")))
+(setq org-crypt-key "ED5AF74803CE53BC")
+#+END_SRC
+** Export
+*** Markdown https://github.com/alexhenning/ORGMODE-Markdown
+** Outline
+*** Outline Path
+**** Automaticaly display in echo area (uses [[*El%20Doc%20Mode][El Doc Mode]])
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (set (make-local-variable 'eldoc-documentation-function)  
+                   (lambda () 
+                     (org-display-outline-path nil t)
+                     ))) 
+            )
+#+END_SRC
+*** TODO org-reveal ?
+:PROPERTIES:
+:ID:       64662398-c9f2-441f-ba6e-6e86a6a55cca
+:END:
+** Anenda
+- l :: log mode
+- v :: change view (e.g. to month)
+* TODO LaTeX
+:PROPERTIES:
+:ID:       f8f6bad3-8cfa-46f9-870f-19809bb17481
+:END:
+** TODO Verbesserungen
+http://cristal.inria.fr/whizzytex/
+** Script
+#+BEGIN_SRC emacs-lisp
+;; AUCTeX was installed using ELPA package.el
+
+;; TODO http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands
+
+
+(add-hook 'LaTeX-mode-hook 'jo/latex-mode-hook-command)
+(setq reftex-plug-into-AUCTeX t)
+
+;;If you open a slave file, AUCTeX will neither open the master file and
+;;parse it, nor will it open other slave files because it does not now
+;;about them.  It relies on such information to be stored in the `auto'
+;;subdirectory.  By not enabling `TeX-auto-save', you are effectively
+;;dumping the advantages of parsing in multi-file documents.
+;; from http://lists.gnu.org/archive/html/auctex/2005-05/msg00015.html
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+;; Each time you open a new file, AUCTeX will then
+;; ask you for a master file:
+(setq-default TeX-master nil)
+
+;; TODO: test this
+(setq LaTeX-math-abbrev-prefix "M-#")
+
+(defun jo/latex-mode-hook-command ()
+	(setq ac-sources
+				(append '(ac-source-math-unicode ac-source-math-latex
+																				 ac-source-latex-commands)
+								ac-sources))
+
+	;; gibt an, welche environments ein automatisch ein label bekommen
+	;; sollen. wie das label erzeugt wird, ist allerdings in der variable
+	;; reftex-insert-label-flags festgelegt. Dazu muss die Umgebung aber
+	;; auch in reftex-label-alist definiert sein
+	(LaTeX-add-environments
+	 ;; '("theorem" );;LaTeX-env-label)
+	 ;; '("assumption" );;LaTeX-env-label)
+	 ;; '("definition" );;LaTeX-env-label)
+	 ;; '("lemma" );;LaTeX-env-label)
+	 '("example" LaTeX-env-label);ask for label
+	 '("remark" LaTeX-env-label)
+	 ;; '("corollary" )	LaTeX-env-label) 
+	 )
+	(setq TeX-source-correlate-method 'source-specials)
+	(TeX-source-correlate-mode t)
+	(setq preview-scale-function 
+				(lambda nil 
+					(if (boundp (quote text-scale-mode-step)) 
+							nil (text-scale-set 0))
+					(* 1.1 (expt text-scale-mode-step (+ 1 text-scale-mode-amount)))))
+	(setq reftex-insert-label-flags (quote ("shladc" "sfhladc")))
+	(setq reftex-label-alist 
+				'(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
+					("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
+					("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
+					("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
+					("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
+					("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
+					("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary") nil)
+					))
+
+	
+	
+	(turn-on-reftex)
+	(speck-mode)
+	)
+
+(eval-after-load 'latex
+	'(progn		 
+			(define-key LaTeX-mode-map
+				[f4] (tex-build-command-function '(jo/Tex-next-command) nil t))
+			(define-key LaTeX-mode-map
+				[f5] (tex-build-command-function "LaTeX" nil t))
+			(define-key LaTeX-mode-map
+				[f6] (tex-build-command-function "BibTeX" nil t))
+			(define-key LaTeX-mode-map
+				[f7] (tex-build-command-function "View" nil))
+			;; (define-key LaTeX-mode-map 
+			;; 	 [(shift f6)] (tex-build-command-function "PdfLaTeX" t t))
+			;; (define-key LaTeX-mode-map 
+			;; 	 [(super f6)] (tex-build-command-function "dviPS" t))
+			;; (when unixp (define-key LaTeX-mode-map 
+			;; 		 [(meta f6)] (tex-build-command-function "dviPS" t)))		
+			;; (define-key LaTeX-mode-map 
+			;; 	 [(super control f6)] (tex-build-command-function "dviPS landscape" t))
+			;; (define-key LaTeX-mode-map 
+			;; 	 [(super meta f6)] (tex-build-command-function "PS2pdf" t))
+			;; (define-key LaTeX-mode-map
+			;; 	[(super f8)] (tex-build-command-function "Ghostview" nil))
+			;; (define-key LaTeX-mode-map 
+			;; 	[(super meta f8)] (tex-build-command-function "View PDF" nil))
+
+			;;(require 'auto-complete-latex);does not include math
+			;;commands. Use ac-math instead:
+			(require 'ac-math)				 
+
+			;; (require 'tex-mik)
+			)
+	)
+;; from http://lists.gnu.org/archive/html/auctex/2008-10/msg00058.html
+(defun tex-build-command-function (cmd &optional recenter-output-buffer 
+																			 save-buffer override-confirm)
+	"Build a TeX-command function."
+	`(lambda()
+			 (interactive)
+			 (when ,save-buffer (save-buffer))
+			 (when ,recenter-output-buffer (TeX-recenter-output-buffer nil))
+			 (TeX-command ,cmd 'TeX-master-file (if ,override-confirm 1 -1)))
+)
+
+(defun jo/Tex-next-command ()
+	(interactive)
+	(let ((name (TeX-master-file)))
+		(let (
+							(cmd (cond ((if (string-equal name TeX-region)
+							 (TeX-check-files (concat name "." (TeX-output-extension))
+																(list name)
+																TeX-file-extensions)
+						 (TeX-save-document (TeX-master-file)))
+					 TeX-command-default)
+					((and (memq major-mode '(doctex-mode latex-mode))
+								(TeX-check-files (concat name ".bbl")
+																 (mapcar 'car
+																				 (LaTeX-bibliography-list))
+																 BibTeX-file-extensions))
+					 ;; We should check for bst files here as well.
+					 TeX-command-BibTeX)
+					((TeX-process-get-variable name
+																		 'TeX-command-next
+																		 TeX-command-Show))
+					(TeX-command-Show))))
+		(message (concat "Running " cmd))
+		cmd
+		))
+	)
+
+
+
+
+
+
+#+END_SRC
+* Navigate, Access, Cycles, Completen, Suggest,..
+** Completion
+*** Hippie Expand 
+http://emacswiki.org/emacs/HippieExpand
+*** Auto Completion
+#+BEGIN_SRC emacs-lisp
+
+;; Auto Complete (via ELPA)
+(when t
+  ;; http://cx4a.org/software/auto-complete/manual.html (the following three lines:)
+  (require 'auto-complete-config)
+  (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+  (ac-config-default)
+  (ac-flyspell-workaround)
+  ;;http://stackoverflow.com/questions/5298116/auto-complete-mode-doesnt-turn-on-automatically-in-objc-buffers
+  (add-to-list 'ac-modes 'latex-mode)
+  )
+
+
+#+END_SRC
+
+** HELM (old: Anything) (via MELPA)
+http://emacswiki.org/emacs/Icicles_-_Anything
+https://github.com/emacs-helm/helm
+https://github.com/emacs-helm/helm/wiki
+#+BEGIN_SRC emacs-lispa :tangle no
+(helm-mode 1)
+#+END_SRC
+** Icicles (via ELPA)
+http://www.emacswiki.org/emacs/Icicles_-_Apropos_Completions
+*** Cool stuff
+- Insert word / expression at point: M-.
+- Math multiple regexps: S-SPC 
+  http://www.emacswiki.org/emacs/Icicles_-_Progressive_Completion#progressive_completion
+*** TODO Mal auschecken
+:PROPERTIES:
+:ID:       7123f8f1-a700-416d-bf0f-3ea3c27a5834
+:END:
+http://www.emacswiki.org/emacs/Icicles_-_Fuzzy_Completion
+*** Settings
+#+BEGIN_SRC emacs-lisp :tangle no
+  (icicle-mode 1)
+  (setq icicle-default-thing-insertion 'more-of-the-same)
+#+END_SRC
+*** TODO Problems:
+:PROPERTIES:
+:ID:       b402279e-ffc3-400a-9a9f-ad9226eac103
+:END:
+- C-c ' collides with org-mode
+- Completion: Standard emacs completetion with double dash: org--exit? How can this functionality be accessed?
+** Sdcv
+** Speed bar
+M-x speedbar
+Different Frame Configs:
+http://emacswiki.org/emacs/SpeedBar
+http://orgmode.org/worg/users/srose.html
+*** use with org-mode
+** imenu 
+http://www.emacswiki.org/emacs/ImenuMode
+
+M-x imenu (navigiert durch eine Struktur?)
+** Code Browsing (auch JAVA):
+http://ecb.sourceforge.net/screenshots/index.html
+** TODO Follow the point
+:PROPERTIES:
+:ID:       3dc41844-ba72-447f-8dd9-351299b8225f
+:END:
+"I'll guess you might be interested in ECB, which can serve a similar
+function. It breaks the side window into multiple parts, and one of
+the windows does follow the cursor around in the list of tags. I'll
+guess this is what you want."
+http://stackoverflow.com/questions/8006347/how-can-i-make-emacs-speedbar-auto-expand-file-class-info-based-on-the-cursor
+** IDO
+- http://emacswiki.org/emacs/InteractivelyDoThings
+- demo? http://cpansearch.perl.org/src/YEWENBIN/Emacs-PDE-0.2.16/lisp/doc/QuickStartEn.html
+- benutztung und VIEL mehr: http://www.masteringemacs.org/articles/2010/10/10/introduction-to-ido-mode/
+- Cheatsheet: (describe-function 'ido-find-file)
+- SEHR WICHTIG :: C-z undo the 'merge'
+-              :: C-j use what you actually typed
+http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire
+
+#+BEGIN_SRC emacs-lisp
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+ (setq ido-use-filename-at-point 'guess)
+ (setq ido-use-url-at-point 'guess)
+(ido-mode 1)
+#+END_SRC
+*** Files
+**** Other's 
+http://www.xsteve.at/prg/emacs/power-user-tips.html
+**** recentf                                                        :keys:
+#+BEGIN_SRC emacs-lisp
+  (recentf-mode 1)
+  (defun xsteve-ido-choose-from-recentf ()
+    "Use ido to select a recently opened file from the `recentf-list'"
+    (interactive)
+    (let ((home (expand-file-name (getenv "HOME"))))
+      (find-file
+       (ido-completing-read "Recentf open: "
+                            (mapcar (lambda (path)
+                                      (replace-regexp-in-string home "~" path))
+                                    recentf-list)
+                            nil t))))
+  
+  (global-set-key (kbd "C-x C-r") 'xsteve-ido-choose-from-recentf)
+#+END_SRC
+**** (info "(Emacs)FFAP")
+superseded by  (setq ido-use-filename-at-point 'guess) etc.
+#+BEGIN_SRC emacs-lisp :tangle no
+(ffap-bindings)
+#+END_SRC
+* Programming / Development
+** Code Browser
+http://ecb.sourceforge.net/
+** Allgemeine Tipps
+http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
+** Compiling / Interpreting
+*** Comint?
+*** emacs lisp
+eval-current-buffer
+*** TODO Bash                                                        :keys:
+:PROPERTIES:
+:ID:       b90e5bae-5432-46c5-9abd-f99bafeca3ae
+:END:
+**** custom
+Change to standard compilation / eval key, but only in shell mode
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-s 8") 'jo/bash-current-buffer)
+  (defun jo/bash-current-buffer ()  
+    "runs the current buffer usign bash"
+    (interactive)
+  (shell-command-on-region (point-min) (point-max) "bash")
+  (view-buffer-other-window (get-buffer "*Shell Command Output*"))
+  )
+#+END_SRC
+**** executable-interpret?
+** Semantic stuff:
+*** http://www.emacswiki.org/emacs/SemanticBovinator
+** Tags
+*** see SemanticBovinator
+*** http://emacswiki.org/emacs/ExuberantCtags
+** TODO imenu gives a list of all functions in a file, and lets you jump to them.
+idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
+** El Doc Mode
+http://emacswiki.org/emacs/ElDoc
+A very simple but effective thing, eldoc-mode is a MinorMode
+which shows you, in the echo area, the argument list of the
+function call you are currently writing. Very handy.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'org-mode-hook  'turn-on-eldoc-mode)
+#+END_SRC
+** Code Formatting / Beatification / Pretty Printing
+*** JSON
+Download https://gist.github.com/1789605 and eval.
+Run M-x json-reformat-region, format region as json string.
+*** Tidy (XML, HTML)?
+MELPA Package, couldn't get it to work
+**** alternative:
+http://blog.bookworm.at/2007/03/pretty-print-xml-with-emacs.html
+#+BEGIN_SRC emacs-lisp
+(defun bf-pretty-print-xml-region (begin end)
+  "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this. The function inserts linebreaks to separate tags that have
+nothing but whitespace between them. It then indents the markup
+by using nxml's indentation rules."
+  (interactive "r")
+  (save-excursion
+    (nxml-mode)
+    (goto-char begin)
+    (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+      (backward-char) (insert "\n") (setq end (1+ end)))
+    (indent-region begin end))
+  (message "Ah, much better!"))
+#+END_SRC
+** TODO Web Developement
+:PROPERTIES:
+:ID:       b0eb141d-2384-4fa2-841b-28c36fb9e0d6
+:END:
+#+BEGIN_SRC emacs-lisp
+  (when t
+    ;; NXHTML (using el-get)
+  
+    ;; To make nXhtml run faster you can also byte compile the files. You
+    ;; do that with M-x nxhtmlmaint-start-byte-compilation.
+
+  
+    ;; needs Mozrepl Plugin: https://addons.mozilla.org/de/firefox/addon/mozrepl/
+    (define-minor-mode moz-reload-mode
+      "Moz Reload Minor Mode"
+      nil " Reload" nil
+      (if moz-reload-mode
+          (add-hook 'after-save-hook 'moz-reload 'append 'local)
+        (remove-hook 'after-save-hook 'moz-reload 'local)
+        )) ; buffer-local
+  
+    (defun moz-reload ()
+      (interactive)
+      (comint-send-string (inferior-moz-process) "BrowserReload();"))
+  
+    (add-to-list 'auto-mode-alist
+                 '("\\.ejs\\'" . nxhtml-mode))
+  
+   ;; geht meistens eh nicth (non valid) und ist extrem buggy
+   ;;(add-hook 'nxhtml-mode-hook 'nxml-where-mode)
+  
+    ;; Javascript  (ELPA)
+    (autoload 'js2-mode "js2" nil t)
+    (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+    )
+#+END_SRC
+** Puppet (via ELPA)
+#+BEGIN_SRC emacs-lisp
+  ;;register manifest file-extension
+  (add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
+  ;;Auto-complete
+  (add-to-list 'ac-modes 'puppet-mode)
+#+END_SRC
+** YAML (auch für Salt Stack) (via ELPA)
+#+BEGIN_SRC emacs-lisp 
+  (add-to-list 'auto-mode-alist '("\\.\\(sls\\|ya?ml\\)$" . yaml-mode))
+#+END_SRC
+** Python
+http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
+** Perl
+Sehr gut: http://cpansearch.perl.org/src/YEWENBIN/Emacs-PDE-0.2.16/lisp/doc/QuickStartEn.html
+http://www.emacswiki.org/emacs/PerlDevelopEnvironment
+* Autosaving and Backup files
+** Autosave: http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
+** Backup
+Problems with hard links, that get destroyed:
+#+BEGIN_SRC emacs-lisp
+    (setq backup-by-copying-when-linked t)
+#+END_SRC
+* Mail
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; TODO dired? http://www.stat.ufl.edu/~presnell/Links/gnus-brief.org
+  
+  ;; Writing
+  ;; http://www.emacswiki.org/emacs/WritingMail
+  ;; zurzeit: Default: Message Mode
+  
+  
+  ;; Sendmail
+  ;; http://www.emacswiki.org/emacs/SendingMail
+  ;; http://www.gnu.org/software/emacs/manual/html_node/smtpmail/index.html#Top
+  (setq message-send-mail-function 'smtpmail-send-it)
+  (setq smtpmail-default-smtp-server "server")
+  (setq smtpmail-smtp-service 25)
+  (setq smtpmail-debug-info t)
+  (setq smtpmail-auth-credentials
+        '(("host" 25 "user" "pass")))
+  (setq user-mail-address "email")
+  (setq user-full-name "name")
+  (setq smtpmail-starttls-credentials '
+        (("server" "25" nil nil)))
+  
+  
+  
+  ;; Read Mail: 
+  ;; http://www.emacswiki.org/emacs/CategoryMail
+  ;; 
+  ;; Entscheidungen::
+  ;;    not VM: looses against Gnus
+  ;;     (http://unlser1.unl.csi.cuny.edu/faqs/gnus-faq/why-gnus.html
+  ;;    not HM: only Linux
+  ;;     '(mail-user-agent (quote gnus-user-agent)) Gnus Imap Support:
+  ;;     http://www.emacswiki.org/cgi-bin/wiki/GnusGmail
+  ;;    not Mew (http://comments.gmane.org/gmane.mail.wanderlust.general/4943 9
+  ;;    Wanderlust:
+  ;;    https://groups.google.com/forum/?fromgroups=#!topic/gnus.ding/5d8bCPA_8LM
+  ;;    mu4e? http://www.djcbsoftware.nl/code/mu/mu4e.html
+  ;; 
+  ;; Wanderlust:
+  ;; http://emacswiki.org/emacs/WanderLust 
+  ;; installiert durch el-get: https://github.com/dimitri/el-get
+  ;; M-x el-get-install
+  ;; http://box.matto.nl/emacsgmail.html
+  ;; TODO? http://emacs-fu.blogspot.de/2009/09/wanderlust-tips-and-tricks.html
+  ;; TODO IMAP IDLE (mit perl?)
+  ;; http://www.gohome.org/wl/doc/wl_14.html#SEC14
+  (autoload 'wl-user-agent-compose "wl-draft" nil t)
+  (when t
+    (if (boundp 'mail-user-agent)
+        (setq mail-user-agent 'wl-user-agent))
+    )
+  (if (fboundp 'define-mail-user-agent)
+      (define-mail-user-agent
+        'wl-user-agent
+        'wl-user-agent-compose
+        'wl-draft-send
+        'wl-draft-kill
+        'mail-send-hook))
+  (setq elmo-imap4-default-server "server")
+  (setq elmo-imap4-default-port 993)
+  (setq elmo-imap4-default-stream-type 'ssl)
+  ;;PASSWORDS: http://www.gohome.org/wl/doc/wl_181.html#SEC181
+  
+  ;; Imap accounts are managed using the .folders and .elmo/finfo and
+  ;; .elmo/folder (http://www.gohome.org/wl/doc/wl_18.html )  
+  ;; http://www.gohome.org/wl/doc/wl_15.html
+  ;; Key bindungs wl-fldmgr: http://www.gohome.org/wl/doc/wl_62.html
+  ;; 
+  
+  
+  (setq wl-from "NAME <EMAIL>"
+  
+        ;;all system folders (draft, trash, spam, etc) are placed in the
+        ;;[Gmail]-folder, except inbox. "%" means it's an IMAP-folder
+        wl-default-folder "%INBOX"
+        wl-draft-folder   "%INBOX.Drafts"
+        wl-trash-folder   "%INBOX.Trash"
+        wl-fcc            "%INBOX.Sent"
+  
+        ;; mark sent messages as read (sent messages get sent back to you and
+        ;; placed in the folder specified by wl-fcc)
+        wl-fcc-force-as-read    t
+  
+        ;;for when auto-compleating foldernames
+        wl-default-spec "%INBOX")
+  
+  (setq wl-prefetch-threshold 20000000)
+  
+  
+  ;; Wanderlust slow: 
+  ;;http://comments.gmane.org/gmane.mail.wanderlust.general.japanese/9145 
+  (setq-default bidi-display-reordering nil
+                bidi-paragraph-direction (quote left-to-right))
+  
+  ;; Wanderlust Sendmail
+  ;; to use smtpmail:
+                                          ;(setq wl-draft-send-mail-function 'jo/wl-draft-send-mail-with-smtpmail)
+  
+  ;; SMTP
+  (setq wl-smtp-connection-type 'ssl
+        wl-smtp-posting-port 465
+        wl-smtp-authenticate-type "plain"
+        wl-smtp-posting-user "user"
+        wl-smtp-posting-server "server"
+        wl-local-domain "domain for local transfer"
+        wl-message-id-domain ".name")
+  
+  (defun jo/wl-draft-send-mail-with-smtpmail ()
+    "Send the prepared message buffer with `smtpmail-send-it'.
+  The function `smtpmail-send-it' uses `smtpmail.el' package."
+    (let ((id (elmo-get-message-id-from-buffer))
+          (to (std11-field-body "to")))
+      (run-hooks 'wl-mail-send-pre-hook)
+      (condition-case err
+          (smtpmail-send-it)
+        (error
+         (wl-draft-write-sendlog 'failed 'jo/smtpmail nil (list to) id)
+         (signal (car err) (cdr err))))
+      (wl-draft-set-sent-message 'mail 'sent)
+      (wl-draft-write-sendlog 'ok 'jo/smtpmail nil (list to) id)))
+  
+  ;;http://comments.gmane.org/gmane.mail.wanderlust.general.japanese/8633
+  
+  (add-to-list 'Info-default-directory-list "/.emacs.d/el-get/wanderlust/doc")
+  
+  ;; GUTE TIPPS: 
+  ;; http://www.emacswiki.org/emacs/WlFaq
+  
+  ;; GNUS
+  (setq gnus-select-method
+        '(nnimap "calmail" ; primary email
+                 (nnimap-address "server")
+                 (nnimap-server-port 143)
+                 (nnimap-authenticator login)
+                 (nnimap-expunge-on-close 'never)
+                 (nnimap-stream starttls)))
+  
+  
+  ;; Search Mail
+  ;; http://www.emacswiki.org/emacs/NotMuch
+  ;; http://emacswiki.org/emacs/GnusMairix
+  
+  
+  
+  ;; Adresses
+  ;; http://www.emacswiki.org/emacs/WanderLust#toc6
+  
+  
+  ;; Notification:
+  ;; http://permalink.gmane.org/gmane.emacs.gnus.general/74542
+  ;; http://search.cpan.org/~plobbes/Mail-IMAPClient-3.32/lib/Mail/IMAPClient.pod#idle
+  
+  
+  ;; Syncing: http://mail-index.netbsd.org/pkgsrc-users/2012/02/11/msg015679.html
+  
+  
+  ;; GNU TLS: http://lists.gnu.org/archive/html/emacs-devel/2011-10/msg00949.html
+  (setq gnus-message-archive-group "INBOX.Sent")
+  (setq gnus-message-archive-method '(nnimap "calmail"))
+  ;; http://lists.gnu.org/archive/html/info-gnus-english/2008-01/msg00053.html
+  ;; http://www.postsubmeta.net/MyConfig/Gnus
+  ;;http://meinews.niuz.biz/imap-t178510.html?s=6e37b7b150019d9b80ea7b015bf2fafa&amp;
+  
+  
+  ;; from http://www.emacswiki.org/emacs/GnusFormatting
+  (setq-default
+   gnus-summary-line-format "%U%R%z %(%&user-date;  %-15,15f  %B%s%)\n"
+   gnus-user-date-format-alist '((t . "%Y-%m-%d %H:%M"))
+   gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
+   gnus-thread-sort-functions '(gnus-thread-sort-by-date)
+   gnus-sum-thread-tree-false-root ""
+   gnus-sum-thread-tree-indent " "
+   gnus-sum-thread-tree-leaf-with-other "├► "
+   gnus-sum-thread-tree-root ""
+   gnus-sum-thread-tree-single-leaf "╰► "
+   gnus-sum-thread-tree-vertical "│")
+  
+  ;; Gnus Writing:
+  (setq mail-user-agent (quote gnus-user-agent)) 
+  
+  (setq gnus-large-newsgroup 10000)
+  
+#+END_SRC
+** Bug?
+#+BEGIN_SRC emacs-lisp :tangle no
+
+(setq gnus-select-method '(nntp "news.gmane.org"))
+
+(setq gnus-summary-line-format
+      (concat
+       "%0{%U%R%z%}"
+       "%3{%}" "%1{%~(pad-right 9)&user-date;%}" "%3{|%}" ;; date
+       "  "
+       "%4{%-20,20f%}"               ;; name
+       "  "
+       "%3{|%}"
+       " "
+       "%1{%B%}"
+       "%s\n"))
+
+(setq gnus-sum-thread-tree-indent " ")
+(setq gnus-sum-thread-tree-root "♽ " )
+(setq gnus-sum-thread-tree-false-root "")
+(setq gnus-sum-thread-tree-single-indent "")
+(setq gnus-sum-thread-tree-vertical        "|")
+(setq gnus-sum-thread-tree-leaf-with-other "├─► ")
+(setq gnus-sum-thread-tree-single-leaf     "╰─► ")
+(setq gnus-thread-sort-functions
+      '(gnus-thread-sort-by-number
+        gnus-thread-sort-by-most-recent-date))
+
+(setq gnus-summary-thread-gathering-function
+      'gnus-gather-threads-by-references)
+
+(setq gnus-user-date-format-alist
+      '(((gnus-seconds-today) . "    %k:%M")
+        (604800 . "%a %k:%M")
+        ((gnus-seconds-month)
+         . "%a %d")
+        ((gnus-seconds-year)
+         . "%b %d")
+        (t . "%b %d '%y")))
+
+#+END_SRC
+* Browsing
+** w3m (html and file system), through ELPA
+w3m-browse-url
+w3m-buffer (render current buffer)
+w3m-view-url-with-external-browser `M'
+** dired (file system, also remote)
+*** Delete Backup and Auto Save files: `#' and `~'
+*** Jump to current file: C-x C-j
+*** Open files: just hit RET!
+* Open External Files
+** others
+https://groups.google.com/forum/?fromgroups=#!topic/gnu.emacs.help/E6covMZec3U
+http://www.emacswiki.org/emacs/SexMode
+gut: http://www.emacswiki.org/emacs/CategoryExternalUtilities
+
+* TODO Undo/Redo
+:PROPERTIES:
+:ID:       69f98682-5040-40f0-a390-bf003376c2e4
+:END:
+** undo-tree (ELPA)
+http://www.emacswiki.org/emacs/UndoTree
+*** Anleitung: http://www.dr-qubit.org/undo-tree/undo-tree.el
+*** Keys
+t  Timestamps
+s  Selection Mode
+C-x u visualize
+d  diff (to arbitrary selected state)
+
+save-state-to-register ?
+undo save history ?
+* Repeating Commands / Command History
+- http://www.emacswiki.org/emacs/RepeatingCommands
+- repeat-complex-command (C-x M-ESC, C-x ESC ESC):: scroll, edit and re-evaluate ( auch keine input events)
+- repeat (C-x z):: repeat last comman, aber keine inpue events
+- list-command-history :: in a buffer
+* Music
+** Mingus
+- mpd frontend
+- el-get
+
+*** Settings                                                         :keys:
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "s-<f9>") 'mingus)
+  (global-set-key (kbd "s-<f10>") 'mingus-prev)
+  (global-set-key (kbd "s-<f11>") 'mingus-toggle)
+  (global-set-key (kbd "s-<f12>") 'mingus-next)
+#+END_SRC
+* Calc 
+http://www.emacswiki.org/emacs/AdvancedDeskCalculator#Calc
+** Embedded Mode
+http://www.gnu.org/software/emacs/manual/html_node/calc/Basic-Embedded-Mode.html#Basic-Embedded-Mode
+*** Write Equation within $ 5 + 6 => 11 $ (e.g. in org-mode) and press C-x * U
+Eventuell muss man davor noch alle Formeln im Buffer Aktivieren mit C-x * A?
+
+Berechnet: $ A := 47 $
+Rest:
+$S := (A - Z) 60 0.7 => 1268.26$
+: $ S / 60.83 => 20.8492520138 $
+* Mal auschecken
+** VimGolf
+http://vimeo.com/29259191
+http://vimgolf.com/
+* TODO Old .emacs
+:PROPERTIES:
+:ID:       03d12f96-1b4d-471a-8db4-60b595a647da
+:END:
+#+BEGIN_SRC emacs-lisp
+  ;; Installation:
+  
+  
+  
+  ;; TODO http://metasandwich.com/2010/07/30/what-can-i-get-for-10-dolla-anything-el/
+  ;; TODO http://monkey.org/~marius/emacs-as-a-tiling-window-manager.html
+  ;; TODO http://conkeror.org/ http://www.nongnu.org/stumpwm/
+  ;; TODO http://mail-index.netbsd.org/pkgsrc-users/2012/02/11/msg015679.html
+  
+ 
+  ;; Don't know wheither this changes anything
+  ;(setq  inhibit-default-init t)
+  
+  
+  (add-to-list 'load-path (expand-file-name "~/"))
+  (add-to-list 'load-path (expand-file-name "~/emacs"))
+  (add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
+  
+  
+#+END_SRC
+** Defuns Function Definitions
+#+BEGIN_SRC emacs-lisp
+  
+  (when t
+    
+    (defun jo/initialize () (interactive)
+      "Load  ~/.emacs.d/init.el"
+      (load-file (expand-file-name "~/.emacs.d/init.el"))
+      )
+    
+  
+    ;; pacakge refresh once
+    (defun package-refresh-contents-once ()
+      (interactive)
+      (whebn (not (boundp 'package-contents-refreshed))
+        (package-refresh-contents)
+        (setq package-contents-refreshed t)
+        )
+      )
+  
+    ;; Mark word
+    ;; alternative zu from http://emacswiki.org/emacs/MarkCommands#toc5 :
+    ;;              (backward-sexp)                 (mark-sexp)
+  
+  
+    ;; from http://emacswiki.org/emacs/ToggleWindowSplit
+    (defun toggle-window-split ()
+      (interactive)
+      (if (= (count-windows) 2)
+          (let* ((this-win-buffer (window-buffer))
+                 (next-win-buffer (window-buffer (next-window)))
+                 (this-win-edges (window-edges (selected-window)))
+                 (next-win-edges (window-edges (next-window)))
+                 (this-win-2nd (not (and (<= (car this-win-edges)
+                                             (car next-win-edges))
+                                         (<= (cadr this-win-edges)
+                                             (cadr next-win-edges)))))
+                 (splitter
+                  (if (= (car this-win-edges)
+                         (car (window-edges (next-window))))
+                      'split-window-horizontally
+                    'split-window-vertically)))
+            (delete-other-windows)
+            (let ((first-win (selected-window)))
+              (funcall splitter)
+              (if this-win-2nd (other-window 1))
+              (set-window-buffer (selected-window) this-win-buffer)
+              (set-window-buffer (next-window) next-win-buffer)
+              (select-window first-win)
+              (if this-win-2nd (other-window 1))))))
+  
+    
+    ;; open  ~/.emacs
+    (defun dotemacs ()
+      (interactive)
+      (find-file-other-window "~/cbi/config/emacs.org")
+      )
+    ;; save and commit ~/.emacs
+    (defun dotemacs-commit ()
+      (interactive)
+      (switch-to-buffer ".emacs")
+      (basic-save-buffer)
+      (shell-command (concat "svn ci -m \"\" " (expand-file-name "~/.emacs")))
+      )
+    
+    ;; from http://geosoft.no/development/emacs.html
+    (defvar LIMIT 1) 
+    (defvar time 0) 
+    (defvar mylist nil) 
+  
+    (defun time-now () 
+      (car (cdr (current-time)))) 
+  
+    (defun bubble-buffer () 
+      (interactive) 
+      (if (or (> (- (time-now) time) LIMIT) (null mylist)) 
+          (progn (setq mylist (copy-alist (buffer-list))) 
+                 (delq (get-buffer " *Minibuf-0*") mylist) 
+                 (delq (get-buffer " *Minibuf-1*") mylist))) 
+      (bury-buffer (car mylist)) 
+      (setq mylist (cdr mylist)) 
+      (setq newtop (car mylist)) 
+      (switch-to-buffer (car mylist)) 
+  
+      (while rest 
+        (bury-buffer (car rest)) 
+        (setq rest (cdr rest))) 
+      (setq time (time-now))) 
+  
+    ;; save current buffer
+    (defun jo/save-current-buffer () 
+      (interactive) 
+      (let ((b (buffer-name (current-buffer))))
+        (save-some-buffers nil (lambda () 
+                                 (string= b (buffer-name (current-buffer)))
+                                 )
+                           ))
+      )
+  
+    ;; Save current buffer and kill it
+    (defun save-and-kill () 
+      (interactive) 
+      (if (buffer-modified-p) (jo/save-current-buffer))
+      (kill-this-buffer)
+      )
+  
+  
+    ;;      Kill buffer with ediff!
+    ;; http://stackoverflow.com/questions/331569/diff-save-or-kill-when-killing-buffers-in-emacs
+    ;;      (defadvice kill-buffer (around my-kill-buffer-check activate)
+    ;;        "Prompt when a buffer is about to be killed."
+    ;;        (let* ((buffer-file-name (buffer-file-name))
+    ;;               backup-file)
+    ;;          ;; see 'backup-buffer
+    ;;          (if (and (buffer-modified-p)
+    ;;                   buffer-file-name
+    ;;                   (file-exists-p buffer-file-name)
+    ;;                   (setq backup-file (car (find-backup-file-name buffer-file-name))))
+    ;;              (let ((answer (read-key (format "Buffer modified %s, (d)iff, (s)ave, (k)ill? " (buffer-name))
+    ;; ;;                                          '("d" "s" "k") nil t
+    ;; )))
+    ;;                (cond ((equal answer 100)
+    ;;                       (set-buffer-modified-p nil)
+    ;;                       (let ((orig-buffer (current-buffer))
+    ;;                             (file-to-diff (if (file-newer-than-file-p buffer-file-name backup-file)
+    ;;                                               buffer-file-name
+    ;;                                             backup-file)))
+    ;;                         (set-buffer (get-buffer-create (format "%s last-revision" (file-name-nondirectory file-to-diff))))
+    ;;                         (buffer-disable-undo)
+    ;;                         (insert-file-contents file-to-diff nil nil nil t)
+    ;;                         (set-buffer-modified-p nil)
+    ;;                         (setq buffer-read-only t)
+    ;;                         (ediff-buffers (current-buffer) orig-buffer)))
+    ;;                      ((equal answer 107)
+    ;;                       (set-buffer-modified-p nil)
+    ;;                       ad-do-it)
+    ;;                      (t
+    ;;                       (save-buffer)
+    ;;                       ad-do-it)))
+    ;;            ad-do-it)))
+  
+    ;;sudo find file from
+    ;;http://stackoverflow.com/questions/95631/open-a-file-with-su-sudo-inside-emacs
+    (defun sudo-find-file (file-name)
+      "Like find file, but opens the file as root."
+      (interactive "FSudo Find File: ")
+      (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+        (find-file tramp-file-name)))
+  
+  
+    (defun my-multi-occur-in-matching-buffers (regexp &optional allbufs)
+      "Show all lines matching REGEXP in all buffers."
+      (interactive (occur-read-primary-args))
+      (multi-occur-in-matching-buffers ".*" regexp))
+  
+  
+    )
+  
+  
+#+END_SRC
+** Internal Stuff
+#+BEGIN_SRC emacs-lisp
+  (when t
+  
+  
+  
+    ;; initial stuff (does not necessariliy show the buffer on startup)
+    (when t
+      (add-hook 'after-init-hook 
+                '(lambda() 
+                   (edit-bookmarks) 
+                   (find-file "~/emacs/org-notes/LinuxAdoption.org")
+                   ))
+      )
+    
+  
+    ;; Initial buffer choice (overwrites command line options
+    (when nil
+      (setq initial-buffer-choice "~/emacs/org-notes/LinuxAdoption.org")
+      )
+  
+    ;; Use ansi-term instead of term!! (http://www.emacswiki.org/emacs/AnsiTerm)
+    ;; Start term-mode in line mode (info "(Emacs)Term Mode")
+    (when t
+      ;;http://stackoverflow.com/questions/6816877/why-is-my-term-mode-hook-not-selecting-line-mode
+      (defadvice ansi-term (after advice-term-line-mode activate)
+        (term-line-mode))
+      ;; this is not working (for whatever reason):
+      ;;              (add-hook 'term-mode-hook '(lambda() (term-line-mode) (message "SEXY")))
+      )
+  
+    ;; BrowseURL Package:
+    ;; enables URL as files (sometimes better to use browse-url-emacs)
+    (url-handler-mode t)
+    ;; geht seit emacs 24 nicht mehr wegen
+    ;; http://debbugs.gnu.org/cgi/bugreport.cgi?bug=10297
+  
+  
+    ;; Enabled Commands
+                                          ;(put 'narrow-to-region 'disabled nil)
+    (put 'scroll-left 'disabled nil)
+  
+    
+    ;; Browse URL
+    (require 'browse-url)
+  
+    ;; ;; Desktop Save Mode (using bookmarks+ instead)
+    ;; ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Emacs-Sessions.html
+    ;; (desktop-save-mode 1)
+    ;; BUG: fails to restore:
+    ;;(setq desktop-file-name-format 'local)        ;paths relative to desktop file 
+  
+    ;; http://stackoverflow.com/questions/4053708/emacs-desktop-doesnt-remember-tramp-connections
+    (setq desktop-files-not-to-save "^$")
+  
+    ;; (setq history-length 250)
+    ;; (add-to-list 'desktop-globals-to-save 'file-name-history)
+    ;; and for history
+  
+  
+    ;; Savehist
+    ;; Save minibuffer history (and other rings)
+    ;; http://emacswiki.org/emacs/SaveHist
+    (savehist-mode 1)
+    (setq savehist-additional-variables '(kill-ring search-ring
+                                                    regexp-search-ring))
+  
+    
+    (setq default-tab-width 2)
+  
+    ;;(setq default-trampmethod "plink")
+    (setq explicit-shell-file-name "/bin/bash") ;needed for shell over
+                                          ;plink (maybe also
+                                          ;tramp?)
+  
+  
+    ;; from http://stackoverflow.com/questions/4191408/making-the-emacs-cursor-into-a-line
+    (setq-default cursor-type 'bar) 
+  
+    ;; from http://www.emacswiki.org/emacs/SmoothScrolling
+    ;; scroll one line at a time (less "jumpy" than defaults)
+    ;; funzt nicht, scheiße!
+    ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+    ;; (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+    ;; (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+    ;; (setq scroll-step 1) ;; keyboard scroll one line at a time
+  
+    
+    ;; from http://dotfiles.org/~hermogeneshebert/.emacs
+    (when (fboundp 'tool-bar-mode)
+      (tool-bar-mode -1)
+      )
+    ;;(menu-bar-mode -1)
+    (when (fboundp 'scroll-bar-mode)
+      (scroll-bar-mode -1)
+      )
+  
+    ;; from http://stackoverflow.com/questions/154097/whats-in-your-emacs
+    (fset 'yes-or-no-p 'y-or-n-p) ; y or n instead of yes or no
+  
+    ;; Show column number
+    (column-number-mode 1)
+  
+    ;; Use ediff instead of diff in `save-some-buffers'
+    (eval-after-load "files"
+      '(progn
+         (setcdr (assq ?d save-some-buffers-action-alist)
+                 `(,(lambda (buf)
+                      (if (null (buffer-file-name buf))
+                          (message "Not applicable: no file")
+                        (add-hook 'ediff-after-quit-hook-internal
+                                  'my-save-some-buffers-with-ediff-quit t)
+                        (save-excursion
+                          (set-buffer buf)
+                          (let ((enable-recursive-minibuffers t))
+                            (ediff-current-file)
+                            (recursive-edit))))
+                      ;; Return nil to ask about BUF again.
+                      nil)
+                   ,(purecopy "view changes in this buffer")))
+  
+         (defun my-save-some-buffers-with-ediff-quit ()
+           "Remove ourselves from the ediff quit hook, and
+  return to the save-some-buffers minibuffer prompt."
+           (remove-hook 'ediff-after-quit-hook-internal
+                        'my-save-some-buffers-with-ediff-quit)
+           (exit-recursive-edit))))
+  
+  
+    ;; Push external clipboard to kill ring on kill
+    (defadvice kill-new (before kill-new-push-xselection-on-kill-ring activate)
+      "Before putting new kill onto the kill-ring, add the clipboard/external selection to the kill ring"
+      (let ((have-paste (and interprogram-paste-function
+                             (funcall interprogram-paste-function))))
+        (when have-paste (push have-paste kill-ring))))
+  
+    
+    ;; HideShow for XML 
+    ;; for other HIdeShow Tricks see http://emacswiki.org/emacs/HideShow
+    (add-to-list 'hs-special-modes-alist
+                 '(nxml-mode
+                   "<[^?/>]*[^/]>"                                ; regexp for start block
+                   "</[^/>]*[^/]>"                                ; regexp for end block
+                   "<!--"                                                                 ; regexp for comment start.
+                   nxml-forward-element
+                   nil))
+  
+  
+    ;; XML hooks
+    (add-hook 'nxml-mode-hook   'hs-minor-mode)
+  
+    )
+  
+  
+#+END_SRC
+** External Libraries & Programs
+#+BEGIN_SRC emacs-lisp
+  ;; installed via ELPA
+  
+  (setq bmkp-last-as-first-bookmark-file nil)
+  (setq bookmark-default-file "~/emacs/org-notes/bookmarks")
+  
+  
+  
+  ;;Speck (for in buffer spelling checks)
+  (when t
+    (require 'speck)
+    )
+  
+  ;;Browser:
+  (setq  browse-url-browser-function (quote browse-url-chromium))
+  
+  ;; w3 Browser (on linux: use emacs-w3m!)
+  (when nil
+    (add-to-list 'load-path "Emacs/w3/lisp"  load-path)
+    (require 'w3-auto)
+    (setq  browse-url-browser-function (quote browse-url-w3))
+  
+    )
+  
+  ;; Highligh Parenthesis (better than show-paren-mode ?)
+  (when nil
+    (require 'highlight-parentheses)
+    ;;from http://www.emacswiki.org/cgi-bin/wiki/HighlightParentheses
+    ;;Enables highlight-parentheses-mode on all buffers:
+    show-paren-mode (define-globalized-minor-mode global-highlight-parentheses-mode
+                      highlight-parentheses-mode (lambda () (highlight-parentheses-mode t)))
+    (global-highlight-parentheses-mode t)
+    ;; http://raebear.net/comp/emacscolors.html
+    (setq hl-paren-background-colors 
+          (loop for i from 0 to 9 by 1 collect 
+                (format "grey%s" (round (- 100 (expt (- 10 i) 1.2))))
+                )
+          )
+    (setq hl-paren-colors nil)
+    )
+  
+  ;;Aspell
+  (when nil
+    ;;replace ispell with external aspell
+    (setq-default ispell-program-name "aspell")  
+    ;; from http://www.emacswiki.org/emacs/InteractiveSpell
+    (setq ispell-extra-args '("--sug-mode=ultra"))
+    
+    )
+  
+  
+  
+  ;; external
+  ;;highlight xml html tags
+  (when t 
+    (require 'hl-tags-mode)
+    (add-hook 'nxml-mode-hook 'hl-tags-mode))
+  
+  
+  
+  
+  
+#+END_SRC
+* Old Notes about Emacs
+:PROPERTIES:
+:tangle:   no
+:END:
+** Interessantes
+- http://ourcomments.org/Emacs/nXhtml/doc/htmlfontify-example.html
+- http://www.emacswiki.org/emacs/SokobanMode
+- http://julien.danjou.info/blog/
+*** TODO Linkd http://www.emacswiki.org/emacs/LinkdMode
+:PROPERTIES:
+:ID:       3935e900-c290-4a54-96c7-a696a7baaedd
+:END:
+*** TODO https://github.com/technomancy/emacs-starter-kit
+:PROPERTIES:
+:ID:       6a8092f8-4046-41e1-b2c0-0ff4a5933654
+:END:
+*** TODO checkout these ELPA packages
+:PROPERTIES:
+:ID:       3709c6f2-06c9-4abc-a538-0a291f98bc23
+:END:
+(ack-and-a-half auctex clojure-mode coffee-mode deft expand-region
+                   gist groovy-mode haml-mode haskell-mode inf-ruby
+                   magit magithub markdown-mode paredit projectile python
+                   sass-mode rainbow-mode scss-mode solarized-theme
+                   volatile-highlights yaml-mode yari zenburn-theme)
+** Marks and positions
+
+*** http://www.gnu.org/software/emacs/manual/html_node/emacs/Position-Registers.html#Position-Registers
+*** http://www.gnu.org/software/emacs/manual/html_node/emacs/Mark-Ring.html
+
+** DONE Workaround for M-<TAB> being eaten by some WMs (Windows, Unity)
+:PROPERTIES:
+:ID:       0f1fd217-839f-4b3f-b576-284a67e7456d
+:END:
+- The command is `pcomplete'
+- and C-i is behaves like TAB!
+** Open buffer/file on Startup
+functioniert nicht so gut (buffer wird zwar geöffnet aber nicht angezeigt)
+von http://stackoverflow.com/questions/2010539/how-can-i-show-the-org-mode-agenda-on-emacs-start-up
+#+BEGIN_SRC emacs-lisp
+(add-hook 'after-init-hook 'function)
+#+END_SRC
+hat vorrang vor Methode 3
+#+BEGIN_SRC emacs-lisp
+(setq initial-buffer-choice "filename")
+#+END_SRC
+Methode 3:
+#+BEGIN_SRC sh
+#execute lisp function
+emacs -f edit-bookmarks
+emacs some-file
+emacs --eval lisp-expr
+#+END_SRC
+
+** Point Movement / Things
+
+*** http://www.emacswiki.org/emacs/thing-edit.el
+*** DONE Delete word: Only delete up to beginning (and not end) of word. Maybe even word navigation should be changed in this manner?
+:PROPERTIES:
+:ID:       ddfb2339-a8e6-4a74-a0d4-9ca26dc0281f
+:END:
+http://stackoverflow.com/a/12909965/578832
+M-< DEL> (backward-kill-word) kills the word before point. It kills everything from point back to where M-b would move to. For instance, if point is after the space in ‘FOO, BAR’, it kills ‘FOO, ’. If you wish to kill just ‘FOO’, and not the comma and the space, use M-b M-d instead of M-.
+[[info:emacs#Words]]
+** TODO Mal durchlesen
+:PROPERTIES:
+:ID:       0c768619-7dde-4c18-8a00-b33a372ad0de
+:END:
+- [ ] [[info:emacs#Two-Column]]
+
+*** packages without TeXInfo:
+http://www.emacswiki.org/BookmarkPlus (indirect via [[info:emacs#Bookmarks]])
+
+** execute-extended-command at point http://lists.gnu.org/archive/html/bug-gnu-emacs/2010-01/msg00423.html
+** Session Managenemt
+
+*** BUG: https://bugs.launchpad.net/ubuntu/+source/emacs23/+bug/599597
+
+** Als Editor
+
+*** TODO in Browsern: https://github.com/dandavison/emacs_chrome
+:PROPERTIES:
+:ID:       408a04b9-a408-4def-b5ee-0250dbaa627f
+:END:
+
+*** TODO von Emails
+:PROPERTIES:
+:ID:       e933d386-817a-451f-a7ba-5a01b035b7f2
+:END:
+** TODO  (setq custom-file "~/src/config/emacs/emacs.el")
+:PROPERTIES:
+:ID:       d4416e85-fde2-4195-ae4f-5de225cdfde8
+:END:
+* TODO TODOS
+:PROPERTIES:
+:ID:       ecee4008-9cad-4b75-84d5-3f2efa3666d6
+:END:
+** TODO load-paths überprüfen
+:PROPERTIES:
+:ID:       3dfa56b0-f2c1-43e6-8dfe-67eda67ef618
+:END:
+* CBI
+** EasyPG File Variables:
+#+BEGIN_SRC emacs-lisp
+;;\\(gpg\\|asc\\)"))
+  (let ((formats "gpg")) 
+    (setq epa-file-name-regexp 
+          (concat "\\(\\." formats "\\|-" formats "\\.sls\\)\\(~\\|\\.~[0-9]+~\\)?\\'"))
+  )
+  (epa-file-name-regexp-update)
+  (defun jo/add-cbi-epa ()
+    "Adds the standard local variables for epa encryption to cbi repo maintainers"
+    (interactive)
+    (dolist (entry
+             '(
+               (epa-file-encrypt-to . nil)
+               (eval . (jo//preprare-epa-for-cbi))
+               ))
+      (add-file-local-variable (car entry) (cdr entry))
+      )
+    )
+  
+  
+  (defun jo//preprare-epa-for-cbi ()
+    ""
+    (interactive)
+    (unless (getenv "CBI") (error "CBI envrionment variable not set"))
+    ;; Add repo maintainers to epa-recipients
+    (set (make-local-variable 'epa-file-encrypt-to)      
+         (cond
+          ((listp epa-file-encrypt-to) epa-file-encrypt-to)
+          ((stringp epa-file-encrypt-to) (list epa-file-encrypt-to)))
+         )  
+    (dolist (key (jo/read-lines (concat (getenv "CBI") "/gpg/repo_maintainers")))
+      (add-to-list 'epa-file-encrypt-to key)
+      )
+    (print epa-file-encrypt-to)
+    
+    ;; Set GPG Home to cbi's
+    (set (make-local-variable 'epg-gpg-home-directory)
+         (concat (getenv "CBI") "/gpg/home")
+         )
+    )
+  
+  (add-to-list 'safe-local-variable-values
+               '(eval jo//preprare-epa-for-cbi))
+  
+#+END_SRC
