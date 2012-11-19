@@ -6,6 +6,8 @@ suparch="[none|arch|ubuntu]"
 rev=$2
 machine=$3
 user=$4
+salt_git=git@github.com:kuerzn/salt.git
+install_path=/usr/share/salt-cbi
 #dd4c4d687fcde705bd061a45927386c936d006b7
 
 #taken from https://github.com/falconindy/arch-install-scripts/blob/master/genfstab.in
@@ -124,6 +126,17 @@ if command -v salt-call; then
 		exit $?
 fi
 
+
+install_salt (){
+(rm $install_path -fr
+		mkdir $install_path -p
+		cd $install_path
+		git clone $salt_git $install_path && \
+				python setup.py install && \
+				checkout_cbi
+)
+}
+
 case $1 in
     arch)
 				(! grep -q  '#BOOTSTRAP' /etc/pacman.d/mirrorlist ) && \
@@ -140,24 +153,15 @@ case $1 in
 								curl -o PKGBUILD https://aur.archlinux.org/packages/pa/packer/PKGBUILD && \
 								makepkg -s --asroot && \
 								pacman --noconfirm -U *.tar.xz && \
-								packer --noconfirm --noedit -S salt-git python-gnupg && \
-								checkout_cbi
+								packer --noconfirm --noedit -S python-m2crypto python2 python2-crypto python2-jinja python2-msgpack python2-psutil python2-pyzmq python2-yaml python-gnupg && install_salt &&	checkout_cbi
 						rm -rf $tp
 				)
         ;;
 		
     ubuntu)
-				install_path=/usr/share/salt-cbi
         apt-get update
 #				python-gnupg
-				apt-get install python  python-jinja2 python-m2crypto python-support python-yaml python-zmq msgpack-python && \
-						(rm $install_path -fr 
-						mkdir $install_path -p
-						cd $install_path
-						git clone git://github.com/kuerzn/salt.git $install_path && \
-								python setup.py install && \
-								checkout_cbi
-				)
+				apt-get install python  python-jinja2 python-m2crypto python-support python-yaml python-zmq msgpack-python && install_salt && checkout_cbi				
         ;;
 		none)
 				echo "Skipping Salt installation"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#http://www.gnupg.de/documentation/manuals/gnupg-devel/Unattended-GPG-key-generation.html
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
 
 number=$1
@@ -19,7 +21,7 @@ _gen(){
     local descr[2]="Private Access on $machine"
     local email=j$number@$machine
 		tm=/tmp/gpg_gen_output`uuidgen`
-gpg --batch --status-fd 1 --s2k-cipher-algo AES256 --s2k-digest-algo SHA512 --default-preference-list "SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed" --gen-key > $tm <<EOF
+gpg --batch --status-fd 1 --s2k-cipher-algo AES256 --s2k-digest-algo SHA512 --default-preference-list "SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed" --gen-key <<EOF | tee $tm
 %no-protection
 Key-Type: RSA
 Key-Length: 4096
