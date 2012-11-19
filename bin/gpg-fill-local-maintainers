@@ -1,0 +1,10 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../gpg
+machine=`salt-call grains.item cbi_machine | sed -nre 's/local: (.*)/\1/p'`
+export GNUPGHOME=$DIR/home
+if [ -n "$machine" ];then
+rm -f $DIR/local_maintainers
+gpg-fpr "<j0@$machine>" > $DIR/local_maintainers
+gpg-fpr "<j1@$machine>" >> $DIR/local_maintainers
+gpg-fpr "<j2@$machine>" >> $DIR/local_maintainers
+fi
