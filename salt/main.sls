@@ -57,5 +57,7 @@ arch_desktop_packages:
 
 
 # TODO
-# 1. gpg-agent pinentry @ scriabin (curses geht nicht in git commit -S)
-# 2. locale @ scriabon
+# - LC_CTYPE (z.B. in pinentry-curses)
+# - locale @ scriabon
+# - GPG_TTY setzen
+# - pinentry selection gpg-agent

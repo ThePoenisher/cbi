@@ -2,14 +2,14 @@
 # Takes on argument: REV of commit to verify
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../gpg
 export GNUPGHOME=$DIR/home 
-gpg2 --import $DIR/public-keys/* > /dev/null 2>&1
+gpg2 --no-permission-warning --import $DIR/public-keys/* > /dev/null 2>&1
 key=""
 rev="$1"
 if [ -z "$rev" ]; then rev="HEAD"; fi
 rev=`git rev-parse $rev`
 key=$(git log --format="format:" -n 1 --show-signature $rev | sed -nr 's/^\[GNUPG:\] VALIDSIG ([0-9A-F]{40}) .*/\1/p')
 echo "The commit $rev is signed by the following maintainer:"
-if [ -n "$key" ]; then gpg2 -k $key; fi
+if [ -n "$key" ]; then gpg2 --no-permission-warning -k $key; fi
 test -n "$key" && ( grep -q $key $DIR/repo_maintainers ||  grep -q $key $DIR/local_maintainers )
 
 # !!!!!!
