@@ -1,4 +1,8 @@
-{% if grains['cbi_machine'] == 'debussy' %}
+
+{% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
+
+arch_desktop: True
+
 zsh_users:
   - root
   - johannes
@@ -10,6 +14,8 @@ users:
 
 
 {% elif grains['cbi_machine'] == 'strauss' %}
+
+arch_desktop: False
 
 include:
  - test-gpg

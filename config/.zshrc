@@ -1,3 +1,9 @@
+alias -g e="emacsclient -nw"
+alias -g ec="emacsclient -c"
+
+# Deactivate Oh-my-zsh
+return 
+
 # Path to your oh-my-zsh configuration.
 ZSH=/usr/share/oh-my-zsh
 
@@ -44,8 +50,6 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
-alias -g e="emacsclient -nw"
-alias -g ec="emacsclient -c"
 
 if [ "$TERM" = "dumb" ]
 then
