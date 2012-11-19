@@ -18,11 +18,18 @@ root:
     - shell: /bin/zsh
 {% endif %}
 
+sudo:
+  group.present:
+    - system: True
 
 {% if pillar['users']['johannes'] is defined %}
 johannes:
   user.present:
     - shell: /bin/zsh
+    - groups:
+      - sudo
+    - require:
+      - group: sudo
 {% endif %}
 
 
@@ -33,6 +40,7 @@ arch_desktop_packages:
     - names:
       - tree
       - emacs
+      - vim
 {% endif %}
 
 ########  config files ########
@@ -40,3 +48,14 @@ arch_desktop_packages:
   file.managed:
     - template: jinja
     - source: salt://etc/gitconfig
+      
+/etc/sudoers:
+  file.managed:
+    - source: salt://etc/sudoers
+    - user: root
+    - mode: 400
+
+
+# TODO
+# 1. gpg-agent pinentry @ scriabin (curses geht nicht in git commit -S)
+# 2. locale @ scriabon

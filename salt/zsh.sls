@@ -11,12 +11,14 @@ grml-zsh-config:
   pkg.installed
 {% else %}
 zsh:
-  pkg.installed:
+  pkg.installed
 
 /etc/zsh/zshrc:
   file.managed:
     - source: http://git.grml.org/f/grml-etc-core/etc/zsh/zshrc
-      
+    - require:
+      - pkg: zsh
+    - source_hash: sha1=0628afb861c19d122d66ff602752156cf8eef7c9
 {% endif %}
 
   

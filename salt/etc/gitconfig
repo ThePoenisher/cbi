@@ -1,0 +1,7 @@
+[user]
+				name = johannes@{{grains['cbi_machine']}}
+				email = johannes@{{grains['cbi_machine']}}
+				signingkey = j1@{{grains['cbi_machine']}}
+[ui]
+				color = true
+				
