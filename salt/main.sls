@@ -28,6 +28,7 @@ johannes:
     - shell: /bin/zsh
     - groups:
       - sudo
+      - audio
     - require:
       - group: sudo
 {% endif %}

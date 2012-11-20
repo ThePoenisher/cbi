@@ -1504,6 +1504,7 @@ by using nxml's indentation rules."
 ** YAML (auch für Salt Stack) (via ELPA)
 #+BEGIN_SRC emacs-lisp 
   (add-to-list 'auto-mode-alist '("\\.\\(sls\\|ya?ml\\)$" . yaml-mode))
+  (add-to-list 'ac-modes 'yaml-mode)
 #+END_SRC
 ** Python
 http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
