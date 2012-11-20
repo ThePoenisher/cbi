@@ -11,6 +11,11 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
   cmd.run:
     - unless: grep -q CBI= /etc/profile
 
+###########  Groups ###############
+sudo:
+  group.present:
+    - system: True
+
 ###########  Users ###############
 {% if pillar['users']['root'] is defined %}
 root:
@@ -18,9 +23,6 @@ root:
     - shell: /bin/zsh
 {% endif %}
 
-sudo:
-  group.present:
-    - system: True
 
 {% if pillar['users']['johannes'] is defined %}
 johannes:
@@ -35,13 +37,16 @@ johannes:
 
 
 ######### Packages ###########
-{% if pillar['arch_desktop'] %}
+{% if grains['os'] == 'Arch' %}
 arch_desktop_packages:
   pkg.installed:
     - names:
       - tree
-      - emacs
       - vim
+      - htop
+{% if pillar['arch_desktop'] %}
+      - emacs
+{% endif %}
 {% endif %}
 
 ########  config files ########
@@ -56,6 +61,10 @@ arch_desktop_packages:
     - user: root
     - mode: 400
 
+########  network ###########
+hostnamectl set-hostname {{ grains['cbi_machine'] }}:
+  cmd.run:
+    - unless: test `hostname` = "{{ grains['cbi_machine'] }}"
 
 # TODO
 # - LC_CTYPE (z.B. in pinentry-curses)

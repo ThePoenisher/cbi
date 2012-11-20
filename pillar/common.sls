@@ -1,7 +1,7 @@
-
 {% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
 
 arch_desktop: True
+desktop_user: johannes
 
 zsh_users:
   - root

@@ -1,0 +1,2 @@
+:set passkeys+=www.google.de:<Up>,<Down>,<Esc>,<Tab>
+:set passkeys+=www.google.com:<Up>,<Down>,<Esc>,<Tab>
