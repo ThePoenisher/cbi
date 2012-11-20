@@ -12,11 +12,15 @@ arch_X11_packages:
       - xmonad
       - xmonad-contrib
       - xmobar
+      - xscreensaver
+      - rxvt-unicode
 # file opener: https://wiki.archlinux.org/index.php/Xdg-open      
       - xdg-utils
       - dmenu
       - gmrun
-      - firefox
+      - dzen2
+      - conky
+      - ttf-bitstream-vera
 {% if grains['cbi_machine'] == 'scriabin' %}
       - xf86-video-intel      
       - xf86-input-synaptics
@@ -39,7 +43,7 @@ i915:
         - user: {{ usr }}
     - force: True
 
-{% set files = ['.xmonad/xmonad.hs','.xmobarrc' ] %}
+{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xdefaults','.conky_bar' ] %}
 {% for file in files %}
 {{ home+'/'+file }}:
   file.symlink:

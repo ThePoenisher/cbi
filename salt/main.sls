@@ -30,6 +30,7 @@ johannes:
     - shell: /bin/zsh
     - groups:
       - sudo
+      - audio
     - require:
       - group: sudo
 {% endif %}
@@ -37,6 +38,12 @@ johannes:
 
 ######### Packages ###########
 {% if grains['os'] == 'Arch' %}
+/etc/pacman.conf:
+  file.append:
+    - text: |
+        [multilib]
+        Include = /etc/pacman.d/mirrorlist
+
 arch_desktop_packages:
   pkg.installed:
     - names:
@@ -45,6 +52,12 @@ arch_desktop_packages:
       - htop
 {% if pillar['arch_desktop'] %}
       - emacs
+      - skype
+      - lib32-libpulse
+{% endif %}
+{% if pillar['has_battery'] %}
+      - powertop
+      - acpi
 {% endif %}
 {% endif %}
 
@@ -70,3 +83,6 @@ hostnamectl set-hostname {{ grains['cbi_machine'] }}:
 # - locale @ scriabon
 # - GPG_TTY setzen
 # - pinentry selection gpg-agent
+# ssh and gpg agents too many!
+# https://wiki.archlinux.org/index.php/Laptop#Power_Management
+# https://wiki.archlinux.org/index.php/Power_saving

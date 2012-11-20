@@ -1,22 +1,63 @@
-Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
-       , borderColor = "black"
-       , border = TopB
-       , bgColor = "black"
-       , fgColor = "grey"
-       , position = Top
-       , lowerOnStart = True
-			 , hideOnStart = False
-       , persistent = False
-       , commands = [ Run Weather "EGPF" ["-t","<station>: <tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000
-                    , Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
-                    , Run Network "eth1" ["-L","0","-H","32","--normal","green","--high","red"] 10
-                    , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
-                    , Run Memory ["-t","Mem: <usedratio>%"] 10
-                    , Run Swap [] 10
-                    , Run Com "uname" ["-s","-r"] "" 36000
-    		    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
-                    ]
-       , sepChar = "%"
-       , alignSep = "}{"
-       , template = "%cpu% | %memory% * %swap% | %eth0% - %eth1% }{ <fc=#ee9a00>%date%</fc>| %EGPF% | %uname%"
-       }
+-- -*- mode: haskell; -*-
+
+-- Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
+-- --Config { font = "xft:Bitstream Vera Sans Mono:size=10:bold:antialias=false"  
+--        , borderColor = "black"
+--        , border = TopB
+--        , bgColor = "black"
+--        , fgColor = "grey"
+--        , position = Top
+-- --       , lowerOnStart = True
+-- 			 , hideOnStart = False
+--        , persistent = False
+--        , commands = [ Run Weather "EDDT" ["-t","<station>: <tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000
+--                     , Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+--                     , Run Network "wlan0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+--                     , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+--                     , Run Memory ["-t","Mem: <usedratio>%"] 10
+--                     , Run Swap [] 10
+--                     , Run Com "uname" ["-s","-r"] "" 36000
+--     		    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+-- --                    , Run StdinReader  
+--                     ]
+--        , sepChar = "%"
+--        , alignSep = "}{"
+--        , template = "%cpu% | %memory% * %swap% | %wlan0% - %eth0% }{ <fc=#ee9a00>%date%</fc>| %EDDT% | %uname%"
+--        }
+
+-- Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
+--        , bgColor = "black"
+--        , fgColor = "grey"
+--        , position = Top
+--        , lowerOnStart = True
+--        , commands = [ Run Weather "EGPF" ["-t","<station>: <tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000
+--                     , Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+--                     , Run Network "eth1" ["-L","0","-H","32","--normal","green","--high","red"] 10
+--                     , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+--                     , Run Memory ["-t","Mem: <usedratio>%"] 10
+--                     , Run Swap [] 10
+--                     , Run Com "uname" ["-s","-r"] "" 36000
+--                     , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+--                     ]
+--        , sepChar = "%"
+--        , alignSep = "}{"
+--        , template = "%cpu% | %memory% * %swap% | %eth0% - %eth1% }{ <fc=#ee9a00>%date%</fc>| %EGPF% | %uname%"
+--        }
+
+Config { font = "xft:Bitstream Vera Sans Mono:size=9:bold:antialias=true"  
+       , bgColor = "#000000"  
+       , fgColor = "grey"  
+       , position = Static { xpos = 0 , ypos = 0, width = 1290, height = 16 }  
+       , commands = [ Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10  
+                    , Run Network "eth0" ["-L","0","-H","70","--normal","green","--high","red"] 10   
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10  
+                    , Run Com "/home/lulz/scripts/cputemp.sh" [] "cpuTemp" 10  
+                    , Run Date "%a %b %_d %l:%M" "date" 10  
+                    , Run Com "/home/lulz/scripts/volume.sh" [] "volume" 10  
+                    , Run StdinReader  
+                    ]  
+       , sepChar = "%"  
+       , alignSep = "}{"  
+       , template = " %StdinReader%}{ <fc=grey>%cpu% </fc> <fc=red>%cpuTemp%</fc>°C<fc=grey> ~ %memory% ~ %eth0%</fc> ~ <fc=#ee9a00>%date%</fc> ~ Vol: <fc=green>%volume%</fc> "  
+       }  
+   

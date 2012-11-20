@@ -1,3 +1,8 @@
+{% if grains['cbi_machine'] in [ 'scriabin' ] %}
+has_battery: True
+{% else %}
+has_battery: False
+{% endif %}
 {% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
 
 arch_desktop: True

@@ -8,4 +8,5 @@ base:
 {% if pillar['arch_desktop'] %}
     - X
     - browsers
+    - sound
 {% endif %}

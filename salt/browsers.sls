@@ -3,6 +3,7 @@ arch_browser_packages:
   pkg.installed:
     - names:
       - firefox
+      - flashplugin
 {% endif %}
 
 {% set usr = pillar['desktop_user'] %}
