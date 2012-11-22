@@ -50,8 +50,6 @@ grains:
   cbi_machine: $machine
   cbi_home: $1/cbi
 
-state_verbose: False
-
 EOF
 }
 
@@ -74,7 +72,8 @@ checkout_cbi(){
     # 3. clone cbi
 		cd $home
 		if [ -e cbi ]; then mv cbi cbi_backup_`uuidgen`; fi
-		sudo -u $user git clone $cbi cbi --config branch.master.merge= && \
+		git clone $cbi cbi --config branch.master.merge= && \
+				chown $user:$user cbi -R && \
 				cd cbi && \
 				git config  --unset branch.master.merge
 				(	sudo -u $user git checkout $rev
@@ -89,7 +88,7 @@ checkout_cbi(){
 "
 				
 		# 4. generate machine key
-				su -c "PATH=\$PATH:$home/cbi/bin; gpg-generate-machine-keys 0 $machine" $user
+				su -c "$home/cbi/bin/gpg-generate-machine-keys 0 $machine" $user
 
 				grain=`salt-call grains.item cbi_machine` 
 				if [ "$grain" = "local: $machine" ];then
@@ -134,7 +133,7 @@ install_salt (){
 		mkdir $install_path -p
 		cd $install_path
 		git clone $salt_git $install_path && \
-				python setup.py install && \
+				python2 setup.py install && \
 				checkout_cbi
 )
 }
@@ -148,16 +147,19 @@ case $1 in
 				tp=/tmp/packer_tmp`uuidgen`
 				
 				#packer
-				rm -rf $tp
-				mkdir $tp && \
-				(
-						cd $tp && \
-								curl -o PKGBUILD https://aur.archlinux.org/packages/pa/packer/PKGBUILD && \
-								makepkg -s --asroot && \
-								pacman --noconfirm -U *.tar.xz && \
-								packer --noconfirm --noedit -S python-m2crypto python2 python2-crypto python2-jinja python2-msgpack python2-psutil python2-pyzmq python2-yaml python-gnupg && install_salt &&	checkout_cbi
+				command -v packer || (
+						echo ASD
 						rm -rf $tp
-				)
+						mkdir $tp && \
+								cd $tp && \
+								curl -o PKGBUILD https://aur.archlinux.org/packages/pa/packer/PKGBUILD && \
+								makepkg -s --asroot --noconfirm && \
+								pacman --noconfirm -U *.tar.xz && \
+								rm -rf $tp
+				) && \
+						pacman -S --noconfirm --needed  python-m2crypto python2 python2-crypto python2-jinja  python2-psutil python2-pyzmq python2-yaml sudo && \
+						packer --noconfirm --noedit -S python2-msgpack python-gnupg && \
+						install_salt &&	checkout_cbi 
         ;;
 		
     ubuntu)

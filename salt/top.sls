@@ -9,4 +9,5 @@ base:
     - X
     - browsers
     - sound
+    - mail
 {% endif %}

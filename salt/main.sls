@@ -31,6 +31,7 @@ johannes:
     - groups:
       - sudo
       - audio
+      - mail
     - require:
       - group: sudo
 {% endif %}
@@ -50,16 +51,52 @@ arch_desktop_packages:
       - tree
       - vim
       - htop
+      - unzip
+      - zip
+      - calc
+      - bc
+      - iperf
+      - pv
+      - ethtool
+      - rsync
 {% if pillar['arch_desktop'] %}
       - emacs
       - skype
       - lib32-libpulse
+      - tk #for gitk
+      - tightvnc
 {% endif %}
 {% if pillar['has_battery'] %}
       - powertop
       - acpi
 {% endif %}
+
+
+
+
+####### config #####
+/etc/dhcpcd.conf:
+  file.append:
+    - text: clientid
+
+/etc/ssh/sshd_config:
+  file.append:
+    - text: X11Forwarding yes
+
+####### services ########
+sshd.service:
+  service.running:
+    - enable: True
+    - watch:
+      - file: /etc/ssh/sshd_config
+
+
+
 {% endif %}
+
+
+
+
 
 ########  config files ########
 /etc/gitconfig:
@@ -73,6 +110,13 @@ arch_desktop_packages:
     - user: root
     - mode: 400
 
+
+######  Symlinked Files  #########
+/etc/vimrc:
+  file.symlink:
+    - target: {{ grains['cbi_home']+'/config/vimrc' }}
+    - force: True
+      
 ########  network ###########
 hostnamectl set-hostname {{ grains['cbi_machine'] }}:
   cmd.run:

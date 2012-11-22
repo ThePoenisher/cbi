@@ -8,7 +8,7 @@ import XMonad.Core
 import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Man
- 
+
 import XMonad.Layout
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
@@ -19,6 +19,9 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.ManageHelpers
  
+import XMonad.Actions.CopyWindow
+import qualified XMonad.StackSet as W
+
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
 import Graphics.X11.Xlib
@@ -35,14 +38,14 @@ main = do
       , manageHook = manageDocks <+> myManageHook <+> manageHook defaultConfig
       , layoutHook = avoidStruts $ myLayoutHook
       , startupHook = setWMName "LG3D"
-      , logHook = dynamicLogWithPP $ myDzenPP myStatusBarPipe
+      , logHook = myDzenPP2 myStatusBarPipe
       , modMask = mod4Mask
       , keys = myKeys
       , workspaces = myWorkspaces
      }   
  
-- Paths
-myBitmapsPath = "/home/johannes/.dzen/"
+-- Paths
+myBitmapsPath = "/home/johannes/cbi/desktop-artwork/icons/"
  
 -- Font
 myFont = "-*-terminus-*-*-*-*-12-*-*-*-*-*-iso8859-*"
@@ -61,6 +64,7 @@ myCurrentWsFgColor = "white"
 myCurrentWsBgColor = "gray40"
 myVisibleWsFgColor = "gray80"
 myVisibleWsBgColor = "gray20"
+myHiddenWsWithCopyBg = "gray30"
 myHiddenWsFgColor = "gray80"
 myHiddenEmptyWsFgColor = "gray50"
 myUrgentWsBgColor = "brown"
@@ -70,13 +74,13 @@ myUrgencyHintFgColor = "white"
 myUrgencyHintBgColor = "brown"
  
 -- dzen general options
-myDzenGenOpts = "-fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '16'"
+myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '16'"
  
 -- Status Bar
 myStatusBar = "dzen2 -w 465 -ta l " ++ myDzenGenOpts
  
 -- Conky Bar
-myConkyBar = "conky -c ~/.conky_bar | dzen2 -x 460 -w 965 " ++ myDzenGenOpts
+myConkyBar = "conky -c ~/.conky_bar | dzen2 -x 460 -w 906 -ta r" ++ myDzenGenOpts
  
 -- Layouts
 myLayoutHook = smartBorders $ (tiled ||| Mirror tiled ||| Full)
@@ -136,7 +140,21 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   ((modm, xK_p), shellPrompt myXPConfig),
   -- Do not leave useless conky, dzen and xxkb after restart
   ((modm, xK_q), spawn "killall conky dzen2 xxkb; xmonad --recompile; xmonad --restart")
+  , ((modm, xK_c     ), kill1) -- @@ remove from current workspace or close if single
    ]
+   ++
+-- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
+-- mod-control-[1..9] @@ Copy client to workspace N
+  [((m .|. modm, k), windows $ f i)
+     | (i, k) <- zip (workspaces conf) [xK_1 ..]
+     , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]]
+
+myDzenPP2 h = do
+    copies <- wsContainingCopies
+    let color ws | ws `elem` copies = wrapBg myHiddenWsWithCopyBg ws
+                 | otherwise = ws
+    dynamicLogWithPP $ (myDzenPP h) {ppHidden = wrapFg myHiddenWsFgColor . color }
+
  
 -- Dzen config
 myDzenPP h = defaultPP {
@@ -145,7 +163,6 @@ myDzenPP h = defaultPP {
   ppWsSep = "",
   ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor,
   ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor,
-  ppHidden = wrapFg myHiddenWsFgColor,
   ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor,
   ppUrgent = wrapBg myUrgentWsBgColor,
   ppTitle = (\x -> " " ++ wrapFg myTitleFgColor x),
@@ -156,9 +173,9 @@ myDzenPP h = defaultPP {
                     "Full" -> wrapBitmap "rob/full.xbm"
                 )
   }
-  where
-    wrapFgBg fgColor bgColor content= wrap ("^fg(" ++ fgColor ++ ")^bg(" ++ bgColor ++ ")") "^fg()^bg()" content
-    wrapFg color content = wrap ("^fg(" ++ color ++ ")") "^fg()" content
-    wrapBg color content = wrap ("^bg(" ++ color ++ ")") "^bg()" content
+
+wrapFgBg fgColor bgColor content= wrap ("^fg(" ++ fgColor ++ ")^bg(" ++ bgColor ++ ")") "^fg()^bg()" content
+wrapFg color = wrap ("^fg(" ++ color ++ ")") "^fg()"
+wrapBg color = wrap ("^bg(" ++ color ++ ")") "^bg()"
 
 wrapBitmap bitmap = "^p(5)^i(" ++ myBitmapsPath ++ bitmap ++ ")^p(5)"

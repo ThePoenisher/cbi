@@ -8,7 +8,12 @@ arch_X11_packages:
       - xterm
       - xorg-xclock
       - xorg-twm
+      - xorg-xdpyinfo
+      - xorg-xev
+      - xcompmgr
+      - transset-df
       - mesa-demos
+      - feh
       - xmonad
       - xmonad-contrib
       - xmobar
@@ -21,6 +26,9 @@ arch_X11_packages:
       - dzen2
       - conky
       - ttf-bitstream-vera
+      - thunderbird
+#gtk switcher
+      - lxappearance
 {% if grains['cbi_machine'] == 'scriabin' %}
       - xf86-video-intel      
       - xf86-input-synaptics
@@ -33,7 +41,12 @@ i915:
 {% endif %}
 {% endif %}
 
-
+######   Other stuff  #######
+export DISPLAY=:0;  feh --bg-fill "$(find -L {{ grains['cbi_home'] }}/desktop-artwork/wallpapers/ |shuf -n1)":
+  cron.present:
+    - user: johannes
+      
+######   Templates  #########
 {% set usr = pillar['desktop_user'] %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
 {{ home }}/.xinitrc:
@@ -42,8 +55,9 @@ i915:
     - require:
         - user: {{ usr }}
     - force: True
-
-{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xdefaults','.conky_bar' ] %}
+      
+######  Symlinked Files  #########
+{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources','.conky_bar' ] %}
 {% for file in files %}
 {{ home+'/'+file }}:
   file.symlink:
