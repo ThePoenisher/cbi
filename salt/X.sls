@@ -59,7 +59,7 @@ export DISPLAY=:0;  feh --bg-fill "$(find -L {{ grains['cbi_home'] }}/desktop-ar
     - force: True
       
 ######  Symlinked Files  #########
-{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources','.conky_bar' ] %}
+{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources' ] %}
 {% for file in files %}
 {{ home+'/'+file }}:
   file.symlink:
