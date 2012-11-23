@@ -52,15 +52,17 @@ do
 		echo -n \
 " ^i($icons/sm4tik/diskette.xbm) $DISKIO"     \
 " $TRAF "                                     \
-"^i($icons/sm4tik/cpu.xbm) $CPU% "`gdbar -s o -fg '#ebac54' <<< $CPU ` \
-" ^i($icons/sm4tik/mem.xbm) $MEM% "`gdbar -s o <<< $MEM` 
+"^fg(#ffffff)^i($icons/sm4tik/cpu.xbm) $CPU% "\
+" ^i($icons/sm4tik/mem.xbm) $MEM% " 
+ #`gdbar -s o -fg '#ebac54' <<< $CPU ` \
+#`gdbar -s o <<< $MEM`
 
 echo -n "  ^fg(#00ffff)^i($icons/sm4tik/spkr_01.xbm)"
 if [[ $VOL =~ off ]]; then
 		echo -n 'M'
 fi
-
-echo " $VOL2% "`gdbar -s o -fg '#00ffff' <<< $VOL2 `\
+#`gdbar -s o -fg '#00ffff' <<< $VOL2 `\
+echo " $VOL2% "\
      "$DATE "
 done
 )
