@@ -32,6 +32,11 @@ johannes:
       - sudo
       - audio
       - mail
+      - optical
+      - network
+      - scanner
+      - power
+      - storage
     - require:
       - group: sudo
 {% endif %}
