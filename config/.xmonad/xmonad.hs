@@ -80,7 +80,7 @@ myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ 
 myStatusBar = "dzen2 -w 465 -ta l " ++ myDzenGenOpts
  
 -- Conky Bar
-myConkyBar = "~/cbi/config/conky_bar.sh | dzen2 -x 460 -w $(($(xrandr -q | sed -n -re 's/.*current ([0-9]+) x.*/\\1/p') - 460 )) -ta r" ++ myDzenGenOpts
+myConkyBar = "conky -c ~/cbi/config/.conky_bar | dzen2 -x 460 -w $(($(xrandr -q | sed -n -re 's/.*current ([0-9]+) x.*/\\1/p') - 460 )) -ta r" ++ myDzenGenOpts
  
 -- Layouts
 myLayoutHook = smartBorders $ (tiled ||| Mirror tiled ||| Full)
