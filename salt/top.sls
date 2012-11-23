@@ -8,6 +8,6 @@ base:
 {% if pillar['arch_desktop'] %}
     - X
     - browsers
-    - sound
+    - media
     - mail
 {% endif %}

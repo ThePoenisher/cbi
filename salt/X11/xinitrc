@@ -44,14 +44,14 @@ fi
 
 ############  my stuff
 
-
+xset -b #disable PC beep
 xset r rate 200  45
 
 eval $(gpg-agent --daemon)
 eval $(ssh-agent --daemon)
 
 
-#ssh-add ~/.ssh/github.johannes@debussy 
+ssh-add ~/.ssh/github.johannes@debussy 
 
 
 setxkbmap -layout "$(setxkbmap -print | awk -F + '/xkb_symbols/ {print $2}')" -option ctrl:nocaps
@@ -63,4 +63,6 @@ xsetroot -cursor_name left_ptr
 #trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 6 --transparent true --alpha 0 --tint 0x000000 --height 16 &
 
 #xmobar &
-exec xmonad
+xmonad 
+ssh-agent -k
+

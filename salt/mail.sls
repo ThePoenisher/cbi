@@ -3,6 +3,8 @@ mail_packages:
     - names:
       - postfix
 
-postfix.service:
+postfix:
   service.running:
     - enable: True
+    - require:
+      - pkg: postfix

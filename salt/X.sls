@@ -12,7 +12,7 @@ arch_X11_packages:
       - xorg-xev
       - xcompmgr
       - transset-df
-      - mesa-demos
+      - mesa-demos #glxgears
       - feh
       - xmonad
       - xmonad-contrib
@@ -38,6 +38,8 @@ i915:
     - require:
       - pkg: xf86-video-intel
   
+{% elif grains['cbi_machine'] == 'debussy' %}
+      - xf86-video-ati
 {% endif %}
 {% endif %}
 

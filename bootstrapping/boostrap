@@ -50,6 +50,8 @@ grains:
   cbi_machine: $machine
   cbi_home: $1/cbi
 
+state_verbose: False
+
 EOF
 }
 

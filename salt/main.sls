@@ -59,18 +59,27 @@ arch_desktop_packages:
       - pv
       - ethtool
       - rsync
+      - iotop
+      - sysstat
 {% if pillar['arch_desktop'] %}
       - emacs
       - skype
       - lib32-libpulse
       - tk #for gitk
       - tightvnc
+      - smartmontools
+      - cdrkit #cds brennen: https://wiki.archlinux.org/index.php/CD_Burning
+      - udevil
+{% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
+      - libreoffice-{{ p }}
+{% endfor %}
 {% endif %}
 {% if pillar['has_battery'] %}
       - powertop
       - acpi
 {% endif %}
-
+    - require:
+      - file: /etc/pacman.conf
 
 
 
@@ -84,12 +93,23 @@ arch_desktop_packages:
     - text: X11Forwarding yes
 
 ####### services ########
-sshd.service:
+{% if grains['cbi_machine'] == 'debussy' %}
+dhcpcd@eth0:
+  service.running:
+    - enable: true
+    - watch:
+      - file: /etc/dhcpcd.conf
+{% endif %}
+
+sshd:
   service.running:
     - enable: True
     - watch:
       - file: /etc/ssh/sshd_config
 
+cronie:
+  service.running:
+    - enable: True
 
 
 {% endif %}

@@ -7,6 +7,8 @@ sound_packages:
       - pulseaudio-alsa
       #GUI
       - pavucontrol
+      - mplayer
+      - vlc
 {% if grains['cbi_machine'] == 'scriabin' %}
 {% endif %}
 {% endif %}
