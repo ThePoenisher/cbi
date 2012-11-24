@@ -1,8 +1,19 @@
 ###########  PATH   ###############
-{% set file="/etc/profile" %}
-{% if grains['os'] == 'Ubuntu' %}
+{% if grains['os'] == 'Arch' %}
+/etc/profile:
+  file.append:
+    - text: |
+        CBI="{{ grains['cbi_home'] }}"
+        export CBI
+        PATH=$PATH:$CBI/bin
+        export PATH
+        eval `keychain --eval -Q github.johannes@debussy`
+    - require:
+      - pkg: keychain
+
+
+{% elif grains['os'] == 'Ubuntu' %}
 {% set file="/etc/environment" %}
-{% endif %}
 if grep -q PATH {{ file }}; then sed -i -re 's/(PATH=".*)"/\1:{{ grains['cbi_home']|replace('/','\/') }}\/bin"/' {{ file }}; else echo PATH=\"{{ grains['cbi_home'] }}/bin\"\; export PATH >> {{ file }}; fi:
   cmd.run:
     - unless: grep -q cbi/bin {{ file }}
@@ -10,7 +21,10 @@ if grep -q PATH {{ file }}; then sed -i -re 's/(PATH=".*)"/\1:{{ grains['cbi_hom
 echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
   cmd.run:
     - unless: grep -q CBI= /etc/profile
+{% endif %}
 
+
+      
 ###########  Groups ###############
 sudo:
   group.present:
@@ -68,6 +82,7 @@ arch_desktop_packages:
       - sysstat
 {% if pillar['arch_desktop'] %}
       - emacs
+      - keychain 
       - skype
       - lib32-libpulse
       - tk #for gitk
@@ -88,14 +103,6 @@ arch_desktop_packages:
 
 
 
-####### config #####
-/etc/dhcpcd.conf:
-  file.append:
-    - text: clientid
-
-/etc/ssh/sshd_config:
-  file.append:
-    - text: X11Forwarding yes
 
 ####### services ########
 {% if grains['cbi_machine'] == 'debussy' %}
@@ -116,13 +123,23 @@ cronie:
   service.running:
     - enable: True
 
+####### config #####
+/etc/dhcpcd.conf:
+  file.append:
+    - text: clientid
+
+/etc/ssh/sshd_config:
+  file.append:
+    - text: X11Forwarding yes
 
 {% endif %}
 
 
-
-
-
+/etc/vconsole.conf:
+  file.append:
+    - text: KEYMAP=de-latin1
+    - makedirs: True
+      
 ########  config files ########
 /etc/gitconfig:
   file.managed:

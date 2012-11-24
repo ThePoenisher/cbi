@@ -53,6 +53,7 @@ eval $(ssh-agent --daemon)
 
 ssh-add ~/.ssh/github.johannes@debussy 
 
+if [ -f ~/.fehbg ]; then source ~/.fehbg; fi
 
 setxkbmap -layout "$(setxkbmap -print | awk -F + '/xkb_symbols/ {print $2}')" -option ctrl:nocaps
 

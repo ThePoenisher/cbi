@@ -91,18 +91,18 @@ myLayoutHook = smartBorders $ (tiled ||| Mirror tiled ||| Full)
     ratio = 1/2
  
 -- Workspaces
-myWorkspaces =
-   [
-      wrapBitmap "sm4tik/arch_10x10.xbm",
-      wrapBitmap "sm4tik/fox.xbm",
-      wrapBitmap "sm4tik/dish.xbm",
-      wrapBitmap "sm4tik/cat.xbm",
-      wrapBitmap "sm4tik/empty.xbm",
-      wrapBitmap "sm4tik/shroom.xbm",
-      wrapBitmap "sm4tik/bug_02.xbm",
-      wrapBitmap "sm4tik/eye_l.xbm",
-      wrapBitmap "sm4tik/eye_r.xbm"
-   ]
+myWorkspaces = map ( pad . show ) [1..9]
+   -- [
+   --    wrapBitmap "sm4tik/arch_10x10.xbm",
+   --    wrapBitmap "sm4tik/fox.xbm",
+   --    wrapBitmap "sm4tik/dish.xbm",
+   --    wrapBitmap "sm4tik/cat.xbm",
+   --    wrapBitmap "sm4tik/empty.xbm",
+   --    wrapBitmap "sm4tik/shroom.xbm",
+   --    wrapBitmap "sm4tik/bug_02.xbm",
+   --    wrapBitmap "sm4tik/eye_l.xbm",
+   --    wrapBitmap "sm4tik/eye_r.xbm"
+   -- ]
  
 -- Urgency hint configuration
 myUrgencyHook = withUrgencyHook dzenUrgencyHook
@@ -138,8 +138,8 @@ myKeys x  = M.union (M.fromList (newKeys x)) (keys defaultConfig x)
 newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   -- Use shellPrompt instead of default dmenu
   ((modm, xK_p), shellPrompt myXPConfig),
-  -- Do not leave useless conky, dzen and xxkb after restart
-  ((modm, xK_q), spawn "killall conky dzen2 xxkb; xmonad --recompile; xmonad --restart")
+  -- Do not leave useless conky and dzen after restart
+  ((modm, xK_q), spawn "killall conky dzen2; xmonad --recompile; xmonad --restart")
   , ((modm, xK_c     ), kill1) -- @@ remove from current workspace or close if single
    ]
    ++

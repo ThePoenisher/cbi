@@ -1,7 +1,10 @@
 alias -g e="emacsclient -nw"
 alias -g ec="emacsclient -c"
 alias -g vi="vim"
-# Deactivate Oh-my-zsh
+
+export GPG_TTY=`tty`
+
+#Deactivate Oh-my-zsh
 return 
 
 # Path to your oh-my-zsh configuration.

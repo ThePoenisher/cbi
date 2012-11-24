@@ -101,3 +101,16 @@ journalctl
 ** Exclusivity
 lockrun
 https://wiki.archlinux.org/index.php/Cron#Anacron
+* TODO Todos
+** volume control hotkeys?
+** gtk theme
+** fonts
+** hintergründe (abhängig von reso)
+** transparency (composition) ohen ruckeln? (treiber)
+** ssh keys + passwds
+** gpg pinenetry und tty?
+** lazy mount /home in order not to do fsk on startup
+** auto loggin
+** grub selection
+** Sodo mit password aber cachen!
+** locale

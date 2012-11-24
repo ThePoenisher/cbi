@@ -25,12 +25,14 @@ ${diskio} \
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_down_03.xbm)${downspeed eth0}\
 ^fg(\#ff3333) \
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_up_03.xbm)${upspeed eth0} \
+$endif\
 ^fg(\#ebac54)${if_existing /proc/net/route wlan0}\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/wifi_01.xbm) \
 ^fg(\#00aa4a)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_down_03.xbm)${downspeed wlan0}\
 ^fg(\#ff3333)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_up_03.xbm)${upspeed wlan0} \
+$endif\
 ^fg(\#00ffff)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/spkr_01.xbm) \
 ${exec amixer get Master | egrep -o "\[[0-9]+%\] \[[^]]+\]" | head -1 | sed -re 's/\[([0-9]+%)\] \[(on|(off))\].*/\1 \3/' } \
