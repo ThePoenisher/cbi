@@ -27,9 +27,11 @@ arch_X11_packages:
       - dzen2
       - conky
       - ttf-bitstream-vera
-#      - qtcurve-kde3 #vor themes?
+      - qtcurve-kde3 #vor themes?
 #gtk switcher
       - lxappearance
+      - gtk-engines
+# AUR:       - gtk-nova-theme
 {% if grains['cbi_machine'] == 'scriabin' %}
       - xf86-video-intel      
       - xf86-input-synaptics

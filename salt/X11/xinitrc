@@ -55,7 +55,7 @@ eval $(ssh-agent --daemon)
 ssh-add ~/.ssh/github.johannes@debussy 
 
 #if [ -f ~/.fehbg ]; then source ~/.fehbg; fi
-feh_bg BG &!
+feh_bg BG &
 
 setxkbmap -layout "$(setxkbmap -print | awk -F + '/xkb_symbols/ {print $2}')" -option ctrl:nocaps
 
@@ -66,6 +66,7 @@ xsetroot -cursor_name left_ptr
 #trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 6 --transparent true --alpha 0 --tint 0x000000 --height 16 &
 
 #xmobar &
+xcompmgr -c &
 xmonad 
 ssh-agent -k
 

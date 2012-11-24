@@ -4,9 +4,6 @@ echo "[`date`] FEH BACKGROUND: $f" >> ~/.xlog
 feh --bg-fill $f
 
 if [ "$1" ]; then
-		while true
-		do
-				sleep 10
-				`${BASH_SOURCE[0]}`
-		done
+		sleep 300
+		exec ${BASH_SOURCE[0]} repeat
 fi

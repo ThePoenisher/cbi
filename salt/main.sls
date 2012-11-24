@@ -74,6 +74,7 @@ arch_desktop_packages:
       - iotop
       - sysstat
       - hwinfo
+      - wget
 {% if pillar['arch_desktop'] %}
       - emacs
       - keychain 
@@ -85,7 +86,10 @@ arch_desktop_packages:
       - cdrkit #cds brennen: https://wiki.archlinux.org/index.php/CD_Burning
       - udevil
       - thunderbird
-      - kdegraphics-okular
+      - zathura-pdf-mupdf
+      - zathura-ps
+      - zathura-djvu
+      - kdegraphics-gwenview
 {% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
       - libreoffice-{{ p }}
 {% endfor %}
