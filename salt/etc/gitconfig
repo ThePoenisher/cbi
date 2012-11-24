@@ -3,5 +3,5 @@
 				email = johannes@{{grains['cbi_machine']}}
 				signingkey = j1@{{grains['cbi_machine']}}
 [color]
-				ui = always
+				ui = true
 				
