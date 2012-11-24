@@ -719,6 +719,7 @@ http://lists.gnu.org/archive/html/emacs-orgmode/2011-01/msg00471.html
 **** TODO Check out: evil-numbers
 *** Vi keys
 http://www.emacswiki.org/emacs/ViKeys
+offiziell: http://vimdoc.sourceforge.net/htmldoc/motion.html
 *** Nützliches Commands:
 - manually setting vim filetype :: :set filetype=xml
 - check yaml :: :se spell.
@@ -1512,6 +1513,11 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 ** Perl
 Sehr gut: http://cpansearch.perl.org/src/YEWENBIN/Emacs-PDE-0.2.16/lisp/doc/QuickStartEn.html
 http://www.emacswiki.org/emacs/PerlDevelopEnvironment
+** Config Files
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'ac-modes 'conf-mode)
+  (add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
+#+END_SRC
 * Autosaving and Backup files
 ** Autosave: http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
 ** Backup

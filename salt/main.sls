@@ -1,17 +1,10 @@
 ###########  PATH   ###############
 {% if grains['os'] == 'Arch' %}
-/etc/profile:
-  file.append:
-    - text: |
-        CBI="{{ grains['cbi_home'] }}"
-        export CBI
-        PATH=$PATH:$CBI/bin
-        export PATH
-        eval `keychain --eval -Q github.johannes@debussy`
-    - require:
-      - pkg: keychain
-
-
+/etc/profile.d/cbi.sh:
+  file.managed:
+    - source: salt://etc/profile
+    - template: jinja
+      
 {% elif grains['os'] == 'Ubuntu' %}
 {% set file="/etc/environment" %}
 if grep -q PATH {{ file }}; then sed -i -re 's/(PATH=".*)"/\1:{{ grains['cbi_home']|replace('/','\/') }}\/bin"/' {{ file }}; else echo PATH=\"{{ grains['cbi_home'] }}/bin\"\; export PATH >> {{ file }}; fi:
@@ -123,6 +116,25 @@ cronie:
   service.running:
     - enable: True
 
+
+{% if pillar['arch_desktop'] %}
+{% for i in [1,2,3,4,5,6] %}
+getty@tty{{ i }}:
+  service.disabled
+
+autologin@tty{{ i }}:
+  service.enabled:
+    - require:
+      - file: autologin
+        
+{% endfor %}
+
+autologin:
+  file.managed:
+    - source: salt://autologin@.service
+    - name: /etc/systemd/system/autologin@.service
+{% endif %}
+
 ####### config #####
 /etc/dhcpcd.conf:
   file.append:
@@ -164,11 +176,3 @@ hostnamectl set-hostname {{ grains['cbi_machine'] }}:
   cmd.run:
     - unless: test `hostname` = "{{ grains['cbi_machine'] }}"
 
-# TODO
-# - LC_CTYPE (z.B. in pinentry-curses)
-# - locale @ scriabon
-# - GPG_TTY setzen
-# - pinentry selection gpg-agent
-# ssh and gpg agents too many!
-# https://wiki.archlinux.org/index.php/Laptop#Power_Management
-# https://wiki.archlinux.org/index.php/Power_saving
