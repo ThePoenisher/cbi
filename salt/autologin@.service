@@ -26,7 +26,7 @@ ConditionPathExists=/dev/tty0
 Environment=TERM=linux
 # the VT is cleared by TTYVTDisallocate
 ExecStart=-/sbin/agetty --noclear -a johannes %I 38400
-Type=idle
+Type=simple
 Restart=always
 RestartSec=0
 UtmpIdentifier=%I

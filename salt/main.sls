@@ -73,6 +73,7 @@ arch_desktop_packages:
       - rsync
       - iotop
       - sysstat
+      - hwinfo
 {% if pillar['arch_desktop'] %}
       - emacs
       - keychain 
@@ -118,7 +119,7 @@ cronie:
 
 
 {% if pillar['arch_desktop'] %}
-{% for i in [1,2,3,4,5,6] %}
+{% for i in [1] %}
 getty@tty{{ i }}:
   service.disabled
 
@@ -126,8 +127,8 @@ autologin@tty{{ i }}:
   service.enabled:
     - require:
       - file: autologin
-        
 {% endfor %}
+
 
 autologin:
   file.managed:
@@ -146,7 +147,16 @@ autologin:
 
 {% endif %}
 
+/etc/default/grub:
+  file.managed:
+    - template: jinja
+    - source: salt://etc/grub
 
+grub-mkconfig -o /boot/grub/grub.cfg:
+  cmd.wait:
+    - watch:
+        - file: /etc/default/grub
+      
 /etc/vconsole.conf:
   file.append:
     - text: KEYMAP=de-latin1
