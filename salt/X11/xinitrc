@@ -51,9 +51,11 @@ eval $(gpg-agent --daemon)
 eval $(ssh-agent --daemon)
 
 
+
 ssh-add ~/.ssh/github.johannes@debussy 
 
-if [ -f ~/.fehbg ]; then source ~/.fehbg; fi
+#if [ -f ~/.fehbg ]; then source ~/.fehbg; fi
+feh_bg
 
 setxkbmap -layout "$(setxkbmap -print | awk -F + '/xkb_symbols/ {print $2}')" -option ctrl:nocaps
 

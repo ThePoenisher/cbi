@@ -1,0 +1,3 @@
+[submodule "desktop-artwork/wallpapers"]
+	path = desktop-artwork/wallpapers
+	url = git@github.com:kuerzn/wallpapers

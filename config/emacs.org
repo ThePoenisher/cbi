@@ -95,6 +95,7 @@ http://www.emacswiki.org/emacs/EmacsClienta
                               haskell-mode
                               pandoc-mode
                               yaml-mode
+                              markdown-mode
                              ;helm
                               )
         )
@@ -1513,6 +1514,11 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 ** Perl
 Sehr gut: http://cpansearch.perl.org/src/YEWENBIN/Emacs-PDE-0.2.16/lisp/doc/QuickStartEn.html
 http://www.emacswiki.org/emacs/PerlDevelopEnvironment
+** Markdown
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'ac-modes 'markdown-mode)
+  (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+#+END_SRC
 ** Config Files
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'ac-modes 'conf-mode)

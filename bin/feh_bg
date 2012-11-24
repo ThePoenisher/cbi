@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ "$1" ]; then
+		while true
+		do
+				sleep 10
+				`${BASH_SOURCE[0]}`
+		done
+else
+		feh --bg-fill "$(find -L $CBI/desktop-artwork/wallpapers/ -name \*.png -o -name \*.jpg |shuf -n1)"
+fi

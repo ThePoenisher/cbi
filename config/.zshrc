@@ -1,6 +1,6 @@
 alias -g en="emacsclient -nw"
-alias -g ec="emacsclient -c"
-alias -g e="emacsclient"
+alias -g ec="emacsclient -c -n"
+alias -g e="emacsclient -n"
 alias -g vi="vim"
 
 export GPG_TTY=`tty`

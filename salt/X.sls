@@ -43,10 +43,6 @@ i915:
 {% endif %}
 {% endif %}
 
-######   Other stuff  #######
-export DISPLAY=:0;  feh --bg-fill "$(find -L {{ grains['cbi_home'] }}/desktop-artwork/wallpapers/ |shuf -n1)":
-  cron.present:
-    - user: johannes
       
 ######   Templates  #########
 {% set usr = pillar['desktop_user'] %}
