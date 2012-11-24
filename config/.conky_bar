@@ -44,4 +44,4 @@ ${endif}\
 ^fg(\#ebac54) \
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/clock.xbm) \
 ^fg(\#FFFFFF) ${time %A %d %m %Y} \
-^fg(\#ebac54) ${time %R} 
+^fg(\#ebac54) ${time %T} 

@@ -84,6 +84,8 @@ arch_desktop_packages:
       - smartmontools
       - cdrkit #cds brennen: https://wiki.archlinux.org/index.php/CD_Burning
       - udevil
+      - thunderbird
+      - kdegraphics-okular
 {% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
       - libreoffice-{{ p }}
 {% endfor %}
@@ -95,10 +97,12 @@ arch_desktop_packages:
     - require:
       - file: /etc/pacman.conf
 
+{% endif %}
 
 
 
 ####### services ########
+{% if grains['os'] == 'Arch' %}
 {% if grains['cbi_machine'] == 'debussy' %}
 dhcpcd@eth0:
   service.running:
@@ -107,16 +111,11 @@ dhcpcd@eth0:
       - file: /etc/dhcpcd.conf
 {% endif %}
 
-sshd:
-  service.running:
-    - enable: True
-    - watch:
-      - file: /etc/ssh/sshd_config
-
 cronie:
   service.running:
     - enable: True
 
+{% endif %}
 
 {% if pillar['arch_desktop'] %}
 {% for i in [1] %}
@@ -137,15 +136,16 @@ autologin:
 {% endif %}
 
 ####### config #####
+{% if grains['os'] == 'Arch' %}
 /etc/dhcpcd.conf:
   file.append:
     - text: clientid
 
-/etc/ssh/sshd_config:
-  file.append:
-    - text: X11Forwarding yes
-
-{% endif %}
+      
+/etc/gitconfig:
+  file.managed:
+    - template: jinja
+    - source: salt://etc/gitconfig
 
 /etc/default/grub:
   file.managed:
@@ -157,24 +157,25 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - watch:
         - file: /etc/default/grub
       
-/etc/vconsole.conf:
-  file.append:
-    - text: KEYMAP=de-latin1
-    - makedirs: True
-      
-########  config files ########
-/etc/gitconfig:
-  file.managed:
-    - template: jinja
-    - source: salt://etc/gitconfig
-      
+
 /etc/sudoers:
   file.managed:
     - source: salt://etc/sudoers
     - user: root
     - mode: 400
 
+## fstab
+sed -i -re '/\/home/s|(/home\W*ext4\W*)|\1noauto,x-systemd.automount,|' /etc/fstab:
+  cmd.run:
+    - unless: grep -q systemd.automount /etc/fstab
 
+{% endif %}
+
+/etc/vconsole.conf:
+  file.append:
+    - text: KEYMAP=de-latin1
+    - makedirs: True
+      
 ######  Symlinked Files  #########
 /etc/vimrc:
   file.symlink:

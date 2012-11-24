@@ -5,6 +5,7 @@ base:
     - main
     - gitolite.main
     - python
+    - ssh
 {% if pillar['arch_desktop'] %}
     - X
     - browsers

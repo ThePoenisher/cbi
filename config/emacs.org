@@ -1519,10 +1519,11 @@ http://www.emacswiki.org/emacs/PerlDevelopEnvironment
   (add-to-list 'ac-modes 'markdown-mode)
   (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 #+END_SRC
-** Config Files
+** Config Files / /etc/files
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'ac-modes 'conf-mode)
   (add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
+  (add-to-list 'auto-mode-alist '("^/etc/"  'conf-mode t)
 #+END_SRC
 * Autosaving and Backup files
 ** Autosave: http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover

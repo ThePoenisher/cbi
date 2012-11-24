@@ -11,6 +11,7 @@ arch_X11_packages:
       - xorg-xdpyinfo
       - xorg-xev
       - xcompmgr
+      - xpdf
       - transset-df
       - mesa-demos #glxgears
       - feh
@@ -26,7 +27,7 @@ arch_X11_packages:
       - dzen2
       - conky
       - ttf-bitstream-vera
-      - thunderbird
+#      - qtcurve-kde3 #vor themes?
 #gtk switcher
       - lxappearance
 {% if grains['cbi_machine'] == 'scriabin' %}

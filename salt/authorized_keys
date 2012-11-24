@@ -1,0 +1,3 @@
+{% for pk in keys %}
+{{ salt['cp.get_file_str']("salt://ssh-keys/"+pk+".pub") }}
+{% endfor %}

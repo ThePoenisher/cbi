@@ -12,6 +12,8 @@ zsh_users:
   - root
   - johannes
 
+ssh_users_with_auth_keys:
+  - johannes
 
 users:  
   root:
@@ -33,7 +35,10 @@ gitolite:
 
 zsh_users:
   - root
-  
+
+
+ssh_users_with_auth_keys:
+  - root
 
 users:  
   root:
