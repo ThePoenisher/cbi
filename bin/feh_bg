@@ -1,11 +1,14 @@
 #!/bin/bash
-# use with "l" to list all files
+# use with "l"      to list all files
 #          "repeat" to run repeating job
-#          "" to just change it to the next image
+#          ""       to just change it to the next image
+#          "d"      to delete last BG image
 
 l=`find -L $CBI/desktop-artwork/wallpapers/ ! -path \*/meh/\* \( -name \*.png -o -name \*.jpg \)`
 if [ "$1" = "l" ]; then
 		echo "$l"
+elif [ "$1" = "d" ]; then
+rm `sed -re s/.*'([^']*)'.*/\1/ /home/johannes/.fehbg`
 else
 		f=$(echo "$l" | shuf -n1)
 		echo "[`date`] FEH BACKGROUND: $f" >> ~/.xlog 2>&1

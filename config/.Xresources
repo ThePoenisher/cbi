@@ -14,3 +14,22 @@ urxvt*shading: 25
 URxvt.foreground: white
 
 
+!Rxvt.font: xft:DejaVu Sans Mono:size=9:autohint=true:antialias=true !:rbga:true
+!Rxvt.font: xft:Bitstream Vera Sans Mono:size=12:autohint=true:antialias=true
+!Rxvt.font: xft:Nimbus Mono L:size=10:autohint=true:antialias=true
+!Rxvt.font: xft:Century Schoolbook L:size=12:autohint=true:antialias=true
+!Rxvt.font: xft:DejaVu Sans Light:size=10:autohint=true:antialias=true
+
+
+!URxvt.font: -misc-fixed-medium-r-normal--10-100-75-75-c-60-iso8859-1
+!URxvt.font: -misc-fixed-medium-r-normal--10-70-100-100-c-60-iso8859-1
+!URxvt.font: -misc-fixed-medium-r-normal--13-100-100-100-c-70-iso8859-1
+!URxvt.font: -misc-fixed-medium-r-semicondensed--12-90-100-100-c-60-iso8859-1
+!URxvt.font: -misc-fixed-medium-r-normal--14-*-*-*-*-*-jisx0208.1983-0
+!URxvt.font: lucidasans-12 -b&h-lucida-medium-r-normal-sans-17-120-100-100-p-96-iso8859-1
+
+URxvt*saveLines: 12000
+URxvt*color4: Cyan
+!RoyalBlue
+URxvt*color12: Cyan
+!RoyalBlue

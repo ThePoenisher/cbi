@@ -5,6 +5,8 @@ alias -g vi="vim"
 
 export GPG_TTY=`tty`
 
+
+
 #Deactivate Oh-my-zsh
 return 
 

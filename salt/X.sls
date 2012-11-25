@@ -25,7 +25,6 @@ arch_X11_packages:
       - gmrun
       - dzen2
       - conky
-      - ttf-bitstream-vera
       - qtcurve-kde3 #vor themes?
 #gtk switcher
       - lxappearance
@@ -77,3 +76,19 @@ i915:
     - makedirs: True
 {% endfor %}
 
+
+########### fonts #############
+fonts:
+  pkg.installed:
+    - names:
+        - ttf-bitstream-vera
+        - ttf-liberation
+        - ttf-dejavu
+
+
+# ugly fonts in firefox on github.com:
+# https://wiki.archlinux.org/index.php/Firefox#Firefox_uses_ugly_fonts_for_its_interface
+/etc/fonts/conf.d/70-no-bitmaps.conf:
+  file.symlink:
+    - target: /etc/fonts/conf.avail/70-no-bitmaps.conf
+    - force: True
