@@ -11,7 +11,7 @@ else
 		echo "[`date`] FEH BACKGROUND: $f" >> ~/.xlog 2>&1
 		feh --bg-fill $f >> ~/.xlog 2>&1
 		
-		if [ "$1"="repeat" ]; then
+		if [ "$1" ]; then
 				sleep 300
 				exec ${BASH_SOURCE[0]} repeat
 		fi

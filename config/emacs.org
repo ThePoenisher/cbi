@@ -1523,7 +1523,11 @@ http://www.emacswiki.org/emacs/PerlDevelopEnvironment
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'ac-modes 'conf-mode)
   (add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
-  (add-to-list 'auto-mode-alist '("^/etc/"  'conf-mode t)
+  (add-to-list 'auto-mode-alist '("^/etc/"  'conf-mode t))
+#+END_SRC
+** Haskell
+#+BEGIN_SRC emacs-lisp
+      (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 #+END_SRC
 * Autosaving and Backup files
 ** Autosave: http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover

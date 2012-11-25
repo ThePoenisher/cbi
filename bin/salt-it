@@ -3,5 +3,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../
 
 (cd $DIR && 
 git-verify-commit-signature HEAD &&
-sudo salt-call state.highstate 
+if [ "$1" ]; then
+sudo salt-call state.sls "$1"
+else
+sudo salt-call state.highstate
+fi		
 )

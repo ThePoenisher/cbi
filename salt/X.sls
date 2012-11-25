@@ -8,8 +8,7 @@ arch_X11_packages:
       - xterm
       - xorg-xclock
       - xorg-twm
-      - xorg-xdpyinfo
-      - xorg-xev
+      - xorg-utils
       - xcompmgr
       - xpdf
       - transset-df
@@ -56,6 +55,13 @@ i915:
     - require:
         - user: {{ usr }}
     - force: True
+
+
+{% if grains['cbi_machine'] == 'debussy' %}
+/etc/X11/xorg.conf.d/20-radoen.conf:
+  file.managed:
+    - source: salt://X11/radeon.conf
+{% endif %}
       
 ######  Symlinked Files  #########
 {% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources' ] %}
@@ -70,3 +76,4 @@ i915:
     - force: True
     - makedirs: True
 {% endfor %}
+

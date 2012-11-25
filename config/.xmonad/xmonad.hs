@@ -115,10 +115,13 @@ myUrgencyHook = withUrgencyHook dzenUrgencyHook
          ]
     }
  
-myManageHook = composeAll
+myManageHook = composeAll $
    [ className =? "Gimp" --> doFloat
    , isFullscreen --> doFullFloat
    ]
+   ++
+   [ title =? c  --> doFloat | c <- myFloatsT ]
+   where myFloatsT = ["Ediff"]
  
 -- Prompt config
 myXPConfig = defaultXPConfig {

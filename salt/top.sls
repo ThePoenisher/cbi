@@ -5,10 +5,11 @@ base:
     - main
     - gitolite.main
     - python
+    - packages
     - ssh
 {% if pillar['arch_desktop'] %}
     - X
-    - browsers
+    - apps
     - media
     - mail
 {% endif %}
