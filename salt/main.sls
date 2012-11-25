@@ -90,6 +90,7 @@ arch_desktop_packages:
       - zathura-ps
       - zathura-djvu
       - kdegraphics-gwenview
+      - oxygen-icons
 {% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
       - libreoffice-{{ p }}
 {% endfor %}
@@ -173,13 +174,30 @@ sed -i -re '/\/home/s|(/home\W*ext4\W*)|\1noauto,x-systemd.automount,|' /etc/fst
   cmd.run:
     - unless: grep -q systemd.automount /etc/fstab
 
-{% endif %}
+    
+{% endif %} #ARCH OS
 
 /etc/vconsole.conf:
   file.append:
     - text: KEYMAP=de-latin1
     - makedirs: True
       
+### locale ####
+/etc/locale.gen:
+  file.managed:
+    - source: salt://etc/locale.gen
+
+locale-gen:
+  cmd.wait:
+    - watch:
+      - file: /etc/locale.gen
+
+/etc/locale.conf:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/locale.conf
+    - force: True
+
+
 ######  Symlinked Files  #########
 /etc/vimrc:
   file.symlink:

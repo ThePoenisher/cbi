@@ -1,9 +1,18 @@
 #!/bin/bash
-f="$(find -L $CBI/desktop-artwork/wallpapers/ -name \*.png -o -name \*.jpg |shuf -n1)"
-echo "[`date`] FEH BACKGROUND: $f" >> ~/.xlog
-feh --bg-fill $f
+# use with "l" to list all files
+#          "repeat" to run repeating job
+#          "" to just change it to the next image
 
-if [ "$1" ]; then
-		sleep 300
-		exec ${BASH_SOURCE[0]} repeat
+l=`find -L $CBI/desktop-artwork/wallpapers/ ! -path \*/meh/\* \( -name \*.png -o -name \*.jpg \)`
+if [ "$1" = "l" ]; then
+		echo "$l"
+else
+		f=$(echo "$l" | shuf -n1)
+		echo "[`date`] FEH BACKGROUND: $f" >> ~/.xlog 2>&1
+		feh --bg-fill $f >> ~/.xlog 2>&1
+		
+		if [ "$1"="repeat" ]; then
+				sleep 300
+				exec ${BASH_SOURCE[0]} repeat
+		fi
 fi
