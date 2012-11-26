@@ -8,7 +8,7 @@ l=`find -L $CBI/desktop-artwork/wallpapers/ ! -path \*/meh/\* \( -name \*.png -o
 if [ "$1" = "l" ]; then
 		echo "$l"
 elif [ "$1" = "d" ]; then
-rm `sed -re s/.*'([^']*)'.*/\1/ /home/johannes/.fehbg`
+rm `sed -re "s/.*'([^']*)'.*/\1/" /home/johannes/.fehbg`
 else
 		f=$(echo "$l" | shuf -n1)
 		echo "[`date`] FEH BACKGROUND: $f" >> ~/.xlog 2>&1
