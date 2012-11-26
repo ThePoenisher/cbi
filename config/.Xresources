@@ -2,13 +2,13 @@
 
 
 ! Real Transparency
-! URxvt.depth: 32
-! URxvt*background: rgba:0000/0000/0000/bbbb
+URxvt.depth: 32
+URxvt*background: rgba:0000/0000/0000/bbbb
 
 ! Fake Transparency
-urxvt*transparent: true
+! urxvt*transparent: true
 ! URxvt*.shading: 0 to 99 darkens, 101 to 200 lightens
-urxvt*shading: 25
+!urxvt*shading: 25
 
 
 URxvt.foreground: white

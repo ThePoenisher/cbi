@@ -4,4 +4,3 @@ export CBI
 PATH=$PATH:$CBI/bin
 export PATH
 eval `keychain --eval -Q github.johannes@debussy`
-[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && ( xinit 2>&1 | tee ~/.xlog )

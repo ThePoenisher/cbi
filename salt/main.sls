@@ -1,8 +1,8 @@
-###########  PATH   ###############
+###########  Profile   ###############
 {% if grains['os'] == 'Arch' %}
 /etc/profile.d/cbi.sh:
   file.managed:
-    - source: salt://etc/profile
+    - source: salt://etc/profile.d-cbi.sh
     - template: jinja
       
 {% elif grains['os'] == 'Ubuntu' %}

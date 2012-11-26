@@ -54,11 +54,23 @@ i915:
     - require:
         - user: {{ usr }}
     - force: True
+    - user: {{ usr }}
+    - group: {{ usr }}
 
-
+#autostart:
+x11Autostart:
+  file.symlink:
+    - names: 
+      - {{ home }}/.profile
+      - {{ home }}/.zlogin
+    - target: {{ grains['cbi_home'] }}/config/.profile
+    - user: {{ usr }}
+    - group: {{ usr }}
+      
 {% if grains['cbi_machine'] == 'debussy' %}
 /etc/X11/xorg.conf.d/20-radoen.conf:
-  file.managed:
+  #file.managed:
+  file.absent:
     - source: salt://X11/radeon.conf
 {% endif %}
       

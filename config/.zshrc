@@ -1,14 +1,37 @@
-alias -g en="emacsclient -nw"
+#  /bin/zsh
+# A script to make using 256 colors in zsh less painful.
+# P.C. Shyamshankar <sykora@lucentbeing.com>
+
+typeset -Ag FX FG BG
+
+FX=(
+    reset "[00m"
+    bold "[01m" no-bold "[22m"
+    italic "[03m" no-italic "[23m"
+    underline "[04m" no-underline "[24m"
+    blink "[05m" no-blink "[25m"
+    reverse "[07m" no-reverse "[27m"
+)
+
+for color in {000..255}; do
+    FG[$color]="[38;5;${color}m"
+    BG[$color]="[48;5;${color}m"
+done
+
+
+
+#HOSTCOLOR[debussy]=$FX[bold]$BG[010]
+alias -g en="emacsclient -c  -nw"
 alias -g ec="emacsclient -c -n"
 alias -g e="emacsclient -n"
 alias -g vi="vim"
 
 export GPG_TTY=`tty`
 
-
+return
 
 #Deactivate Oh-my-zsh
-return 
+#return 
 
 # Path to your oh-my-zsh configuration.
 ZSH=/usr/share/oh-my-zsh
@@ -17,9 +40,11 @@ ZSH=/usr/share/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="alanpeabody" #robbyrussell"
-#alanpeabody
-#darkblood
+ZSH_THEME="jo"
+#ZSH_THEME="random"
+#ZSH_THEME="robbyrussell"
+#ZSH_THEME="alanpeabody"
+#ZSH_THEME="darkblood"
 #dpoggi
 # juanghurtade (kein return code)
 #jreese
@@ -66,4 +91,7 @@ unsetopt prompt_subst
 # unfunction preexec # working for me
 PS1='$ '
 fi
+
+
+
 

@@ -5,6 +5,7 @@ arch_browser_packages:
       - firefox
       - flashplugin
       - thunderbird
+      - chromium
 {% endif %}
 
 {% set usr = pillar['desktop_user'] %}
