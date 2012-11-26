@@ -15,7 +15,7 @@ URxvt.foreground: white
 
 
 !Rxvt.font: xft:DejaVu Sans Mono:size=9:autohint=true:antialias=true !:rbga:true
-!Rxvt.font: xft:Bitstream Vera Sans Mono:size=12:autohint=true:antialias=true
+Rxvt.font: xft:Bitstream Vera Sans Mono:size=12:autohint=true:antialias=true
 !Rxvt.font: xft:Nimbus Mono L:size=10:autohint=true:antialias=true
 !Rxvt.font: xft:Century Schoolbook L:size=12:autohint=true:antialias=true
 !Rxvt.font: xft:DejaVu Sans Light:size=10:autohint=true:antialias=true
@@ -29,7 +29,53 @@ URxvt.foreground: white
 !URxvt.font: lucidasans-12 -b&h-lucida-medium-r-normal-sans-17-120-100-100-p-96-iso8859-1
 
 URxvt*saveLines: 12000
-URxvt*color4: Cyan
+URxvt*color4: #0099FF
 !RoyalBlue
-URxvt*color12: Cyan
+URxvt*color12: #0099FF
 !RoyalBlue
+
+! ! Default colors: see man urxvt
+! ! black
+! URxvt*color0  : #2E3436
+! URxvt*color8  : #555753
+! ! red
+! URxvt*color1  : #CC0000
+! URxvt*color9  : #EF2929
+! ! green
+! URxvt*color2  : #4E9A06
+! URxvt*color10 : #8AE234
+! ! yellow
+! URxvt*color3  : #C4A000
+! URxvt*color11 : #FCE94F
+! ! blue
+! URxvt*color4  : #3465A4
+! URxvt*color12 : #729FCF
+! ! magenta
+! URxvt*color5  : #75507B
+! URxvt*color13 : #AD7FA8
+! ! cyan
+! URxvt*color6  : #06989A
+! URxvt*color14 : #34E2E2
+! ! white
+! URxvt*color7  : #D3D7CF
+! URxvt*color15 : #EEEEEC
+
+
+! ! color0 	(black) 	= Black
+! ! color1 	(red) 	        = Red3
+! ! color2 	(green) 	= Green3
+! ! color3 	(yellow) 	= Yellow3
+! ! color4 	(blue) 	        = Blue3
+! ! color5 	(magenta) 	= Magenta3
+! ! color6 	(cyan) 	        = Cyan3
+! ! color7 	(white) 	= AntiqueWhite
+! ! color8 	(bright black) 	= Grey25
+! ! color9 	(bright red) 	= Red
+! ! color10 (bright green) 	= Green
+! ! color11 (bright yellow) = Yellow
+! ! color12 (bright blue) 	= Blue
+! ! color13 (bright magenta)= Magenta
+! ! color14 (bright cyan) 	= Cyan
+! ! color15 (bright white) 	= White
+! ! foreground 		= Black
+! ! background 		= White

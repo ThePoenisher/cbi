@@ -1,26 +1,3 @@
-#  /bin/zsh
-# A script to make using 256 colors in zsh less painful.
-# P.C. Shyamshankar <sykora@lucentbeing.com>
-
-typeset -Ag FX FG BG
-
-FX=(
-    reset "[00m"
-    bold "[01m" no-bold "[22m"
-    italic "[03m" no-italic "[23m"
-    underline "[04m" no-underline "[24m"
-    blink "[05m" no-blink "[25m"
-    reverse "[07m" no-reverse "[27m"
-)
-
-for color in {000..255}; do
-    FG[$color]="[38;5;${color}m"
-    BG[$color]="[48;5;${color}m"
-done
-
-
-
-#HOSTCOLOR[debussy]=$FX[bold]$BG[010]
 alias -g en="emacsclient -c  -nw"
 alias -g ec="emacsclient -c -n"
 alias -g e="emacsclient -n"
@@ -28,10 +5,6 @@ alias -g vi="vim"
 
 export GPG_TTY=`tty`
 
-return
-
-#Deactivate Oh-my-zsh
-#return 
 
 # Path to your oh-my-zsh configuration.
 ZSH=/usr/share/oh-my-zsh
@@ -40,14 +13,13 @@ ZSH=/usr/share/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="jo"
 #ZSH_THEME="random"
 #ZSH_THEME="robbyrussell"
-#ZSH_THEME="alanpeabody"
+ZSH_THEME="alanpeabody"
 #ZSH_THEME="darkblood"
 #dpoggi
-# juanghurtade (kein return code)
-#jreese
+#ZSH_THEME=jreese
+#ZSH_THEME=juanhurtade#(kein return code)
 #bira
 #clean
 # blinks (krc)a
@@ -79,19 +51,37 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-# Customize to your needs...
 
-
-if [ "$TERM" = "dumb" ]
-then
-unsetopt zle
-unsetopt prompt_cr
-unsetopt prompt_subst
-# unfunction precmd # these two are not
-# unfunction preexec # working for me
-PS1='$ '
+if (( EUID != 0 )); then
+		local ucol='$fg[blue]'
+else
+		local ucol='$fd[red]'
 fi
 
+local user='%{'$ucol'%}%n%{$reset_color%}'
+local pwd='%{$fg[blue]%}%~%{$reset_color%}'
+local git_branch='$(git_prompt_status)%{$reset_color%}$(git_prompt_info)%{$reset_color%}'
+
+ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[green]%}[A]"
+ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[blue]%}[M]"
+ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%}[D]"
+ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[magenta]%}[R]"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[yellow]%}[MERGE]"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%}[T]"
 
 
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[green]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY=""
+ZSH_THEME_GIT_PROMPT_CLEAN=""
 
+# HOSTCOLORS:
+
+declare -A hostcolor
+hostcolor[debussy]=$fg_bold[red]
+hostcolor[scriabin]=$fg[green]
+
+PROMPT="%(?..%{$fg[red]%}%?%1v )${user}${NO_COLOUR}@${hostcolor[`hostname`]}%m${NO_COLOUR} %40<...<%B%~%b%<<$ "
+RPROMPT="${git_branch}"
+
+DONTSETRPROMPT=1
