@@ -107,7 +107,7 @@ fonts:
         - xorg-xfontsel
         - gtk2fontsel
         - terminus-font
-        - ttf-ms-fonts
+#        - ttf-ms-fonts (aur)
 #        - monaco  sehr hässlich, z.B. in Firefox
 
 /etc/fonts/conf.d/70-yes-bitmaps.conf:

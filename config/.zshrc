@@ -59,7 +59,7 @@ source $ZSH/oh-my-zsh.sh
 if (( EUID != 0 )); then
 		local ucol='$fg[blue]'
 else
-		local ucol='$fd[red]'
+		local ucol='$fg[red]'
 fi
 
 local user='%{'$ucol'%}%n%{$reset_color%}'
