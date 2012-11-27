@@ -6,6 +6,7 @@ arch_browser_packages:
       - flashplugin
       - thunderbird
       - chromium
+      - gnome-terminal
 {% endif %}
 
 {% set usr = pillar['desktop_user'] %}
@@ -40,4 +41,13 @@ arch_browser_packages:
         - user: {{ usr }}
     - force: True
     - makedirs: True
-  
+
+{{ home }}/.gconf:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/.gconf
+    - user: {{ usr }}
+    - group: {{ usr }}
+    - require:
+        - user: {{ usr }}
+    - force: True
+    - makedirs: True

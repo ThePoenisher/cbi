@@ -67,7 +67,7 @@ ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[blue]%}[M]"
 ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%}[D]"
 ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[magenta]%}[R]"
 ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[yellow]%}[MERGE]"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%}[T]"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%}[U]"
 
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[green]%}"
@@ -78,10 +78,10 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 # HOSTCOLORS:
 
 declare -A hostcolor
-hostcolor[debussy]=$fg_bold[red]
+hostcolor[debussy]=$fg[yellow]
 hostcolor[scriabin]=$fg[green]
 
-PROMPT="%(?..%{$fg[red]%}%?%1v )${user}${NO_COLOUR}@${hostcolor[`hostname`]}%m${NO_COLOUR} %40<...<%B%~%b%<<$ "
+PROMPT="%(?..%{$fg[red]%}%?%1v )${user}${NO_COLOUR}@%{${hostcolor[`hostname`]}%}%m${NO_COLOUR} %40<...<%B%~%b%<<$ "
 RPROMPT="${git_branch}"
 
 DONTSETRPROMPT=1

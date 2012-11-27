@@ -32,7 +32,7 @@ main = do
    myStatusBarPipe <- spawnPipe myStatusBar
    conkyBar <- spawnPipe myConkyBar
    xmonad $ myUrgencyHook $ defaultConfig
-      { terminal = "urxvt"
+      { terminal = "gnome-terminal"
       , normalBorderColor  = myInactiveBorderColor
       , focusedBorderColor = myActiveBorderColor
       , manageHook = manageDocks <+> myManageHook <+> manageHook defaultConfig

@@ -73,6 +73,12 @@ http://www.emacswiki.org/emacs/EmacsClienta
 - C-x # :: close externally opened buffer and kill client
 - C-x 5 0 :: close newly created frame (only after e.g. -c or -nw)
 
+* Fonts
+#+BEGIN_SRC emacs-lisp 
+  ;;(set-frame-font "-Misc-Fixed-normal-normal-normal-*-13-*-*-*-c-70-iso10646-1")
+  (set-frame-font "Droid Sans Mono-10")
+  
+#+END_SRC
 * Package Managers
 ** DONE ELPA / packages.el 
 :LOGBOOK:
@@ -371,7 +377,7 @@ default value. " http://www.emacswiki.org/emacs/ReplacePlus
   (eval-after-load "grep"
     '(grep-apply-setting
       'grep-find-command
-      "find . ! -name \"*~\" ! -name \"#*#\" ! -path \"*/.svn/*\" -type f -print0 | xargs -0 -e grep -nH -e " )
+      "find . ! -name \"*~\" ! -name \"#*#\" ! -path \"*/.svn/*\" ! -path \"*/.git/*\" -type f -print0 | xargs -0 -e grep -nH -e " )
     )
 #+END_SRC
 ***** TODO use parallel / xargs -P ?

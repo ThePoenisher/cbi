@@ -13,21 +13,27 @@ URxvt*background: rgba:0000/0000/0000/bbbb
 
 URxvt.foreground: white
 
+!-- Xft settings -- !
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+! Xft.hinting:    true
+! Xft.hintstyle:  hintslight
 
-!Rxvt.font: xft:DejaVu Sans Mono:size=9:autohint=true:antialias=true !:rbga:true
-Rxvt.font: xft:Bitstream Vera Sans Mono:size=12:autohint=true:antialias=true
-!Rxvt.font: xft:Nimbus Mono L:size=10:autohint=true:antialias=true
-!Rxvt.font: xft:Century Schoolbook L:size=12:autohint=true:antialias=true
-!Rxvt.font: xft:DejaVu Sans Light:size=10:autohint=true:antialias=true
+!-- xfc Fonts -- !
+!URxvt.font:xft:Droid Sans Mono:style=Regular:size=11
+!xft:Bitstream Vera Sans Mono:style=Roman:size=1
+!xft:Liberation Mono:style=Regular:size=10!
+!URxvt.font: xft:Ubuntu Mono:style=Regular:size=10:antialias=true
+!URxvt.font: xft:DejaVu Sans Mono:style=Book:size=10
+!URxvt.font: xft:Monaco:style=regular:size=10
 
+URxvt.font: -*-terminus-*-*-*-*-14*-*-*-*-iso8859-*
+!URxvt.font: -*-fixed-*-*-*-*-14-*-*-*-iso8859-*
+!URxvt.font: -*-terminus-*-*-*-*-14*-*-*-*-iso8859-*
 
-!URxvt.font: -misc-fixed-medium-r-normal--10-100-75-75-c-60-iso8859-1
-!URxvt.font: -misc-fixed-medium-r-normal--10-70-100-100-c-60-iso8859-1
-!URxvt.font: -misc-fixed-medium-r-normal--13-100-100-100-c-70-iso8859-1
-!URxvt.font: -misc-fixed-medium-r-semicondensed--12-90-100-100-c-60-iso8859-1
-!URxvt.font: -misc-fixed-medium-r-normal--14-*-*-*-*-*-jisx0208.1983-0
-!URxvt.font: lucidasans-12 -b&h-lucida-medium-r-normal-sans-17-120-100-100-p-96-iso8859-1
-
+!debussy
+!URxvt*letterSpace: -3
 URxvt*saveLines: 12000
 URxvt*color4: #0099FF
 !RoyalBlue

@@ -10,6 +10,7 @@ arch_X11_packages:
       - xorg-twm
       - xorg-utils
       - xcompmgr
+      - xclip
       - xpdf
       - transset-df
       - mesa-demos #glxgears
@@ -73,7 +74,12 @@ x11Autostart:
   file.absent:
     - source: salt://X11/radeon.conf
 {% endif %}
-      
+
+# activates terminus font
+/etc/X11/xorg.conf:
+  file.managed:
+    - source: salt://X11/xorg.conf
+
 ######  Symlinked Files  #########
 {% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources' ] %}
 {% for file in files %}
@@ -96,11 +102,14 @@ fonts:
         - ttf-bitstream-vera
         - ttf-liberation
         - ttf-dejavu
+        - ttf-droid
+        - ttf-ubuntu-font-family
+        - xorg-xfontsel
+        - gtk2fontsel
+        - terminus-font
 
 
-# ugly fonts in firefox on github.com:
-# https://wiki.archlinux.org/index.php/Firefox#Firefox_uses_ugly_fonts_for_its_interface
-/etc/fonts/conf.d/70-no-bitmaps.conf:
+/etc/fonts/conf.d/70-yes-bitmaps.conf:
   file.symlink:
-    - target: /etc/fonts/conf.avail/70-no-bitmaps.conf
+    - target: /etc/fonts/conf.avail/70-yes-bitmaps.conf
     - force: True
