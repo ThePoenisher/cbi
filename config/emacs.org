@@ -76,8 +76,8 @@ http://www.emacswiki.org/emacs/EmacsClienta
 * Fonts
 #+BEGIN_SRC emacs-lisp 
   ;;(set-frame-font "-Misc-Fixed-normal-normal-normal-*-13-*-*-*-c-70-iso10646-1")
-  (set-frame-font "Droid Sans Mono-10")
-  
+  ;;(set-frame-font "Droid Sans Mono-10")
+  (set-frame-font "DejaVu Sans Mono-10")
 #+END_SRC
 * Package Managers
 ** DONE ELPA / packages.el 

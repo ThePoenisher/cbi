@@ -27,6 +27,7 @@ arch_desktop_packages:
       - hwinfo
       - wget
       - python2-pygments
+      - colordiff
 {% if pillar['has_battery'] %}
       - powertop
       - acpi

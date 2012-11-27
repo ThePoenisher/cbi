@@ -99,7 +99,7 @@ x11Autostart:
 fonts:
   pkg.installed:
     - names:
-        - ttf-bitstream-vera
+        - ttf-bitstream-vera    
         - ttf-liberation
         - ttf-dejavu
         - ttf-droid
@@ -107,7 +107,8 @@ fonts:
         - xorg-xfontsel
         - gtk2fontsel
         - terminus-font
-
+        - ttf-ms-fonts
+#        - monaco  sehr hässlich, z.B. in Firefox
 
 /etc/fonts/conf.d/70-yes-bitmaps.conf:
   file.symlink:
