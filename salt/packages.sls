@@ -54,5 +54,12 @@ arch_desktop_packages:
 
 {% endif %} #archdesktop
 
-        
+packer --noconfirm --noedit  -S git-annex-bin:
+  cmd.run:
+    - unless: pacman -Q git-annex-bin
+
+# (cd  /usr/share && curl -O http://downloads.kitenet.net/git-annex/linux/git-annex-standalone-amd64.tar.gz && tar xzf git-annex-standalone-amd64.tar.gz ):
+#   cmd.run:
+#     - unless: test -d /usr/share/git-annex.linux
+
 {% endif %} #archos
