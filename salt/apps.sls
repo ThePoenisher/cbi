@@ -51,3 +51,15 @@ arch_browser_packages:
         - user: {{ usr }}
     - force: True
     - makedirs: True
+
+
+      
+{{ home }}/.local/share/applications:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/applications
+    - user: {{ usr }}
+    - group: {{ usr }}
+    - require:
+        - user: {{ usr }}
+    - force: True
+    - makedirs: True

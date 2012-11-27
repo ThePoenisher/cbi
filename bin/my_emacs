@@ -1,0 +1,11 @@
+#!/bin/bash
+args="$1"
+file="$2"
+if [ -z "$file" ]; then
+		file="$1"
+		args=""
+fi
+if (( EUID == 0 )); then
+		file=/sudo::`realpath "$file"`
+fi		
+sudo -u johannes emacsclient "$args" "$file"

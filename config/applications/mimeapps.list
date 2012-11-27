@@ -1,0 +1,12 @@
+[Default Applications]
+application/pdf=zathura.desktop
+application/x-pdf=zathua.desktop
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop
+message/rfc822=userapp-Thunderbird-9KCOOW.desktop
+application/x-extension-eml=userapp-Thunderbird-9KCOOW.desktop
+
+[Added Associations]
+x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop;
+message/rfc822=userapp-Thunderbird-9KCOOW.desktop;
+application/x-extension-eml=userapp-Thunderbird-9KCOOW.desktop;

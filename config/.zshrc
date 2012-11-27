@@ -1,6 +1,10 @@
-alias -g en="emacsclient -c  -nw"
-alias -g ec="emacsclient -c -n"
-alias -g e="emacsclient -n"
+# run client in terminal
+alias -g en="my_emacs -c -nw"
+# run client in new frame
+alias -g ec="my_emacs -c -n"
+# run client in existing frame
+alias -g e="my_emacs -n"
+
 alias -g vi="vim"
 
 export GPG_TTY=`tty`
