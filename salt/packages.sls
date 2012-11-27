@@ -28,6 +28,7 @@ arch_desktop_packages:
       - wget
       - python2-pygments
       - colordiff
+      - figlet
 {% if pillar['has_battery'] %}
       - powertop
       - acpi
