@@ -48,7 +48,7 @@ main = do
 myBitmapsPath = "/home/johannes/cbi/desktop-artwork/icons/"
  
 -- Font
-myFont = "-*-terminus-*-*-*-*-12-*-*-*-*-*-iso8859-*"
+myFont = "-*-*-*-*-*-*-12-*-*-*-*-*-iso8859-*"
  
 -- Colors
 myBgBgColor = "black"

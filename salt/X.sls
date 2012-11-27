@@ -94,6 +94,15 @@ x11Autostart:
     - makedirs: True
 {% endfor %}
 
+{{ home }}/.local/share/applications/mimeapps.list:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/mimeapps.list
+    - user: {{ usr }}
+    - group: {{ usr }}
+    - require:
+        - user: {{ usr }}
+    - force: True
+    - makedirs: True
 
 ########### fonts #############
 fonts:
