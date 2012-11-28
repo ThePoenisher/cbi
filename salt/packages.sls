@@ -65,7 +65,7 @@ packer --noconfirm --noedit  -S git-annex-bin:
 #     - unless: test -d /usr/share/git-annex.linux
 
 {% else %}
-     - python-pygments
+      - python-pygments
 
 git-annex:
   pkg.installed
