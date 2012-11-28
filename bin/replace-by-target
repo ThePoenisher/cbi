@@ -1,0 +1,3 @@
+#!/bin/bash
+i="$1"
+link=$(readlink $i) && rm $i && cp -l $link $i

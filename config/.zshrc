@@ -5,7 +5,10 @@ alias -g ec="my_emacs -c -n"
 # run client in existing frame
 alias -g e="my_emacs -n"
 
+alias -g gx="git annex"
+
 alias -g vi="vim"
+alias -g x="xdg-open"
 
 export GPG_TTY=`tty`
 

@@ -20,6 +20,7 @@ arch_X11_packages:
       - xmobar
       - xscreensaver
       - rxvt-unicode
+      - xbindkeys
 # file opener: https://wiki.archlinux.org/index.php/Xdg-open      
       - xdg-utils
       - dmenu
