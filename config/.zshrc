@@ -64,7 +64,17 @@ fi
 
 local user='%{'$ucol'%}%n%{$reset_color%}'
 local pwd='%{$fg[blue]%}%~%{$reset_color%}'
-local git_branch='$(git_prompt_status)%{$reset_color%}$(git_prompt_info)%{$reset_color%}'
+
+my_git_prompt (){
+#		if ; then
+		if git rev-parse git-annex > /dev/null 2>&1; then
+#				echo 1>&2
+				echo "%{$fg[green]%}git-%{$fg[blue]%}annex%{$reset_color%}"
+	  else
+				echo "$(git_prompt_status)%{$reset_color%}$(git_prompt_info)%{$reset_color%}"
+	  fi
+}
+local git_branch=
 
 ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[green]%}[A]"
 ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[blue]%}[M]"
@@ -86,6 +96,7 @@ hostcolor[debussy]=$fg[yellow]
 hostcolor[scriabin]=$fg[green]
 
 PROMPT="%(?..%{$fg[red]%}%?%1v )${user}${NO_COLOUR}@%{${hostcolor[`hostname`]}%}%m${NO_COLOUR} %40<...<%B%~%b%<<$ "
-RPROMPT="${git_branch}"
+RPROMPT='$(my_git_prompt)'
+#git_branch}"
 
 DONTSETRPROMPT=1

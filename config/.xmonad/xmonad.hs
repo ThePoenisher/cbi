@@ -167,8 +167,8 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm .|. controlMask, xK_i), rotFocusedUp)
   , ((modm .|. controlMask, xK_u), rotFocusedDown)
   , ((modm                , xK_Tab), nextMatch History (return True))
-  , ((modm              , xK_t), nextMatchOrDo Forward  (className =? my_term_class) (spawn my_term))
-  , ((modm .|. shiftMask, xK_t), nextMatchOrDo Backward (className =? my_term_class) (spawn my_term))
+  , ((modm              , xK_r), nextMatchOrDo Forward  (className =? my_term_class) (spawn my_term))
+  , ((modm .|. shiftMask, xK_r), nextMatchOrDo Backward (className =? my_term_class) (spawn my_term))
    ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
