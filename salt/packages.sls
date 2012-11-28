@@ -1,15 +1,7 @@
 ######### Packages ###########
-{% if grains['os'] == 'Arch' %}
-/etc/pacman.conf:
-  file.append:
-    - text: |
-        [multilib]
-        Include = /etc/pacman.d/mirrorlist
 
 arch_desktop_packages:
   pkg.installed:
-    - require:
-      - file: /etc/pacman.conf
     - names:
       - tree
       - vim
@@ -33,6 +25,7 @@ arch_desktop_packages:
       - powertop
       - acpi
 {% endif %} #battery
+{% if grains['os'] == 'Arch' %}
 {% if pillar['arch_desktop'] %}
       - emacs
       - keychain 
@@ -51,9 +44,16 @@ arch_desktop_packages:
 {% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
       - libreoffice-{{ p }}
 {% endfor %}
-
-
 {% endif %} #archdesktop
+    - require:
+      - file: /etc/pacman.conf
+
+/etc/pacman.conf:
+  file.append:
+    - text: |
+        [multilib]
+        Include = /etc/pacman.d/mirrorlist
+
 
 packer --noconfirm --noedit  -S git-annex-bin:
   cmd.run:
