@@ -7,4 +7,4 @@ if [ -z "$a" ]; then
 		a="class{'cbi':}"
 fi
 
-puppet apply -e "$a" $2 --modulepath=$DIR/puppet/modules:/etc/puppet/modules --hiera_config=$DIR/puppet/hiera.yaml 
+puppet apply -e "$a" $2 $3 $4  --modulepath=$DIR/puppet/modules:/etc/puppet/modules --hiera_config=$DIR/puppet/hiera.yaml 
