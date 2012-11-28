@@ -5,7 +5,6 @@ class cbi::users (){
   define custom_user ($user=$title){
     $userhash=hiera("${user}_user","DEADBEEF")
     $a={ensure=>present}
-   notice("asd") 
     if(is_hash($userhash)){
       $b=merge($a,$userhash)
       if(has_key($userhash,'gid')){

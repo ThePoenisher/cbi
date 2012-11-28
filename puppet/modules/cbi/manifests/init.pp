@@ -11,7 +11,7 @@ class cbi (){
         home=>"/var/jo/git",
       }
 
-      zsh { 'root' :}
+#      zsh { 'root' :}
     }
   }
 
