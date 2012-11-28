@@ -18,14 +18,15 @@ arch_desktop_packages:
       - sysstat
       - hwinfo
       - wget
-      - python2-pygments
       - colordiff
       - figlet
+      - ranger
 {% if pillar['has_battery'] %}
       - powertop
       - acpi
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
+      - python2-pygments
 {% if pillar['arch_desktop'] %}
       - emacs
       - keychain 
@@ -64,6 +65,7 @@ packer --noconfirm --noedit  -S git-annex-bin:
 #     - unless: test -d /usr/share/git-annex.linux
 
 {% else %}
+     - python-pygments
 
 git-annex:
   pkg.installed
