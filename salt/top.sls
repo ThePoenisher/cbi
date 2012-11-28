@@ -6,8 +6,8 @@ base:
     - gitolite.main
     - python
     - packages
-    - ssh
 {% if pillar['arch_desktop'] %}
+    - ssh
     - X
     - apps
     - media

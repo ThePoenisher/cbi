@@ -62,4 +62,9 @@ packer --noconfirm --noedit  -S git-annex-bin:
 #   cmd.run:
 #     - unless: test -d /usr/share/git-annex.linux
 
+{% else %}
+
+git-annex:
+  pkg.installed
+
 {% endif %} #archos

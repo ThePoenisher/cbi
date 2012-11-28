@@ -121,13 +121,12 @@ sed -i -re '/\/home/s|(/home\W*ext4\W*)|\1noauto,x-systemd.automount,|' /etc/fst
   cmd.run:
     - unless: grep -q systemd.automount /etc/fstab
 
-    
-{% endif %} #ARCH OS
-
 /etc/vconsole.conf:
   file.append:
     - text: KEYMAP=de-latin1
     - makedirs: True
+    
+
       
 ### locale ####
 /etc/locale.gen:
@@ -156,3 +155,4 @@ hostnamectl set-hostname {{ grains['cbi_machine'] }}:
   cmd.run:
     - unless: test `hostname` = "{{ grains['cbi_machine'] }}"
 
+{% endif %} #ARCH OS
