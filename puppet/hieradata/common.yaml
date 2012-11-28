@@ -3,3 +3,4 @@ users: - root
 
 root_user:
   home: %{root_home}
+  shell: /bin/zsh
