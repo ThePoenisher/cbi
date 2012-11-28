@@ -8,7 +8,6 @@ arch_desktop_packages:
       - htop
       - unzip
       - zip
-      - calc
       - bc
       - iperf
       - pv
@@ -26,6 +25,7 @@ arch_desktop_packages:
       - acpi
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
+      - calc
       - python2-pygments
 {% if pillar['arch_desktop'] %}
       - emacs
@@ -66,6 +66,7 @@ packer --noconfirm --noedit  -S git-annex-bin:
 
 {% else %}
       - python-pygments
+      - apcalc
 
 git-annex:
   pkg.installed
