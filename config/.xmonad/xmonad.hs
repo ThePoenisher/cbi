@@ -126,13 +126,14 @@ myUrgencyHook = withUrgencyHook dzenUrgencyHook
     }
  
 myManageHook = composeAll $
-   [ className =? "Gimp" --> doFloat
-   , isFullscreen --> doFullFloat
-   ]
+   [ isFullscreen --> doFullFloat  ]
    ++
    [ title =? c  --> doFloat | c <- myFloatsT ]
-   where myFloatsT = ["Ediff"]
- 
+   ++
+   [ className =? c  --> doFloat | c <- myFloatsC ]
+       where myFloatsT = ["Ediff"]
+             myFloatsC = ["feh", "Gimp"]
+
 -- Prompt config
 myXPConfig = defaultXPConfig {
   position = Bottom,

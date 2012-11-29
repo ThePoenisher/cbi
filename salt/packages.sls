@@ -1,6 +1,6 @@
 ######### Packages ###########
 
-arch_desktop_packages:
+base_packages:
   pkg.installed:
     - names:
       - tree
@@ -20,6 +20,7 @@ arch_desktop_packages:
       - colordiff
       - figlet
       - ranger
+      - subversion
 {% if pillar['has_battery'] %}
       - powertop
       - acpi

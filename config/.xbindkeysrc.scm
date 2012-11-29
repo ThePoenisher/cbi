@@ -64,7 +64,7 @@
 
 ;; ;; Examples of commands:
 
-(xbindkey '("m:0x0" "c:135") "xbindkeys_show")
+(xbindkey '(shift "c:135") "xbindkeys_show")
 (xbindkey '(XF86AudioMute) "amixer set Master toggle")
 (xbindkey '(XF86AudioRaiseVolume) "amixer set Master playback 5000+")
 (xbindkey '(XF86AudioLowerVolume) "amixer set Master playback 5000-")

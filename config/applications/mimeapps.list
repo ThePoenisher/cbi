@@ -6,6 +6,17 @@ x-scheme-handler/https=firefox.desktop
 x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop
 message/rfc822=userapp-Thunderbird-9KCOOW.desktop
 application/x-extension-eml=userapp-Thunderbird-9KCOOW.desktop
+image/bmp=feh.desktop
+image/gif=feh.desktop
+image/jpeg=feh.desktop
+image/png=feh.desktop
+image/tiff=feh.desktop
+image/x-ico=feh.desktop
+image/x-portable-bitmap=feh.desktop
+image/x-portable-graymap=feh.desktop
+image/x-portable-pixmap=feh.desktop
+image/x-xbitmap=feh.desktop
+image/x-xpixmap=feh.desktop
 
 [Added Associations]
 x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop;

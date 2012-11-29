@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+NoDisplay=true
+Exec=feh -F %u
+Name=feh
+MimeType=image/jpeg
