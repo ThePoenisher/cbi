@@ -82,7 +82,7 @@ x11Autostart:
     - source: salt://X11/xorg.conf
 
 ######  Symlinked Files  #########
-{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources' ] %}
+{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources','.xbindkeysrc.scm' ] %}
 {% for file in files %}
 {{ home+'/'+file }}:
   file.symlink:
