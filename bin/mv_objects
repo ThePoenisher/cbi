@@ -1,0 +1,6 @@
+#!/bin/bash
+f=`readlink  "$1" | sed -re 's|.*git|.git|'`
+d=`dirname "$f"`
+mkdir -p "$d"
+mv "/home/data/media/$f" "$f"
+echo $!

@@ -29,12 +29,14 @@ arch_desktop_packages:
       - python2-pygments
 {% if pillar['arch_desktop'] %}
       - emacs
+      - gptfdisk
       - keychain 
       - skype
       - lib32-libpulse
       - tk #for gitk
       - tightvnc
       - smartmontools
+      - hdparm
       - cdrkit #cds brennen: https://wiki.archlinux.org/index.php/CD_Burning
       - udevil
       - zathura-pdf-mupdf

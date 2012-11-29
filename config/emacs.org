@@ -1548,6 +1548,10 @@ http://www.emacswiki.org/emacs/PerlDevelopEnvironment
   (add-to-list 'auto-mode-alist '("PKGBUILD$" . sh-mode))
 #+END_SRC
 
+** Shell
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
+#+END_SRC
 * Autosaving and Backup files
 ** Autosave: http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
 ** Backup
