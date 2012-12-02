@@ -11,6 +11,7 @@ arch_X11_packages:
       - xorg-utils
       - xcompmgr
       - xclip
+      - xsel
       - xpdf
       - transset-df
       - mesa-demos #glxgears

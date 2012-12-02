@@ -389,6 +389,10 @@ default value. " http://www.emacswiki.org/emacs/ReplacePlus
     )
 #+END_SRC
 ***** TODO use parallel / xargs -P ?
+*** Undo Limit
+#+BEGIN_SRC emacs-lisp
+(setq undo-limit 10000000)
+#+END_SRC
 ** Editor Cursor Movement
 http://ergoemacs.org/emacs/text_editor_cursor_behavior.html
 ** Help / Hilfe
@@ -747,7 +751,12 @@ offiziell: http://vimdoc.sourceforge.net/htmldoc/motion.html
 '>  end line
 `>  end character
 
-
+**** macros: 
+define with q <key> MACRO q
+replay with @ <key> for first time and @@ subsequently
+**** marks
+define with m <key>
+open with ' <key>
 *** Tutorials
 http://vimcasts.org/episodes/modal-editing-undo-redo-and-repeat/
 *** modal editing

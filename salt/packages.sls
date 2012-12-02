@@ -27,6 +27,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - calc
+      - gnu-netcat
       - python2-pygments
 {% if pillar['arch_desktop'] %}
       - emacs

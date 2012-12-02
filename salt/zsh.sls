@@ -1,10 +1,17 @@
 #shebang jinja | yaml
 
-git://github.com/robbyrussell/oh-my-zsh.git:
+zshgit:
   git.latest:
+    - name: git://github.com/robbyrussell/oh-my-zsh.git
     - rev: c2ae9e09ca1f33ff1e13e629a0b2e6bdd19f83a9
     - target: /usr/share/oh-my-zsh
     - force:
+
+/usr/share/oh-my-zsh/cache:
+  file.directory:
+    - require:
+      - git: zshgit
+    - mode: 777
 
 {% if grains['os'] == 'Arch' %}
 grml-zsh-config:

@@ -1,0 +1,10 @@
+#GitHub kuerzn
+HostName github.com
+Host ghk
+User git
+IdentityFile ~/.ssh/github-kuerzn
+#GitHub johannesgerer
+Host ghj
+HostName github.com
+User git
+IdentityFile ~/.ssh/github-jg
