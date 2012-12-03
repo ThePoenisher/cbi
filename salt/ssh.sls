@@ -1,7 +1,9 @@
-/etc/ssh/sshd_config:
+{% for i in ['sshd_config','ssh_config'] %}
+/etc/ssh/{{ i }}:
   file.managed:
     - template: jinja
-    - source: salt://etc/sshd_config
+    - source: salt://etc/{{ i }}
+{% endfor %}
 
 sshd:
   service.running:
@@ -27,13 +29,3 @@ sshd:
 {% endfor %}
 
 
-{% set usr="johannes" %} 
-/home/johannes/.ssh/config:
-  file.symlink:
-    - target: {{ grains['cbi_home'] }}/config/ssh-config
-    - user: {{ usr }}
-    - group: {{ usr }}
-    - require:
-        - user: {{ usr }}
-    - force: True
-    - makedirs: True

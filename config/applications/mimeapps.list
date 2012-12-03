@@ -1,8 +1,8 @@
 [Default Applications]
 application/pdf=zathura.desktop
 application/x-pdf=zathua.desktop
-x-scheme-handler/http=firefox.desktop
-x-scheme-handler/https=firefox.desktop
+x-scheme-handler/http=userapp-Firefox-GCTROW.desktop
+x-scheme-handler/https=userapp-Firefox-GCTROW.desktop
 x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop
 message/rfc822=userapp-Thunderbird-9KCOOW.desktop
 application/x-extension-eml=userapp-Thunderbird-9KCOOW.desktop
@@ -17,8 +17,28 @@ image/x-portable-graymap=feh.desktop
 image/x-portable-pixmap=feh.desktop
 image/x-xbitmap=feh.desktop
 image/x-xpixmap=feh.desktop
+x-scheme-handler/ftp=userapp-Firefox-GCTROW.desktop
+x-scheme-handler/chrome=userapp-Firefox-GCTROW.desktop
+text/html=userapp-Firefox-GCTROW.desktop
+application/x-extension-htm=userapp-Firefox-GCTROW.desktop
+application/x-extension-html=userapp-Firefox-GCTROW.desktop
+application/x-extension-shtml=userapp-Firefox-GCTROW.desktop
+application/xhtml+xml=userapp-Firefox-GCTROW.desktop
+application/x-extension-xhtml=userapp-Firefox-GCTROW.desktop
+application/x-extension-xht=userapp-Firefox-GCTROW.desktop
 
 [Added Associations]
 x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop;
 message/rfc822=userapp-Thunderbird-9KCOOW.desktop;
 application/x-extension-eml=userapp-Thunderbird-9KCOOW.desktop;
+x-scheme-handler/http=userapp-Firefox-GCTROW.desktop;
+x-scheme-handler/https=userapp-Firefox-GCTROW.desktop;
+x-scheme-handler/ftp=userapp-Firefox-GCTROW.desktop;
+x-scheme-handler/chrome=userapp-Firefox-GCTROW.desktop;
+text/html=userapp-Firefox-GCTROW.desktop;
+application/x-extension-htm=userapp-Firefox-GCTROW.desktop;
+application/x-extension-html=userapp-Firefox-GCTROW.desktop;
+application/x-extension-shtml=userapp-Firefox-GCTROW.desktop;
+application/xhtml+xml=userapp-Firefox-GCTROW.desktop;
+application/x-extension-xhtml=userapp-Firefox-GCTROW.desktop;
+application/x-extension-xht=userapp-Firefox-GCTROW.desktop;

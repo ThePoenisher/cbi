@@ -1,6 +1,6 @@
 # -*- mode: conf; -*-
 gap_y -1000
- 
+
 background no
 double_buffer yes 
 out_to_console yes 

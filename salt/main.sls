@@ -126,7 +126,11 @@ sed -i -re '/\/home/s|(/home\W*ext4\W*)|\1noauto,x-systemd.automount,|' /etc/fst
     - text: KEYMAP=de-latin1
     - makedirs: True
     
-
+### mods
+/etc/modules-load.d:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/modules-load.d
+    - force: True
       
 ### locale ####
 /etc/locale.gen:

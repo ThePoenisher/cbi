@@ -26,11 +26,14 @@ base_packages:
       - acpi
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
+      - p7zip
       - calc
-      - gnu-netcat
       - python2-pygments
+      - nmap #(includes netcat implementation (ncat) with ipv6 support)
 {% if pillar['arch_desktop'] %}
+      - encfs
       - emacs
+      - mercurial
       - gptfdisk
       - keychain 
       - skype
