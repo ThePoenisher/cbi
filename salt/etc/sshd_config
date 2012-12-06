@@ -126,5 +126,5 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 X11Forwarding yes
 
 {% if grains['cbi_machine'] in ['scriabin','debussy'] %}
-PasswordAuthentication no
+#PasswordAuthentication no
 {% endif %}

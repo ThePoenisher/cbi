@@ -21,6 +21,8 @@ base_packages:
       - figlet
       - ranger
       - subversion
+      - w3m
+      - lynx
 {% if pillar['has_battery'] %}
       - powertop
       - acpi
@@ -31,6 +33,7 @@ base_packages:
       - python2-pygments
       - nmap #(includes netcat implementation (ncat) with ipv6 support)
 {% if pillar['arch_desktop'] %}
+      - graphviz
       - encfs
       - emacs
       - mercurial

@@ -1,0 +1,95 @@
+#!/bin/bash
+# git-annex sync
+while true; do
+		if [ "$1" = "-d" ]; then
+				drop=1
+				shift
+		elif [ "$1" = "-gc" ]; then
+				gc=1
+				shift
+		elif [ "$1" = "-p" ]; then
+				prune=1
+				shift
+		elif [ "$1" = "-g" ]; then
+				get=1
+				shift
+		elif [ "$1" = "-ff" ]; then
+				fsckfull=1
+				shift
+		elif [ "$1" = "-f" ]; then
+				fsck=1
+				shift
+		else
+				break
+		fi
+done
+dirs=( "/home/data" "/media/klein")
+if [ "$1" ]; then dirs=("${@}"); fi
+log=/var/log/cbi_sync.log
+sudo touch $log
+sudo chown johannes:johannes $log
+
+_central(){
+		true
+#		git remote add strauss g@josg.de:`basename $1`
+}
+
+_error(){
+		e=`uuidgen`
+		echo "Error $e" >> $log
+		sendmail johannes <<EOF
+Subjet: Error in $1
+
+$1
+
+Error ID: $e
+less $2
+EOF
+}
+
+_do (){
+		j=$1
+		(if cd $j &> /dev/null; then
+				# check for git-annex
+				if git annex status --fast &> /dev/null; then
+						t="Git Annex Sync of $j"
+						echo -e "\n\nACTION $(date)\n$t" >> $log
+						_central "$j"
+						if ( 
+								( [ "$gc" ] && echo ACTION GC && ! git gc ) || \
+								( [ "$prune" ] && echo ACTION GC && ! git prune ) || \
+								(echo ACTION ADD && ! git annex add --backend=SHA1) || \
+								(echo ACTION SYNC && ! git annex sync) ||  \
+								( [ "$drop" ] && echo ACTION DROP && ! git annex drop --auto ) || \
+								( [ "$get" ] && echo ACTION GET && ! git annex get --auto ) || \
+								( [ "$get" -o "$drop" ] && echo ACTION SYNC && ! git annex sync) || \
+								( [ "$fsck" ] && echo ACTION GET && ! git annex fsck --fast  ) || \
+								( [ "$fsckfull" ] && echo ACTION GET && ! git annex fsck ) 
+								)&>> $log; then
+								_error "$t" "$log"
+						fi
+#						git annex add "$j"
+				elif git status &> /dev/null; then
+						t="Git Sync of $j"
+						echo -e "\n\nACTION $(date)\n$t" >> $log
+						_central "$j"
+						if ! (
+								( [ "$gc" ] && echo ACTION GC && git gc ) && \
+								( [ "$p" ] && echo ACTION GC && git prune ) && \
+								echo ACTION PULL && git pull &&  \
+								echo ACTION PUSH && git push --all) &>> $log; then
+								_error "$t" "$log"
+						fi
+				fi
+			fi)
+}
+
+
+for i in "${dirs[@]}"
+do
+		log="$i"/logs
+		for j in "$i"/*
+		do
+				_do "$j"
+		done
+done

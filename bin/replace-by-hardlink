@@ -1,0 +1,9 @@
+#!/bin/bash
+i="$@"
+if link=$(readlink -f "$i") &&  ln -f "$link" "$i"; then
+   echo "SUCCESS: $i"
+else
+   echo "ERROR: $i"
+fi
+
+#find Library -type l -print0 | xargs -0 -n 1 replace-by-target

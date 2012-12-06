@@ -1,5 +1,6 @@
 #!/bin/bash
 cd $(git rev-parse --show-toplevel) && \
+git annex status --fast >> reposize && \
 echo `date` >> reposize && \
 du -Lsh -c * | tee -a reposize 
 #cd .git/annex/objects/ && \
