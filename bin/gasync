@@ -57,14 +57,14 @@ _do (){
 						_central "$j"
 						if ( 
 								( [ "$gc" ] && echo ACTION GC && ! git gc ) || \
-								( [ "$prune" ] && echo ACTION GC && ! git prune ) || \
+								( [ "$prune" ] && echo ACTION PRUNE && ! git prune ) || \
 								(echo ACTION ADD && ! git annex add --backend=SHA1) || \
 								(echo ACTION SYNC && ! git annex sync) ||  \
 								( [ "$drop" ] && echo ACTION DROP && ! git annex drop --auto ) || \
 								( [ "$get" ] && echo ACTION GET && ! git annex get --auto ) || \
 								( [ "$get" -o "$drop" ] && echo ACTION SYNC && ! git annex sync) || \
-								( [ "$fsck" ] && echo ACTION GET && ! git annex fsck --fast  ) || \
-								( [ "$fsckfull" ] && echo ACTION GET && ! git annex fsck ) 
+								( [ "$fsck" ] && echo ACTION FSCK && ! git annex fsck --fast  ) || \
+								( [ "$fsckfull" ] && echo ACTION FSCK FULL && ! git annex fsck ) 
 								)&>> $log; then
 								_error "$t" "$log"
 						fi
@@ -75,7 +75,7 @@ _do (){
 						_central "$j"
 						if ! (
 								( [ "$gc" ] && echo ACTION GC && git gc ) && \
-								( [ "$p" ] && echo ACTION GC && git prune ) && \
+								( [ "$p" ] && echo ACTION PRUNE && git prune ) && \
 								echo ACTION PULL && git pull &&  \
 								echo ACTION PUSH && git push --all) &>> $log; then
 								_error "$t" "$log"

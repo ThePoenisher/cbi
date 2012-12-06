@@ -998,6 +998,8 @@ Ja mit <<name()>> (also erweiterter Noweb ref)
 [[info:org#Header%20arguments%20in%20Org%20mode%20properties][info:org#Header arguments in Org mode properties]]
 ** Clocking
 [[info:org#Clocking%20work%20time][info:org#Clocking work time]]
+[[info:org#Clocking%20commands][info:org#Clocking commands]]
+*** see also [[*Sonstiges][Org Mode/keys/Sonstiges]]
 *** TODO Clock out to clock into parent or default task?
 :PROPERTIES:
 :ID:       8c9da650-71a9-4f11-b8c4-7947bd944185
