@@ -42,15 +42,14 @@ arch_browser_packages:
     - force: True
     - makedirs: True
 
-{{ home }}/.gconf:
-  file.symlink:
-    - target: {{ grains['cbi_home'] }}/config/.gconf
+{{ home }}/.gconf/apps/gnome-terminal/profiles/Default/%gconf.xml:
+  file.managed:
     - user: {{ usr }}
     - group: {{ usr }}
     - require:
         - user: {{ usr }}
-    - force: True
-    - makedirs: True
+    - template: jinja
+    - source: salt://gnome-terminal.xml
 
 
       
