@@ -20,6 +20,16 @@ arch_browser_packages:
         - user: {{ usr }}
     - force: True
 
+{{ home }}/.pentadactyl/plugins:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/pentadactyl-plugins
+    - user: {{ usr }}
+    - group: {{ usr }}
+    - require:
+        - user: {{ usr }}
+    - force: True
+    - makedirs: True
+
 
 
 {{ home }}/.thunderbird/profiles.ini:

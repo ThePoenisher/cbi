@@ -30,7 +30,7 @@ Run
 which will install the following loader into ~/.emacs.d/init.el:
 ** The script
 #+NAME: orgfile
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (make-directory "~/.emacs.d/" t) 
   (or (buffer-file-name) load-file-name)
 #+END_SRC
@@ -64,9 +64,17 @@ http://www.emacswiki.org/emacs/EmacsClienta
 (info "(emacs)Emacs Server")
 
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (server-start)
 #+END_SRC
+** Problem:
+*** TODO starting several clients for emacs --daemon:
+http://superuser.com/questions/139436/how-to-fix-emacs-client-error-arithmetic-error
+Ursache:
+       'after-make-frame-funtions
+       '(lambda(a)
+          ;; this breaks emacs --daemon to launch more than one frame!
+          ;;(set-frame-font jo/font t (list a))
 ** Nützlich:
 - nw :: in console
 - c :: create new window
@@ -82,13 +90,22 @@ http://www.emacswiki.org/emacs/EmacsClienta
             "DejaVu Sans Mono-9"
           "DejaVu Sans Mono-10"
           ))
-  (set-frame-font jo/font)
-  (add-to-list
-   'after-make-frame-functions
-   '(lambda(a)
-      (set-frame-font jo/font t
-                      (list a))
-      ))
+ 
+  (setq default-frame-alist (list (cons 'font jo/font)))
+  
+;; http://stackoverflow.com/questions/3984730/emacs-gui-with-emacs-daemon-not-loading-fonts-correctly
+  ;; this breaks emacs --daemon and clients to start with the following error:
+  ;; error: Font not available, #<font-spec nil nil DejaVu Sans Mono nil nil nil nil nil 10.0 nil nil nil ((:name . DejaVu Sans Mono-10) (user-spec . DejaVu Sans Mono-10))>
+  ;;(set-face-attribute 'default nil :font jo/font)
+  (when   
+      (add-to-list
+       'after-make-frame-functions
+       '(lambda(a)
+          ;; this breaks emacs --daemon to launch more than one frame!
+          ;;(set-frame-font jo/font t (list a))
+          ;;(set-face-attribute 'default nil :font jo/font)
+          ))
+    )
   
 #+END_SRC
 * Package Managers
@@ -401,6 +418,23 @@ default value. " http://www.emacswiki.org/emacs/ReplacePlus
 #+END_SRC
 ** Editor Cursor Movement
 http://ergoemacs.org/emacs/text_editor_cursor_behavior.html
+** Startup
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; initial stuff (does not necessariliy show the buffer on startup)
+  (when nil
+    (add-hook 'after-init-hook 
+              '(lambda() 
+                 (edit-bookmarks) 
+                 (find-file "~/emacs/org-notes/LinuxAdoption.org")
+                 ))
+    )
+  
+  
+  ;; Initial buffer choice (overwrites command line options
+  (when nil
+    (setq initial-buffer-choice "~/emacs/org-notes/LinuxAdoption.org")
+    )
+#+END_SRC
 ** Help / Hilfe
 *** ehelp (electric help)
 - http://emacswiki.org/emacs/ElectricHelp
@@ -852,7 +886,7 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
   (setq org-startup-truncated nil)
   
   (setq org-agenda-files '("~/cbi/config/"))
-  (setq org-agenda-files '("~/emacs/org-notes/"))
+  (setq org-agenda-files '("/home/data/personal/org-notes/"))
   
   
   ;;               (eval-after-load 'org                   ;; too early
@@ -2064,24 +2098,6 @@ http://vimgolf.com/
 ** Internal Stuff
 #+BEGIN_SRC emacs-lisp
   (when t
-  
-  
-  
-    ;; initial stuff (does not necessariliy show the buffer on startup)
-    (when t
-      (add-hook 'after-init-hook 
-                '(lambda() 
-                   (edit-bookmarks) 
-                   (find-file "~/emacs/org-notes/LinuxAdoption.org")
-                   ))
-      )
-    
-  
-    ;; Initial buffer choice (overwrites command line options
-    (when nil
-      (setq initial-buffer-choice "~/emacs/org-notes/LinuxAdoption.org")
-      )
-  
     ;; Use ansi-term instead of term!! (http://www.emacswiki.org/emacs/AnsiTerm)
     ;; Start term-mode in line mode (info "(Emacs)Term Mode")
     (when t

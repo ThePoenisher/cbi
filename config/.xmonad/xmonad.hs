@@ -26,8 +26,9 @@ import XMonad.Actions.CopyWindow
 import qualified XMonad.StackSet as W
 import XMonad.Actions.CycleWindows
 import XMonad.Actions.GroupNavigation
+import XMonad.Actions.FindEmptyWorkspace
+import XMonad.Actions.SpawnOn
 
-  
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
 import Graphics.X11.Xlib
@@ -38,6 +39,7 @@ my_term = "gnome-terminal"
 -- find out using xprop
 my_term_class = "Gnome-terminal"
 
+
 main = do
    myStatusBarPipe <- spawnPipe myStatusBar
    conkyBar <- spawnPipe myConkyBar
@@ -45,9 +47,9 @@ main = do
       { terminal = my_term
       , normalBorderColor  = myInactiveBorderColor
       , focusedBorderColor = myActiveBorderColor
-      , manageHook = manageDocks <+> myManageHook <+> manageHook defaultConfig
-      , layoutHook = avoidStruts $ myLayoutHook
-      , startupHook = setWMName "LG3D"
+      , manageHook = manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
+      , layoutHook = avoidStruts myLayoutHook
+      , startupHook = myStartupHook 
       , logHook = myDzenPP2 myStatusBarPipe
       , modMask = mod4Mask
       , keys = myKeys
@@ -58,7 +60,7 @@ main = do
 myBitmapsPath = "/home/johannes/cbi/desktop-artwork/icons/"
  
 -- Font
-myFont = "-*-*-*-*-*-*-12-*-*-*-*-*-iso8859-*"
+myFont = "xft:DejaVu Sans Mono:size=9" -- dzen only uses the size. fontname seems to be ignored
  
 -- Colors
 myBgBgColor = "black"
@@ -84,7 +86,7 @@ myUrgencyHintFgColor = "white"
 myUrgencyHintBgColor = "brown"
  
 -- dzen general options
-myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '16'"
+myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '15'"
  
 -- Status Bar
 myStatusBar = "dzen2 -w 465 -ta l " ++ myDzenGenOpts
@@ -93,13 +95,21 @@ myStatusBar = "dzen2 -w 465 -ta l " ++ myDzenGenOpts
 myConkyBar = "conky -c ~/cbi/config/.conky_bar | dzen2 -x 460 -w $(($(xrandr -q | sed -n -re 's/.*current ([0-9]+) x.*/\\1/p') - 460 )) -ta r" ++ myDzenGenOpts
  
 -- Layouts
-myLayoutHook = smartBorders . limitWindows 6 $ (tiled ||| Mirror tiled ||| Full ||| TwoPane (3/100) (1/2)  )
+myLayoutHook = smartBorders $ limitWindows 6 ( tiled ||| Mirror tiled ||| Full ||| TwoPane (3/100) (1/2)  )
   where
     tiled = ResizableTall nmaster delta ratio []
     nmaster = 1
     delta = 3/100
     ratio = 1/2
- 
+
+-- this spawnOn looks at PIDs and if these change during run, it does not work
+-- e.g. firefox, wenn alread running, emacsclient (at least on first startup)
+myStartupHook = do 
+  setWMName "LG3D"
+  spawnOn " 4 " "emacsclient -c -n"
+  spawnOn " 3 " "firefox"
+  spawnOn " 8 " "thunderbird"
+  
 -- Workspaces
 myWorkspaces = map ( pad . show ) [1..9]
    -- [
@@ -137,6 +147,7 @@ myManageHook = composeAll $
 -- Prompt config
 myXPConfig = defaultXPConfig {
   position = Bottom,
+  font = myFont,
   promptBorderWidth = 0,
   height = 15,
   bgColor = myBgColor,
@@ -163,14 +174,20 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   --, ((modMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
   , ((modm,  xK_s), cycleRecentWindows [xK_Super_L] xK_s xK_w)
   , ((modm, xK_z), rotOpposite)
-  , ((modm                , xK_i), rotUnfocusedUp)
-  , ((modm                , xK_u), rotUnfocusedDown)
-  , ((modm .|. controlMask, xK_i), rotFocusedUp)
-  , ((modm .|. controlMask, xK_u), rotFocusedDown)
-  , ((modm                , xK_Tab), nextMatch History (return True))
-  , ((modm              , xK_r), nextMatchOrDo Forward  (className =? my_term_class) (spawn my_term))
-  , ((modm .|. shiftMask, xK_r), nextMatchOrDo Backward (className =? my_term_class) (spawn my_term))
-   ]
+  , ((modm                , xK_i    ), rotUnfocusedUp)
+  , ((modm                , xK_u    ), rotUnfocusedDown)
+  , ((modm .|. controlMask, xK_i    ), rotFocusedUp)
+  , ((modm .|. controlMask, xK_u    ), rotFocusedDown)
+  , ((modm                , xK_Tab  ), nextMatch History (return True))
+  , ((modm                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) (spawnHere my_term))
+  , ((modm .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) (spawnHere my_term))
+  , ((modm,                 xK_d    ), viewEmptyWorkspace)
+  , ((modm .|. shiftMask  , xK_d    ), tagToEmptyWorkspace)
+  , ((modm                , xK_e    ), (spawnHere "emacsclient -c -n"))
+  , ((modm                , xK_f    ), (spawnHere "firefox"))
+  , ((modm .|. shiftMask  , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
+  , ((modm                , xK_a    ), (spawnHere my_term))
+  ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
 -- mod-control-[1..9] @@ Copy client to workspace N

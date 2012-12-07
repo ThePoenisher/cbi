@@ -44,6 +44,9 @@ fi
 
 ############  my stuff
 
+#using ALTERNATE_EDITOR="" instead:
+#pgrep -a -f 'emacs --daemon' || emacs --daemon &!
+
 xset -b #disable PC beep
 xset r rate 200  45
 
