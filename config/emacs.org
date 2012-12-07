@@ -77,7 +77,11 @@ http://www.emacswiki.org/emacs/EmacsClienta
 #+BEGIN_SRC emacs-lisp 
   ;;(set-frame-font "-Misc-Fixed-normal-normal-normal-*-13-*-*-*-c-70-iso10646-1")
   ;;(set-frame-font "Droid Sans Mono-10")
-  (setq jo/font "DejaVu Sans Mono-10")
+  (setq jo/font 
+        (if (string= (getenv "CBI_MACHINE") "scriabin") 
+            "DejaVu Sans Mono-9"
+          "DejaVu Sans Mono-10"
+          ))
   (set-frame-font jo/font)
   (add-to-list
    'after-make-frame-functions

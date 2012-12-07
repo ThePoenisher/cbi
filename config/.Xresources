@@ -28,7 +28,7 @@ Xft.rgba:       rgb
 !URxvt.font: xft:DejaVu Sans Mono:style=Book:size=10
 !URxvt.font: xft:Monaco:style=regular:size=10
 
-URxvt.font: -*-terminus-*-*-*-*-14*-*-*-*-iso8859-*
+!URxvt.font: -*-terminus-*-*-*-*-14*-*-*-*-iso8859-*
 !URxvt.font: -*-fixed-*-*-*-*-14-*-*-*-iso8859-*
 !URxvt.font: -*-terminus-*-*-*-*-14*-*-*-*-iso8859-*
 
