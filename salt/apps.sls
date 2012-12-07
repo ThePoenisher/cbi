@@ -61,8 +61,28 @@ gnome-terminal.conf:
     - template: jinja
     - source: salt://gnome-terminal.xml
 
+{{ home }}/.gtkrc-2.0.mine:
+  file.managed:
+    - user: {{ usr }}
+    - group: {{ usr }}
+    - require:
+        - user: {{ usr }}
+    - template: jinja
+    - source: salt://gtkrc-2.0.mine
 
       
+{% for f in ["gtk-2.0","gtk-3.0"] %}
+{{ home }}/.config/{{ f }}:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/{{ f }}
+    - user: {{ usr }}
+    - group: {{ usr }}
+    - require:
+        - user: {{ usr }}
+    - force: True
+    - makedirs: True
+{% endfor %}
+
 {{ home }}/.local/share/applications:
   file.symlink:
     - target: {{ grains['cbi_home'] }}/config/applications

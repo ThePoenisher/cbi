@@ -28,6 +28,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - strace
       - calc
       - python2-pygments
       - nmap #(includes netcat implementation (ncat) with ipv6 support)
