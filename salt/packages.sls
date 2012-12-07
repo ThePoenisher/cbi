@@ -1,5 +1,4 @@
 ######### Packages ###########
-
 base_packages:
   pkg.installed:
     - names:

@@ -6,6 +6,7 @@ arch_X11_packages:
       - xorg-xinit
       - xorg-server-utils
       - xterm
+      - arandr
       - xorg-xclock
       - xorg-twm
       - xorg-utils
@@ -29,6 +30,7 @@ arch_X11_packages:
       - dzen2
       - conky
       - qtcurve-kde3 #vor themes?
+      - x11vnc
 #gtk switcher
       - lxappearance
       - gtk-engines
@@ -81,6 +83,7 @@ x11Autostart:
 /etc/X11/xorg.conf:
   file.managed:
     - source: salt://X11/xorg.conf
+    - template: jinja
 
 ######  Symlinked Files  #########
 {% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources','.xbindkeysrc.scm' ] %}

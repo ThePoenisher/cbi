@@ -41,9 +41,19 @@ arch_browser_packages:
         - user: {{ usr }}
     - force: True
     - makedirs: True
+      
+gconfshut:
+  cmd.wait:
+    - name: killall -9 gconfd-2
+    #- name: gconftool-2 --shutdown
+    - watch:
+      - file: gnome-terminal.conf
+    - user: {{ usr }}
 
-{{ home }}/.gconf/apps/gnome-terminal/profiles/Default/%gconf.xml:
+        
+gnome-terminal.conf:
   file.managed:
+    - name: {{ home }}/.gconf/apps/gnome-terminal/profiles/Default/%gconf.xml
     - user: {{ usr }}
     - group: {{ usr }}
     - require:
