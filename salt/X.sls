@@ -118,11 +118,22 @@ fonts:
 #        - ttf-ms-fonts (aur)
 #        - monaco  sehr hässlich, z.B. in Firefox
 
-/etc/fonts/conf.d/70-yes-bitmaps.conf:
+fc-cache:
+  cmd.wait:
+    - watch:
+      - file: yesb
+      - file: nob
+
+yesb:
   file.symlink:
+    - name:  /etc/fonts/conf.d/70-yes-bitmaps.conf
     - target: /etc/fonts/conf.avail/70-yes-bitmaps.conf
     - force: True
-
+      
+nob:
+  file.absent:
+    - name: /etc/fonts/conf.d/70-no-bitmaps.conf
+      
 packer --noconfirm --noedit  -S ttf-ms-fonts:
   cmd.run:
     - unless: pacman -Q ttf-ms-fonts
