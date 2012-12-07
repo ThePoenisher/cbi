@@ -126,3 +126,10 @@ fonts:
 packer --noconfirm --noedit  -S ttf-ms-fonts:
   cmd.run:
     - unless: pacman -Q ttf-ms-fonts
+
+
+/etc/fonts/local.conf:
+  file.managed:
+    - source: salt://etc/fonts_local.conf
+    - template: jinja
+      
