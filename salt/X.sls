@@ -123,7 +123,8 @@ fc-cache:
     - watch:
       - file: yesb
       - file: nob
-
+      - file: fconf
+        
 yesb:
   file.symlink:
     - name:  /etc/fonts/conf.d/70-yes-bitmaps.conf
@@ -137,3 +138,11 @@ nob:
 packer --noconfirm --noedit  -S ttf-ms-fonts:
   cmd.run:
     - unless: pacman -Q ttf-ms-fonts
+
+
+fconf:
+  file.managed:
+    - source: salt://etc/fonts_local.conf
+    - name: /etc/fonts/local.conf
+    - template: jinja
+      
