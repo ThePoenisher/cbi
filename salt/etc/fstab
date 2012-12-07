@@ -1,0 +1,26 @@
+# -*- mode: conf-unix; -*-
+
+{% if grains['cbi_machine'] == 'scriabin' %}
+
+{% elif grains['cbi_machine'] == 'debussy' %}
+# 
+# /etc/fstab: static file system information
+#
+# <file system>	<dir>	<type>	<options>	<dump>	<pass>
+tmpfs		/tmp	tmpfs	nodev,nosuid	0	0
+# /dev/sda4
+UUID=ec6f48fa-8aac-47ed-9cf1-05bc6c68940a	/         	ext4      	rw,noatime	0 1
+
+# /dev/sda2
+UUID=12402a48-b679-4807-8110-f04e3fbbb2ae	/boot     	ext4      	rw,relatime,stripe=4	0 2
+
+# /dev/sda5
+UUID=21ca9617-04e4-45d4-8439-e1e7fa5f3be5	/home     	ext4      	noauto,x-systemd.automount,rw,relatime	0 2
+
+# /dev/sda3
+UUID=cfbfb905-676f-44d4-9431-f3b9d7003651	none      	swap      	defaults  	0 0
+
+#klein
+UUID=dff541cb-3895-4025-a14d-3708a6df9cfa	/home/data2     	ext4      	noauto,x-systemd.automount,rw,relatime	0 2
+
+{% endif %}

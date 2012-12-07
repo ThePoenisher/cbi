@@ -110,9 +110,11 @@ http://www.emacswiki.org/emacs/EmacsClienta
                               pandoc-mode
                               yaml-mode
                               markdown-mode
+                              jinja2-mode
                              ;helm
                               )
         )
+  
 #+END_SRC
 *** Loading /Configuration
 #+BEGIN_SRC emacs-lisp

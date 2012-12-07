@@ -117,9 +117,10 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - mode: 400
 
 ## fstab
-sed -i -re '/\/home/s|(/home\W*ext4\W*)|\1noauto,x-systemd.automount,|' /etc/fstab:
-  cmd.run:
-    - unless: grep -q systemd.automount /etc/fstab
+/etc/fstab:
+  file.managed:
+    - template: jinja
+    - source: salt://etc/fstab
 
 /etc/vconsole.conf:
   file.append:
