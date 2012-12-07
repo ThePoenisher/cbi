@@ -109,7 +109,10 @@ fonts:
         - ttf-dejavu
         - ttf-droid
         - ttf-ubuntu-font-family
+        - ttf-freefont
         - xorg-xfontsel
+        - xorg-fonts-100dpi
+        - xorg-fonts-75dpi
         - gtk2fontsel
         - terminus-font
 #        - ttf-ms-fonts (aur)
@@ -119,3 +122,7 @@ fonts:
   file.symlink:
     - target: /etc/fonts/conf.avail/70-yes-bitmaps.conf
     - force: True
+
+packer --noconfirm --noedit  -S ttf-ms-fonts:
+  cmd.run:
+    - unless: pacman -Q ttf-ms-fonts
