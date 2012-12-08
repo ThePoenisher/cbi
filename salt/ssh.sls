@@ -1,3 +1,5 @@
+{% if pillar['arch_desktop'] %}
+
 {% for i in ['sshd_config','ssh_config'] %}
 /etc/ssh/{{ i }}:
   file.managed:
@@ -11,7 +13,9 @@ sshd:
     - watch:
       - file: /etc/ssh/sshd_config
 
+{% endif %}
 
+        
 {% for usr in pillar['ssh_users_with_auth_keys'] %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
 {{ home }}/.ssh/authorized_keys:
@@ -19,7 +23,6 @@ sshd:
     - template: jinja
     - source: salt://authorized_keys
     - user: {{ usr }}
-    - group: {{ usr }}
     - require:
         - user: {{ usr }}
     - context:

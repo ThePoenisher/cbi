@@ -50,7 +50,17 @@ johannes:
 {% endif %}
 
 
+{% if grains['cbi_machine'] == 'strauss' %}
+g:
+  user.present:
+    - shell: /usr/bin/git-annex-shell
+    - home: /var/jo/git
 
+org:
+  user.present:
+    - home: /var/jo/mobileorg
+    - password: {{ pillar['org.password'] }} 
+{% endif %}
 
 
 ####### services ########
