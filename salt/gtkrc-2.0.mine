@@ -5,7 +5,7 @@
 gtk-theme-name="Clearlooks"
 gtk-icon-theme-name="default.kde"
 {% if grains['cbi_machine'] == 'scriabin' %}
-gtk-font-name="Sans 9"
+gtk-font-name="Sans 8"
 {% elif grains['cbi_machine'] == 'debussy' %}
 gtk-font-name="Sans 10"
 {% endif %}

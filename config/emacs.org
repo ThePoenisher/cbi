@@ -885,10 +885,6 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
   ;; do not truncate lines:
   (setq org-startup-truncated nil)
   
-  (setq org-agenda-files '("~/cbi/config/"))
-  (setq org-agenda-files '("/home/data/personal/org-notes/"))
-  
-  
   ;;               (eval-after-load 'org                   ;; too early
   
   ;; doesn't work, use custom-set-variables instead!
@@ -899,9 +895,7 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
   (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                    (org-agenda-files :maxlevel . 9))))
   ;; this variable has its use, but needed to be set, due to errors in mobile org stuff
-  (setq org-directory "~/emacs/org-notes")
-  (setq org-mobile-inbox-for-pull "~/emacs/org-notes/mobile_inbox.org")
-  (setq org-mobile-directory "/scpc:root@2.josg.de:~/MobileOrg")
+  (setq org-directory "/home/data/personal/org-notes/")
   (setq org-support-shift-select t)
   (setq org-log-refile t)
   ;; Refile / Goto: Pfad konstruieren
@@ -909,8 +903,20 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
   
   (setq org-startup-with-inline-images t)
   
+  (setq org-agenda-files org-directory)
   
 #+END_SRC
+** DONE MobileOrg
+*** settings
+#+BEGIN_SRC emacs-lisp
+  (setq org-mobile-inbox-for-pull (concat org-directory "mobile_inbox.org"))
+  (setq org-mobile-directory "/scpc:org@josg.de:")
+#+END_SRC
+*** Shortcut:
+C-c C-x RET p (push) g (get)
+*** TODO BUG: "Capture as node/child"'s changes in mobileorg.org are not integrated
+*** BUG: Filenames with white spaces cannot be handled (at least not via SSH)
+Already filed on github.
 ** Keys                                                                :keys:
 *** Speedkeys
 - Speedkey SPC :: show path
@@ -1090,18 +1096,7 @@ C-c C-a org-attach  kann alles (hinzufügen, öffnen,  directory,.. )
 :PROPERTIES:
 :ID:       9c0f9d84-f084-412d-9835-1cf39c023b8a
 :END:
-*** DONE MobileOrg
-:PROPERTIES:
-:ID:       ffaddf39-fbb0-4fc2-9485-a441ae236f48
-:END:
-**** Shortcut:
-C-c C-x RET p (push) g (pull)
-**** TODO BUG: "Capture as node/child"'s changes in mobileorg.org are not integrated
-:PROPERTIES:
-:ID:       754f8434-c20b-42c8-ba01-6ac6b90248da
-:END:
-**** BUG: Filenames with white spaces cannot be handled (at least not via SSH)
-Already filed on github.
+
 *** DONE Images
 **** http://osdir.com/ml/emacs-orgmode-gnu/2010-05/msg00116.html (irrelevant)
 **** http://orgmode.org/manual/Handling-links.html#Handling-links
@@ -1211,6 +1206,69 @@ org-de/encrypt-entries/entry
 ** Anenda
 - l :: log mode
 - v :: change view (e.g. to month)
+       
+* Ediff
+** git
+taken from http://stackoverflow.com/a/4512729
+#+BEGIN_SRC emacs-lisp
+  ;;
+  ;; Setup for ediff.
+  ;;
+  (require 'ediff)
+  
+  (defvar ediff-after-quit-hooks nil
+    "* Hooks to run after ediff or emerge is quit.")
+  
+  (defadvice ediff-quit (after edit-after-quit-hooks activate)
+    (run-hooks 'ediff-after-quit-hooks))
+  
+  (setq git-mergetool-emacsclient-ediff-active nil)
+  
+  (defun local-ediff-frame-maximize ()
+    (let* ((bounds (display-usable-bounds))
+       (x (nth 0 bounds))
+       (y (nth 1 bounds))
+       (width (/ (nth 2 bounds) (frame-char-width)))
+       (height (/ (nth 3 bounds) (frame-char-height))))
+      (set-frame-width (selected-frame) width)
+      (set-frame-height (selected-frame) height)
+      (set-frame-position (selected-frame) x y)))
+  
+  ;; (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  ;; (setq ediff-split-window-function 'split-window-horizontally)
+  
+  (defun local-ediff-before-setup-hook ()
+    (setq local-ediff-saved-frame-configuration (current-frame-configuration))
+    (setq local-ediff-saved-window-configuration (current-window-configuration))
+    (local-ediff-frame-maximize)
+    (if git-mergetool-emacsclient-ediff-active
+        (raise-frame)))
+  
+  (defun local-ediff-quit-hook ()
+    (set-frame-configuration local-ediff-saved-frame-configuration)
+    (set-window-configuration local-ediff-saved-window-configuration))
+  
+  (defun local-ediff-suspend-hook ()
+    (set-frame-configuration local-ediff-saved-frame-configuration)
+    (set-window-configuration local-ediff-saved-window-configuration))
+  
+  ;; (add-hook 'ediff-before-setup-hook 'local-ediff-before-setup-hook)
+  ;; (add-hook 'ediff-quit-hook 'local-ediff-quit-hook 'append)
+  ;; (add-hook 'ediff-suspend-hook 'local-ediff-suspend-hook 'append)
+  
+  ;; Useful for ediff merge from emacsclient.
+  (defun git-mergetool-emacsclient-ediff (local remote base merged)
+    (setq git-mergetool-emacsclient-ediff-active t)
+    (if (file-readable-p base)
+        (ediff-merge-files-with-ancestor local remote base nil merged)
+      (ediff-merge-files local remote nil merged))
+    (recursive-edit))
+  
+  (defun git-mergetool-emacsclient-ediff-after-quit-hook ()
+    (exit-recursive-edit))
+  
+  (add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
+#+END_SRC
 * TODO LaTeX
 :PROPERTIES:
 :ID:       f8f6bad3-8cfa-46f9-870f-19809bb17481

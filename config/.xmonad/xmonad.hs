@@ -108,6 +108,7 @@ myStartupHook = do
   setWMName "LG3D"
   spawnOn " 1 " "emacsclient -c -n"
   spawnOn " 2 " "firefox"
+  spawnOn " 3 " my_term
   spawnOn " 8 " "thunderbird"
   
 -- Workspaces
@@ -134,15 +135,15 @@ myUrgencyHook = withUrgencyHook dzenUrgencyHook
          "-bg", "" ++ myUrgencyHintBgColor ++ ""
          ]
     }
- 
+
+-- http://www.haskell.org/haskellwiki/Xmonad/Frequently_asked_questions#I_need_to_find_the_class_title_or_some_other_X_property_of_my_program
 myManageHook = composeAll $
    [ isFullscreen --> doFullFloat  ]
    ++
-   [ title =? c  --> doFloat | c <- myFloatsT ]
-   ++
-   [ className =? c  --> doFloat | c <- myFloatsC ]
-       where myFloatsT = ["Ediff"]
-             myFloatsC = ["feh", "Gimp"]
+   composeAll [[ c =? t  --> doFloat | t <- ts ]
+      | (c,ts) <- [(title    ,["Ediff"]        ),
+                   (className,["feh", "Gimp"]  ),
+                   (resource ,["Ediff"]        )]]           
 
 -- Prompt config
 myXPConfig = defaultXPConfig {
