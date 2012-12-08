@@ -23,6 +23,8 @@ arch_X11_packages:
       - xscreensaver
       - rxvt-unicode
       - xbindkeys
+      - scrot
+      - gksu
 # file opener: https://wiki.archlinux.org/index.php/Xdg-open      
       - xdg-utils
       - dmenu

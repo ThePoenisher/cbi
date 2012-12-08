@@ -857,6 +857,19 @@ M-x set-buffer-file-coding-system
   (put 'upcase-region 'disabled nil)
   (put 'downcase-region 'disabled nil)
 #+END_SRC
+*** Tranpose
+C-t
+Transpose two characters (transpose-chars).
+M-t
+Transpose two words (transpose-words).
+C-M-t
+Transpose two balanced expressions (transpose-sexps).
+C-x C-t
+Transpose two lines (transpose-lines).
+
+words: M-t
+**** move lines
+is provided my org-metaup?
 ** Bugs und Warnings
 *** (lambda (a) ...) quoted with ' rather than with #'
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda

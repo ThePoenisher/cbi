@@ -1,2 +1,6 @@
+"" -*- mode: conf-space; -*-
 :set passkeys+=www.google.de:<Up>,<Down>,<Esc>,<Tab>
 :set passkeys+=www.google.com:<Up>,<Down>,<Esc>,<Tab>
+:set defsearch=goosh
+"":autocmd LocationChange goosh.org :normal! gi
+:autocmd PageLoad goosh.org :normal! gi

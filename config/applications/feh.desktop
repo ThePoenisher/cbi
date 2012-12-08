@@ -2,6 +2,6 @@
 Version=1.0
 Type=Application
 NoDisplay=true
-Exec=feh -F %u
+Exec=feh -F -Z %u
 Name=feh
 MimeType=image/jpeg

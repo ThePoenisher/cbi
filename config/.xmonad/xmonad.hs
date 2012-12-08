@@ -2,19 +2,25 @@
 -- Xmonad configuration file
 --   overrides some defaults and adds a few more functionalities
  
-import XMonad
+import XMonad hiding ( (|||) )
 import XMonad.Core
  
 import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Man
 
-import XMonad.Layout
+import XMonad.Layout hiding ( (|||) )
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.TwoPane
 import XMonad.Layout.LimitWindows
-
+import XMonad.Layout.PerWorkspace
+import XMonad.Layout.Grid
+import XMonad.Layout.LayoutCombinators
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
+import XMonad.Layout.Reflect
+  
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
@@ -39,7 +45,8 @@ my_term = "gnome-terminal"
 -- find out using xprop
 my_term_class = "Gnome-terminal"
 
-
+myMM=mod4Mask
+                
 main = do
    myStatusBarPipe <- spawnPipe myStatusBar
    conkyBar <- spawnPipe myConkyBar
@@ -51,7 +58,7 @@ main = do
       , layoutHook = avoidStruts myLayoutHook
       , startupHook = myStartupHook 
       , logHook = myDzenPP2 myStatusBarPipe
-      , modMask = mod4Mask
+      , modMask = myMM
       , keys = myKeys
       , workspaces = myWorkspaces
      }   
@@ -93,14 +100,35 @@ myStatusBar = "dzen2 -w 465 -ta l " ++ myDzenGenOpts
  
 -- Conky Bar
 myConkyBar = "conky -c ~/cbi/config/.conky_bar | dzen2 -x 460 -w $(($(xrandr -q | sed -n -re 's/.*current ([0-9]+) x.*/\\1/p') - 460 )) -ta r" ++ myDzenGenOpts
- 
+
 -- Layouts
-myLayoutHook = smartBorders $ limitWindows 6 ( tiled ||| Mirror tiled ||| Full ||| TwoPane (3/100) (1/2)  )
+fc (x,l) (xs,ls) = ( kb:xs, l ||| ls)
+                       where ([kb],_)=ff (x,l)
+ff (x,l) = ( [ ((myMM.|.controlMask,x), sendMessage $ JumpToLayout $ description l ) ], l)
+infixr 5 `fc`
+-- define layout that can be jumped to using modm+ctrl
+myLayouts =(xK_r, ResizableTall nmaster delta ratio [] )
+           `fc`
+           (xK_t, TwoPane delta ratio                  )
+           -- `fc`
+           -- (xK_f, Full                                 )
+           `fc` ff
+           (xK_g, Grid                                 )
   where
-    tiled = ResizableTall nmaster delta ratio []
     nmaster = 1
     delta = 3/100
     ratio = 1/2
+              
+myLayoutHook = id
+               $ smartBorders
+               $ mkToggle1 MIRROR
+               $ mkToggle1 REFLECTX
+               $ mkToggle1 REFLECTY
+               $ mkToggle1 FULL
+               $ onWorkspace " 9 " Grid
+               $ limitWindows 6
+               $ snd myLayouts
+
 
 -- this spawnOn looks at PIDs and if these change during run, it does not work
 -- e.g. firefox, wenn alread running, emacsclient (at least on first startup)
@@ -173,12 +201,12 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm, xK_plus )    , increaseLimit )
   -- , ((modMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
   --, ((modMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
-  , ((modm,  xK_s), cycleRecentWindows [xK_Super_L] xK_s xK_w)
-  , ((modm, xK_z), rotOpposite)
+  , ((modm                , xK_s    ), cycleRecentWindows [xK_Super_L] xK_s xK_w)
+  , ((modm                , xK_z    ), rotOpposite)
   , ((modm                , xK_i    ), rotUnfocusedUp)
   , ((modm                , xK_u    ), rotUnfocusedDown)
-  , ((modm .|. controlMask, xK_i    ), rotFocusedUp)
-  , ((modm .|. controlMask, xK_u    ), rotFocusedDown)
+  , ((modm .|. shiftMask  , xK_i    ), rotFocusedUp)
+  , ((modm .|. shiftMask  , xK_u    ), rotFocusedDown)
   , ((modm                , xK_Tab  ), nextMatch History (return True))
   , ((modm                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) (spawnHere my_term))
   , ((modm .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) (spawnHere my_term))
@@ -188,6 +216,10 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm                , xK_f    ), (spawnHere "firefox"))
   , ((modm .|. shiftMask  , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
   , ((modm                , xK_a    ), (spawnHere my_term))
+  , ((modm .|. controlMask, xK_x    ), sendMessage $ Toggle REFLECTX)
+  , ((modm .|. controlMask, xK_y    ), sendMessage $ Toggle REFLECTY)
+  , ((modm .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
+  , ((modm .|. controlMask, xK_m    ), sendMessage $ Toggle MIRROR)
   ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
@@ -195,7 +227,10 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   [((m .|. modm, k), windows $ f i)
      | (i, k) <- zip (workspaces conf) [xK_1 ..]
      , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]]
-
+   ++
+-- get layout jumper bindings
+  fst myLayouts
+  
 myDzenPP2 h = do
     copies <- wsContainingCopies
     let color ws | ws `elem` copies = wrapBg myHiddenWsWithCopyBg ws
@@ -213,12 +248,13 @@ myDzenPP h = defaultPP {
   ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor,
   ppUrgent = wrapBg myUrgentWsBgColor,
   ppTitle = (\x -> " " ++ wrapFg myTitleFgColor x),
-  ppLayout  = dzenColor myFgColor"" .
-                (\x -> case x of
-                    "ResizableTall" -> wrapBitmap "rob/tall.xbm"
-                    "Mirror ResizableTall" -> wrapBitmap "rob/mtall.xbm"
-                    "Full" -> wrapBitmap "rob/full.xbm"
-                )
+  ppLayout  = dzenColor myFgColor"" .  pad
+                -- (\x -> case x of
+                --     "ResizableTall" -> wrapBitmap "rob/tall.xbm"
+                --     "Mirror ResizableTall" -> wrapBitmap "rob/mtall.xbm"
+                --     "Full" -> wrapBitmap "rob/full.xbm"
+                --     otherwise -> x
+                -- )
   }
 
 wrapFgBg fgColor bgColor content= wrap ("^fg(" ++ fgColor ++ ")^bg(" ++ bgColor ++ ")") "^fg()^bg()" content
