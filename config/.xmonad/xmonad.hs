@@ -1,7 +1,8 @@
 --
 -- Xmonad configuration file
 --   overrides some defaults and adds a few more functionalities
- 
+import Data.Char
+
 import XMonad hiding ( (|||) )
 import XMonad.Core
  
@@ -248,14 +249,16 @@ myDzenPP h = defaultPP {
   ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor,
   ppUrgent = wrapBg myUrgentWsBgColor,
   ppTitle = (\x -> " " ++ wrapFg myTitleFgColor x),
-  ppLayout  = dzenColor myFgColor"" .  pad
+  ppLayout  = dzenColor myFgColor"" .  pad . filter f . map m
+  }
+            where f x = isUpper x || x=='/'
+                  m x | x==' ' = '/' | True = x
                 -- (\x -> case x of
                 --     "ResizableTall" -> wrapBitmap "rob/tall.xbm"
                 --     "Mirror ResizableTall" -> wrapBitmap "rob/mtall.xbm"
                 --     "Full" -> wrapBitmap "rob/full.xbm"
                 --     otherwise -> x
                 -- )
-  }
 
 wrapFgBg fgColor bgColor content= wrap ("^fg(" ++ fgColor ++ ")^bg(" ++ bgColor ++ ")") "^fg()^bg()" content
 wrapFg color = wrap ("^fg(" ++ color ++ ")") "^fg()"
