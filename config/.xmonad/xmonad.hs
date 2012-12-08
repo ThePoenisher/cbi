@@ -106,8 +106,8 @@ myLayoutHook = smartBorders $ limitWindows 6 ( tiled ||| Mirror tiled ||| Full |
 -- e.g. firefox, wenn alread running, emacsclient (at least on first startup)
 myStartupHook = do 
   setWMName "LG3D"
-  spawnOn " 4 " "emacsclient -c -n"
-  spawnOn " 3 " "firefox"
+  spawnOn " 1 " "emacsclient -c -n"
+  spawnOn " 2 " "firefox"
   spawnOn " 8 " "thunderbird"
   
 -- Workspaces
