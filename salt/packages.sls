@@ -39,7 +39,7 @@ base_packages:
       - mtpfs
       - graphviz
       - thunar
-      . zenity
+      - zenity
       - ffmpegthumbnailer
       - openjdk6
       - emacs
