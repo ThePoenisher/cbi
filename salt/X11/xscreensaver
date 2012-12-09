@@ -27,9 +27,9 @@ ignoreUninstalledPrograms:False
 font:		xft:Droid Sans Mono:style=Regular:size=11
 dpmsEnabled:	True
 dpmsQuickOff:	True
-dpmsStandby:	0:00:01
-dpmsSuspend:	0:00:02
-dpmsOff:	0:00:03
+dpmsStandby:	0:01:00
+dpmsSuspend:	0:01:00
+dpmsOff:	0:01:00
 grabDesktopImages:  False
 grabVideoFrames:    False
 chooseRandomImages: False

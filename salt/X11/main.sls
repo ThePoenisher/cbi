@@ -52,6 +52,7 @@ x11Autostart:
   file.managed:
     - source: salt://X11/xscreensaver
     - user: {{ usr }}
+    - group: {{ usr }}
     - force: True
 
 ########### fonts #############

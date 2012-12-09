@@ -108,10 +108,6 @@ autologin:
     - text: clientid
 
       
-/etc/gitconfig:
-  file.managed:
-    - template: jinja
-    - source: salt://etc/gitconfig
 
 /etc/default/grub:
   file.managed:
@@ -136,43 +132,45 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - source: salt://etc/systemd-logind.conf
       
 ## fstab
-/etc/fstab:
-  file.managed:
-    - template: jinja
-    - source: salt://etc/fstab
-
 /etc/vconsole.conf:
   file.append:
     - text: KEYMAP=de-latin1
     - makedirs: True
     
-### mods
-/etc/modules-load.d:
-  file.symlink:
-    - target: {{ grains['cbi_home'] }}/config/modules-load.d
-    - force: True
       
-### locale ####
-/etc/locale.gen:
+{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig' ] %}
+{% for file in files %}
+/etc/{{ file }}:
   file.managed:
-    - source: salt://etc/locale.gen
+    - source: salt://etc/{{ file }}
+    - template: jinja
+{% endfor %}
 
 locale-gen:
   cmd.wait:
     - watch:
       - file: /etc/locale.gen
 
-/etc/locale.conf:
+
+/usr/lib/systemd/system-sleep/lock.sh:
   file.symlink:
-    - target: {{ grains['cbi_home'] }}/config/locale.conf
+    - target: {{ grains['cbi_home'] }}/config/system-sleep-lock.sh
     - force: True
 
-
+### kernel
+mkinitcpio -p linux:
+  cmd.wait:
+    - watch:
+      - file: /etc/mkinitcpio.conf
+        
 ######  Symlinked Files  #########
-/etc/vimrc:
+{% set files = ['locale.conf','vimrc','modules-load.d' ] %}
+{% for file in files %}
+/etc/{{ file }}:
   file.symlink:
-    - target: {{ grains['cbi_home']+'/config/vimrc' }}
+    - target: {{ grains['cbi_home']+'/config/'+file }}
     - force: True
+{% endfor %}
       
 ########  network ###########
 hostnamectl set-hostname {{ grains['cbi_machine'] }}:
