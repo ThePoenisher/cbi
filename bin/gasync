@@ -23,7 +23,7 @@ while true; do
 				break
 		fi
 done
-dirs=( "/home/data" "/media/klein")
+dirs=( "/home/data" "/home/data2")
 if [ "$1" ]; then dirs=("${@}"); fi
 log=/var/log/cbi_sync.log
 sudo touch $log

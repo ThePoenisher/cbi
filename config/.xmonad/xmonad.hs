@@ -25,8 +25,10 @@ import XMonad.Layout.Reflect
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
-import XMonad.Hooks.SetWMName
+import XMonad.Hooks.SetWMName -- java workaround http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-SetWMName.html
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.ICCCMFocus -- java workaround http://www.eng.uwaterloo.ca/~aavogt/xmonad/docs/xmonad-contrib/XMonad-Hooks-ICCCMFocus.html
+-- http://code.google.com/p/xmonad/issues/detail?id=177
 
 import XMonad.Actions.RotSlaves
 import XMonad.Actions.CopyWindow
@@ -57,8 +59,8 @@ main = do
       , focusedBorderColor = myActiveBorderColor
       , manageHook = manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
       , layoutHook = avoidStruts myLayoutHook
-      , startupHook = myStartupHook 
-      , logHook = myDzenPP2 myStatusBarPipe
+      , startupHook =  myStartupHook 
+      , logHook = takeTopFocus >> setWMName "LG3D"  >> myDzenPP2 myStatusBarPipe  >> historyHook
       , modMask = myMM
       , keys = myKeys
       , workspaces = myWorkspaces
@@ -134,7 +136,6 @@ myLayoutHook = id
 -- this spawnOn looks at PIDs and if these change during run, it does not work
 -- e.g. firefox, wenn alread running, emacsclient (at least on first startup)
 myStartupHook = do 
-  setWMName "LG3D"
   spawnOn " 1 " "emacsclient -c -n"
   spawnOn " 2 " "firefox"
   spawnOn " 3 " my_term
@@ -236,7 +237,7 @@ myDzenPP2 h = do
     copies <- wsContainingCopies
     let color ws | ws `elem` copies = wrapBg myHiddenWsWithCopyBg ws
                  | otherwise = ws
-    (dynamicLogWithPP $ (myDzenPP h) {ppHidden = wrapFg myHiddenWsFgColor . color }) >> historyHook
+    (dynamicLogWithPP $ (myDzenPP h) {ppHidden = wrapFg myHiddenWsFgColor . color })
 
  
 -- Dzen config
