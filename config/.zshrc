@@ -14,6 +14,9 @@ alias r="ranger"
 
 export GPG_TTY=`tty`
 
+alias android-mount="sudo mkdir -p /media/android && sudo chown johannes:johannes /media/android/ && mtpfs -o user,allow_other /media/android && cd /media/android"
+alias android-umount="sudo umount /media/android"
+
 
 # Path to your oh-my-zsh configuration.
 ZSH=/usr/share/oh-my-zsh

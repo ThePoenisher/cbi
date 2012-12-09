@@ -23,6 +23,7 @@ base_packages:
       - w3m
       - lynx
       - vlock
+      - unrar
 {% if pillar['has_battery'] %}
       - powertop
       - acpi
@@ -33,10 +34,14 @@ base_packages:
       - calc
       - python2-pygments
       - nmap #(includes netcat implementation (ncat) with ipv6 support)
-{% if pillar['arch_desktop'] %}
-      - graphviz
-      - openjdk6
       - encfs
+{% if pillar['arch_desktop'] %}
+      - mtpfs
+      - graphviz
+      - thunar
+      . zenity
+      - ffmpegthumbnailer
+      - openjdk6
       - emacs
       - mercurial
       - gptfdisk
@@ -68,9 +73,11 @@ base_packages:
         Include = /etc/pacman.d/mirrorlist
 
 
-packer --noconfirm --noedit  -S git-annex-bin:
+{% for p in ['git-annex-bin','gvfs-mtp-git'] %}
+packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
-    - unless: pacman -Q git-annex-bin
+    - unless: pacman -Q {{ p }}
+{% endfor %}
 
 # (cd  /usr/share && curl -O http://downloads.kitenet.net/git-annex/linux/git-annex-standalone-amd64.tar.gz && tar xzf git-annex-standalone-amd64.tar.gz ):
 #   cmd.run:

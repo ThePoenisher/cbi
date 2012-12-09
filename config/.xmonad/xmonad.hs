@@ -172,7 +172,7 @@ myManageHook = composeAll $
    ++
    composeAll [[ c =? t  --> doFloat | t <- ts ]
       | (c,ts) <- [(title    ,["Ediff"]        ),
-                   (className,["feh", "Gimp"]  ),
+                   (className,["feh", "Gimp","Zenity"]  ),
                    (resource ,["Ediff"]        )]]           
 
 -- Prompt config
