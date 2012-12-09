@@ -1,0 +1,7 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=JDownloader Update
+Exec=/bin/sh "/home/johannes/apps/jdownloader/JDUpdate"
+Icon=/home/johannes/apps/jdownloader/.install4j/JDUpdate.png
+Categories=Network;Application;

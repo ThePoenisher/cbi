@@ -1,0 +1,6 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=JDownloader
+Exec=/bin/sh "/home/johannes/apps/jdownloader/JDownloaderPortable.exe"
+Categories=Network;Application;

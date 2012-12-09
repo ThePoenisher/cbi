@@ -35,6 +35,7 @@ base_packages:
       - nmap #(includes netcat implementation (ncat) with ipv6 support)
 {% if pillar['arch_desktop'] %}
       - graphviz
+      - openjdk6
       - encfs
       - emacs
       - mercurial

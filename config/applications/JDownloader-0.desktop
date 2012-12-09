@@ -1,0 +1,7 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=JDownloader
+Exec=/bin/sh "/home/johannes/apps/jdownloader/JDLauncher"
+Icon=/home/johannes/apps/jdownloader/.install4j/JDLauncher.png
+Categories=Network;Application;
