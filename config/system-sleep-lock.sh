@@ -2,7 +2,7 @@
 # adapted from https://wiki.archlinux.org/index.php/Pm-utils#Locking_the_screen_saver_on_hibernate_or_suspend
 # 00screensaver-lock: lock workstation on hibernate or suspend
 
-if [ "$1" = "post" ]; then
+if [ "$1" = "pre" ]; then
 
 
 		DBUS=$(ps aux | grep 'dbus-launch' | grep -v root)
@@ -23,6 +23,8 @@ if [ "$1" = "post" ]; then
 				export DISPLAY=":0"
 		fi
 
+		# does not work (not locking, or hangups, ...)
+		# su $USER -c "xlock" &
 		exec su $USER -c "xscreensaver-command -lock"
 		
 fi
