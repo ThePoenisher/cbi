@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# a simple dmenu session script 
+#
+###
+declare -A a
+a[1]="lock (Win+F1)"
+b[1]="xscreensaver-command -lock"
+
+a[2]="sleep (Win+F2)"
+b[2]="systemctl suspend"
+
+a[3]="hibernate (Win+F3)"
+b[3]="systemctl hibernate"
+
+a[4]="shutdown (Win+F4)"
+b[4]="systemctl poweroff"
+
+a[5]="hybrid (Win+F5)"
+b[5]="systemctl hybrid-sleep"
+
+a[6]="reboot (Win+F6)"
+b[6]="systemctl reboot"
+
+[ "$1" ] && exec ${b[$1]}
+
+#xft not supported!
+myFont="-*-terminus-*-*-*-*-14*-*-*-*-iso8859-*" 
+myBgBgColor="black"
+myFgColor="gray80"
+myBgColor="gray20"
+myHighlightedFgColor="white"
+myHighlightedBgColor="gray40"
+
+
+n=${#a[@]}
+fi=`seq $n`
+c=""
+for i in $fi;do
+		c="$c${a[$i]}\n";
+done
+
+choice=$(echo -e "$c" | dmenu -p "type action: "  -i -l $n -fn "$myFont" -nb \#000000 -nf \#999999 -sb \#000000 -sf \#31658C )
+
+echo $PATH
+for i in $fi;do
+		if [ "${a[$i]}" = "$choice" ]; then
+				exec ${b[$i]} 
+		fi
+done

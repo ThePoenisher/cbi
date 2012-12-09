@@ -898,6 +898,8 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
   ;; do not truncate lines:
   (setq org-startup-truncated nil)
   
+  (setq org-directory "/home/data/personal/org-notes/")
+  (setq org-agenda-files (list org-directory))
   ;;               (eval-after-load 'org                   ;; too early
   
   ;; doesn't work, use custom-set-variables instead!
@@ -908,7 +910,6 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
   (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                    (org-agenda-files :maxlevel . 9))))
   ;; this variable has its use, but needed to be set, due to errors in mobile org stuff
-  (setq org-directory "/home/data/personal/org-notes/")
   (setq org-support-shift-select t)
   (setq org-log-refile t)
   ;; Refile / Goto: Pfad konstruieren
@@ -916,7 +917,6 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
   
   (setq org-startup-with-inline-images t)
   
-  (setq org-agenda-files org-directory)
   
 #+END_SRC
 ** DONE MobileOrg

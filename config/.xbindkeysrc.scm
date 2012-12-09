@@ -69,6 +69,14 @@
 (xbindkey '(XF86AudioRaiseVolume) "amixer set Master playback 5000+")
 (xbindkey '(XF86AudioLowerVolume) "amixer set Master playback 5000-")
 
+(xbindkey '(Mod4 Escape) "dmenu_session")
+(xbindkey '(Mod4 F1) "dmenu_session 1")
+(xbindkey '(Mod4 F2) "dmenu_session 2")
+(xbindkey '(Mod4 F3) "dmenu_session 3")
+(xbindkey '(Mod4 F4) "dmenu_session 4")
+(xbindkey '(Mod4 F5) "dmenu_session 5")
+(xbindkey '(Mod4 F6) "dmenu_session 6")
+
 ;; ;; set directly keycode (here control + f with my keyboard)
 ;; (xbindkey '("m:0x4" "c:41") "xterm")
 

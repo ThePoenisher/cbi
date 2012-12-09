@@ -21,6 +21,7 @@ Xft.rgba:       rgb
 ! Xft.hintstyle:  hintslight
 
 !-- xfc Fonts -- !
+xscreensaver.Dialog.headingFont:xft:Droid Sans Mono:style=Regular:size=11
 !URxvt.font:xft:Droid Sans Mono:style=Regular:size=11
 !xft:Bitstream Vera Sans Mono:style=Roman:size=1
 !xft:Liberation Mono:style=Regular:size=10!

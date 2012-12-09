@@ -68,14 +68,14 @@ main = do
 myBitmapsPath = "/home/johannes/cbi/desktop-artwork/icons/"
  
 -- Font
-myFont = "xft:DejaVu Sans Mono:size=9" -- dzen only uses the size. fontname seems to be ignored
+myFont="xft:DejaVu Sans Mono:size=9" -- dzen only uses the size. fontname seems to be ignored
  
 -- Colors
-myBgBgColor = "black"
-myFgColor = "gray80"
-myBgColor = "gray20"
-myHighlightedFgColor = "white"
-myHighlightedBgColor = "gray40"
+myBgBgColor="black"
+myFgColor="gray80"
+myBgColor="gray20"
+myHighlightedFgColor="white"
+myHighlightedBgColor="gray40"
  
 myActiveBorderColor = "gray80"
 myInactiveBorderColor = "gray20"
@@ -100,7 +100,7 @@ myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ 
 myStatusBar = "dzen2 -w 465 -ta l " ++ myDzenGenOpts
  
 -- Conky Bar
-myConkyBar = "conky -c ~/cbi/config/.conky_bar | dzen2 -x 460 -w $(($(xrandr -q | sed -n -re 's/.*current ([0-9]+) x.*/\\1/p') - 460 )) -ta r" ++ myDzenGenOpts
+myConkyBar = "conky -c ~/cbi/config/.conky_bar | dzen2 -e 'button1=exec:dmenu_session' -x 460 -w $(($(xrandr -q | sed -n -re 's/.*current ([0-9]+) x.*/\\1/p') - 460 )) -ta r" ++ myDzenGenOpts
 
 -- Layouts
 fc (x,l) (xs,ls) = ( kb:xs, l ||| ls)

@@ -1,57 +1,3 @@
-{% if pillar['arch_desktop'] %}
-arch_X11_packages:
-  pkg.installed:
-    - names:
-      - xorg-server
-      - xorg-xinit
-      - xorg-server-utils
-      - xterm
-      - arandr
-      - xorg-xclock
-      - xorg-twm
-      - xorg-utils
-      - xcompmgr
-      - xclip
-      - xsel
-      - xpdf
-      - transset-df
-      - mesa-demos #glxgears
-      - feh
-      - xmonad
-      - xmonad-contrib
-      - xmobar
-      - xscreensaver
-      - rxvt-unicode
-      - xbindkeys
-      - scrot
-      - gksu
-# file opener: https://wiki.archlinux.org/index.php/Xdg-open      
-      - xdg-utils
-      - dmenu
-      - gmrun
-      - dzen2
-      - conky
-      - qtcurve-kde3 #vor themes?
-      - x11vnc
-#gtk switcher
-      - lxappearance
-      - gtk-engines
-# AUR:       - gtk-nova-theme
-{% if grains['cbi_machine'] == 'scriabin' %}
-      - xf86-video-intel      
-      - xf86-input-synaptics
-
-i915:
-  kmod.present:
-    - require:
-      - pkg: xf86-video-intel
-  
-{% elif grains['cbi_machine'] == 'debussy' %}
-      - xf86-video-ati
-{% endif %}
-{% endif %}
-
-      
 ######   Templates  #########
 {% set usr = pillar['desktop_user'] %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
@@ -101,24 +47,14 @@ x11Autostart:
     - makedirs: True
 {% endfor %}
 
+########  gets overridden by xcreensaver settings app ####
+{{ home }}/.xscreensaver:
+  file.managed:
+    - source: salt://X11/xscreensaver
+    - user: {{ usr }}
+    - force: True
 
 ########### fonts #############
-fonts:
-  pkg.installed:
-    - names:
-        - ttf-bitstream-vera    
-        - ttf-liberation
-        - ttf-dejavu
-        - ttf-droid
-        - ttf-ubuntu-font-family
-        - ttf-freefont
-        - xorg-xfontsel
-        - xorg-fonts-100dpi
-        - xorg-fonts-75dpi
-        - gtk2fontsel
-        - terminus-font
-#        - ttf-ms-fonts (aur)
-#        - monaco  sehr hässlich, z.B. in Firefox
 
 fc-cache:
   cmd.wait:

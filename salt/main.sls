@@ -71,13 +71,17 @@ dhcpcd@eth0:
     - enable: true
     - watch:
       - file: /etc/dhcpcd.conf
-{% endif %}
+{% endif %} #debussy
 
 cronie:
   service.running:
     - enable: True
 
-{% endif %}
+systemd-logind:
+  service.running:
+    - watch:
+      - file: /etc/systemd/logind.conf
+{% endif %} # arch
 
 {% if pillar['arch_desktop'] %}
 {% for i in [1] %}
@@ -126,6 +130,11 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - user: root
     - mode: 400
 
+/etc/systemd/logind.conf:
+  file.managed:
+    - template: jinja
+    - source: salt://etc/systemd-logind.conf
+      
 ## fstab
 /etc/fstab:
   file.managed:

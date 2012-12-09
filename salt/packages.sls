@@ -22,6 +22,7 @@ base_packages:
       - subversion
       - w3m
       - lynx
+      - vlock
 {% if pillar['has_battery'] %}
       - powertop
       - acpi
