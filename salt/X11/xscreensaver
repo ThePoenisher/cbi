@@ -1,6 +1,5 @@
-# -*- mode: conf-space; -*-
 # XScreenSaver Preferences File
-# Written by xscreensaver-demo 5.20 for johannes on Sun Dec  9 04:36:40 2012.
+# Written by xscreensaver-demo 5.20 for johannes on Sun Dec  9 10:51:37 2012.
 # http://www.jwz.org/xscreensaver/
 
 timeout:	1:00:00
@@ -27,9 +26,9 @@ ignoreUninstalledPrograms:False
 font:		xft:Droid Sans Mono:style=Regular:size=11
 dpmsEnabled:	True
 dpmsQuickOff:	True
-dpmsStandby:	0:01:00
-dpmsSuspend:	0:01:00
-dpmsOff:	0:01:00
+dpmsStandby:	0:05:00
+dpmsSuspend:	0:05:00
+dpmsOff:	0:05:00
 grabDesktopImages:  False
 grabVideoFrames:    False
 chooseRandomImages: False
