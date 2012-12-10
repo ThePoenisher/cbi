@@ -80,7 +80,7 @@ Ursache:
 - c :: create new window
 - C-x # :: close externally opened buffer and kill client
 - C-x 5 0 :: close newly created frame (only after e.g. -c or -nw)
-
+- +line:col file :: open file at line and col
 * Fonts
 #+BEGIN_SRC emacs-lisp 
   ;;(set-frame-font "-Misc-Fixed-normal-normal-normal-*-13-*-*-*-c-70-iso10646-1")
@@ -807,7 +807,11 @@ http://lists.gnu.org/archive/html/emacs-orgmode/2011-01/msg00498.html
 http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/
 ** Remote (tramp)
 /prot:user@hoste:path/
+*** for passwords check out: ~/.netrc
+works for
+- ange-ftp
 *** ftp: (ruft ange-ftp automatisch im Hintergrund auf)
+**** ange-ftp-set-passwd
 *** ssh -> /scpc
 **** Scheint ControlMaster selbst zu benutzen (sieht man an schneller performance)
 aber unterstützt nicht user definiert ControlPath, sodass verbindung auch außerhalb vom Tramp benutzt werden kann. (bzw. nicht weiter untersucht)
@@ -1928,6 +1932,12 @@ w3m-view-url-with-external-browser `M'
 *** Delete Backup and Auto Save files: `#' and `~'
 *** Jump to current file: C-x C-j
 *** Open files: just hit RET!
+* Help
+** info docs: C-h i
+** M-x finder-commentary RET
+info section from files
+** directly in files
+** internet
 * Open External Files
 ** others
 https://groups.google.com/forum/?fromgroups=#!topic/gnu.emacs.help/E6covMZec3U
@@ -2467,6 +2477,7 @@ http://www.emacswiki.org/BookmarkPlus (indirect via [[info:emacs#Bookmarks]])
 :PROPERTIES:
 :ID:       3dfa56b0-f2c1-43e6-8dfe-67eda67ef618
 :END:
+** Project Support (EDE)???
 * CBI
 ** EasyPG File Variables:
 #+BEGIN_SRC emacs-lisp

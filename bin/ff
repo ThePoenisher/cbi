@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ "$2" ]; then
+		find "$1" -iname \*"$2"\*
+else
+		find * -iname \*"$1"\*
+fi
+

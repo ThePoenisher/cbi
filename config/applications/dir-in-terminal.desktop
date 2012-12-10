@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Open Dir in Terminal
+Exec=gnome-terminal --working-directory %u
+Type=Application

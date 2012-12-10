@@ -1,16 +1,21 @@
+#use the "ends with a space trick" (see man zshall) for alias expansion after a sudo:
+alias sudo='command sudo '
+
 # run client in terminal
-alias  en="my_emacs -c -nw"
+alias -g en="my_emacs -c -nw"
 # run client in new frame
-alias  ec="my_emacs -c -n"
+alias -g ec="my_emacs -c -n"
 # run client in existing frame
-alias  e="my_emacs -n"
+alias -g e="my_emacs -n"
 
-alias  gx="git annex"
+alias -g gx="git annex"
 
-alias  vi="vim"
-alias  x="xdg-open"
+alias -g vi="vim"
+alias x="xdg-open"
 
 alias r="ranger"
+
+alias f="find"
 
 export GPG_TTY=`tty`
 
