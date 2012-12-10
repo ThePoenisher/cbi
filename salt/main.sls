@@ -172,6 +172,11 @@ mkinitcpio -p linux:
     - force: True
 {% endfor %}
       
+/etc/udevil/udevil.conf:
+  file.symlink:
+    - target: {{ grains['cbi_home']+'/config/udevil.conf' }}
+    - force: True
+      
 ########  network ###########
 hostnamectl set-hostname {{ grains['cbi_machine'] }}:
   cmd.run:

@@ -205,7 +205,7 @@ consequently non-working autoloaders!)
                       ;(help-fns+ t)
                       ;(help-macro+ t)
                       ;(help-mode+ t)
-                      nxhtml
+                      ;nxhtml
                       replace+
                       ;evil-org
                       )
