@@ -9,9 +9,14 @@ alias -g ec="my_emacs -c -n"
 alias -g e="my_emacs -n"
 
 alias -g gx="git annex"
+alias gvp="git verify-pull"
+alias gvl="git verify-log"
+alias gsp="git commit-sign-push"
+
 
 alias -g vi="vim"
-alias x="xdg-open"
+# global collides with unrar x so use \x
+alias -g x="xdg-open"
 
 alias r="ranger"
 
