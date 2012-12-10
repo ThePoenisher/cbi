@@ -126,6 +126,7 @@ Ursache:
                               w3m
                               evil
                               goto-chg
+                              php-mode
                              ; evil-leader
                               haskell-mode
                               pandoc-mode

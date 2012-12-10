@@ -37,6 +37,7 @@ base_packages:
       - nmap #(includes netcat implementation (ncat) with ipv6 support)
       - encfs
 {% if pillar['arch_desktop'] %}
+      - pdfedit
       - mtpfs
       - graphviz
       - thunar
@@ -73,7 +74,7 @@ base_packages:
         [multilib]
         Include = /etc/pacman.d/mirrorlist
 
-
+# do I need gvfs. given it limited power.  what does ubuntu use ? gphotos2?
 {% for p in ['git-annex-bin','gvfs-mtp-git'] %}
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:

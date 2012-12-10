@@ -28,6 +28,7 @@ application/x-extension-xhtml=userapp-Firefox-GCTROW.desktop
 application/x-extension-xht=userapp-Firefox-GCTROW.desktop
 inode/directory=dir-in-terminal.desktop 
 x-directory/normal=dir-in-terminal.desktop 
+text/plain=emacsclient.desktop
 
 [Added Associations]
 x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop;
