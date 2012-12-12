@@ -31,10 +31,8 @@ case "$1" in
     increase)
 				get_cur_vol
 				get_sink_num
-				if [ $CURVOL -lt 100 ]; then
-            declare -i NEWVOL=$(($CURVOL+$INCREMENT))
-            pactl set-sink-volume $SINK_NUM ${NEWVOL}"%"
-				fi
+        declare -i NEWVOL=$(($CURVOL+$INCREMENT))
+        pactl set-sink-volume $SINK_NUM ${NEWVOL}"%"
         ;;
     decrease)
 				get_cur_vol

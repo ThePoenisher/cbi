@@ -29,7 +29,11 @@ import XMonad.Hooks.SetWMName -- java workaround http://xmonad.org/xmonad-docs/x
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ICCCMFocus -- java workaround http://www.eng.uwaterloo.ca/~aavogt/xmonad/docs/xmonad-contrib/XMonad-Hooks-ICCCMFocus.html
 -- http://code.google.com/p/xmonad/issues/detail?id=177
+import XMonad.Hooks.EwmhDesktops -- chrome/firefox F11 (enabled with handleEventHook = fullscreenEventHook)
+  
 
+  
+  
 import XMonad.Actions.RotSlaves
 import XMonad.Actions.CopyWindow
 import qualified XMonad.StackSet as W
@@ -64,6 +68,7 @@ main = do
       , modMask = myMM
       , keys = myKeys
       , workspaces = myWorkspaces
+      , handleEventHook = fullscreenEventHook
      }   
  
 -- Paths
@@ -203,6 +208,7 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm, xK_plus )    , increaseLimit )
   -- , ((modMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
   --, ((modMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
+  , ((modm                , xK_b    ), sendMessage ToggleStruts)
   , ((modm                , xK_s    ), cycleRecentWindows [xK_Super_L] xK_s xK_w)
   , ((modm                , xK_z    ), rotOpposite)
   , ((modm                , xK_i    ), rotUnfocusedUp)
