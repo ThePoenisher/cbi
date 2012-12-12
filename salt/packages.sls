@@ -40,6 +40,7 @@ base_packages:
       - encfs
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - evince
       - mtpfs
       - graphviz
       - thunar
