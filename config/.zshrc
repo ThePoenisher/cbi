@@ -17,6 +17,7 @@ alias gsp="git commit-sign-push"
 alias -g vi="vim"
 # global collides with unrar x so use \x
 alias -g x="xdg-open"
+alias -g xa="xargs -d '\n' "
 
 alias r="ranger"
 
