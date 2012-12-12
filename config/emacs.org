@@ -1668,6 +1668,10 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 ** Perl
 Sehr gut: http://cpansearch.perl.org/src/YEWENBIN/Emacs-PDE-0.2.16/lisp/doc/QuickStartEn.html
 http://www.emacswiki.org/emacs/PerlDevelopEnvironment
+** PHP
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.php" . php-mode))
+#+END_SRC
 ** Markdown
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'ac-modes 'markdown-mode)

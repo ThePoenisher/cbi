@@ -9,7 +9,7 @@ function get_sink_num
 function get_mute_status
 {
     ISMUTE=0
-    if ( pactl list sinks | grep "Mute: yes" ) ; then
+    if ( pactl list sinks | grep "Mute: yes" > /dev/null ) ; then
         ISMUTE=1
     fi
 }
@@ -47,8 +47,17 @@ case "$1" in
     toggle)
 				toggle_mute
         ;;
+		conky_vol)
+				get_cur_vol
+				get_mute_status
+				if [ $ISMUTE -eq 1 ]; then
+					echo "^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/spkr_02.xbm) mute"
+				else
+				  echo "^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/spkr_01.xbm) $CURVOL %"
+				fi
+				;;
     *)
-				echo "Usage: /usr/local/bin/pavolctl {increase|decrease|toggle}"
+				echo "Usage: /usr/local/bin/pavolctl {increase|decrease|toggle|conky_vol}"
         exit 2
         ;;
 esac
