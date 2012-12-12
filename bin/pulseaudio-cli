@@ -62,3 +62,70 @@ case "$1" in
         ;;
 esac
 exit 0
+
+# #!/bin/bash
+# INCREMENT="5%"
+
+# IFS=$'\r\n'
+
+# function get_sink_num
+# {
+#     SINK_NUM=( $( pactl list short sinks | grep RUNNING | cut -f1 ) ) 
+# }
+
+# function get_mute_status
+# {
+#     MUTE=( $(pactl list sinks | sed -nre '/RUNNING/,/Mute/s/Mute: (.*)/\1/p') ) 
+# }
+
+# function toggle_mute
+# {
+# 		a=(`pactl list sinks   | grep -E "(Sink|Mute)"`)
+# 		for i in `seq 1 2 ${#a[@]}`;
+# 		do
+# 				if [ "${a[$i]}" == *
+# 		done
+# exit 0
+#     get_mute_status
+#     get_sink_num
+#     declare -i NEWMUTE=$((1-$ISMUTE))
+#     pactl set-sink-mute $SINK_NUM $NEWMUTE
+# }
+
+# function  get_cur_vol
+# {
+#     CURVOL=( $( pactl list sinks | sed -nre '/RUNNING/,/Volume/s/Volume: 0: ([^%]+).*/\1/p') )
+# }
+
+
+# case "$1" in
+#     increase)
+# 				get_cur_vol
+# 				get_sink_num
+#         pactl set-sink-volume $SINK_NUM ${NEWVOL}"%"
+#         ;;
+#     decrease)
+# 				get_cur_vol
+#         get_sink_num
+# 				echo $CURVOL
+# 				echo $INCREMENT
+#         pactl set-sink-volume $SINK_NUM ${NEWVOL}"%"
+#         ;;
+#     toggle)
+# 				toggle_mute
+#         ;;
+# 		conky_vol)
+# 				get_cur_vol
+# 				get_mute_status
+# 				if [ $ISMUTE -eq 1 ]; then
+# 					echo "^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/spkr_02.xbm) mute"
+# 				else
+# 				  echo "^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/spkr_01.xbm) $CURVOL %"
+# 				fi
+# 				;;
+#     *)
+# 				echo "Usage: /usr/local/bin/pavolctl {increase|decrease|toggle|conky_vol}"
+#         exit 2
+#         ;;
+# esac
+# exit 0
