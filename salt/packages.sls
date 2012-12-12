@@ -30,8 +30,24 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - evince
       - auctex
-      - texlive-most
+      - texlive-bibtexextra
+      - texlive-bin
+      - texlive-core
+      - texlive-fontsextra
+      - texlive-formatsextra
+      - texlive-games
+      - texlive-genericextra
+      - texlive-htmlxml
+      - texlive-humanities
+      - texlive-latexextra
+      - texlive-music
+      - texlive-pictures
+      - texlive-plainextra
+      - texlive-pstricks
+      - texlive-publishers
+      - texlive-science
       - curlftpfs
       - strace
       - calc
