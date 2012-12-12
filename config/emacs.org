@@ -571,7 +571,7 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 + man page :: K
 + i, a :: use the whole object (Word, paragraph, sentense, (, <, {, … )
 + gu, gU :: change case of selection
-
++ C-w :: window mode (more see (load "evil-maps.el"))
 ***** Eigene
 #+BEGIN_SRC emacs-lisp
 (define-key evil-motion-state-map "y" 'evil-yank)
@@ -589,6 +589,15 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 (define-key evil-insert-state-map (kbd "C-ö") 'jo/enter-org-speed)
 (define-key evil-normal-state-map "ö" 'jo/enter-org-speed)
 #+END_SRC
+***** Outline Minor Mode
+#+BEGIN_SRC emacs-lisp
+  (define-key evil-normal-state-map (kbd "M-u") 'outline-up-heading)
+  (define-key evil-normal-state-map (kbd "M-b") 'outline-backward-same-level)
+  (define-key evil-normal-state-map (kbd "M-f") 'outline-forward-same-level)
+  (define-key evil-normal-state-map (kbd "M-p") 'outline-previous-visible-heading)
+  (define-key evil-normal-state-map (kbd "M-n") 'outline-next-visible-heading)
+#+END_SRC
+#+END_SRC
 ***** Material / Quellen
 - (load "evil-maps.el")
 - inner and outer blocks:
@@ -603,11 +612,14 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 - http://ergoemacs.org/emacs/emergency_vi.html
 
 ***** Window Keys ? C-w ... (siehe evil-map)
+***** TODO translation
+z.B. C-c @  outline-minor-mode prefix
+http://emacswiki.org/emacs/Evil#toc12
 **** Initial state
 funkioniert irgendwie nicht in help-mode+
 #+BEGIN_SRC emacs-lisp 
   (evil-set-initial-state 'image-mode 'emacs) 
-  ;; (evil-set-initial-state 'help-mode 'emacs) 
+  ;; (evil-set-initial-state 'help-mode 'emacs) http://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evil
   (evil-set-initial-state 'package-menu-mode 'emacs)
   
   (add-to-list 'evil-buffer-regexps '("\\*Mingus" . emacs))
@@ -1345,6 +1357,7 @@ wann BibTex oder Biber verwednet wird, ...
 **** navigation:
 **** marking: C-c *, C-c .
 **** fillling: M-q
+**** Help: C-c TAB
 *** viewer: C-c C-v
 [[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]]
 **** TODO settings
