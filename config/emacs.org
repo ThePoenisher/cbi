@@ -208,6 +208,7 @@ consequently non-working autoloaders!)
                       ;(help-mode+ t)
                       ;nxhtml
                       replace+
+                      ac-math
                       ;evil-org
                       )
         )
@@ -243,6 +244,9 @@ consequently non-working autoloaders!)
        ))
     )
 #+END_SRC
+** External stuff
+*** load path
+not "include path"
 * TODO Keys
 :PROPERTIES:
 :ID:       341f6133-92d1-4f8d-a91f-b2529b30927f
@@ -259,7 +263,7 @@ consequently non-working autoloaders!)
     (global-set-key (kbd "M-n") 'clone-indirect-buffer)
     (global-set-key (kbd "C-x C-b") 'bs-show)
     (global-set-key (kbd "M-# M-s") 
-                    (lambda()(interactive) (find-file "~/emacs/org-notes/LinuxAdoption.org")))
+                    (lambda()(interactive) (find-file "/home/data/personal/org-notes/LinuxAdoption.org")))
     (global-set-key (kbd "M-# M-e") 'dotemacs)
     (global-set-key (kbd "C-# C-c") 'dotemacs-commit)
     (global-set-key [S-f1] 'browse-url-at-point)
@@ -1293,148 +1297,214 @@ taken from http://stackoverflow.com/a/4512729
 :END:
 ** TODO Verbesserungen
 http://cristal.inria.fr/whizzytex/
+** Graphiken
+*** Probleme
+**** bei eps to pdf conversion:
+!!! Error: Output filename '../graphics/LOGO_Text-eps-converted-to.pdf' not allowed in restricted mode.
+! Package pdftex.def Error: File `../graphics/LOGO_Text-eps-converted-to.pdf' not found.
+http://tex.stackexchange.com/questions/39460/texlive-2011-pdflatex-does-not-convert-eps-to-pdf-for-eps-files-in-subdirectori
+Lösung: 
+- graphic in selben subtree im filesystem wie .tex
+- -shell-escape parameter übergeben
+- shell_escape = p setting in my texmf.cnf file
+** AUCTeX
+*** installation
+AUCTeX was installed using archlinux's pacman (most up-to-date source!, newer than  (M)ELPA)
+*** activation
+#+BEGIN_SRC emacs-lisp
+     (load "auctex.el" nil t t)
+     (load "preview-latex.el" nil t t)
+#+END_SRC
+*** WICHTIG: eigentlich geht fast alles automatisch
+z.B: wann er direct DVI previewed und wann erst über umwandlung,
+wann BibTex oder Biber verwednet wird, ...
+*** commands: 
+**** erstellen: C-c C-c
+**** clean: C-c C-c Clean
+**** environments: C-c C-e
+**** sections: C-c C-s 
+**** marcoes: C-c RET
+*** viewer: C-c C-v
+[[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]]
+**** TODO settings
+#+BEGIN_SRC emacs-lisp :tangle no
+  (eval-after-load 'latex
+  '(add-to-list 'TeX-view-program-selection '(output-pdf "xpdf")))
+
+#+END_SRC
+**** source correlation
+
+***** Synctex
+funktioniert sehr gut mit Auctex für pdfs out of the box mit evince. 
+andere viewer schwierig. 
+https://bbs.archlinux.org/viewtopic.php?pid=545027#p545027
+***** source specials (only dvi)
+geht out of the box mit xdvi und okular. 
+***** display corect page (vereinfachte forward search für pdf)
+ootb für xpdf
+*** options
+[[info:auctex#Processor%20Options][info:auctex#Processor Options]]
+C-c C-t ...
+z.B.    C-p (für PDF mode)
+        C-s (für Source correlation)
+*** BibTex
+**** Settings
+[[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
+better: specify backend=bibtex for biblatex package
+#+BEGIN_SRC emacs-lisp
+(setq LaTeX-biblatex-use-Biber nil)
+#+END_SRC
+**** Probleme: 
+***** undefined control sequence: \endentry
+http://tex.stackexchange.com/questions/66218/cannot-use-biblatex
+http://tex.stackexchange.com/questions/66459/biblatex-with-biber-backend-results-in-undefined-control-sequences-but-not-with
+seems to be biber bug
+****** Lösung:
+vorerst bibtex (als biblatex backend) benutzen
+*** RefTeX
+**** settings
+#+BEGIN_SRC emacs-lisp
+  (setq reftex-plug-into-AUCTeX t)
+#+END_SRC
+**** TODO http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands
+*** multi-file documents
+#+BEGIN_SRC emacs-lisp
+  ;;If you open a slave file, AUCTeX will neither open the master file and
+  ;;parse it, nor will it open other slave files because it does not now
+  ;;about them.  It relies on such information to be stored in the `auto'
+  ;;subdirectory.  By not enabling `TeX-auto-save', you are effectively
+  ;;dumping the advantages of parsing in multi-file documents.
+  ;; from http://lists.gnu.org/archive/html/auctex/2005-05/msg00015.html
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  ;; Each time you open a new file, AUCTeX will then
+  ;; ask you for a master file:
+  (setq-default TeX-master nil)
+#+END_SRC
 ** Script
 #+BEGIN_SRC emacs-lisp
-;; AUCTeX was installed using ELPA package.el
-
-;; TODO http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands
-
-
-(add-hook 'LaTeX-mode-hook 'jo/latex-mode-hook-command)
-(setq reftex-plug-into-AUCTeX t)
-
-;;If you open a slave file, AUCTeX will neither open the master file and
-;;parse it, nor will it open other slave files because it does not now
-;;about them.  It relies on such information to be stored in the `auto'
-;;subdirectory.  By not enabling `TeX-auto-save', you are effectively
-;;dumping the advantages of parsing in multi-file documents.
-;; from http://lists.gnu.org/archive/html/auctex/2005-05/msg00015.html
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-;; Each time you open a new file, AUCTeX will then
-;; ask you for a master file:
-(setq-default TeX-master nil)
-
-;; TODO: test this
-(setq LaTeX-math-abbrev-prefix "M-#")
-
-(defun jo/latex-mode-hook-command ()
-	(setq ac-sources
-				(append '(ac-source-math-unicode ac-source-math-latex
-																				 ac-source-latex-commands)
-								ac-sources))
-
-	;; gibt an, welche environments ein automatisch ein label bekommen
-	;; sollen. wie das label erzeugt wird, ist allerdings in der variable
-	;; reftex-insert-label-flags festgelegt. Dazu muss die Umgebung aber
-	;; auch in reftex-label-alist definiert sein
-	(LaTeX-add-environments
-	 ;; '("theorem" );;LaTeX-env-label)
-	 ;; '("assumption" );;LaTeX-env-label)
-	 ;; '("definition" );;LaTeX-env-label)
-	 ;; '("lemma" );;LaTeX-env-label)
-	 '("example" LaTeX-env-label);ask for label
-	 '("remark" LaTeX-env-label)
-	 ;; '("corollary" )	LaTeX-env-label) 
-	 )
-	(setq TeX-source-correlate-method 'source-specials)
-	(TeX-source-correlate-mode t)
-	(setq preview-scale-function 
-				(lambda nil 
-					(if (boundp (quote text-scale-mode-step)) 
-							nil (text-scale-set 0))
-					(* 1.1 (expt text-scale-mode-step (+ 1 text-scale-mode-amount)))))
-	(setq reftex-insert-label-flags (quote ("shladc" "sfhladc")))
-	(setq reftex-label-alist 
-				'(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
-					("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
-					("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
-					("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
-					("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
-					("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
-					("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary") nil)
-					))
-
-	
-	
-	(turn-on-reftex)
-	(speck-mode)
-	)
-
-(eval-after-load 'latex
-	'(progn		 
-			(define-key LaTeX-mode-map
-				[f4] (tex-build-command-function '(jo/Tex-next-command) nil t))
-			(define-key LaTeX-mode-map
-				[f5] (tex-build-command-function "LaTeX" nil t))
-			(define-key LaTeX-mode-map
-				[f6] (tex-build-command-function "BibTeX" nil t))
-			(define-key LaTeX-mode-map
-				[f7] (tex-build-command-function "View" nil))
-			;; (define-key LaTeX-mode-map 
-			;; 	 [(shift f6)] (tex-build-command-function "PdfLaTeX" t t))
-			;; (define-key LaTeX-mode-map 
-			;; 	 [(super f6)] (tex-build-command-function "dviPS" t))
-			;; (when unixp (define-key LaTeX-mode-map 
-			;; 		 [(meta f6)] (tex-build-command-function "dviPS" t)))		
-			;; (define-key LaTeX-mode-map 
-			;; 	 [(super control f6)] (tex-build-command-function "dviPS landscape" t))
-			;; (define-key LaTeX-mode-map 
-			;; 	 [(super meta f6)] (tex-build-command-function "PS2pdf" t))
-			;; (define-key LaTeX-mode-map
-			;; 	[(super f8)] (tex-build-command-function "Ghostview" nil))
-			;; (define-key LaTeX-mode-map 
-			;; 	[(super meta f8)] (tex-build-command-function "View PDF" nil))
-
-			;;(require 'auto-complete-latex);does not include math
-			;;commands. Use ac-math instead:
-			(require 'ac-math)				 
-
-			;; (require 'tex-mik)
-			)
-	)
-;; from http://lists.gnu.org/archive/html/auctex/2008-10/msg00058.html
-(defun tex-build-command-function (cmd &optional recenter-output-buffer 
-																			 save-buffer override-confirm)
-	"Build a TeX-command function."
-	`(lambda()
-			 (interactive)
-			 (when ,save-buffer (save-buffer))
-			 (when ,recenter-output-buffer (TeX-recenter-output-buffer nil))
-			 (TeX-command ,cmd 'TeX-master-file (if ,override-confirm 1 -1)))
-)
-
-(defun jo/Tex-next-command ()
-	(interactive)
-	(let ((name (TeX-master-file)))
-		(let (
-							(cmd (cond ((if (string-equal name TeX-region)
-							 (TeX-check-files (concat name "." (TeX-output-extension))
-																(list name)
-																TeX-file-extensions)
-						 (TeX-save-document (TeX-master-file)))
-					 TeX-command-default)
-					((and (memq major-mode '(doctex-mode latex-mode))
-								(TeX-check-files (concat name ".bbl")
-																 (mapcar 'car
-																				 (LaTeX-bibliography-list))
-																 BibTeX-file-extensions))
-					 ;; We should check for bst files here as well.
-					 TeX-command-BibTeX)
-					((TeX-process-get-variable name
-																		 'TeX-command-next
-																		 TeX-command-Show))
-					(TeX-command-Show))))
-		(message (concat "Running " cmd))
-		cmd
-		))
-	)
-
-
-
-
-
-
+  ;; TODO: test this
+  (setq LaTeX-math-abbrev-prefix "M-#")
+  
+  (add-hook 'LaTeX-mode-hook 'jo/latex-mode-hook-command)
+  (defun jo/latex-mode-hook-command ()
+    (setq ac-sources
+          (append '(ac-source-math-unicode ac-source-math-latex
+                                           ac-source-latex-commands)
+                  ac-sources))
+  
+    ;; gibt an, welche environments ein automatisch ein label bekommen
+    ;; sollen. wie das label erzeugt wird, ist allerdings in der variable
+    ;; reftex-insert-label-flags festgelegt. Dazu muss die Umgebung aber
+    ;; auch in reftex-label-alist definiert sein
+    (LaTeX-add-environments
+     ;; '("theorem" LaTeX-env-label)
+     ;; '("assumption" LaTeX-env-label)
+     ;; '("definition" LaTeX-env-label)
+     ;; '("lemma" LaTeX-env-label)
+     '("example" LaTeX-env-label);ask for label
+     '("remark" LaTeX-env-label)
+     ;; '("corollary"   LaTeX-env-label) 
+     )
+	  ;;(setq TeX-source-correlate-method 'source-specials)
+    (TeX-source-correlate-mode t)
+    (setq preview-scale-function 
+          (lambda nil 
+            (if (boundp (quote text-scale-mode-step)) 
+                nil (text-scale-set 0))
+            (* 1.1 (expt text-scale-mode-step (+ 1 text-scale-mode-amount)))))
+    (setq reftex-insert-label-flags (quote ("shladc" "sfhladc")))
+    (setq reftex-label-alist 
+          '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
+            ("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
+            ("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
+            ("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
+            ("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
+            ("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
+            ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary") nil)
+            ))
+  
+    
+    
+    (turn-on-reftex)
+    (speck-mode)
+    )
+  
+  (eval-after-load 'latex
+    '(progn    
+        (define-key LaTeX-mode-map
+          [f4] (tex-build-command-function '(jo/Tex-next-command) nil t))
+        (define-key LaTeX-mode-map
+          [f5] (tex-build-command-function "LaTeX" nil t))
+        (define-key LaTeX-mode-map
+          [f6] (tex-build-command-function "BibTeX" nil t))
+        (define-key LaTeX-mode-map
+          [f7] (tex-build-command-function "View" nil))
+        ;; (define-key LaTeX-mode-map 
+        ;;   [(shift f6)] (tex-build-command-function "PdfLaTeX" t t))
+        ;; (define-key LaTeX-mode-map 
+        ;;   [(super f6)] (tex-build-command-function "dviPS" t))
+        ;; (when unixp (define-key LaTeX-mode-map 
+        ;;     [(meta f6)] (tex-build-command-function "dviPS" t)))   
+        ;; (define-key LaTeX-mode-map 
+        ;;   [(super control f6)] (tex-build-command-function "dviPS landscape" t))
+        ;; (define-key LaTeX-mode-map 
+        ;;   [(super meta f6)] (tex-build-command-function "PS2pdf" t))
+        ;; (define-key LaTeX-mode-map
+        ;;  [(super f8)] (tex-build-command-function "Ghostview" nil))
+        ;; (define-key LaTeX-mode-map 
+        ;;  [(super meta f8)] (tex-build-command-function "View PDF" nil))
+  
+        ;;(require 'auto-complete-latex);does not include math
+        ;;commands. Use ac-math instead:
+        (require 'ac-math)         
+  
+        ;; (require 'tex-mik)
+        )
+    )
+  ;; from http://lists.gnu.org/archive/html/auctex/2008-10/msg00058.html
+  (defun tex-build-command-function (cmd &optional recenter-output-buffer 
+                                         save-buffer override-confirm)
+    "Build a TeX-command function."
+    `(lambda()
+         (interactive)
+         (when ,save-buffer (save-buffer))
+         (when ,recenter-output-buffer (TeX-recenter-output-buffer nil))
+         (TeX-command ,cmd 'TeX-master-file (if ,override-confirm 1 -1)))
+  )
+  
+  ;; warum habe ich eine eigene?
+  (defun jo/Tex-next-command ()
+    (interactive)
+    (let ((name (TeX-master-file)))
+      (let (
+                (cmd (cond ((if (string-equal name TeX-region)
+                 (TeX-check-files (concat name "." (TeX-output-extension))
+                                  (list name)
+                                  TeX-file-extensions)
+               (TeX-save-document (TeX-master-file)))
+             TeX-command-default)
+            ((and (memq major-mode '(doctex-mode latex-mode))
+                  (TeX-check-files (concat name ".bbl")
+                                   (mapcar 'car
+                                           (LaTeX-bibliography-list))
+                                   BibTeX-file-extensions))
+             ;; We should check for bst files here as well.
+             TeX-command-BibTeX)
+            ((TeX-process-get-variable name
+                                       'TeX-command-next
+                                       TeX-command-Show))
+            (TeX-command-Show))))
+      (message (concat "Running " cmd))
+      cmd
+      ))
+    )
+  
+  
+  
+  
+  
+  
 #+END_SRC
 * Navigate, Access, Cycles, Completen, Suggest,..
 ** Completion
@@ -2076,7 +2146,7 @@ http://vimgolf.com/
     ;; open  ~/.emacs
     (defun dotemacs ()
       (interactive)
-      (find-file-other-window "~/cbi/config/emacs.org")
+      (find-file "~/cbi/config/emacs.org")
       )
     ;; save and commit ~/.emacs
     (defun dotemacs-commit ()

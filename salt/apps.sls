@@ -81,8 +81,8 @@ gnome-terminal.conf:
     - source: salt://gtkrc-2.0.mine
 
       
-{% for f in ["gtk-2.0","gtk-3.0"] %}
-{{ home }}/.config/{{ f }}:
+{% for f in [".config/gtk-2.0",".config/gtk-3.0",'.config/dconf' ] %}
+{{ home }}/{{ f }}:
   file.symlink:
     - target: {{ grains['cbi_home'] }}/config/{{ f }}
     - user: {{ usr }}
