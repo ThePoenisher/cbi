@@ -145,7 +145,7 @@ myStartupHook = do
   spawnOn " 2 " "firefox"
   spawnOn " 3 " my_term
   spawnOn " 8 " "thunderbird"
-  spawnOn " 9 " "xdg-open /home/data2/music"
+  spawnOn " 9 " "gnome-terminal /home/data2/music"
   
 -- Workspaces
 myWorkspaces = map ( pad . show ) [1..9]
