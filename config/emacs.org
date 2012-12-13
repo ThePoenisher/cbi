@@ -1479,7 +1479,7 @@ vorerst bibtex (als biblatex backend) benutzen
     
     (outline-minor-mode)
     (turn-on-reftex)
-    (speck-mode)
+    ;;(speck-mode)
     )
   
   (eval-after-load 'latex
