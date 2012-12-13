@@ -182,4 +182,10 @@ hostnamectl set-hostname {{ grains['cbi_machine'] }}:
   cmd.run:
     - unless: test `hostname` = "{{ grains['cbi_machine'] }}"
 
+##### printing ####
+cups:
+  service.running:
+    - enable: True
+
+  
 {% endif %} #ARCH OS
