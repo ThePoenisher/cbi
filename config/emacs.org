@@ -64,8 +64,22 @@ http://www.emacswiki.org/emacs/EmacsClienta
 (info "(emacs)Emacs Server")
 
 
+using ALTERNATE_EDITOR="" instead of: 
+
 #+BEGIN_SRC emacs-lisp :tangle no
   (server-start)
+#+END_SRC
+** shutdown
+from http://stackoverflow.com/questions/1167484/how-to-gracefully-shutdown-emacs-daemon
+#+BEGIN_SRC emacs-lisp
+  (defun shutdown-emacs-server () (interactive)
+    (when (not (eq window-system 'x))
+      (message "Initializing x windows system.")
+      (x-initialize-window-system)
+      (when (not x-display-name) (setq x-display-name (getenv "DISPLAY")))
+      (select-frame (make-frame-on-display x-display-name '((window-system . x))))
+    )
+    (let ((last-nonmenu-event nil)(window-system "x"))(save-buffers-kill-emacs)))
 #+END_SRC
 ** Problem:
 *** TODO starting several clients for emacs --daemon:
@@ -557,7 +571,7 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 + man page :: K
 + i, a :: use the whole object (Word, paragraph, sentense, (, <, {, … )
 + gu, gU :: change case of selection
-
++ C-w :: window mode (more see (load "evil-maps.el"))
 ***** Eigene
 #+BEGIN_SRC emacs-lisp
 (define-key evil-motion-state-map "y" 'evil-yank)
@@ -575,6 +589,15 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 (define-key evil-insert-state-map (kbd "C-ö") 'jo/enter-org-speed)
 (define-key evil-normal-state-map "ö" 'jo/enter-org-speed)
 #+END_SRC
+***** Outline Minor Mode
+#+BEGIN_SRC emacs-lisp
+  (define-key evil-normal-state-map (kbd "M-u") 'outline-up-heading)
+  (define-key evil-normal-state-map (kbd "M-b") 'outline-backward-same-level)
+  (define-key evil-normal-state-map (kbd "M-f") 'outline-forward-same-level)
+  (define-key evil-normal-state-map (kbd "M-p") 'outline-previous-visible-heading)
+  (define-key evil-normal-state-map (kbd "M-n") 'outline-next-visible-heading)
+#+END_SRC
+#+END_SRC
 ***** Material / Quellen
 - (load "evil-maps.el")
 - inner and outer blocks:
@@ -589,11 +612,14 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 - http://ergoemacs.org/emacs/emergency_vi.html
 
 ***** Window Keys ? C-w ... (siehe evil-map)
+***** TODO translation
+z.B. C-c @  outline-minor-mode prefix
+http://emacswiki.org/emacs/Evil#toc12
 **** Initial state
 funkioniert irgendwie nicht in help-mode+
 #+BEGIN_SRC emacs-lisp 
   (evil-set-initial-state 'image-mode 'emacs) 
-  ;; (evil-set-initial-state 'help-mode 'emacs) 
+  ;; (evil-set-initial-state 'help-mode 'emacs) http://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evil
   (evil-set-initial-state 'package-menu-mode 'emacs)
   
   (add-to-list 'evil-buffer-regexps '("\\*Mingus" . emacs))
@@ -1291,7 +1317,8 @@ taken from http://stackoverflow.com/a/4512729
   
   (add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
 #+END_SRC
-* TODO LaTeX
+* DONE LaTeX
+CLOSED: [2012-12-12 Wed 23:57]
 :PROPERTIES:
 :ID:       f8f6bad3-8cfa-46f9-870f-19809bb17481
 :END:
@@ -1318,12 +1345,19 @@ AUCTeX was installed using archlinux's pacman (most up-to-date source!, newer th
 *** WICHTIG: eigentlich geht fast alles automatisch
 z.B: wann er direct DVI previewed und wann erst über umwandlung,
 wann BibTex oder Biber verwednet wird, ...
-*** commands: 
+*** commands:
+**** Cheat Sheet: http://ftp.gnu.org/pub/gnu/auctex/11.86-extra/tex-ref.pdf
 **** erstellen: C-c C-c
 **** clean: C-c C-c Clean
 **** environments: C-c C-e
+- item: C-c C-j
 **** sections: C-c C-s 
-**** marcoes: C-c RET
+[[info:auctex#Sectioning]]
+**** marcos: C-c RET
+**** navigation:
+**** marking: C-c *, C-c .
+**** fillling: M-q
+**** Help: C-c TAB
 *** viewer: C-c C-v
 [[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]]
 **** TODO settings
@@ -1342,11 +1376,13 @@ https://bbs.archlinux.org/viewtopic.php?pid=545027#p545027
 geht out of the box mit xdvi und okular. 
 ***** display corect page (vereinfachte forward search für pdf)
 ootb für xpdf
-*** options
+*** "processing"
 [[info:auctex#Processor%20Options][info:auctex#Processor Options]]
 C-c C-t ...
 z.B.    C-p (für PDF mode)
         C-s (für Source correlation)
+permanent: 
+% -*- eval: (TeX-PDF-mode 1); -*-
 *** BibTex
 **** Settings
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
@@ -1366,6 +1402,9 @@ vorerst bibtex (als biblatex backend) benutzen
 #+BEGIN_SRC emacs-lisp
   (setq reftex-plug-into-AUCTeX t)
 #+END_SRC
+**** commands:
+- TOC :: C-c =
+- TOC :: C-c -
 **** TODO http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands
 *** multi-file documents
 #+BEGIN_SRC emacs-lisp
