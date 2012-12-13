@@ -157,41 +157,41 @@ Ursache:
 #+END_SRC
 *** Loading /Configuration
 #+BEGIN_SRC emacs-lisp
-(require 'package)
-
-;;;;;;;;;;;;
-;; Archives:
-;;;;;;;;;;;;
-;; http://emacswiki.org/emacs/ELPA
-;; automatically build packages from recipies
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-;not needed (because included) (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-;; out of date (sometimes)
-;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-
-
-;; from http://batsov.com/articles/2012/02/19/package-management-in-emacs-the-good-the-bad-and-the-ugly/
-
-(defun prelude-packages-installed-p ()
-	(require 'cl)
-  (loop for p in prelude-packages
-        when (not (package-installed-p p)) do (return nil)
-        finally (return t)))
-
-(package-initialize)
-;; see (info "(emacs)Package Installation")
-(setq package-enable-at-startup nil)
-
-(unless (prelude-packages-installed-p)
-  ;; check for new packages (package versions)
-  (message "%s" "Emacs Prelude is now refreshing its package database...")
-  (package-refresh-contents)
-  (message "%s" " done.")
-  ;; install the missing packages
-  (dolist (p prelude-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
-
+  (require 'package)
+  
+  ;;;;;;;;;;;;
+  ;; Archives:
+  ;;;;;;;;;;;;
+  ;; http://emacswiki.org/emacs/ELPA
+  ;; automatically build packages from recipies
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+                                          ;not needed (because included) (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  ;; out of date (sometimes)
+  ;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  
+  
+  ;; from http://batsov.com/articles/2012/02/19/package-management-in-emacs-the-good-the-bad-and-the-ugly/
+  
+  (defun prelude-packages-installed-p ()
+    (require 'cl)
+    (loop for p in prelude-packages
+          when (not (package-installed-p p)) do (return nil)
+          finally (return t)))
+  
+  (package-initialize)
+  ;; see (info "(emacs)Package Installation")
+  (setq package-enable-at-startup nil)
+  (with-demoted-errors
+      (unless (prelude-packages-installed-p)
+        ;; check for new packages (package versions)
+        (message "%s" "Emacs Prelude is now refreshing its package database...")
+        (package-refresh-contents)
+        (message "%s" " done.")
+        ;; install the missing packages
+        (dolist (p prelude-packages)
+          (when (not (package-installed-p p))
+            (package-install p))))
+  )
 #+END_SRC
 ** TODO el-get
 :PROPERTIES:
