@@ -98,7 +98,9 @@ Ursache:
 * Fonts
 #+BEGIN_SRC emacs-lisp 
   ;;(set-frame-font "-Misc-Fixed-normal-normal-normal-*-13-*-*-*-c-70-iso10646-1")
-  ;;(set-frame-font "Droid Sans Mono-10")
+  ;;(set-frame-font "Droid Sans-11")
+  ;;(set-frame-font "Droid Serif-11")
+  ;;(set-frame-font jo/font)
   (setq jo/font 
         (if (string= (getenv "CBI_MACHINE") "scriabin") 
             "DejaVu Sans Mono-9"
@@ -143,6 +145,7 @@ Ursache:
                               php-mode
                              ; evil-leader
                               haskell-mode
+                              helm
                               pandoc-mode
                               yaml-mode
                               markdown-mode
@@ -316,6 +319,7 @@ Guile
 *** Miscellaneous
 #+BEGIN_SRC emacs-lisp
    (setq inhibit-startup-screen t)
+   (global-hl-line-mode 1)
 #+END_SRC
 *** Parenthesis
 #+BEGIN_SRC emacs-lisp
@@ -392,6 +396,7 @@ http://www.nongnu.org/color-theme/#sec4
   (require 'color-theme)
   (color-theme-initialize)
   (color-theme-dark-laptop)
+  ;; alternativ? color-theme-comidia, 
 #+END_SRC
 ***** Schöne Themes: 
 ****** color-theme-dark-laptop
@@ -589,7 +594,7 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 (define-key evil-insert-state-map (kbd "C-ö") 'jo/enter-org-speed)
 (define-key evil-normal-state-map "ö" 'jo/enter-org-speed)
 #+END_SRC
-***** Outline Minor Mode
+***** Outline ( for Minor Mode and also ORG!!!!!)
 #+BEGIN_SRC emacs-lisp
   (define-key evil-normal-state-map (kbd "M-u") 'outline-up-heading)
   (define-key evil-normal-state-map (kbd "M-b") 'outline-backward-same-level)
@@ -798,6 +803,7 @@ Only thing currently used: jo/enter-org-speed
            :load "evil-org.el"
            )
   #+END_SRC
+***** instead see under keys/outline!
 **** TODO TODOS
 :PROPERTIES:
 :ID:       771a7d4a-1d5d-421d-a102-76e6763ef62b
@@ -1341,6 +1347,7 @@ AUCTeX was installed using archlinux's pacman (most up-to-date source!, newer th
 #+BEGIN_SRC emacs-lisp
      (load "auctex.el" nil t t)
      (load "preview-latex.el" nil t t)
+
 #+END_SRC
 *** WICHTIG: eigentlich geht fast alles automatisch
 z.B: wann er direct DVI previewed und wann erst über umwandlung,
@@ -1351,6 +1358,7 @@ wann BibTex oder Biber verwednet wird, ...
 **** clean: C-c C-c Clean
 **** environments: C-c C-e
 - item: C-c C-j
+- close: C-c ]
 **** sections: C-c C-s 
 [[info:auctex#Sectioning]]
 **** marcos: C-c RET
@@ -1377,17 +1385,22 @@ geht out of the box mit xdvi und okular.
 ***** display corect page (vereinfachte forward search für pdf)
 ootb für xpdf
 *** "processing"
+**** misc
 [[info:auctex#Processor%20Options][info:auctex#Processor Options]]
 C-c C-t ...
 z.B.    C-p (für PDF mode)
         C-s (für Source correlation)
 permanent: 
 % -*- eval: (TeX-PDF-mode 1); -*-
+**** settings
+#+BEGIN_SRC emacs-lisp
+  (setq TeX-save-query nil)
+#+END_SRC
 *** BibTex
 **** Settings
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
 better: specify backend=bibtex for biblatex package
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (setq LaTeX-biblatex-use-Biber nil)
 #+END_SRC
 **** Probleme: 
@@ -1464,7 +1477,7 @@ vorerst bibtex (als biblatex backend) benutzen
             ))
   
     
-    
+    (outline-minor-mode)
     (turn-on-reftex)
     (speck-mode)
     )
@@ -2078,6 +2091,7 @@ undo save history ?
 - repeat-complex-command (C-x M-ESC, C-x ESC ESC):: scroll, edit and re-evaluate ( auch keine input events)
 - repeat (C-x z):: repeat last comman, aber keine inpue events
 - list-command-history :: in a buffer
+- use HELM and type M-x     
 * Music
 ** Mingus
 - mpd frontend

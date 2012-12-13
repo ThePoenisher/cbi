@@ -93,7 +93,7 @@ base_packages:
         Include = /etc/pacman.d/mirrorlist
 
 # do I need gvfs. given it limited power.  what does ubuntu use ? gphotos2?
-{% for p in ['git-annex-bin','gvfs-mtp-git'] %}
+{% for p in ['git-annex-bin','gvfs-mtp-git','epson-inkjet-printer-workforce-635-nx625-series'] %}
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
     - unless: pacman -Q {{ p }}
