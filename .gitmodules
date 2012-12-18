@@ -1,3 +1,6 @@
 [submodule "desktop-artwork/wallpapers"]
 	path = desktop-artwork/wallpapers
 	url = git@github.com:kuerzn/wallpapers
+[submodule "sources/ponymix"]
+	path = sources/ponymix
+	url = git://github.com/falconindy/ponymix.git
