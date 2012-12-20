@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+use strict;
+use Switch;
+
+my $SINK=4;
+		
+switch($ARGV[0]){
+		case "toggle_all" { 
+				my @a=`pactl list sinks   | grep -E "(Sink|Mute)"`;
+				for (my $i=0;$i<scalar @a;$i+=2)
+				{
+						$a[$i] =~ m/Sink #([0-9])+/;
+						exec "pactl set-sink-mute $1 ".( $a[$i+1] =~ m/: no/ ? "1" : "0") 
+				}
+		}
+		case "conky" {
+				my $v=`pactl list sinks | sed -nre '/Sink #$SINK/,/Volume/p'`;
+				$v =~ m/Volume: 0: ([^%]+).*/;
+				my $p=$1;
+				print "^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/".($v =~ m/Mute: yes/ ? "vol-mute.xbm) M": "spkr_01.xbm)")." $p%";
+		}
+		case "voldown" {
+				exec "pactl -- set-sink-volume $SINK '-10%'"
+		}
+		case "volup" {
+				exec "pactl set-sink-volume $SINK +10%"
+		}
+}

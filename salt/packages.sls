@@ -30,6 +30,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - perl-switch
       - evince
       - auctex
       - texlive-bibtexextra

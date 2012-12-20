@@ -4,3 +4,4 @@
 .#*
 nohup.out
 config/gtk-2.0/gtkfilechooser.ini
+../config/.config/gtk-2.0/gtkfilechooser.ini

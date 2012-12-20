@@ -834,6 +834,10 @@ replay with @ <key> for first time and @@ subsequently
 **** marks
 define with m <key>
 open with ' <key>
+**** merge/ diff
+http://vimdoc.sourceforge.net/htmldoc/diff.html
+do (get)
+dp (push)
 *** Tutorials
 http://vimcasts.org/episodes/modal-editing-undo-redo-and-repeat/
 *** modal editing
@@ -869,8 +873,12 @@ http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-TODO/
 #+END_SRC
 ** Encoding
 http://ergoemacs.org/emacs/emacs_encoding_decoding_faq.html
+*** Reread using different encoding
+C-x RET r
+[[info:emacs#Specify%20Coding][info:emacs#Specify Coding]]
+*** Change encoding used to save the buffer
+C-x RET f
 *** Line endings
-C-x RET f undecided-linux
 M-x set-buffer-file-coding-system
 ** Local Variables
 [[info:emacs#Specifying%20File%20Variables][info:emacs#Specifying File Variables]]
@@ -914,6 +922,8 @@ is provided my org-metaup?
 ** Bugs und Warnings
 *** (lambda (a) ...) quoted with ' rather than with #'
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
+** Copy/Paster, Clipboard, Selection
+[[info:emacs#Cut%20and%20Paste][info:emacs#Cut and Paste]]
 * Org Mode
 :PROPERTIES:
 :ID:       f9fb5d47-51ce-43d1-bfcb-d2eb8dbdcca2
@@ -1357,7 +1367,7 @@ wann BibTex oder Biber verwednet wird, ...
 **** erstellen: C-c C-c
 **** clean: C-c C-c Clean
 **** environments: C-c C-e
-- item: C-c C-j
+- item: C-RET
 - close: C-c ]
 **** sections: C-c C-s 
 [[info:auctex#Sectioning]]
@@ -1817,6 +1827,10 @@ http://www.emacswiki.org/emacs/PerlDevelopEnvironment
 ** Shell
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
+#+END_SRC
+** Javascript
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
 #+END_SRC
 * Autosaving and Backup files
 ** Autosave: http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
