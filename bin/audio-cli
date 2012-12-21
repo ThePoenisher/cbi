@@ -2,7 +2,7 @@
 use strict;
 use Switch;
 
-my $SINK=4;
+my $SINK=0;
 		
 switch($ARGV[0]){
 		case "toggle_all" { 
@@ -14,15 +14,22 @@ switch($ARGV[0]){
 				}
 		}
 		case "conky" {
-				my $v=`pactl list sinks | sed -nre '/Sink #$SINK/,/Volume/p'`;
-				$v =~ m/Volume: 0: ([^%]+).*/;
-				my $p=$1;
-				print "^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/".($v =~ m/Mute: yes/ ? "vol-mute.xbm) M": "spkr_01.xbm)")." $p%";
+				my @a=`pactl list short sinks`;
+				for (my $i=0;$i<scalar @a;$i++)
+				{
+						$a[$i] =~ m/([0-9])+\t/;
+						my $v=`pactl list sinks | sed -nre '/Sink #$1/,/Volume/p'`;
+						$v =~ m/Volume: 0: ([^%]+).*/;
+						my $p=$1;
+						print "^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/".($v =~ m/Mute: yes/ ? "vol-mute.xbm) M": "spkr_01.xbm)")." $p%";
+				}
 		}
-		case "voldown" {
-				exec "pactl -- set-sink-volume $SINK '-10%'"
-		}
-		case "volup" {
-				exec "pactl set-sink-volume $SINK +10%"
+		case ["voldown","volup"] {
+				my @a=`pactl list short sinks`;
+				for (my $i=0;$i<scalar @a;$i++)
+				{
+						$a[$i] =~ m/([0-9])+\t/;
+					  exec "pactl -- set-sink-volume $1  '".($ARGV[0] eq"voldown"?"-":"+")."10%'"
+				}
 		}
 }
