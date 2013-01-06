@@ -31,6 +31,9 @@ base_packages:
 {% if grains['os'] == 'Arch' %}
       - p7zip
       - perl-switch
+      - perl-dbd-sqlite
+      - perl-dbi
+      - perl-file-slurp
       - evince
       - auctex
       - texlive-bibtexextra
@@ -57,6 +60,9 @@ base_packages:
       - encfs
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - virtualbox
+      - virtualbox-host-modules
+      - icedtea-web
       - evince
       - mtpfs
       - graphviz
@@ -95,7 +101,7 @@ base_packages:
         Include = /etc/pacman.d/mirrorlist
 
 # do I need gvfs. given it limited power.  what does ubuntu use ? gphotos2?
-{% for p in ['git-annex-bin','gvfs-mtp-git','epson-inkjet-printer-workforce-635-nx625-series'] %}
+{% for p in ['git-annex-bin','gvfs-mtp-git','epson-inkjet-printer-workforce-635-nx625-series','perl-string-util','perl-file-find-rule'] %}
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
     - unless: pacman -Q {{ p }}

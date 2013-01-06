@@ -45,6 +45,7 @@ johannes:
       - power
       - storage
       - video
+      - vboxusers
     - require:
       - group: sudo
 {% endif %}

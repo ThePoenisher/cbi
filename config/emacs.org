@@ -150,6 +150,7 @@ Ursache:
                               yaml-mode
                               markdown-mode
                               jinja2-mode
+                              clojure-mode
                              ;helm
                               )
         )
@@ -880,6 +881,8 @@ C-x RET r
 C-x RET f
 *** Line endings
 M-x set-buffer-file-coding-system
+*** Describe the coding systems currently in use.
+C-h C <RET>
 ** Local Variables
 [[info:emacs#Specifying%20File%20Variables][info:emacs#Specifying File Variables]]
 - Reset major mode and variables in buffer:
@@ -1681,48 +1684,11 @@ superseded by  (setq ido-use-filename-at-point 'guess) etc.
 (ffap-bindings)
 #+END_SRC
 * Programming / Development
-** Code Browser
-http://ecb.sourceforge.net/
 ** Allgemeine Tipps
 http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
-** Compiling / Interpreting
-*** Comint?
-*** emacs lisp
-eval-current-buffer
-*** TODO Bash                                                        :keys:
-:PROPERTIES:
-:ID:       b90e5bae-5432-46c5-9abd-f99bafeca3ae
-:END:
-**** custom
-Change to standard compilation / eval key, but only in shell mode
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-s 8") 'jo/bash-current-buffer)
-  (defun jo/bash-current-buffer ()  
-    "runs the current buffer usign bash"
-    (interactive)
-  (shell-command-on-region (point-min) (point-max) "bash")
-  (view-buffer-other-window (get-buffer "*Shell Command Output*"))
-  )
-#+END_SRC
-**** executable-interpret?
-** Semantic stuff:
-*** http://www.emacswiki.org/emacs/SemanticBovinator
-** Tags
-*** see SemanticBovinator
-*** http://emacswiki.org/emacs/ExuberantCtags
-** TODO imenu gives a list of all functions in a file, and lets you jump to them.
-idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
-** El Doc Mode
-http://emacswiki.org/emacs/ElDoc
-A very simple but effective thing, eldoc-mode is a MinorMode
-which shows you, in the echo area, the argument list of the
-function call you are currently writing. Very handy.
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'org-mode-hook  'turn-on-eldoc-mode)
-#+END_SRC
+** Code Browser
+http://ecb.sourceforge.net/
+http://emacs-ide.tuxfamily.org/
 ** Code Formatting / Beatification / Pretty Printing
 *** JSON
 Download https://gist.github.com/1789605 and eval.
@@ -1747,6 +1713,94 @@ by using nxml's indentation rules."
     (indent-region begin end))
   (message "Ah, much better!"))
 #+END_SRC
+** Compiling / Interpreting
+*** Comint?
+*** emacs lisp
+eval-current-buffer
+*** TODO Bash                                                        :keys:
+:PROPERTIES:
+:ID:       b90e5bae-5432-46c5-9abd-f99bafeca3ae
+:END:
+**** custom
+Change to standard compilation / eval key, but only in shell mode
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-s 8") 'jo/bash-current-buffer)
+  (defun jo/bash-current-buffer ()  
+    "runs the current buffer usign bash"
+    (interactive)
+  (shell-command-on-region (point-min) (point-max) "bash")
+  (view-buffer-other-window (get-buffer "*Shell Command Output*"))
+  )
+#+END_SRC
+**** executable-interpret?
+** Config Files / /etc/files
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'ac-modes 'conf-mode)
+  (add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
+  (add-to-list 'auto-mode-alist '("^/etc/"  conf-mode t))
+#+END_SRC
+** El Doc Mode
+http://emacswiki.org/emacs/ElDoc
+A very simple but effective thing, eldoc-mode is a MinorMode
+which shows you, in the echo area, the argument list of the
+function call you are currently writing. Very handy.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'org-mode-hook  'turn-on-eldoc-mode)
+#+END_SRC
+** Haskell
+#+BEGIN_SRC emacs-lisp
+      (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+#+END_SRC
+** TODO imenu gives a list of all functions in a file, and lets you jump to them.
+idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
+** Javascript
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
+#+END_SRC
+*** perldoc: cperl-perldoc
+** Markdown
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'ac-modes 'markdown-mode)
+  (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+#+END_SRC
+** Perl
+Sehr gut: http://cpansearch.perl.org/src/YEWENBIN/Emacs-PDE-0.2.16/lisp/doc/QuickStartEn.html
+http://www.emacswiki.org/emacs/PerlDevelopEnvironment
+*** mode:
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.pl" . cperl-mode))
+  (add-to-list 'interpreter-mode-alist  '("perl" . cperl-mode))
+#+END_SRC
+** PHP
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.php" . php-mode))
+#+END_SRC
+** PKGBUILD
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("PKGBUILD$" . sh-mode))
+#+END_SRC
+
+** Puppet (via ELPA)
+#+BEGIN_SRC emacs-lisp
+  ;;register manifest file-extension
+  (add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
+  ;;Auto-complete
+  (add-to-list 'ac-modes 'puppet-mode)
+#+END_SRC
+** Python
+http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
+** Semantic stuff:
+*** http://www.emacswiki.org/emacs/SemanticBovinator
+** Shell
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
+#+END_SRC
+** Tags
+*** see SemanticBovinator
+*** http://emacswiki.org/emacs/ExuberantCtags
 ** TODO Web Developement
 :PROPERTIES:
 :ID:       b0eb141d-2384-4fa2-841b-28c36fb9e0d6
@@ -1783,55 +1837,12 @@ by using nxml's indentation rules."
     (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
     )
 #+END_SRC
-** Puppet (via ELPA)
-#+BEGIN_SRC emacs-lisp
-  ;;register manifest file-extension
-  (add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
-  ;;Auto-complete
-  (add-to-list 'ac-modes 'puppet-mode)
-#+END_SRC
 ** YAML (auch für Salt Stack) (via ELPA)
 #+BEGIN_SRC emacs-lisp 
   (add-to-list 'auto-mode-alist '("\\.\\(sls\\|ya?ml\\)$" . yaml-mode))
   (add-to-list 'ac-modes 'yaml-mode)
 #+END_SRC
-** Python
-http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
-** Perl
-Sehr gut: http://cpansearch.perl.org/src/YEWENBIN/Emacs-PDE-0.2.16/lisp/doc/QuickStartEn.html
-http://www.emacswiki.org/emacs/PerlDevelopEnvironment
-** PHP
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.php" . php-mode))
-#+END_SRC
-** Markdown
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'ac-modes 'markdown-mode)
-  (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
-#+END_SRC
-** Config Files / /etc/files
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'ac-modes 'conf-mode)
-  (add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
-  (add-to-list 'auto-mode-alist '("^/etc/"  conf-mode t))
-#+END_SRC
-** Haskell
-#+BEGIN_SRC emacs-lisp
-      (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-#+END_SRC
-** PKGBUILD
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("PKGBUILD$" . sh-mode))
-#+END_SRC
-
-** Shell
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
-#+END_SRC
-** Javascript
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
-#+END_SRC
+** Clojure
 * Autosaving and Backup files
 ** Autosave: http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
 ** Backup
