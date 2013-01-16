@@ -320,6 +320,9 @@ Guile
 *** Miscellaneous
 #+BEGIN_SRC emacs-lisp
    (setq inhibit-startup-screen t)
+#+END_SRC
+**** Highlight current line
+#+BEGIN_SRC emacs-lisp
    (global-hl-line-mode 1)
 #+END_SRC
 *** Parenthesis
@@ -576,8 +579,17 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 + D :: delete till end of line
 + man page :: K
 + i, a :: use the whole object (Word, paragraph, sentense, (, <, {, … )
-+ gu, gU :: change case of selection
-+ C-w :: window mode (more see (load "evil-maps.el"))
++ C-o :: last location (previous) http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations
++ C-w :: window mode (more see (load "evil-maps.elo"))
+****** Case
+http://vim.wikia.com/wiki/Switching_case_of_characters
++ u, U :: change case of selection (upper lower)
++ gu/gU + Movement :: change case
+or use `~' to toggle case
+****** find character
++ f/t :: (forward find stop at / before)
++ F/T :: (backward find ...            )
++ ; , :: repeat search
 ***** Eigene
 #+BEGIN_SRC emacs-lisp
 (define-key evil-motion-state-map "y" 'evil-yank)

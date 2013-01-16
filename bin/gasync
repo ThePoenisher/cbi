@@ -1,5 +1,8 @@
 #!/bin/bash
 # git-annex sync
+
+# Usage: gasync [ -d ] [ -gc ] [ -p ] [ -g ] [ -ff ] [ -f ] [ -1 ] [ <dirs> ]
+
 while true; do
 		if [ "$1" = "-d" ]; then
 				drop=1
@@ -18,6 +21,9 @@ while true; do
 				shift
 		elif [ "$1" = "-f" ]; then
 				fsck=1
+				shift
+		elif [ "$1" = "-1" ]; then
+				single=1
 				shift
 		else
 				break
@@ -87,9 +93,14 @@ _do (){
 
 for i in "${dirs[@]}"
 do
-		log="$i"/logs
-		for j in "$i"/*
-		do
-				_do "$j"
-		done
+		if [ "$single" ]; then
+				log="$i"/../logs
+				_do "$i"
+		else
+				log="$i"/logs
+				for j in "$i"/*
+				do
+						_do "$j"
+				done
+		fi
 done
