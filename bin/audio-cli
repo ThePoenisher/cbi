@@ -10,7 +10,7 @@ switch($ARGV[0]){
 				for (my $i=0;$i<scalar @a;$i+=2)
 				{
 						$a[$i] =~ m/Sink #([0-9])+/;
-						exec "pactl set-sink-mute $1 ".( $a[$i+1] =~ m/: no/ ? "1" : "0") 
+						system "pactl set-sink-mute $1 ".( $a[$i+1] =~ m/: no/ ? "1" : "0")
 				}
 		}
 		case "conky" {
@@ -29,7 +29,7 @@ switch($ARGV[0]){
 				for (my $i=0;$i<scalar @a;$i++)
 				{
 						$a[$i] =~ m/([0-9])+\t/;
-					  exec "pactl -- set-sink-volume $1  '".($ARGV[0] eq"voldown"?"-":"+")."10%'"
+					  system "pactl -- set-sink-volume $1  '".($ARGV[0] eq"voldown"?"-":"+")."10%'"
 				}
 		}
 }

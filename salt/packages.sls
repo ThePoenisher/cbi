@@ -31,6 +31,7 @@ base_packages:
 {% if grains['os'] == 'Arch' %}
       - p7zip
       - rlwrap
+      - pkgfile
       - perl-switch
       - perl-dbd-sqlite
       - perl-dbi
