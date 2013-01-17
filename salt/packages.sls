@@ -22,7 +22,6 @@ base_packages:
       - subversion
       - w3m
       - lynx
-      - vlock
       - unrar
 {% if pillar['has_battery'] %}
       - powertop

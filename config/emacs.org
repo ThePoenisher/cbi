@@ -851,6 +851,11 @@ open with ' <key>
 http://vimdoc.sourceforge.net/htmldoc/diff.html
 do (get)
 dp (push)
+[c, ]c goto next/previous change
+**** window movement: C+w l / r
+
+
+
 *** Tutorials
 http://vimcasts.org/episodes/modal-editing-undo-redo-and-repeat/
 *** modal editing
