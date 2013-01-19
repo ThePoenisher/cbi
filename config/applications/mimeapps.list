@@ -1,5 +1,6 @@
 [Default Applications]
 application/pdf=zathura.desktop
+application/postscript=zathura.desktop
 application/x-pdf=zathua.desktop
 x-scheme-handler/http=userapp-Firefox-GCTROW.desktop
 x-scheme-handler/https=userapp-Firefox-GCTROW.desktop

@@ -944,6 +944,19 @@ is provided my org-metaup?
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
 ** Copy/Paster, Clipboard, Selection
 [[info:emacs#Cut%20and%20Paste][info:emacs#Cut and Paste]]
+* w3m
+** keys
+- s :: History
+- B :: back
+- N :: next
+- T :: images
+- \ :: source
+- e / E :: edit local file (under point)
+** docs
+http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
+** emacs integration
+
+
 * Org Mode
 :PROPERTIES:
 :ID:       f9fb5d47-51ce-43d1-bfcb-d2eb8dbdcca2
