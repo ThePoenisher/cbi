@@ -30,6 +30,8 @@ application/x-extension-xht=userapp-Firefox-GCTROW.desktop
 inode/directory=dir-in-terminal.desktop 
 x-directory/normal=dir-in-terminal.desktop 
 text/plain=emacsclient.desktop
+image/vnd.djvu=zathura.desktop
+application/x-gzpostscript=evince.desktop
 
 [Added Associations]
 x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop;
@@ -46,3 +48,5 @@ application/x-extension-shtml=userapp-Firefox-GCTROW.desktop;
 application/xhtml+xml=userapp-Firefox-GCTROW.desktop;
 application/x-extension-xhtml=userapp-Firefox-GCTROW.desktop;
 application/x-extension-xht=userapp-Firefox-GCTROW.desktop;
+image/vnd.djvu=zathura.desktop;
+application/x-gzpostscript=evince.desktop;

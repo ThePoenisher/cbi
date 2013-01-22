@@ -227,6 +227,7 @@ consequently non-working autoloaders!)
                       ;nxhtml
                       replace+
                       ac-math
+                      moz-repl
                       ;evil-org
                       )
         )
@@ -1841,12 +1842,13 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
   
     ;; To make nXhtml run faster you can also byte compile the files. You
     ;; do that with M-x nxhtmlmaint-start-byte-compilation.
-
   
-    ;; needs Mozrepl Plugin: https://addons.mozilla.org/de/firefox/addon/mozrepl/
+  
+    ;; needs Mozrepl Plugin in firefox: https://addons.mozilla.org/de/firefox/addon/mozrepl/
     (define-minor-mode moz-reload-mode
       "Moz Reload Minor Mode"
       nil " Reload" nil
+      (moz-minor-mode 1)
       (if moz-reload-mode
           (add-hook 'after-save-hook 'moz-reload 'append 'local)
         (remove-hook 'after-save-hook 'moz-reload 'local)
@@ -1866,6 +1868,7 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
     (autoload 'js2-mode "js2" nil t)
     (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
     )
+  
 #+END_SRC
 ** YAML (auch für Salt Stack) (via ELPA)
 #+BEGIN_SRC emacs-lisp 
