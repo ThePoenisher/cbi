@@ -51,7 +51,8 @@ import System.IO
 my_term = "gnome-terminal"
 -- find out using xprop
 my_term_class = "Gnome-terminal"
-
+my_emacs ="emacsclient -c -n"
+                
 myMM=mod4Mask
                 
 main = do
@@ -141,7 +142,7 @@ myLayoutHook = id
 -- this spawnOn looks at PIDs and if these change during run, it does not work
 -- e.g. firefox, wenn alread running, emacsclient (at least on first startup)
 myStartupHook = do 
-  spawnOn " 1 " "emacsclient -c -n"
+  spawnOn " 1 " my_emacs
   spawnOn " 2 " "firefox"
   spawnOn " 3 " my_term
   spawnOn " 8 " "thunderbird"
@@ -173,6 +174,7 @@ myUrgencyHook = withUrgencyHook dzenUrgencyHook
     }
 
 -- http://www.haskell.org/haskellwiki/Xmonad/Frequently_asked_questions#I_need_to_find_the_class_title_or_some_other_X_property_of_my_program
+-- find out using xprop
 myManageHook = composeAll $
    [ isFullscreen --> doFullFloat  ]
    ++
@@ -221,7 +223,8 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) (spawnHere my_term))
   , ((modm,                 xK_d    ), viewEmptyWorkspace)
   , ((modm .|. shiftMask  , xK_d    ), tagToEmptyWorkspace)
-  , ((modm                , xK_e    ), (spawnHere "emacsclient -c -n"))
+  , ((modm                , xK_e    ), (spawnHere my_emacs))
+  , ((modm .|. shiftMask  , xK_e    ), nextMatchOrDo Forward (className =? "Emacs") (spawnHere my_emacs))
   , ((modm                , xK_f    ), (spawnHere "firefox"))
   , ((modm .|. shiftMask  , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
   , ((modm                , xK_a    ), (spawnHere my_term))
