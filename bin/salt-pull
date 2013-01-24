@@ -3,5 +3,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../
 
 (sudo echo Pulling and Salting && cd $DIR && 
 git-verify-pull &&
-sudo salt-call state.highstate 
+salt-it
 )
+

@@ -14,6 +14,8 @@ lighttpd:
 /etc/lighttpd/lighttpd.conf:
   file.symlink:
     - target: {{ grains['cbi_home'] }}/config/lighttpd.conf
+    - require:
+      - pkg: lighttpd
         
 /srv/http/music:
   file.symlink:
