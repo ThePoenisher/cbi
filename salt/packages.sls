@@ -61,6 +61,7 @@ base_packages:
       - encfs
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - gecko-mediaplayer
       - virtualbox
       - virtualbox-host-modules
       - icedtea-web
