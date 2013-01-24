@@ -12,5 +12,6 @@ base:
     - X11.packages
     - apps
     - media
-    - mail
+    - email
+    - web
 {% endif %}

@@ -227,6 +227,7 @@ consequently non-working autoloaders!)
                       ;nxhtml
                       replace+
                       ac-math
+                      moz-repl
                       ;evil-org
                       )
         )
@@ -314,6 +315,41 @@ http://lists.gnu.org/archive/html/emacs-devel/2010-07/msg00747.html
 *** Point Movement
 **** https://mail.cs.drexel.edu/pipermail/unix-dev/2005-August/000894.html
 **** http://www.gnu.org/software/emacs/manual/html_node/elisp/Special-Properties.html#Inhibit%20point%20motion%20hooks
+** Windows
+*** Winner Mode                                                      :keys:
+(info "(Emacs)Window Convenience")
+http://www.emacswiki.org/emacs/WinnerMode
+#+BEGIN_SRC emacs-lisp
+  (winner-mode 1)
+  (windmove-default-keybindings 'super)  
+#+END_SRC
+*** TODO Window navigation
+:PROPERTIES:
+:ID:       f961b74d-674a-4d7b-80e0-435aebc30d76
+:END:
+**** DONE full screen                                               :keys:
+http://emacswiki.org/emacs/FullScreen
+#+BEGIN_SRC emacs-lisp
+  (defun jo/toggle-fullscreen nil
+    (interactive)
+    (unless (boundp 'jo/next-fullscreen-mode)
+      (setq jo/next-fullscreen-mode 'fullboth)
+      )
+    (let ((tempmode jo/next-fullscreen-mode))
+      (setq jo/next-fullscreen-mode (frame-parameter nil 'fullscreen))  
+      (set-frame-parameter nil 'fullscreen tempmode)
+      )
+    )
+  (define-key global-map [f11] 'jo/toggle-fullscreen)
+#+END_SRC
+***** frame-cmds
+schonmal für fullscreen getestet, dann aber selbst implimientiert
+
+**** Use a good window manager to manage ALL windos (emacs buffers and terminals, browser,...)
+*** resize 
+enlarge-window
+shrink-window
+http://emacswiki.org/emacs/WindowResize
 ** Weiterentwicklungen
 Guile
 ** Configuration
@@ -353,37 +389,7 @@ Add dired mode to buffer selection configurations (use C or c to select)
                      (with-current-buffer buf
                        (not (eq major-mode 'dired-mode)))) nil)))
 #+END_SRC
-*** Windows
-**** Winner Mode                                                    :keys:
-(info "(Emacs)Window Convenience")
-http://www.emacswiki.org/emacs/WinnerMode
-#+BEGIN_SRC emacs-lisp
-  (winner-mode 1)
-  (windmove-default-keybindings 'super)  
-#+END_SRC
-**** TODO Window navigation
-:PROPERTIES:
-:ID:       f961b74d-674a-4d7b-80e0-435aebc30d76
-:END:
-***** DONE full screen                                             :keys:
-http://emacswiki.org/emacs/FullScreen
-#+BEGIN_SRC emacs-lisp
-  (defun jo/toggle-fullscreen nil
-    (interactive)
-    (unless (boundp 'jo/next-fullscreen-mode)
-      (setq jo/next-fullscreen-mode 'fullboth)
-      )
-    (let ((tempmode jo/next-fullscreen-mode))
-      (setq jo/next-fullscreen-mode (frame-parameter nil 'fullscreen))  
-      (set-frame-parameter nil 'fullscreen tempmode)
-      )
-    )
-  (define-key global-map [f11] 'jo/toggle-fullscreen)
-#+END_SRC
-****** frame-cmds
-schonmal für fullscreen getestet, dann aber selbst implimientiert
 
-***** Use a good window manager to manage ALL windos (emacs buffers and terminals, browser,...)
 *** Text editing
 **** moving text                                                    :keys:
 Bind `move-text-up' and `move-text-down' to M-up and M-down.
@@ -944,6 +950,19 @@ is provided my org-metaup?
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
 ** Copy/Paster, Clipboard, Selection
 [[info:emacs#Cut%20and%20Paste][info:emacs#Cut and Paste]]
+* w3m
+** keys
+- s :: History
+- B :: back
+- N :: next
+- T :: images
+- \ :: source
+- e / E :: edit local file (under point)
+** docs
+http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
+** emacs integration
+
+
 * Org Mode
 :PROPERTIES:
 :ID:       f9fb5d47-51ce-43d1-bfcb-d2eb8dbdcca2
@@ -1828,12 +1847,13 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
   
     ;; To make nXhtml run faster you can also byte compile the files. You
     ;; do that with M-x nxhtmlmaint-start-byte-compilation.
-
   
-    ;; needs Mozrepl Plugin: https://addons.mozilla.org/de/firefox/addon/mozrepl/
+  
+    ;; needs Mozrepl Plugin in firefox: https://addons.mozilla.org/de/firefox/addon/mozrepl/
     (define-minor-mode moz-reload-mode
       "Moz Reload Minor Mode"
       nil " Reload" nil
+      (moz-minor-mode 1)
       (if moz-reload-mode
           (add-hook 'after-save-hook 'moz-reload 'append 'local)
         (remove-hook 'after-save-hook 'moz-reload 'local)
@@ -1853,6 +1873,7 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
     (autoload 'js2-mode "js2" nil t)
     (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
     )
+  
 #+END_SRC
 ** YAML (auch für Salt Stack) (via ELPA)
 #+BEGIN_SRC emacs-lisp 
@@ -2092,7 +2113,7 @@ Problems with hard links, that get destroyed:
         (t . "%b %d '%y")))
 
 #+END_SRC
-* Browsing
+* Browsers
 ** w3m (html and file system), through ELPA
 w3m-browse-url
 w3m-buffer (render current buffer)
@@ -2101,6 +2122,10 @@ w3m-view-url-with-external-browser `M'
 *** Delete Backup and Auto Save files: `#' and `~'
 *** Jump to current file: C-x C-j
 *** Open files: just hit RET!
+** browse-url
+*** current buffer:
+browse-url-of-buffer
+for more control over the url see http://www.emacswiki.org/emacs/BrowseUrl#toc2
 * Help
 ** info docs: C-h i
 ** M-x finder-commentary RET

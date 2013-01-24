@@ -119,3 +119,8 @@ RPROMPT='$(my_git_prompt)'
 #git_branch}"
 
 DONTSETRPROMPT=1
+
+
+HISTFILE=/home/data/personal/zsh_history
+HISTSIZE=20000
+SAVEHIST=20000
