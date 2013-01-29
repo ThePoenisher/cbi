@@ -323,6 +323,9 @@ http://www.emacswiki.org/emacs/WinnerMode
   (winner-mode 1)
   (windmove-default-keybindings 'super)  
 #+END_SRC
+**** keys
+- C-c <left> / <right> :: undo/redo window configuration changes
+- <default-key> <arrow-key> :: directly navigate between windows
 *** TODO Window navigation
 :PROPERTIES:
 :ID:       f961b74d-674a-4d7b-80e0-435aebc30d76
@@ -450,6 +453,11 @@ default value. " http://www.emacswiki.org/emacs/ReplacePlus
 #+BEGIN_SRC emacs-lisp
 (setq undo-limit 10000000)
 #+END_SRC
+** Macros
+record and later insert equivalent code!
+e.g.  (from http://tex.stackexchange.com/questions/66166/navigate-a-tex-code-using-emacs)
+C-x C-k n
+insert-kbd-macro
 ** Editor Cursor Movement
 http://ergoemacs.org/emacs/text_editor_cursor_behavior.html
 ** Startup
@@ -584,6 +592,7 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 + g;  g, :: goto last change (requires ELPA package goto-chg)
 + D :: delete till end of line
 + man page :: K
++ jump paragraphs: { , }
 + i, a :: use the whole object (Word, paragraph, sentense, (, <, {, … )
 + C-o :: last location (previous) http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations
 + C-w :: window mode (more see (load "evil-maps.elo"))
@@ -950,6 +959,8 @@ is provided my org-metaup?
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
 ** Copy/Paster, Clipboard, Selection
 [[info:emacs#Cut%20and%20Paste][info:emacs#Cut and Paste]]
+** Commands:
+*** read only: C-x C-@
 * w3m
 ** keys
 - s :: History
@@ -961,8 +972,6 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
 ** docs
 http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
 ** emacs integration
-
-
 * Org Mode
 :PROPERTIES:
 :ID:       f9fb5d47-51ce-43d1-bfcb-d2eb8dbdcca2
@@ -1406,35 +1415,91 @@ wann BibTex oder Biber verwednet wird, ...
 **** erstellen: C-c C-c
 **** clean: C-c C-c Clean
 **** environments: C-c C-e
-- item: C-RET
+- item: M-RET
 - close: C-c ]
 **** sections: C-c C-s 
 [[info:auctex#Sectioning]]
 **** marcos: C-c RET
 **** navigation:
+***** normal outline navigation for sections,...
+see [[*Outline%20(%20for%20Minor%20Mode%20and%20also%20ORG!!!!!)][Outline ( for Minor Mode and also ORG!!!!!)]]
+***** C-M-a / e :: Beginning/End of environmenti
 **** marking: C-c *, C-c .
 **** fillling: M-q
 **** Help: C-c TAB
+*** preview
+[[info:preview-latex#Keys%20and%20lisp][info:preview-latex#Keys and lisp]]
+- C-c C-p C- :: generate prefix
+- C-c C-p C-c C- :: clearout prefix
+- p :: at point
+- e :: environment
+- s :: section
+- r :: region
+- b :: buffer
+- d :: document
+- i :: goto info page
 *** viewer: C-c C-v
 [[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]]
 **** TODO settings
-#+BEGIN_SRC emacs-lisp :tangle no
-  (eval-after-load 'latex
-  '(add-to-list 'TeX-view-program-selection '(output-pdf "xpdf")))
-
+#+BEGIN_SRC emacs-lisp :tangle yes
+    (eval-after-load 'latex
+    '
+      (add-to-list 'TeX-view-program-selection '(output-pdf "Evince"))
+  )
 #+END_SRC
 **** source correlation
-
+[[info:auctex#Processor%20Options][info:auctex#Processor Options]]
 ***** Synctex
 funktioniert sehr gut mit Auctex für pdfs out of the box mit evince. 
 andere viewer schwierig. 
 https://bbs.archlinux.org/viewtopic.php?pid=545027#p545027
+****** DONE spätestens im Jan 2013 hat das leider nicht mehr funktioniert
+CLOSED: [2013-01-25 Fri 21:04]
+TeX-evince-sync-view: D-Bus error: "Message did not receive a reply (timeout by message bus)"
+http://ubuntuforums.org/archive/index.php/t-1716268.html
+did not help: https://gist.github.com/2297447
+******* LÖSUNG: keine leerzeichen im path
+****** okular
+http://tex.stackexchange.com/questions/29813/setup-synctex-with-emacs
+****** evince
+eig. in auctex enthalten
+oder hier: http://tex.stackexchange.com/questions/29813/setup-synctex-with-emacs
 ***** source specials (only dvi)
 geht out of the box mit xdvi und okular. 
+
+manchmal muss das manuell gesetzt werden:
+(setq TeX-source-correlate-method 'source-specials)
+aber das muss geschehen, bevor source correlate mode gestartet wurde
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook
+            (lambda () 
+               ;; (setq TeX-source-correlate-method 'source-specials)
+              (TeX-source-correlate-mode t)
+              ))
+#+END_SRC
 ***** display corect page (vereinfachte forward search für pdf)
 ootb für xpdf
+**** auto selection of a viewer
+"In case you are using `pstricks' or `psfrag' in your document, a DVI
+viewer cannot display the contents correctly and a PostScript viewer
+will be invoked instead."
+[[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]] 
+
+before changing anything really read this!
+
+it's a two step process: 
+
+first a program is selected using: TeX-view-program-selection
+
+and then executes: `TeX-view-program-list-builtin'
+
+also some predicates can be used an defined: TeX-view-predicate-list
+
 *** "processing"
-**** misc
+**** keys
+- C-c C-v :: view
+- C-c C-c :: erstellen
+**** options
 [[info:auctex#Processor%20Options][info:auctex#Processor Options]]
 C-c C-t ...
 z.B.    C-p (für PDF mode)
@@ -1444,6 +1509,10 @@ permanent:
 **** settings
 #+BEGIN_SRC emacs-lisp
   (setq TeX-save-query nil)
+  (add-hook 'LaTeX-mode-hook
+            (lambda () 
+              (TeX-PDF-mode 1)
+              ))
 #+END_SRC
 *** BibTex
 **** Settings
@@ -1463,10 +1532,31 @@ vorerst bibtex (als biblatex backend) benutzen
 **** settings
 #+BEGIN_SRC emacs-lisp
   (setq reftex-plug-into-AUCTeX t)
+  
+  
+  (add-hook 'LaTeX-mode-hook
+            (lambda () 
+              (setq reftex-insert-label-flags (quote ("shladc" "sfhladc")))
+              (setq reftex-label-alist 
+                    '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
+                      ("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
+                      ("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
+                      ("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
+                      ("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
+                      ("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
+                      ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary") nil)
+                      ))
+  
+              (turn-on-reftex)
+              ))
 #+END_SRC
 **** commands:
-- TOC :: C-c =
-- TOC :: C-c -
+- C-c = / - :: TOC (with/out focus)
+- C-c ) :: insert reference
+- C-c [ :: insert citation
+**** in select mode (might need emacs (not vim) mode)
+- f :: follow mode
+- <SPC> :: follow
 **** TODO http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands
 *** multi-file documents
 #+BEGIN_SRC emacs-lisp
@@ -1507,27 +1597,13 @@ vorerst bibtex (als biblatex backend) benutzen
      '("remark" LaTeX-env-label)
      ;; '("corollary"   LaTeX-env-label) 
      )
-	  ;;(setq TeX-source-correlate-method 'source-specials)
-    (TeX-source-correlate-mode t)
     (setq preview-scale-function 
           (lambda nil 
             (if (boundp (quote text-scale-mode-step)) 
                 nil (text-scale-set 0))
             (* 1.1 (expt text-scale-mode-step (+ 1 text-scale-mode-amount)))))
-    (setq reftex-insert-label-flags (quote ("shladc" "sfhladc")))
-    (setq reftex-label-alist 
-          '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
-            ("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
-            ("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
-            ("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
-            ("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
-            ("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
-            ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary") nil)
-            ))
-  
     
     (outline-minor-mode)
-    (turn-on-reftex)
     ;;(speck-mode)
     )
   
@@ -1882,12 +1958,19 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 #+END_SRC
 ** Clojure
 * Autosaving and Backup files
-** Autosave: http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
+** Recover & Autosave
+http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
+[[info:emacs#Recover]]
+
+*** M-x recover-session
+- RET :: to view session files
+- C-c C-c :: to recover session (with question about each file)
 ** Backup
 Problems with hard links, that get destroyed:
 #+BEGIN_SRC emacs-lisp
     (setq backup-by-copying-when-linked t)
 #+END_SRC
+** restore
 * Mail
 #+BEGIN_SRC emacs-lisp :tangle no
   ;; TODO dired? http://www.stat.ufl.edu/~presnell/Links/gnus-brief.org
@@ -2124,7 +2207,7 @@ w3m-view-url-with-external-browser `M'
 *** Open files: just hit RET!
 ** browse-url
 *** current buffer:
-browse-url-of-buffer
+browse-url-of-buffer (C-c C-v)
 for more control over the url see http://www.emacswiki.org/emacs/BrowseUrl#toc2
 * Help
 ** info docs: C-h i

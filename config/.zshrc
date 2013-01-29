@@ -70,7 +70,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+plugins=(git vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -114,8 +114,12 @@ declare -A hostcolor
 hostcolor[debussy]=$fg[yellow]
 hostcolor[scriabin]=$fg[green]
 
-PROMPT="%(?..%{$fg[red]%}%?%1v )${user}${NO_COLOUR}@%{${hostcolor[`hostname`]}%}%m${NO_COLOUR} %40<...<%B%~%b%<<$ "
-RPROMPT='$(my_git_prompt)'
+function my_vi_mode() {
+  echo "${${KEYMAP/vicmd/$}/(main|viins)/}"
+}
+
+PROMPT="%(?..%{$fg[red]%}%?%1v )${user}${NO_COLOUR}@%{${hostcolor[`hostname`]}%}%m${NO_COLOUR} %40<...<%B%~%b%<<\$ "
+RPROMPT='$(my_git_prompt) $(vi_mode_prompt_info)'
 #git_branch}"
 
 DONTSETRPROMPT=1
@@ -124,3 +128,6 @@ DONTSETRPROMPT=1
 HISTFILE=/home/data/personal/zsh_history
 HISTSIZE=20000
 SAVEHIST=20000
+
+#make the esc key faster (to exit vi insert mode!
+KEYTIMEOUT=1

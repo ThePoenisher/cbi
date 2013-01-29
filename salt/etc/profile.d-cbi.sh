@@ -5,6 +5,8 @@ export CBI
 CBI_MACHINE="{{ grains['cbi_machine'] }}"
 export CBI_MACHINE
 
+EDITOR="my_emacs -c -nw"
+export EDITOR
 
 ALTERNATE_EDITOR=""
 export ALTERNATE_EDITOR
