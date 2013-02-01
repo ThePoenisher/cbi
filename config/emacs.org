@@ -113,7 +113,7 @@ Ursache:
   ;; this breaks emacs --daemon and clients to start with the following error:
   ;; error: Font not available, #<font-spec nil nil DejaVu Sans Mono nil nil nil nil nil 10.0 nil nil nil ((:name . DejaVu Sans Mono-10) (user-spec . DejaVu Sans Mono-10))>
   ;;(set-face-attribute 'default nil :font jo/font)
-  (when   
+  (when nil
       (add-to-list
        'after-make-frame-functions
        '(lambda(a)
@@ -152,6 +152,7 @@ Ursache:
                               jinja2-mode
                               clojure-mode
                              ;helm
+                              latex-pretty-symbols
                               )
         )
   
@@ -841,6 +842,12 @@ http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/
 **** Nachteile:
 http://lists.gnu.org/archive/html/emacs-orgmode/2011-01/msg00471.html
 **** TODO Check out: evil-numbers
+**** spell checking
+http://vimdoc.sourceforge.net/htmldoc/spell.html
+#+BEGIN_SRC emacs-lisp
+  (define-key evil-normal-state-map "]s" 'flyspell-goto-next-error)
+  (define-key evil-normal-state-map "z=" 'flyspell-correct-word-before-point)
+#+END_SRC
 *** Vi keys
 http://www.emacswiki.org/emacs/ViKeys
 offiziell: http://vimdoc.sourceforge.net/htmldoc/motion.html
@@ -961,6 +968,74 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
 [[info:emacs#Cut%20and%20Paste][info:emacs#Cut and Paste]]
 ** Commands:
 *** read only: C-x C-@
+* Writing (natural language)
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
+  (add-hook 'LaTeX-mode-hook 'turn-on-flyspell)
+  (add-hook 'org-mode-hook   'turn-on-auto-fill)
+#+END_SRC
+* Spelling
+** personal dicts: ~/.aspell.[lang]...
+** keys
+see evil
+- M-$ :: ispell word
+** basic: Interactive Spell (ispell and flyspell)
+[[info:emacs#Spelling]]
+works ootb with aspell
+
+http://www.emacswiki.org/emacs/InteractiveSpel
+*** DONE problem: Evil produces an error in the *Choices* buffer, due to the mode line
+CLOSED: [2013-01-30 Wed 14:54]
+[2013-01-30 Wed]
+workaround: use flyspell
+bei ihm scheints zu funktionieren:
+https://github.com/pavpanchekha/dotfiles/blob/master/.emacs.d/emacs.org
+ACH KOMISCH: jetzt gehts!
+** Wcheck mode
+https://github.com/tlikonen/wcheck-mode/blob/master/README.org
+** Interesting read:
+http://ergoemacs.org/emacs/emacs_spell_checker_problems.html
+** guess language
+*** liste: http://www.emacswiki.org/emacs/CategorySpelling
+*** from http://www.emacswiki.org/emacs/GuessBufferLanguage
+#+BEGIN_SRC emacs-lisp :tangle no
+  (defvar guess-language-rules
+    '(("en" . "\\<\\(of\\|the\\|and\\|or\\|how\\)\\>")
+      ("de" . "\\<\\(und\\|oder\\|der\\|die\\|das\\|wie\\)\\>") 
+      ("fr" . "\\<\\(et\\|ou\\|[ld]es\\|que\\)\\>")
+      ("pt" . "\\<\\(de\\|para\\|e\\|ou\\|como\\)\\>"))
+    "Alist of rules to determine the language of some text.
+  Each rule has the form (CODE . REGEXP) where CODE is a string to
+  identify the language (probably according to ISO 639), and REGEXP is a
+  regexp that matches some very common words particular to that language.
+  The default language should be listed first.  That will be the language
+  returned when no REGEXP matches, as would happen for an empty
+  document.")
+  
+  (defun guess-buffer-language ()
+    "Guess language in the current buffer."
+    (save-excursion 
+      (goto-char (point-min))
+      (let ((count (map 'list (lambda (x)
+                                (cons (count-matches (cdr x)) (car x)))
+                        guess-language-rules)))
+        (cdr (assoc (car (sort (map 'list 'car count) '>)) 
+                    count)))))
+  
+  
+  (defun guess-language ()
+    "Guess language in the current buffer."
+    (interactive)
+    (message (guess-buffer-language)))
+#+END_SRC
+* TODO Übersetzung / Dictionaries
+http://sourceforge.net/projects/dictem/
+http://wordyenglish.com/musing/dict_open_source_probs.html
+* Debugging
+http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
+#+BEGIN_SRC emacs-lisp :tangle no
+  (setq debug-on-error t)
+#+END_SRC
 * w3m
 ** keys
 - s :: History
@@ -1187,13 +1262,16 @@ C-c C-a org-attach  kann alles (hinzufügen, öffnen,  directory,.. )
 ** Capture
 *** Templates
 [[info:org#Capture%20templates][info:org#Capture templates]]
+http://orgmode.org/manual/Template-elements.html#Template-elements
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates                                          
-        '(("t" "Todo" entry (file+headline "~/emacs/org-notes/LinuxAdoption.org" "Tasks")
+        '(("t" "Todo" entry (file+headline "/home/data/personal/org-notes/LinuxAdoption.org" "Tasks")
            "* TODO %?\n  %i\n  %a")
-          ("j" "Journal" entry (file+datetree "~/emacs/org-notes/journal.org")
+          ("j" "Journal" entry (file+datetree "/home/data/personal/org-notes/journal.org")
            "* %?\nEntered on %U\n  %i\n  %a")
-          ))
+          ("p" "Journal (Promotion)" entry (file+datetree "/home/data/promotion/journal.org")
+           "* %?\nEntered on %U\n  %i\n  %a")
+          ))  
   #+END_SRC
 ** alte Notizeqn
 - Refiled on [2012-10-17 Wed 01:08]
@@ -1424,8 +1502,9 @@ wann BibTex oder Biber verwednet wird, ...
 ***** normal outline navigation for sections,...
 see [[*Outline%20(%20for%20Minor%20Mode%20and%20also%20ORG!!!!!)][Outline ( for Minor Mode and also ORG!!!!!)]]
 ***** C-M-a / e :: Beginning/End of environmenti
-**** marking: C-c *, C-c .
+**** marking: C-c * (section), C-c . (environment)
 **** fillling: M-q
+there is also auto-fill-mode
 **** Help: C-c TAB
 *** preview
 [[info:preview-latex#Keys%20and%20lisp][info:preview-latex#Keys and lisp]]
@@ -1514,6 +1593,8 @@ permanent:
               (TeX-PDF-mode 1)
               ))
 #+END_SRC
+**** errors
+C-c ` oder besser. M-g M-n
 *** BibTex
 **** Settings
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
@@ -1553,7 +1634,9 @@ vorerst bibtex (als biblatex backend) benutzen
 **** commands:
 - C-c = / - :: TOC (with/out focus)
 - C-c ) :: insert reference
+- C-c ( :: insert label
 - C-c [ :: insert citation
+- C-c & :: cross-reference
 **** in select mode (might need emacs (not vim) mode)
 - f :: follow mode
 - <SPC> :: follow
@@ -1683,6 +1766,13 @@ vorerst bibtex (als biblatex backend) benutzen
   
   
 #+END_SRC
+** pretty symbols (latex-pretty-symbols via melpa)
+https://bitbucket.org/mortiferus/latex-pretty-symbols.el
+funktioniert:
+erst 
+ (require 'latex-pretty-symbols)
+dann
+M-x unicode-simplified 
 * Navigate, Access, Cycles, Completen, Suggest,..
 ** Completion
 *** Hippie Expand 
@@ -1957,6 +2047,8 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
   (add-to-list 'ac-modes 'yaml-mode)
 #+END_SRC
 ** Clojure
+** Yasnippet Mal checken!!
+http://youtu.be/18xYbPCJOho?t=1m17s
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
@@ -2204,7 +2296,10 @@ w3m-view-url-with-external-browser `M'
 ** dired (file system, also remote)
 *** Delete Backup and Auto Save files: `#' and `~'
 *** Jump to current file: C-x C-j
+DOES NOT WORK ANYNMORE!?!?!?
 *** Open files: just hit RET!
+*** wdired-change-to-wdired-mode (cool rename files in dirs)
+Put a dired buffer in a mode in which filenames are editable.
 ** browse-url
 *** current buffer:
 browse-url-of-buffer (C-c C-v)
@@ -2756,6 +2851,11 @@ http://www.emacswiki.org/BookmarkPlus (indirect via [[info:emacs#Bookmarks]])
 :ID:       3dfa56b0-f2c1-43e6-8dfe-67eda67ef618
 :END:
 ** Project Support (EDE)???
+** Längere Histories (z.B. M-x)
+* Funny
+artist-mode
+use middle mouse -> e.g. spray-can 
+do not forget to switch to insert or emacs mode
 * CBI
 ** EasyPG File Variables:
 #+BEGIN_SRC emacs-lisp

@@ -60,6 +60,10 @@ base_packages:
       - python2-pygments
       - nmap #(includes netcat implementation (ncat) with ipv6 support)
       - encfs
+      - hunspell-de
+      - hunspell-en
+      - aspell-de
+      - aspell-en
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - virtualbox
