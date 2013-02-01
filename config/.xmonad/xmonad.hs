@@ -179,9 +179,12 @@ myManageHook = composeAll $
    [ isFullscreen --> doFullFloat  ]
    ++
    composeAll [[ c =? t  --> doFloat | t <- ts ]
-      | (c,ts) <- [(title    ,["Ediff"]        ),
-                   (className,["feh", "Gimp","Zenity"]  ),
-                   (resource ,["Ediff"]        )]]           
+      | (c,ts) <- [
+                  -- problem: xmonad hängt wenn Ediff floating
+                   --(title    ,["Ediff"]        ),
+                   --(resource ,["Ediff"]        ),
+                   (className,["feh", "Gimp","Zenity"]  )
+                  ]]
 
 -- Prompt config
 myXPConfig = defaultXPConfig {

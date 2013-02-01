@@ -16,6 +16,8 @@ lighttpd:
     - target: {{ grains['cbi_home'] }}/config/lighttpd.conf
     - require:
       - pkg: lighttpd
+    - force: True
+    - makedirs: True
         
 {% if grains['cbi_machine'] == 'scriabin' %}
 /srv/http/music:

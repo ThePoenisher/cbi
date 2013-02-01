@@ -326,7 +326,7 @@ http://www.emacswiki.org/emacs/WinnerMode
 #+END_SRC
 **** keys
 - C-c <left> / <right> :: undo/redo window configuration changes
-- <default-key> <arrow-key> :: directly navigate between windows
+- <windmove-key> <arrow-key> :: directly navigate between windows
 *** TODO Window navigation
 :PROPERTIES:
 :ID:       f961b74d-674a-4d7b-80e0-435aebc30d76
@@ -974,6 +974,7 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
   (add-hook 'LaTeX-mode-hook 'turn-on-flyspell)
   (add-hook 'org-mode-hook   'turn-on-auto-fill)
 #+END_SRC
+see also [[*Auto%20Completion][Auto Completion]]
 * Spelling
 ** personal dicts: ~/.aspell.[lang]...
 ** keys
@@ -991,6 +992,9 @@ workaround: use flyspell
 bei ihm scheints zu funktionieren:
 https://github.com/pavpanchekha/dotfiles/blob/master/.emacs.d/emacs.org
 ACH KOMISCH: jetzt gehts!
+*** languages
+seeh variable ispell-aspell-dictionary-alist
+might need ispell-kill-ispell to change it while running
 ** Wcheck mode
 https://github.com/tlikonen/wcheck-mode/blob/master/README.org
 ** Interesting read:
@@ -1398,13 +1402,21 @@ org-de/encrypt-entries/entry
 - v :: change view (e.g. to month)
        
 * Ediff
+** Settings
+If ediff is required too early, (with emacs --daemon) it sets a lot of
+weird stuff (no floating small ediff window, no highlighting or auto
+refinements...). Instead use eval-after-load (or setq-default which
+will not be overriden, if the package is loaded later on)
+#+BEGIN_SRC emacs-lisp
+  ;; (eval-after-load 'ediff '(setq-default ediff-auto-refine 'on))
+  (setq-default ediff-auto-refine 'on)
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+#+END_SRC
+*** problems: ediff multiframe frame als Float bringt xmonad zum hängen
+solution: windows-plain
 ** git
 taken from http://stackoverflow.com/a/4512729
 #+BEGIN_SRC emacs-lisp
-  ;;
-  ;; Setup for ediff.
-  ;;
-  (require 'ediff)
   
   (defvar ediff-after-quit-hooks nil
     "* Hooks to run after ediff or emerge is quit.")
@@ -1457,7 +1469,9 @@ taken from http://stackoverflow.com/a/4512729
   (defun git-mergetool-emacsclient-ediff-after-quit-hook ()
     (exit-recursive-edit))
   
-  (add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
+  (eval-after-load 'ediff
+    '(add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
+    )
 #+END_SRC
 * DONE LaTeX
 CLOSED: [2012-12-12 Wed 23:57]
@@ -1472,10 +1486,11 @@ http://cristal.inria.fr/whizzytex/
 !!! Error: Output filename '../graphics/LOGO_Text-eps-converted-to.pdf' not allowed in restricted mode.
 ! Package pdftex.def Error: File `../graphics/LOGO_Text-eps-converted-to.pdf' not found.
 http://tex.stackexchange.com/questions/39460/texlive-2011-pdflatex-does-not-convert-eps-to-pdf-for-eps-files-in-subdirectori
-Lösung: 
+http://macosx-tex.576846.n2.nabble.com/epstopdf-problem-restricted-mode-td6008485.html
+Lösungsmöglichkeiten: 
 - graphic in selben subtree im filesystem wie .tex
 - -shell-escape parameter übergeben
-- shell_escape = p setting in my texmf.cnf file
+- shell_escape = p setting in my texmf.cnf file (seems to be default)
 ** AUCTeX
 *** installation
 AUCTeX was installed using archlinux's pacman (most up-to-date source!, newer than  (M)ELPA)
@@ -1575,6 +1590,10 @@ and then executes: `TeX-view-program-list-builtin'
 also some predicates can be used an defined: TeX-view-predicate-list
 
 *** "processing"
+[[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
+Read info for:
+- TeX-command-list
+- TeX-expand-list
 **** keys
 - C-c C-v :: view
 - C-c C-c :: erstellen
@@ -1595,6 +1614,9 @@ permanent:
 #+END_SRC
 **** errors
 C-c ` oder besser. M-g M-n
+***** BUG geht nicht, weil bei latex die option -file-line-error benötigt wird
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=514431
+
 *** BibTex
 **** Settings
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
@@ -1779,21 +1801,18 @@ M-x unicode-simplified
 http://emacswiki.org/emacs/HippieExpand
 *** Auto Completion
 #+BEGIN_SRC emacs-lisp
-
-;; Auto Complete (via ELPA)
-(when t
-  ;; http://cx4a.org/software/auto-complete/manual.html (the following three lines:)
-  (require 'auto-complete-config)
-  (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-  (ac-config-default)
-  (ac-flyspell-workaround)
-  ;;http://stackoverflow.com/questions/5298116/auto-complete-mode-doesnt-turn-on-automatically-in-objc-buffers
-  (add-to-list 'ac-modes 'latex-mode)
-  )
-
-
+  ;; Auto Complete (via ELPA)
+  (when t
+    ;; http://cx4a.org/software/auto-complete/manual.html (the following three lines:)
+    (require 'auto-complete-config)
+    (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+    (ac-config-default)
+    (ac-flyspell-workaround)
+    ;;http://stackoverflow.com/questions/5298116/auto-complete-mode-doesnt-turn-on-automatically-in-objc-buffers
+    (add-to-list 'ac-modes 'latex-mode)
+    (add-to-list 'ac-modes 'org-mode)
+    )
 #+END_SRC
-
 ** HELM (old: Anything) (via MELPA)
 http://emacswiki.org/emacs/Icicles_-_Anything
 https://github.com/emacs-helm/helm

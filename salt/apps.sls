@@ -31,7 +31,6 @@ arch_browser_packages:
     - makedirs: True
 
 
-
 {{ home }}/.thunderbird/profiles.ini:
   file.symlink:
     - target: {{ grains['cbi_home'] }}/config/thunderbird_profiles.ini
@@ -100,5 +99,12 @@ gnome-terminal.conf:
     - group: {{ usr }}
     - require:
         - user: {{ usr }}
+    - force: True
+    - makedirs: True
+
+      
+/usr/share/texmf/web2c/texmf.cnf:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/texmf.cnf
     - force: True
     - makedirs: True
