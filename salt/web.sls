@@ -14,7 +14,18 @@ lighttpd:
 /etc/lighttpd/lighttpd.conf:
   file.symlink:
     - target: {{ grains['cbi_home'] }}/config/lighttpd.conf
+    - require:
+      - pkg: lighttpd
         
+{% if grains['cbi_machine'] == 'scriabin' %}
+/srv/http/music:
+  file.symlink:
+    - target: /home/data/music
+
+/srv/http/library:
+  file.symlink:
+    - target: /home/data/library
+{% else %}
 /srv/http/music:
   file.symlink:
     - target: /home/data2/music
@@ -22,6 +33,7 @@ lighttpd:
 /srv/http/library:
   file.symlink:
     - target: /home/data2/library
+{% endif %}
 
 
 /srv/http/OneNote:
