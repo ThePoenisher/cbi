@@ -25,5 +25,5 @@ export JAVA_FONTS=/usr/share/fonts/TTF
 
 eval `keychain --eval -Q /home/johannes/.ssh/id_rsa /home/johannes/.ssh/github-kuerzn`
 
-{% end if %}
+{% endif %}
 
