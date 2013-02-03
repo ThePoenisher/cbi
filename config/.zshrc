@@ -124,8 +124,9 @@ RPROMPT='$(my_git_prompt) $(vi_mode_prompt_info)'
 
 DONTSETRPROMPT=1
 
-
+if [ $CBI_MACHINE = 'scriabin' -o $CBI_MACHINE = 'debussy' ]; then
 HISTFILE=/home/data/personal/zsh_history
+fi
 HISTSIZE=20000
 SAVEHIST=20000
 
