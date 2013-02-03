@@ -192,7 +192,6 @@ cups:
 ##### pacman #### 
 /etc/pacman.d/mirrorlist:
   file.managed:
-    - template: jinja
     - source: salt://etc/pacman.d/mirrorlist.gpg
 
 {% endif %} #ARCH OS

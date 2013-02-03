@@ -883,9 +883,6 @@ dp (push)
 [c, ]c goto next/previous change
 **** window movement: C+w h/j/k/l
 **** window swithc: C+w r
-
-
-
 *** Tutorials
 http://vimcasts.org/episodes/modal-editing-undo-redo-and-repeat/
 *** modal editing
@@ -1399,6 +1396,7 @@ org-de/encrypt-entries/entry
 - l :: log mode
 - v :: change view (e.g. to month)
 * Ediff
+** M-x eregistry (ediff sessions)
 ** Settings
 If ediff is required too early, (with emacs --daemon) it sets a lot of
 weird stuff (no floating small ediff window, no highlighting or auto

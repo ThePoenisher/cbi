@@ -1,11 +1,12 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../
+export GNUPGHOME="$(gpgconf --list-dirs | sed -nre 's/homedir://p')"
 
 (cd $DIR && 
 git-verify-commit-signature HEAD &&
 if [ "$1" ]; then
-sudo salt-call state.sls "$1"
+sudo -E salt-call state.sls "$1"
 else
-sudo salt-call state.highstate
+sudo -E salt-call state.highstate
 fi		
 )
