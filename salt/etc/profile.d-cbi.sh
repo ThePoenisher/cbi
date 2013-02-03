@@ -14,6 +14,8 @@ export ALTERNATE_EDITOR
 PATH=$PATH:$CBI/bin
 export PATH
 
+{% if pillar['arch_desktop'] %}
+
 #java and xmonad problems
 #https://wiki.archlinux.org/index.php/Xmonad#Problems_with_Java_applications
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -22,3 +24,6 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=gasp'
 export JAVA_FONTS=/usr/share/fonts/TTF
 
 eval `keychain --eval -Q /home/johannes/.ssh/id_rsa /home/johannes/.ssh/github-kuerzn`
+
+{% end if %}
+
