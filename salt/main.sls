@@ -1,9 +1,14 @@
 ###########  Profile   ###############
+/etc/zsh/zprofile:
+  file.managed:
+    - source: salt://etc/zsh/zprofile
+    - template: jinja
+
 /etc/profile.d/cbi.sh:
   file.managed:
     - source: salt://etc/profile.d-cbi.sh
     - template: jinja
-      
+
 {% if grains['os'] == 'Ubuntu' %}
 {% set file="/etc/environment" %}
 if grep -q PATH {{ file }}; then sed -i -re 's/(PATH=".*)"/\1:{{ grains['cbi_home']|replace('/','\/') }}\/bin"/' {{ file }}; else echo PATH=\"{{ grains['cbi_home'] }}/bin\"\; export PATH >> {{ file }}; fi:
