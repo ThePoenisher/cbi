@@ -153,6 +153,7 @@ Ursache:
                               clojure-mode
                              ;helm
                               latex-pretty-symbols
+                              evil-numbers
                               )
         )
   
@@ -608,6 +609,9 @@ or use `~' to toggle case
 + ; , :: repeat search
 ***** Eigene
 #+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c C-+") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "C-c C--") 'evil-numbers/dec-at-pt)
+
 (define-key evil-motion-state-map "y" 'evil-yank)
 (define-key evil-motion-state-map "Y" 'evil-yank-line)
 
@@ -659,6 +663,9 @@ funkioniert irgendwie nicht in help-mode+
   (add-to-list 'evil-buffer-regexps '("\\*Mingus" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*buffer-selection\\*" . emacs))
 #+END_SRC
+**** evil-numbers (MELPA)
+increment/decrement (see keys)
+https://github.com/cofi/evil-numbers
 **** for Emacs Users:
 http://www.emacswiki.org/emacs/Evil
 ***** Concrete Tipps:
@@ -874,7 +881,8 @@ http://vimdoc.sourceforge.net/htmldoc/diff.html
 do (get)
 dp (push)
 [c, ]c goto next/previous change
-**** window movement: C+w l / r
+**** window movement: C+w h/j/k/l
+**** window swithc: C+w r
 
 
 
@@ -1040,17 +1048,7 @@ http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
 #+BEGIN_SRC emacs-lisp :tangle no
   (setq debug-on-error t)
 #+END_SRC
-* w3m
-** keys
-- s :: History
-- B :: back
-- N :: next
-- T :: images
-- \ :: source
-- e / E :: edit local file (under point)
-** docs
-http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
-** emacs integration
+
 * Org Mode
 :PROPERTIES:
 :ID:       f9fb5d47-51ce-43d1-bfcb-d2eb8dbdcca2
@@ -1397,10 +1395,9 @@ org-de/encrypt-entries/entry
 :PROPERTIES:
 :ID:       64662398-c9f2-441f-ba6e-6e86a6a55cca
 :END:
-** Anenda
+** Agenda
 - l :: log mode
 - v :: change view (e.g. to month)
-       
 * Ediff
 ** Settings
 If ediff is required too early, (with emacs --daemon) it sets a lot of
@@ -2309,9 +2306,22 @@ Problems with hard links, that get destroyed:
 #+END_SRC
 * Browsers
 ** w3m (html and file system), through ELPA
+	 
+*** Commands
 w3m-browse-url
-w3m-buffer (render current buffer)
+w3m-buffer (render current buffer as HTML, krass)
 w3m-view-url-with-external-browser `M'
+*** keys
+- s :: History
+- B :: back
+- N :: next
+- T :: images
+- \ :: source
+- R :: reload
+- e / E :: edit local file (under point)
+*** docs
+editing: http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
+*** emacs integration
 ** dired (file system, also remote)
 *** Delete Backup and Auto Save files: `#' and `~'
 *** Jump to current file: C-x C-j

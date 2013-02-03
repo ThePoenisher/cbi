@@ -153,6 +153,7 @@ locale-gen:
       - file: /etc/locale.gen
 
 
+
 /usr/lib/systemd/system-sleep/lock.sh:
   file.symlink:
     - target: {{ grains['cbi_home'] }}/config/system-sleep-lock.sh
@@ -188,5 +189,11 @@ cups:
   service.running:
     - enable: True
 
-  
+##### pacman #### 
+/etc/pacman.d/mirrorlist:
+  file.managed:
+    - template: jinja
+    - source: salt://etc/pacman.d/mirrorlist.gpg
+
 {% endif %} #ARCH OS
+  
