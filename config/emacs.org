@@ -577,7 +577,19 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
   ;; "Whether motions may cross newlines."  
   (setq evil-cross-lines t)
 #+END_SRC
-
+**** Text Objects (eigene, z.B. LateX)
+#+BEGIN_SRC emacs-lisp
+  (define-key evil-inner-text-objects-map "$" 'evil-inner-mathtag)
+  (define-key evil-outer-text-objects-map "$" 'evil-a-mathtag)
+  (evil-define-text-object evil-inner-mathtag (count &optional beg end type)
+    "Select inner mathtag $$."
+    :extend-selection nil
+    (evil-paren-range count beg end type ?$ ?$ t))
+  (evil-define-text-object evil-a-mathtag (count &optional beg end type)
+    "Select an mathtag $$."
+    :extend-selection nil
+    (evil-paren-range count beg end type ?$ ?$))
+#+END_SRC
 **** Keys                                                            :ATTACH:
 :PROPERTIES:
 :ID:       026ded4c-be19-4a12-8f0c-a702ef796ec8
@@ -598,6 +610,7 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 + i, a :: use the whole object (Word, paragraph, sentense, (, <, {, … )
 + C-o :: last location (previous) http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations
 + C-w :: window mode (more see (load "evil-maps.elo"))
++ C-p / C-n :: cycle through kill-ring of just yanked text
 ****** Case
 http://vim.wikia.com/wiki/Switching_case_of_characters
 + u, U :: change case of selection (upper lower)
@@ -1631,20 +1644,20 @@ vorerst bibtex (als biblatex backend) benutzen
 #+BEGIN_SRC emacs-lisp
   (setq reftex-plug-into-AUCTeX t)
   
-  
   (add-hook 'LaTeX-mode-hook
             (lambda () 
               (setq reftex-insert-label-flags (quote ("shladc" "sfhladc")))
               (setq reftex-label-alist 
+                    ;; find out code using (string-to-char "m")
                     '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
                       ("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
+                      ("axiom" 109 "ax:" "~\\ref{%s}" 1 ("axiom" "Axiom") nil)
                       ("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
                       ("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
                       ("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
                       ("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
                       ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary") nil)
                       ))
-  
               (turn-on-reftex)
               ))
 #+END_SRC
@@ -1864,8 +1877,16 @@ http://stackoverflow.com/questions/8006347/how-can-i-make-emacs-speedbar-auto-ex
 - demo? http://cpansearch.perl.org/src/YEWENBIN/Emacs-PDE-0.2.16/lisp/doc/QuickStartEn.html
 - benutztung und VIEL mehr: http://www.masteringemacs.org/articles/2010/10/10/introduction-to-ido-mode/
 - Cheatsheet: (describe-function 'ido-find-file)
-- SEHR WICHTIG :: C-z undo the 'merge'
--              :: C-j use what you actually typed
+- SEHR WICHTIG
+  - C-z :: undo the 'merge' (I would say: undo the search
+           (e.g. startet from M-s))
+  - C-j :: use what you actually typed
+  - C-SPC or C-@ :: Restricts the completion list to anything that matches your current input. 
+  - C-t :: toggle regex  matching
+  - C-p :: toogle prefix matching
+  - M-s :: force to search (again)
+
+
 http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire
 
 #+BEGIN_SRC emacs-lisp
@@ -1990,6 +2011,13 @@ http://www.emacswiki.org/emacs/PerlDevelopEnvironment
   (add-to-list 'auto-mode-alist '("\\.pl" . cperl-mode))
   (add-to-list 'interpreter-mode-alist  '("perl" . cperl-mode))
 #+END_SRC
+*** for line based processing
+  -e program        one line of program (several -e's allowed, omit programfile)
+  -l[octal]         enable line ending processing, specifies line terminator
+  -n                assume "while (<>) { ... }" loop around program
+**** e.g. calculate a running sum
+perl -nle '/ID_LENGTH=([0-9\.]+)/ && ($t +=$1) && printf "%02d:%02d:%02d\n",$t/3600,$t/60%60,$t%60'
+
 ** PHP
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.php" . php-mode))

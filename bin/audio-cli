@@ -5,7 +5,7 @@ use Switch;
 my $SINK=0;
 		
 switch($ARGV[0]){
-		case "toggle_all" { 
+		case ["mute","toggle_all"] { 
 				my @a=`pactl list sinks   | grep -E "(Sink|Mute)"`;
 				for (my $i=0;$i<scalar @a;$i+=2)
 				{
