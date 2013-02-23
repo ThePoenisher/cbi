@@ -31,9 +31,6 @@ while true; do
 done
 dirs=( "/home/data" "/home/data2")
 if [ "$1" ]; then dirs=("${@}"); fi
-log=/var/log/cbi_sync.log
-sudo touch $log
-sudo chown johannes:johannes $log
 
 _central(){
 		true
