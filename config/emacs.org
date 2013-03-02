@@ -1646,7 +1646,7 @@ vorerst bibtex (als biblatex backend) benutzen
   
   (add-hook 'LaTeX-mode-hook
             (lambda () 
-              (setq reftex-insert-label-flags (quote ("shladc" "sfhladc")))
+              (setq reftex-insert-label-flags (quote ("shladcm" "sfhladcm")))
               (setq reftex-label-alist 
                     ;; find out code using (string-to-char "m")
                     '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)

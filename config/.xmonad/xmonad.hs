@@ -149,7 +149,7 @@ myStartupHook = do
   spawnOn " 9 " "gnome-terminal /home/data2/music"
   
 -- Workspaces
-myWorkspaces = map ( pad . show ) [1..9]
+myWorkspaces = map ( pad . show ) $  [1..9] ++ [0]
    -- [
    --    wrapBitmap "sm4tik/arch_10x10.xbm",
    --    wrapBitmap "sm4tik/fox.xbm",
@@ -240,7 +240,7 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
 -- mod-control-[1..9] @@ Copy client to workspace N
   [((m .|. modm, k), windows $ f i)
-     | (i, k) <- zip (workspaces conf) [xK_1 ..]
+     | (i, k) <- zip (workspaces conf) $ [xK_1..xK_9] ++ [xK_0]
      , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]]
    ++
 -- get layout jumper bindings
