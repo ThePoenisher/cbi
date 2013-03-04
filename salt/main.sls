@@ -78,6 +78,13 @@ dhcpcd@eth0:
       - file: /etc/dhcpcd.conf
 {% endif %} #debussy
 
+
+ntpd:
+  service.running:
+    - enable: true
+#    - watch:
+#      - file: /etc/ntp.conf
+
 cronie:
   service.running:
     - enable: True
