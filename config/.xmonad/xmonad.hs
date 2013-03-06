@@ -70,6 +70,7 @@ main = do
       , keys = myKeys
       , workspaces = myWorkspaces
       , handleEventHook = fullscreenEventHook
+      , borderWidth = myBorderWidth                          
      }   
  
 -- Paths
@@ -85,8 +86,9 @@ myBgColor="gray20"
 myHighlightedFgColor="white"
 myHighlightedBgColor="gray40"
  
-myActiveBorderColor = "gray80"
-myInactiveBorderColor = "gray20"
+myActiveBorderColor = "white"
+myInactiveBorderColor = "black"
+myBorderWidth = 1
  
 myCurrentWsFgColor = "white"
 myCurrentWsBgColor = "gray40"
