@@ -134,4 +134,4 @@ SAVEHIST=20000
 KEYTIMEOUT=1
 
 
-archey
+# archey # takes sometimes too lon gto spawn a terminal!
