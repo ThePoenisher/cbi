@@ -67,6 +67,7 @@ base_packages:
       - hunspell-en
       - aspell-de
       - aspell-en
+      - expect
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - gimp
