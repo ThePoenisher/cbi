@@ -70,6 +70,7 @@ base_packages:
       - lftp
       - putty
       - sshfs
+      - ntp
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - gimp
