@@ -67,6 +67,9 @@ base_packages:
       - hunspell-en
       - aspell-de
       - aspell-en
+      - lftp
+      - putty
+      - sshfs
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - gimp
