@@ -75,14 +75,15 @@ base_packages:
       - gimp
       - virtualbox
       - virtualbox-host-modules
-      - icedtea-web
+      - icedtea-web-java7
       - evince
       - mtpfs
       - graphviz
       - thunar
       - zenity
       - ffmpegthumbnailer
-      - openjdk6
+# früher      - openjdk6
+      - jdk7-openjdk
       - emacs
       - mercurial
       - gptfdisk

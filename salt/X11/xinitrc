@@ -58,7 +58,7 @@ xscreensaver &
 
 #xmobar &
 xbindkeys
-xcompmgr &
+#xcompmgr & (macht die borders von cmonad irgendwie auf nervige weise durchsichtig)
 #not using exec, in order to drop back to (possibly locked!) console!
 xmonad
 

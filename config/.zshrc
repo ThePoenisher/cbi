@@ -132,3 +132,6 @@ SAVEHIST=20000
 
 #make the esc key faster (to exit vi insert mode!
 KEYTIMEOUT=1
+
+
+# archey # takes sometimes too lon gto spawn a terminal!
