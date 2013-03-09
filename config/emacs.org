@@ -677,7 +677,7 @@ funkioniert irgendwie nicht in help-mode+
   (add-to-list 'evil-buffer-regexps '("\\*buffer-selection\\*" . emacs))
 #+END_SRC
 **** evil-numbers (MELPA)
-increment/decrement (see keys)
+increment/decrement (see eigene keys, z.Z. C-c C-+/-)
 https://github.com/cofi/evil-numbers
 **** for Emacs Users:
 http://www.emacswiki.org/emacs/Evil

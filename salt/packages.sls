@@ -68,6 +68,10 @@ base_packages:
       - aspell-de
       - aspell-en
       - expect
+      - lftp
+      - putty
+      - sshfs
+      - ntp
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - gimp

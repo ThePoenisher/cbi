@@ -4,22 +4,22 @@
 #
 ###
 declare -A a
-a[1]="lock (Win+F1)"
+a[1]="lock         (Win+F1) = Bildschirm sperren (Win+F1)"
 b[1]="xscreensaver-command -lock"
 
-a[2]="sleep (Win+F2)"
+a[2]="suspend      (Win+F2) = Stand-By"
 b[2]="systemctl suspend"
 
-a[3]="hibernate (Win+F3)"
+a[3]="hibernate    (Win+F3) = Ruhezustand"
 b[3]="systemctl hibernate"
 
-a[4]="shutdown (Win+F4)"
+a[4]="poweroff     (Win+F4) = Herunterfahren"
 b[4]="systemctl poweroff"
 
-a[5]="hybrid (Win+F5)"
+a[5]="hybrid-sleep (Win+F5) = Stand-by mit Ruhezustand, wenn Batterie leer"
 b[5]="systemctl hybrid-sleep"
 
-a[6]="reboot (Win+F6)"
+a[6]="reboot       (Win+F6) = Neustarten"
 b[6]="systemctl reboot"
 
 [ "$1" ] && exec ${b[$1]}
