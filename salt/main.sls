@@ -207,3 +207,15 @@ cups:
 
 {% endif %} #ARCH OS
   
+
+##### WOL wake on Lan #####
+
+/etc/systemd/system/wol@.service:
+  file.managed:
+    - source: salt://etc/systemd/wol@.service
+      
+wol@eth0:
+  service.running:
+    - enable: True
+    - require:
+      - file: /etc/systemd/system/wol@.service

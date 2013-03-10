@@ -1,0 +1,2 @@
+#!/bin/bash
+mv "$1" "$(Xdialog --inputbox 'new name' 10 60 $1 2>&1)"

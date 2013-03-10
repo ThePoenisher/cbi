@@ -185,7 +185,7 @@ myManageHook = composeAll $
                   -- problem: xmonad hängt wenn Ediff floating
                    --(title    ,["Ediff"]        ),
                    --(resource ,["Ediff"]        ),
-                   (className,["feh", "Gimp","Zenity"]  )
+                   (className,["Gimp","Zenity","Xdialog"]  )  -- feh
                   ]]
 
 -- Prompt config

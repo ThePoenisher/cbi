@@ -72,6 +72,7 @@ base_packages:
       - putty
       - sshfs
       - ntp
+      - xdialog
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - gimp
@@ -103,6 +104,9 @@ base_packages:
       - zathura-djvu
       - kdegraphics-gwenview
       - oxygen-icons
+      - sane
+      - xsane
+      - xsane-gimp
 {% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
       - libreoffice-{{ p }}
 {% endfor %}
@@ -127,11 +131,11 @@ packer --noconfirm --noedit  -S {{ p }}:
 #   cmd.run:
 #     - unless: test -d /usr/share/git-annex.linux
 
-{% else %}
+{% else %} # not archOS
       - python-pygments
       - apcalc
 
 git-annex:
   pkg.installed
 
-{% endif %} #archos
+{% endif %} #not archos
