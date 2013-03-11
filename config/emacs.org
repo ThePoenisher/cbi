@@ -2641,7 +2641,7 @@ http://vimgolf.com/
     ;; http://stackoverflow.com/questions/4053708/emacs-desktop-doesnt-remember-tramp-connections
     (setq desktop-files-not-to-save "^$")
   
-    ;; (setq history-length 250)
+    (setq history-length 1000)
     ;; (add-to-list 'desktop-globals-to-save 'file-name-history)
     ;; and for history
   

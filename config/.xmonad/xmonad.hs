@@ -42,6 +42,7 @@ import XMonad.Actions.GroupNavigation
 import XMonad.Actions.FindEmptyWorkspace
 import XMonad.Actions.SpawnOn
 
+import XMonad.Util.Scratchpad
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
 import Graphics.X11.Xlib
@@ -62,7 +63,7 @@ main = do
       { terminal = my_term
       , normalBorderColor  = myInactiveBorderColor
       , focusedBorderColor = myActiveBorderColor
-      , manageHook = manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
+      , manageHook = scratchpadManageHookDefault <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
       , layoutHook = avoidStruts myLayoutHook
       , startupHook =   takeTopFocus >> setWMName "LG3D"  >> myStartupHook 
       , logHook = myDzenPP2 myStatusBarPipe  >> historyHook
@@ -107,10 +108,11 @@ myUrgencyHintBgColor = "brown"
 myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '15'"
  
 -- Status Bar
-myStatusBar = "dzen2 -w 465 -ta l " ++ myDzenGenOpts
+myStatusBarWidth = "900"
+myStatusBar = "dzen2 -w " ++ myStatusBarWidth ++ " -ta l " ++ myDzenGenOpts
  
 -- Conky Bar
-myConkyBar = "conky -c ~/cbi/config/.conky_bar | dzen2 -e 'button1=exec:dmenu_session' -x 460 -w $(($(xrandr -q | sed -n -re 's/.*current ([0-9]+) x.*/\\1/p') - 460 )) -ta r" ++ myDzenGenOpts
+myConkyBar = "conky -c ~/cbi/config/.conky_bar | dzen2 -e 'button1=exec:dmenu_session' -x " ++ myStatusBarWidth ++ " -w $(($(xrandr -q | sed -n -re 's/.*current ([0-9]+) x.*/\\1/p') - " ++ myStatusBarWidth ++ " )) -ta r" ++ myDzenGenOpts
 
 -- Layouts
 fc (x,l) (xs,ls) = ( kb:xs, l ||| ls)
@@ -151,7 +153,7 @@ myStartupHook = do
   spawnOn " 9 " "gnome-terminal /home/data2/music"
   
 -- Workspaces
-myWorkspaces = map ( pad . show ) $  [1..9] ++ [0]
+myWorkspaces = map ( pad . show ) ( [1..9] ++ [0] ) 
    -- [
    --    wrapBitmap "sm4tik/arch_10x10.xbm",
    --    wrapBitmap "sm4tik/fox.xbm",
@@ -207,7 +209,7 @@ myKeys x  = M.union (M.fromList (newKeys x)) (keys defaultConfig x)
 -- Add new and/or redefine key bindings
 newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   -- Use shellPrompt instead of default dmenu
-  ((modm, xK_p), shellPrompt myXPConfig),
+  ((modm                 , xK_p    ), shellPrompt myXPConfig),
   -- Do not leave useless conky and dzen after restart
   ((modm, xK_q), spawn "killall conky dzen2; xmonad --recompile; xmonad --restart")
   , ((modm               , xK_c     ), kill1) -- @@ remove from current workspace or close if single
@@ -230,13 +232,14 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm .|. shiftMask  , xK_d    ), tagToEmptyWorkspace)
   , ((modm                , xK_e    ), (spawnHere my_emacs))
   , ((modm .|. shiftMask  , xK_e    ), nextMatchOrDo Forward (className =? "Emacs") (spawnHere my_emacs))
-  , ((modm                , xK_f    ), (spawnHere "firefox"))
-  , ((modm .|. shiftMask  , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
+  , ((modm .|. shiftMask  , xK_f    ), (spawnHere "firefox"))
+  , ((modm                , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
   , ((modm                , xK_a    ), (spawnHere my_term))
   , ((modm .|. controlMask, xK_x    ), sendMessage $ Toggle REFLECTX)
   , ((modm .|. controlMask, xK_y    ), sendMessage $ Toggle REFLECTY)
   , ((modm .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
   , ((modm .|. controlMask, xK_m    ), sendMessage $ Toggle MIRROR)
+  , ((modm .|. controlMask, xK_p    ), scratchpadSpawnActionCustom "gnome-terminal --disable-factory --name scratchpad" )
   ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
@@ -257,6 +260,8 @@ myDzenPP2 h = do
  
 -- Dzen config
 myDzenPP h = defaultPP {
+  -- alternative sorts: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-WorkspaceCompare.html
+  ppSort =   fmap (. scratchpadFilterOutWorkspace) $ ppSort defaultPP,
   ppOutput = hPutStrLn h,
   ppSep = "^bg(" ++ myBgBgColor ++ ")^r(1,15)^bg()",
   ppWsSep = "",
