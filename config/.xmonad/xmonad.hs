@@ -33,7 +33,7 @@ import XMonad.Hooks.EwmhDesktops -- chrome/firefox F11 (enabled with handleEvent
   
 
   
-  
+import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.RotSlaves
 import XMonad.Actions.CopyWindow
 import qualified XMonad.StackSet as W
@@ -59,14 +59,17 @@ myMM=mod4Mask
 main = do
    myStatusBarPipe <- spawnPipe myStatusBar
    conkyBar <- spawnPipe myConkyBar
-   xmonad $ myUrgencyHook $ defaultConfig
+   xmonad $ myUrgencyHook $ myConfig { 
+      logHook = myDzenPP2 myStatusBarPipe  >> historyHook
+      }
+     
+myConfig = defaultConfig
       { terminal = my_term
       , normalBorderColor  = myInactiveBorderColor
       , focusedBorderColor = myActiveBorderColor
       , manageHook = scratchpadManageHookDefault <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
       , layoutHook = avoidStruts myLayoutHook
-      , startupHook =   takeTopFocus >> setWMName "LG3D"  >> myStartupHook 
-      , logHook = myDzenPP2 myStatusBarPipe  >> historyHook
+      , startupHook =  takeTopFocus >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
       , workspaces = myWorkspaces
@@ -203,8 +206,13 @@ myXPConfig = defaultXPConfig {
   }
  
 -- Union default and new key bindings
+-- FOR CONSTANTS see http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html
+-- http://hackage.haskell.org/packages/archive/X11/1.6.1.1/doc/html/Graphics-X11-Types.html
 myKeys x  = M.union (M.fromList (newKeys x)) (keys defaultConfig x)
 
+-- MORE?
+-- navigate in 2D (up down left right): http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Layout-WindowNavigation.html
+-- update on mouse move within unfocused window: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-UpdateFocus.html
 -- defaults: http://xmonad.org/xmonad-docs/xmonad/src/XMonad-Config.html      
 -- Add new and/or redefine key bindings
 newKeys conf@(XConfig {XMonad.modMask = modm}) = [
@@ -225,6 +233,10 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm                , xK_u    ), rotUnfocusedDown)
   , ((modm .|. shiftMask  , xK_i    ), rotFocusedUp)
   , ((modm .|. shiftMask  , xK_u    ), rotFocusedDown)
+    -- switch back and forth between last two workspaces:
+  , ((modm, xK_w), cycleRecentWS [xK_w] xK_grave xK_grave)
+--    start cycling amoung all workspaces until super_l is released with key combination 1, stop cycling by pressing one of [keys], swith to next prev by key2 key3
+  --, ((modm, xK_w), cycleRecentWS [xK_Super_L] xK_w xK_q)
   , ((modm                , xK_Tab  ), nextMatch History (return True))
   , ((modm                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) (spawnHere my_term))
   , ((modm .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) (spawnHere my_term))

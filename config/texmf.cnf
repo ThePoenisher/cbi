@@ -566,6 +566,7 @@ parse_first_line.tex = f
 parse_first_line.initex = f
 
 % Control file:line:error style messages.
+% Johannes: Important for auctex
 file_line_error_style = t
 
 % Enable the mktex... scripts by default?  These must be set to 0 or 1.
