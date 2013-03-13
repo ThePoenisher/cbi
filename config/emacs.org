@@ -1085,7 +1085,7 @@ http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
   (setq org-startup-truncated nil)
   
   (setq org-directory "/home/data/personal/org-notes/")
-  (setq org-agenda-files (list org-directory))
+  (setq org-agenda-files (list org-directory "/home/data/promotion" "/home/data/personal/Webdesign Gerer"))
   ;;               (eval-after-load 'org                   ;; too early
   
   ;; doesn't work, use custom-set-variables instead!
@@ -1281,7 +1281,7 @@ http://orgmode.org/manual/Template-elements.html#Template-elements
            "* TODO %?\n  %i\n  %a")
           ("j" "Journal" entry (file+datetree "/home/data/personal/org-notes/journal.org")
            "* %?\nEntered on %U\n  %i\n  %a")
-          ("p" "Journal (Promotion)" entry (file+datetree "/home/data/promotion/journal.org")
+          ("p" "Journal (Promotion)" entry (file+datetree "/home/data/promotion/p_journal.org")
            "* %?\nEntered on %U\n  %i\n  %a")
           ))  
   #+END_SRC
@@ -1625,6 +1625,7 @@ C-c ` oder besser. M-g M-n
 ***** BUG geht nicht, weil bei latex die option -file-line-error benötigt wird
 http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=514431
 
+**** warnings: C-c C-t C-w
 *** BibTex
 **** Settings
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
