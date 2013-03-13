@@ -108,7 +108,7 @@ myUrgencyHintBgColor = "brown"
 myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '15'"
  
 -- Status Bar
-myStatusBarWidth = "900"
+myStatusBarWidth = "650"
 myStatusBar = "dzen2 -w " ++ myStatusBarWidth ++ " -ta l " ++ myDzenGenOpts
  
 -- Conky Bar
