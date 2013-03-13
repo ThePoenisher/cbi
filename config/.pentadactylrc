@@ -6,3 +6,4 @@
 "":autocmd PageLoad goosh.org :normal! gi
 :set editor='emacsclient -c +<line>:<column> <file>'
 :autocmd Fullscreen * :set go=
+:map <BS> <A-Left>
