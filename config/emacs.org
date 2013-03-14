@@ -1647,20 +1647,35 @@ vorerst bibtex (als biblatex backend) benutzen
   
   (add-hook 'LaTeX-mode-hook
             (lambda () 
-              (setq reftex-insert-label-flags (quote ("shladcm" "sfhladcm")))
-              (setq reftex-label-alist 
-                    ;; find out code using (string-to-char "m")
-                    '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
-                      ("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
-                      ("axiom" 109 "ax:" "~\\ref{%s}" 1 ("axiom" "Axiom") nil)
-                      ("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
-                      ("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
-                      ("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
-                      ("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
-                      ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary") nil)
-                      ))
-              (turn-on-reftex)
-              ))
+              ;; gibt an, welche environments ein automatisch ein label bekommen
+              ;; sollen. wie das label erzeugt wird, ist allerdings in der variable
+              ;; reftex-insert-label-flags festgelegt. Dazu muss die Umgebung aber
+              ;; auch in reftex-label-alist definiert sein
+              ;; siehe für variable LaTeX-environment-list für optionen
+              (LaTeX-add-environments
+               ;; '("theorem" LaTeX-env-label)
+               ;; '("assumption" LaTeX-env-label)
+               ;; '("definition" LaTeX-env-label)
+               ;; '("lemma" LaTeX-env-label)
+;;               '("equation") ;;has no effect, for already in the list?
+               '("example" LaTeX-env-label);ask for label
+               '("remark" LaTeX-env-label)
+               ;; '("corollary"   LaTeX-env-label) 
+               )
+               (setq reftex-insert-label-flags (quote ("shladcm" "sfhladcm")))
+               (setq reftex-label-alist 
+                     ;; find out code using (string-to-char "m")
+                     '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
+                       ("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
+                       ("axiom" 109 "ax:" "~\\ref{%s}" 1 ("axiom" "Axiom") nil)
+                       ("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
+                       ("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
+                       ("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
+                       ("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
+                       ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary") nil)
+                       ))
+               (turn-on-reftex)
+               ))
 #+END_SRC
 **** commands:
 - C-c = / - :: TOC (with/out focus)
@@ -1698,19 +1713,6 @@ vorerst bibtex (als biblatex backend) benutzen
                                            ac-source-latex-commands)
                   ac-sources))
   
-    ;; gibt an, welche environments ein automatisch ein label bekommen
-    ;; sollen. wie das label erzeugt wird, ist allerdings in der variable
-    ;; reftex-insert-label-flags festgelegt. Dazu muss die Umgebung aber
-    ;; auch in reftex-label-alist definiert sein
-    (LaTeX-add-environments
-     ;; '("theorem" LaTeX-env-label)
-     ;; '("assumption" LaTeX-env-label)
-     ;; '("definition" LaTeX-env-label)
-     ;; '("lemma" LaTeX-env-label)
-     '("example" LaTeX-env-label);ask for label
-     '("remark" LaTeX-env-label)
-     ;; '("corollary"   LaTeX-env-label) 
-     )
     (setq preview-scale-function 
           (lambda nil 
             (if (boundp (quote text-scale-mode-step)) 
