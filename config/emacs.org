@@ -609,6 +609,7 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 + jump paragraphs: { , }
 + i, a :: use the whole object (Word, paragraph, sentense, (, <, {, … )
 + C-o :: last location (previous) http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations
++ C-i :: next location
 + C-w :: window mode (more see (load "evil-maps.elo"))
 + C-p / C-n :: cycle through kill-ring of just yanked text
 ****** Case
@@ -622,23 +623,25 @@ or use `~' to toggle case
 + ; , :: repeat search
 ***** Eigene
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-c C-+") 'evil-numbers/inc-at-pt)
-(global-set-key (kbd "C-c C--") 'evil-numbers/dec-at-pt)
-
-(define-key evil-motion-state-map "y" 'evil-yank)
-(define-key evil-motion-state-map "Y" 'evil-yank-line)
-
-;; from http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
-(defun evil-undefine ()
- (interactive)
- (let (evil-mode-map-alist)
-   (call-interactively (key-binding (this-command-keys)))))
-
-;; Now, to make sure that Evil's normal state never touches TAB, just wire this fall-through binding like so:
-(define-key evil-motion-state-map (kbd "TAB") 'evil-undefine)
-
-(define-key evil-insert-state-map (kbd "C-ö") 'jo/enter-org-speed)
-(define-key evil-normal-state-map "ö" 'jo/enter-org-speed)
+  (global-set-key (kbd "C-c C-+") 'evil-numbers/inc-at-pt)
+  (global-set-key (kbd "C-c C--") 'evil-numbers/dec-at-pt)
+  
+  (define-key evil-motion-state-map "y" 'evil-yank)
+  (define-key evil-motion-state-map "Y" 'evil-yank-line)
+  
+  (define-key evil-normal-state-map (kbd "S-C-O") 'evil-jump-forward)
+  
+  ;; from http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
+  (defun evil-undefine ()
+   (interactive)
+   (let (evil-mode-map-alist)
+     (call-interactively (key-binding (this-command-keys)))))
+  
+  ;; Now, to make sure that Evil's normal state never touches TAB, just wire this fall-through binding like so:
+  (define-key evil-motion-state-map (kbd "TAB") 'evil-undefine)
+  
+  (define-key evil-insert-state-map (kbd "C-ö") 'jo/enter-org-speed)
+  (define-key evil-normal-state-map "ö" 'jo/enter-org-speed)
 #+END_SRC
 ***** Outline ( for Minor Mode and also ORG!!!!!)
 #+BEGIN_SRC emacs-lisp
@@ -670,6 +673,7 @@ http://emacswiki.org/emacs/Evil#toc12
 funkioniert irgendwie nicht in help-mode+
 #+BEGIN_SRC emacs-lisp 
   (evil-set-initial-state 'image-mode 'emacs) 
+  (evil-set-initial-state 'reftex-select-label-mode  'emacs) 
   ;; (evil-set-initial-state 'help-mode 'emacs) http://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evil
   (evil-set-initial-state 'package-menu-mode 'emacs)
   
@@ -1013,6 +1017,10 @@ ACH KOMISCH: jetzt gehts!
 *** languages
 seeh variable ispell-aspell-dictionary-alist
 might need ispell-kill-ispell to change it while running
+*** settings
+#+BEGIN_SRC emacs-lisp
+(setq ispell-silently-savep t)
+#+END_SRC
 ** Wcheck mode
 https://github.com/tlikonen/wcheck-mode/blob/master/README.org
 ** Interesting read:
@@ -1644,7 +1652,6 @@ vorerst bibtex (als biblatex backend) benutzen
 **** settings
 #+BEGIN_SRC emacs-lisp
   (setq reftex-plug-into-AUCTeX t)
-  
   (add-hook 'LaTeX-mode-hook
             (lambda () 
               ;; gibt an, welche environments ein automatisch ein label bekommen
@@ -1657,25 +1664,27 @@ vorerst bibtex (als biblatex backend) benutzen
                ;; '("assumption" LaTeX-env-label)
                ;; '("definition" LaTeX-env-label)
                ;; '("lemma" LaTeX-env-label)
-;;               '("equation") ;;has no effect, for already in the list?
+               ;;               '("equation") ;;has no effect, for already in the list?
                '("example" LaTeX-env-label);ask for label
                '("remark" LaTeX-env-label)
                ;; '("corollary"   LaTeX-env-label) 
                )
-               (setq reftex-insert-label-flags (quote ("shladcm" "sfhladcm")))
-               (setq reftex-label-alist 
-                     ;; find out code using (string-to-char "m")
-                     '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
-                       ("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
-                       ("axiom" 109 "ax:" "~\\ref{%s}" 1 ("axiom" "Axiom") nil)
-                       ("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
-                       ("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
-                       ("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
-                       ("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
-                       ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary") nil)
-                       ))
-               (turn-on-reftex)
-               ))
+              (setq reftex-insert-label-flags (quote ("shladcmi" "sfhladcmi")))
+              (setq reftex-label-alist 
+                    ;; find out code using (string-to-char "m")
+                    '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
+                      ("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
+                      ("axiom" 109 "ax:" "~\\ref{%s}" 1 ("axiom" "Axiom") nil)
+                      ("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
+                      ("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
+                      ("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
+                      ("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
+                      ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary" "cor.") nil)
+                      ))
+  
+              (setq reftex-ref-macro-prompt nil)
+              (turn-on-reftex)
+              ))
 #+END_SRC
 **** commands:
 - C-c = / - :: TOC (with/out focus)

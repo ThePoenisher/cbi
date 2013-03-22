@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: allow array of paths (z.B. ff  .* blabla)
 if [ "$2" ]; then
 		find "$1" -iname \*"$2"\*
 else
