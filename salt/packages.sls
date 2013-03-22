@@ -67,7 +67,7 @@ base_packages:
       - hunspell-en
       - aspell-de
       - aspell-en
-      - expect
+      - expect #(unbuffer)
       - lftp
       - putty
       - sshfs

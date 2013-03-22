@@ -9,6 +9,7 @@ sound_packages:
       - pavucontrol
       - mplayer2
       - vlc
+      - gecko-mediaplayer
 {% if grains['cbi_machine'] == 'scriabin' %}
 {% endif %}
 {% endif %}
