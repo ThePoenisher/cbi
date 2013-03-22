@@ -1,5 +1,15 @@
 #!/bin/sh
 
+####################
+####################
+####################
+####################
+# ~/cbi/X11/xinitrc #########
+####################
+####################
+####################
+####################
+
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
@@ -58,7 +68,6 @@ xscreensaver &
 
 #xmobar &
 xbindkeys
-#xcompmgr & (macht die borders von cmonad irgendwie auf nervige weise durchsichtig)
-#not using exec, in order to drop back to (possibly locked!) console!
-xmonad
+#xcompmgr & (macht die borders von xmonad irgendwie auf nervige weise durchsichtig)
+exec xmonad
 
