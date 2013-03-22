@@ -17,13 +17,14 @@ alias feh2="feh -. --keep-zoom-vp --action2 'xrename \"%f\" ' "
 
 alias -g vi="vim"
 # global collides with unrar x so use \x
-alias -g x="xdg-open"
+#alias -g x="xdg-open"
+# I created a small script instead
 alias -g xa="xargs -d '\n' "
 
 alias r="ranger"
 
 alias f="find"
-
+alias pidgin="pidgin -c /home/data/personal/misc/pidgin"
 export GPG_TTY=`tty`
 
 alias android-mount="sudo mkdir -p /media/android && sudo chown johannes:johannes /media/android/ && mtpfs -o user,allow_other /media/android && cd /media/android"

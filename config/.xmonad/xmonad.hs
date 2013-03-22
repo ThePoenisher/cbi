@@ -154,6 +154,7 @@ myStartupHook = do
   spawnOn " 3 " my_term
   spawnOn " 8 " "thunderbird"
   spawnOn " 9 " "gnome-terminal /home/data2/music"
+  spawnOn " 0 " "pidgin -c /home/data/personal/misc/pidgin"
   
 -- Workspaces
 myWorkspaces = map ( pad . show ) ( [1..9] ++ [0] ) 
