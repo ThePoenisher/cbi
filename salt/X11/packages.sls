@@ -35,6 +35,9 @@ arch_X11_packages:
 #gtk switcher
       - lxappearance
       - gtk-engines
+      - pidgin
+      - pidgin-otr
+      - pidgin-libnotify
 # AUR:       - gtk-nova-theme
 {% if grains['cbi_machine'] == 'scriabin' %}
       - xf86-video-intel      
