@@ -1651,6 +1651,11 @@ vorerst bibtex (als biblatex backend) benutzen
 *** RefTeX
 **** settings
 #+BEGIN_SRC emacs-lisp
+  (add-hook 'reftex-load-hook
+            (lambda ()
+              (setq reftex-extra-bindings t)
+              (setq reftex-ref-style-default-list '("Hyperref" "Default"))
+              ))
   (setq reftex-plug-into-AUCTeX t)
   (add-hook 'LaTeX-mode-hook
             (lambda () 
@@ -1682,7 +1687,7 @@ vorerst bibtex (als biblatex backend) benutzen
                       ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary" "cor.") nil)
                       ))
   
-              (setq reftex-ref-macro-prompt nil)
+              (setq reftex-ref-macro-prompt t)
               (turn-on-reftex)
               ))
 #+END_SRC
@@ -1692,6 +1697,8 @@ vorerst bibtex (als biblatex backend) benutzen
 - C-c ( :: insert label
 - C-c [ :: insert citation
 - C-c & :: cross-reference
+           
+see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Bindings]]
 **** in select mode (might need emacs (not vim) mode)
 - f :: follow mode
 - <SPC> :: follow
@@ -2637,7 +2644,7 @@ http://vimgolf.com/
   
   
     ;; Enabled Commands
-                                          ;(put 'narrow-to-region 'disabled nil)
+    (put 'narrow-to-region 'disabled nil)
     (put 'scroll-left 'disabled nil)
   
     

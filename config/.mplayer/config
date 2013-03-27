@@ -1,1 +1,2 @@
 dvd-device=/dev/sr0
+fstype=fullscreen
