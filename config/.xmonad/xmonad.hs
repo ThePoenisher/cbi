@@ -152,9 +152,9 @@ myLayoutHook = id
 myStartupHook = do 
   spawnOn " 1 " my_emacs
   spawnOn " 2 " "firefox"
-  spawnOn " 3 " my_term_new
+  spawnOn " 3 " my_term_attach
   spawnOn " 8 " "thunderbird"
-  spawnOn " 9 " my_term_new
+  spawnOn " 9 " my_term_attach
   spawnOn " 0 " "pidgin -c /home/data/personal/misc/pidgin"
   
 -- Workspaces
