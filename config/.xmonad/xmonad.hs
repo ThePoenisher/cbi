@@ -49,7 +49,8 @@ import Graphics.X11.Xlib
 import qualified Data.Map as M
 import System.IO
 
-my_term = "gnome-terminal"
+my_term_new = "gnome-terminal -x tmux new-session zsh"
+my_term_attach = "gnome-terminal -x tmux-detached-or-new"
 -- find out using xprop
 my_term_class = "Gnome-terminal"
 my_emacs ="emacsclient -c -n"
@@ -64,7 +65,7 @@ main = do
       }
      
 myConfig = defaultConfig
-      { terminal = my_term
+      { terminal = my_term_attach
       , normalBorderColor  = myInactiveBorderColor
       , focusedBorderColor = myActiveBorderColor
       , manageHook = scratchpadManageHookDefault <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
@@ -151,9 +152,9 @@ myLayoutHook = id
 myStartupHook = do 
   spawnOn " 1 " my_emacs
   spawnOn " 2 " "firefox"
-  spawnOn " 3 " my_term
+  spawnOn " 3 " my_term_new
   spawnOn " 8 " "thunderbird"
-  spawnOn " 9 " "gnome-terminal /home/data2/music"
+  spawnOn " 9 " my_term_new
   spawnOn " 0 " "pidgin -c /home/data/personal/misc/pidgin"
   
 -- Workspaces
@@ -239,15 +240,16 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
 --    start cycling amoung all workspaces until super_l is released with key combination 1, stop cycling by pressing one of [keys], swith to next prev by key2 key3
   --, ((modm, xK_w), cycleRecentWS [xK_Super_L] xK_w xK_q)
   , ((modm                , xK_Tab  ), nextMatch History (return True))
-  , ((modm                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) (spawnHere my_term))
-  , ((modm .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) (spawnHere my_term))
+  , ((modm                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) (spawnHere my_term_attach))
+  , ((modm .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) (spawnHere my_term_attach))
   , ((modm,                 xK_d    ), viewEmptyWorkspace)
   , ((modm .|. shiftMask  , xK_d    ), tagToEmptyWorkspace)
   , ((modm                , xK_e    ), (spawnHere my_emacs))
   , ((modm .|. shiftMask  , xK_e    ), nextMatchOrDo Forward (className =? "Emacs") (spawnHere my_emacs))
   , ((modm .|. shiftMask  , xK_f    ), (spawnHere "firefox"))
   , ((modm                , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
-  , ((modm                , xK_a    ), (spawnHere my_term))
+  , ((modm .|. controlMask, xK_a    ), (spawnHere my_term_new))
+  , ((modm                , xK_a    ), (spawnHere my_term_attach))
   , ((modm .|. controlMask, xK_x    ), sendMessage $ Toggle REFLECTX)
   , ((modm .|. controlMask, xK_y    ), sendMessage $ Toggle REFLECTY)
   , ((modm .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)

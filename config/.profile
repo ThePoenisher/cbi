@@ -5,3 +5,5 @@ if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
   logout
 fi
 
+[[ $TERM != "screen" ]] && exec tmux new-session zsh
+
