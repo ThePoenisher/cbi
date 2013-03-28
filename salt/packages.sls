@@ -29,6 +29,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - vbetool
       - traceroute
       - iptraf-ng
       - iftop
@@ -75,6 +76,7 @@ base_packages:
       - xdialog
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - espeak
       - gimp
       - virtualbox
       - virtualbox-host-modules
