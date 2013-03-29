@@ -29,6 +29,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - perl-rename
       - traceroute
       - iptraf-ng
       - iftop
