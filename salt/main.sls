@@ -137,11 +137,6 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - source: salt://etc/sudoers
     - user: root
     - mode: 400
-
-/etc/systemd/logind.conf:
-  file.managed:
-    - template: jinja
-    - source: salt://etc/systemd-logind.conf
       
 ## fstab
 /etc/vconsole.conf:
@@ -150,7 +145,7 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - makedirs: True
     
       
-{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig' ] %}
+{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.managed:
