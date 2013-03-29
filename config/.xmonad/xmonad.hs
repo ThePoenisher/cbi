@@ -49,7 +49,7 @@ import Graphics.X11.Xlib
 import qualified Data.Map as M
 import System.IO
 
-my_term_new = "gnome-terminal -x tmux new-session zsh"
+my_term_new = "gnome-terminal -x tmux"
 my_term_attach = "gnome-terminal -x tmux-detached-or-new"
 -- find out using xprop
 my_term_class = "Gnome-terminal"
