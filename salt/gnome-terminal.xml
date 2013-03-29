@@ -6,9 +6,13 @@
 	<entry name="background_type" mtime="1364404653" type="string">
 		<stringvalue>transparent</stringvalue>
 	</entry>
-	<entry name="use_theme_colors" mtime="1364404653" type="bool" value="false"/>
-	<entry name="font" mtime="1364404653" type="string">
+	<entry name="use_theme_colors" mtime="1354844791" type="bool" value="false"/>
+	<entry name="font" mtime="1354845932" type="string">
+{% if grains['cbi_machine'] == 'scriabin' %}
+		<stringvalue>DejaVu Sans Mono 9</stringvalue>
+{% elif grains['cbi_machine'] == 'debussy' %}
 		<stringvalue>DejaVu Sans Mono 10</stringvalue>
+{% endif %}
 	</entry>
 	<entry name="use_system_font" mtime="1364404653" type="bool" value="false"/>
 	<entry name="palette" mtime="1364404653" type="string">

@@ -177,7 +177,7 @@ mkinitcpio -p linux:
       - file: /etc/mkinitcpio.conf
         
 ######  Symlinked Files  #########
-{% set files = ['locale.conf','vimrc','modules-load.d','fuse.conf' ] %}
+{% set files = ['locale.conf','vimrc','modules-load.d','fuse.conf','tmux.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.symlink:
