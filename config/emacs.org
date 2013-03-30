@@ -1093,7 +1093,7 @@ http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
   (setq org-startup-truncated nil)
   
   (setq org-directory "/home/data/personal/org-notes/")
-  (setq org-agenda-files (list org-directory "/home/data/promotion" "/home/data/personal/Webdesign Gerer"))
+  (setq org-agenda-files (list org-directory "/home/data/promotion"  "/home/data/personal/projects/ProjectX"))
   ;;               (eval-after-load 'org                   ;; too early
   
   ;; doesn't work, use custom-set-variables instead!
