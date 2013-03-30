@@ -82,7 +82,7 @@ myConfig = defaultConfig
 myBitmapsPath = "/home/johannes/cbi/desktop-artwork/icons/"
  
 -- Font
-myFont="xft:DejaVu Sans Mono:size=9" -- dzen only uses the size. fontname seems to be ignored
+myFont = "xft:DejaVu Sans Mono:size=9" -- dzen only uses the size. fontname seems to be ignored
  
 -- Colors
 myBgBgColor="black"
@@ -112,11 +112,11 @@ myUrgencyHintBgColor = "brown"
 myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '15'"
  
 -- Status Bar
-myStatusBarWidth = "650"
-myStatusBar = "dzen2 -w " ++ myStatusBarWidth ++ " -ta l " ++ myDzenGenOpts
+myStatusBar = "dzen2 -ta l " ++ myDzenGenOpts
  
 -- Conky Bar
-myConkyBar = "conky -c ~/cbi/config/.conky_bar | dzen2 -e 'button1=exec:dmenu_session' -x " ++ myStatusBarWidth ++ " -w $(($(xrandr -q | sed -n -re 's/.*current ([0-9]+) x.*/\\1/p') - " ++ myStatusBarWidth ++ " )) -ta r" ++ myDzenGenOpts
+-- with needs to start delayed, or otherwise will be behind the status bar.
+myConkyBar = "sleep 0.2; conky -c ~/cbi/config/.conky_bar | dzen2 -e 'button1=exec:dmenu_session' -ta l -expand l" ++ myDzenGenOpts
 
 -- Layouts
 fc (x,l) (xs,ls) = ( kb:xs, l ||| ls)
