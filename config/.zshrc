@@ -1,5 +1,4 @@
-# I do not think this is needed anymore for e.g. TRAMP in emacs (with scpc)
-# but why not?
+# this is needed for example on the current strauss ubuntu configuration for TRAMP in emacs (with scpc)
 if [ "$TERM" = "dumb" ]
 then
 		return #exit will kill the whole shell on ssh login
@@ -29,6 +28,7 @@ alias -g vi="vim"
 alias -g xa="xargs -d '\n' "
 
 alias r="ranger"
+alias tmux="tmux -2"
 
 alias f="find"
 alias pidgin="pidgin -c /home/data/personal/misc/pidgin"
