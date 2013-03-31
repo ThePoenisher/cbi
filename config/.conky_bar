@@ -12,7 +12,7 @@ update_interval 1.0
 
 #^fg(\#00ffff)${exec rhythmbox-client --print-playing-format "%aa-%at-%tt" | cut -c-70} \
 TEXT
- ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/cpu.xbm) \
+    ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/cpu.xbm) \
 ^fg(\#FFFFFF)${cpu cpu0}% \
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/mem.xbm) \
 ^fg(\#FFFFFF)${memperc}% \
