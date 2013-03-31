@@ -23,7 +23,6 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=gasp'
 export JAVA_FONTS=/usr/share/fonts/TTF
 
-eval `keychain --eval -Q /home/johannes/.ssh/id_rsa /home/johannes/.ssh/github-kuerzn`
-
 {% endif %}
+
 

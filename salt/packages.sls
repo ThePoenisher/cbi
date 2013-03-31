@@ -3,6 +3,7 @@ base_packages:
   pkg.installed:
     - names:
       - tree
+      - tmux
       - vim
       - htop
       - unzip
@@ -34,7 +35,6 @@ base_packages:
       - traceroute
       - iptraf-ng
       - iftop
-      - tmux
       - rlwrap
       - pkgfile
       - perl-switch
