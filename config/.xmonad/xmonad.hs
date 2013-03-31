@@ -116,7 +116,7 @@ myStatusBar = "dzen2 -ta l " ++ myDzenGenOpts
  
 -- Conky Bar
 -- with needs to start delayed, or otherwise will be behind the status bar.
-myConkyBar = "sleep 0.2; conky -c ~/cbi/config/.conky_bar | dzen2 -e 'button1=exec:dmenu_session' -ta l -expand l" ++ myDzenGenOpts
+myConkyBar = "sleep 1; conky -c ~/cbi/config/.conky_bar | dzen2 -e 'button1=exec:dmenu_session' -ta l -expand l" ++ myDzenGenOpts
 
 -- Layouts
 fc (x,l) (xs,ls) = ( kb:xs, l ||| ls)
