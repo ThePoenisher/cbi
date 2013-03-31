@@ -31,9 +31,12 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
     - force: True
       
 ###########  Groups ###############
-sudo:
+groupsasd:
   group.present:
     - system: True
+    - names:
+        - sudo
+        - wireshark
 
 ###########  Users ###############
 {% if pillar['users']['root'] is defined %}
@@ -58,8 +61,10 @@ johannes:
       - storage
       - video
       - vboxusers
+      - wireshark
     - require:
       - group: sudo
+      - group: wireshark
 {% endif %}
 
 

@@ -1,0 +1,1 @@
+[josg.de]:25 {{ pillar['smtp-relay-credentials'] }}
