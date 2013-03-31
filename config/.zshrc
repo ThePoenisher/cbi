@@ -2,7 +2,7 @@
 # but why not?
 if [ "$TERM" = "dumb" ]
 then
-		exit
+		return #exit will kill the whole shell on ssh login
 fi
 
 #use the "ends with a space trick" (see man zshall) for alias expansion after a sudo:
