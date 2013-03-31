@@ -200,7 +200,6 @@ cups:
   file.managed:
     - source: salt://etc/pacman.d/mirrorlist.gpg
 
-{% endif %} #ARCH OS
   
 
 ##### WOL wake on Lan #####
@@ -214,3 +213,6 @@ wol@eth0:
     - enable: True
     - require:
       - file: /etc/systemd/system/wol@.service
+        
+{% endif %} #ARCH OS
+
