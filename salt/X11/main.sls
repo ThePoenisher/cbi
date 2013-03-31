@@ -10,15 +10,7 @@
     - user: {{ usr }}
     - group: {{ usr }}
 
-#autostart:
-x11Autostart:
-  file.symlink:
-    - names: 
-      - {{ home }}/.profile
-      - {{ home }}/.zlogin
-    - target: {{ grains['cbi_home'] }}/config/.profile
-    - user: {{ usr }}
-    - group: {{ usr }}
+#autostart is done in .zlogin:
       
 {% if grains['cbi_machine'] == 'debussy' %}
 /etc/X11/xorg.conf.d/20-radoen.conf:

@@ -20,7 +20,15 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
     - unless: grep -q CBI= /etc/profile
 {% endif %}
 
-
+############  Login ##########
+{% set usr = "johannes" %}
+{% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
+{{ home }}/.zlogin:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/.zlogin
+    - user: {{ usr }}
+    - group: {{ usr }}
+    - force: True
       
 ###########  Groups ###############
 sudo:
@@ -171,19 +179,14 @@ mkinitcpio -p linux:
     - watch:
       - file: /etc/mkinitcpio.conf
         
-######  Symlinked Files  #########
-{% set files = ['locale.conf','vimrc','modules-load.d','fuse.conf','tmux.conf' ] %}
+######  Symlinked etc Files  #########
+{% set files = ['udevil/udevil.conf', 'locale.conf','vimrc','modules-load.d','fuse.conf','tmux.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.symlink:
     - target: {{ grains['cbi_home']+'/config/'+file }}
     - force: True
 {% endfor %}
-      
-/etc/udevil/udevil.conf:
-  file.symlink:
-    - target: {{ grains['cbi_home']+'/config/udevil.conf' }}
-    - force: True
       
 ########  network ###########
 hostnamectl set-hostname {{ grains['cbi_machine'] }}:

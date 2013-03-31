@@ -1,3 +1,10 @@
+# I do not think this is needed anymore for e.g. TRAMP in emacs (with scpc)
+# but why not?
+if [ "$TERM" = "dumb" ]
+then
+		exit
+fi
+
 #use the "ends with a space trick" (see man zshall) for alias expansion after a sudo:
 alias sudo='command sudo '
 
