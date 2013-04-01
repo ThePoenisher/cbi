@@ -28,7 +28,6 @@ alias -g vi="vim"
 alias -g xa="xargs -d '\n' "
 
 alias r="ranger"
-alias tmux="tmux -2"
 
 alias f="find"
 alias pidgin="pidgin -c /home/data/personal/misc/pidgin"
