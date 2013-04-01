@@ -74,7 +74,7 @@ base_packages:
       - putty
       - sshfs
       - ntp
-      - xdialog
+      - xdialog #for (my) xrename
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - espeak
@@ -86,8 +86,10 @@ base_packages:
       - mtpfs
       - graphviz
       - thunar
-      - zenity
-      - ffmpegthumbnailer
+      - tumbler #thumbnails in thunar
+      - ffmpegthumbnailer #thumbnails in thunar
+      - thunar-archive-plugin
+      - zenity #(Display graphical dialog boxes from shell scripts) what for?
 # früher      - openjdk6
       - jdk7-openjdk
       - emacs
