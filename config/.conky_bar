@@ -1,5 +1,4 @@
 # -*- mode: conf; -*-
-gap_y -1000
 
 background no
 out_to_console yes 

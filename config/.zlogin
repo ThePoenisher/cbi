@@ -7,7 +7,7 @@ if [[ $TERM != "dumb" ]]; then
 						vlock
 						logout
 				else
-						exec tmux new-session zsh
+#						exec tmux
 				fi
 		fi
 fi
