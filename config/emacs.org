@@ -1654,7 +1654,13 @@ vorerst bibtex (als biblatex backend) benutzen
   (add-hook 'reftex-load-hook
             (lambda ()
               (setq reftex-extra-bindings t)
-              (setq reftex-ref-style-default-list '("Hyperref" "Default"))
+              (setq reftex-ref-macro-prompt nil)
+              (setq reftex-ref-style-default-list '("Cleveref" "Hyperref" "Default"))
+              (add-to-list 'reftex-ref-style-alist
+                           (list '"Cleveref" '"cleveref"
+                                 (list                                
+                                  (list '"\\cref" (string-to-char "c"))
+                                  (list '"\\Cref" (string-to-char "C")))))
               ))
   (setq reftex-plug-into-AUCTeX t)
   (add-hook 'LaTeX-mode-hook
@@ -1687,7 +1693,6 @@ vorerst bibtex (als biblatex backend) benutzen
                       ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary" "cor.") nil)
                       ))
   
-              (setq reftex-ref-macro-prompt t)
               (turn-on-reftex)
               ))
 #+END_SRC

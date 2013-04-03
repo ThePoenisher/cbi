@@ -19,10 +19,9 @@ postfix:
     - template: jinja
     - source: salt://etc/postfix/{{ file }}
 {% endfor %}
-      
-postmapsasl:
+  
+postmap /etc/postfix/sasl_passwd:
   cmd.wait:
-    - name: postmap /etc/postfix/sasl_passwd
     - watch:
         - file: /etc/postfix/sasl_passwd
       
