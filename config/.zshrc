@@ -135,8 +135,8 @@ DONTSETRPROMPT=1
 if [ $CBI_MACHINE = 'scriabin' -o $CBI_MACHINE = 'debussy' ]; then
 HISTFILE=/home/data/personal/zsh_history
 fi
-HISTSIZE=20000
-SAVEHIST=20000
+HISTSIZE=30000
+SAVEHIST=30000
 
 #make the esc key faster (to exit vi insert mode!
 KEYTIMEOUT=1
