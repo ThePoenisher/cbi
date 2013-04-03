@@ -1,0 +1,9 @@
+#!/bin/bash
+# I want to keep MY version when there is a conflict
+# Nothing to do: %A (the second parameter) already contains my version
+# Just indicate the merge has been successfully "resolved" with the exit status
+exit 0
+
+# (that was one simple merge driver ;) )
+# (If you wanted to keep the other version, just add before the exit 0 line:
+# cp -f $3 $2.
