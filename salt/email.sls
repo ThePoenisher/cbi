@@ -26,3 +26,11 @@ postmap /etc/postfix/sasl_passwd:
     - watch:
         - file: /etc/postfix/sasl_passwd
       
+{% set usr = "johannes" %}
+{% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
+{{ home }}/.offlineimaprc:
+  file.managed:
+    - source: salt://offlineimaprc
+    - template: jinja
+    - user: {{ usr }}
+    - group: {{ usr }}

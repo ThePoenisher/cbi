@@ -13,3 +13,7 @@
     prompt = false
 [merge]
     tool = ediff
+
+[merge "keepMine"]
+        name = always keep mine during merge
+        driver = keepMine %O %A %B
