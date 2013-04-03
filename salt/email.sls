@@ -2,6 +2,7 @@ mail_packages:
   pkg.installed:
     - names:
       - postfix
+      - offlineimap
 
 postfix:
   service.running:

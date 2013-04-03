@@ -1657,10 +1657,9 @@ vorerst bibtex (als biblatex backend) benutzen
               (setq reftex-ref-macro-prompt nil)
               (setq reftex-ref-style-default-list '("Cleveref" "Hyperref" "Default"))
               (add-to-list 'reftex-ref-style-alist
-                           (list '"Cleveref" '"cleveref"
-                                 (list                                
-                                  (list '"\\cref" (string-to-char "c"))
-                                  (list '"\\Cref" (string-to-char "C")))))
+                           '("Cleveref" "cleveref"
+                                 (("\\cref" ?c))
+                                  ("\\Cref" ?C)))
               ))
   (setq reftex-plug-into-AUCTeX t)
   (add-hook 'LaTeX-mode-hook
@@ -1681,18 +1680,20 @@ vorerst bibtex (als biblatex backend) benutzen
                ;; '("corollary"   LaTeX-env-label) 
                )
               (setq reftex-insert-label-flags (quote ("shladcmi" "sfhladcmi")))
-              (setq reftex-label-alist 
-                    ;; find out code using (string-to-char "m")
-                    '(("theorem" 104 "thm:" "~\\ref{%s}" 1 ("theorem" "th.") nil)
-                      ("lemma" 108 "lem:" "~\\ref{%s}" 1 ("lemma" "lem.") nil)
-                      ("axiom" 109 "ax:" "~\\ref{%s}" 1 ("axiom" "Axiom") nil)
-                      ("assumption" 97 "ass:" "~\\ref{%s}" 1 ("assumption" "ass.") nil)
-                      ("definition" 100 "def:" "~\\ref{%s}" 1 ("definition" "def.") nil)
-                      ("remark" 114 "rmk:" "~\\ref{%s}" t ("remark") nil)
-                      ("example" 120 "ex:" "~\\ref{%s}" t ("example" "ex.") nil)
-                      ("corollary" 99 "cly:" "~\\ref{%s}" 1 ("corollary" "cor.") nil)
+              (setq reftex-label-alist
+                    ;; find out code using (string-to-char "m") BETTER: ?m
+                    '(("theorem" 104 "thm:" " \\ref{%s}" 1 ("theorem" "th.") nil)
+                      ("lemma" 108 "lem:" " \\ref{%s}" 1 ("lemma" "lem.") nil)
+                      ("axiom" 109 "ax:" " \\ref{%s}" 1 ("axiom" "Axiom") nil)
+                      ("assumption" 97 "ass:" " \\ref{%s}" 1 ("assumption" "ass.") nil)
+                      ("definition" 100 "def:" " \\ref{%s}" 1 ("definition" "def.") nil)
+                      ("remark" 114 "rmk:" " \\ref{%s}" t ("remark") nil)
+                      ("example" 120 "ex:" " \\ref{%s}" t ("example" "ex.") nil)
+                      ("corollary" ?c "cly:" " \\ref{%s}" 1 ("corollary" "cor.") nil)
+                      ("corollaryenum" ?C "cly:" " \\ref{%s}" item nil nil)
+                      ("theoremenum" ?T "thm:" " \\ref{%s}" item nil nil)
+                      ("lemmaenum" ?L "lem:" " \\ref{%s}" item nil nil)
                       ))
-  
               (turn-on-reftex)
               ))
 #+END_SRC
