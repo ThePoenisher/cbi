@@ -108,23 +108,6 @@ systemd-logind:
       - file: /etc/systemd/logind.conf
 {% endif %} # arch
 
-{% if pillar['arch_desktop'] %}
-{% for i in [1] %}
-getty@tty{{ i }}:
-  service.disabled
-
-autologin@tty{{ i }}:
-  service.enabled:
-    - require:
-      - file: autologin
-{% endfor %}
-
-
-autologin:
-  file.managed:
-    - source: salt://autologin@.service
-    - name: /etc/systemd/system/autologin@.service
-{% endif %}
 
 ####### config #####
 {% if grains['os'] == 'Arch' %}
@@ -210,17 +193,33 @@ cups:
 
   
 
-##### WOL wake on Lan #####
+##### Systemd services
 
-/etc/systemd/system/wol@.service:
+{% if pillar['arch_desktop'] %}
+
+{% set services = [ ('autologin@',['tty1']) , ('wol@',['eth0']), ('offlineimap',['']) ] %}
+{% for service, instances in services %}
+{% set x = "/etc/systemd/system/"~service~".service" %}
+{{ x }}:
   file.managed:
-    - source: salt://etc/systemd/wol@.service
+    - source: salt:/{{ x }}
       
-wol@eth0:
+{% for instance in instances %}
+{{ service~instance }}:
   service.running:
     - enable: True
-    - require:
-      - file: /etc/systemd/system/wol@.service
+    - watch:
+      - cmd: systemd-reload-{{service~instance}}
         
+systemd-reload-{{service~instance}}:
+  cmd.wait:
+    - name: systemctl --system daemon-reload
+    - watch:
+      - file: {{ x }}
+{% endfor %}
+
+{% endfor %}
+
+{% endif %} # arch desktop
 {% endif %} #ARCH OS
 

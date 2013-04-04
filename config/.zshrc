@@ -143,3 +143,4 @@ KEYTIMEOUT=1
 
 
 # archey # takes sometimes too lon gto spawn a terminal!
+cd /home

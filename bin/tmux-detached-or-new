@@ -1,3 +1,8 @@
 #!/bin/bash
 # attaches to the last detached session or creates a new one. (like screen -R)
-( tmux ls | grep -vq attached  && tmux -2 at) || tmux -2
+id=$(tmux ls -F "#{session_attached}#{session_id}:#S" | sed -re '/(^1|[^:]*OfflineIMAP)/d' -e "s/^0(\\\$[0-9]*):.*/\1/" | head -n 1)
+if [ -n "$id" ]; then
+		tmux -2 at -t "$id"
+else
+		tmux -2
+fi
