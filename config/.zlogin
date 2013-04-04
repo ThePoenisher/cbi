@@ -6,8 +6,8 @@ if [[ $TERM != "dumb" ]]; then
 						startx &>> ~/.xlog &!
 						vlock
 						logout
-				else
-#						exec tmux
+				elif [[ $TERM != "linux" ]]
+						exec tmux -2
 				fi
 		fi
 fi

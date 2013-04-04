@@ -49,12 +49,39 @@ localrepository = Local
 remoterepository = Remote
 status_backend = sqlite
 
+########## Advanced settings
+
+# You can have offlineimap continue running indefinitely, automatically
+# syncing your mail periodically.  If you want that, specify how
+# frequently to do that (in minutes) here.  You can also specify
+# fractional minutes (ie, 3.25).
+
+autorefresh = 5
+
+# OfflineImap can replace a number of full updates by quick
+# synchronizations.  It only synchronizes a folder if 1) a Maildir
+# folder has changed, or 2) if an IMAP folder has received new messages
+# or had messages deleted, ie it does not update if only IMAP flags have
+# changed.  Full updates need to fetch ALL flags for all messages, so
+# this makes quite a performance difference (especially if syncing
+# between two IMAP servers).
+# Specify 0 for never, -1 for always (works even in non-autorefresh
+# mode), or a positive integer <n> to do <n> quick updates before doing
+# another full synchronization (requires autorefresh).  Updates are
+# always performed after <autorefresh> minutes, be they quick or full.
+# quick = 10
+
+
 [Repository Local]
 type = Maildir
 localfolders = ~/Mail/j@g
 
 [Repository Remote]
-preauthtunnel = ssh -q strauss 'sudo -u vmail /usr/bin/imapd /var/jo/vmail/gerer.name/johannes'
+# does not support imap idle
+# preauthtunnel = ssh -q strauss 'sudo -u vmail /usr/bin/imapd /var/jo/vmail/gerer.name/johannes'
+{{ pillar['j@g-credentials'] }}
+remotehost = josg.de
+#remoteport= 143
 nametrans = lambda foldername: re.sub('^INBOX\.', '', foldername)
 
 #without the following would need corresponding reverse nametrans
@@ -65,6 +92,8 @@ maxconnections = 10
 type = IMAP
 #reference = INBOX (auskommentieren, sonst gibts die inbox nicht)
 folderfilter = lambda foldername: foldername not in ['INBOX.Sent Items','INBOX.Deleted Items']
+
+idlefolders = ['INBOX','INBOX.j@cityhaus-de']
 
 [mbnames]
 enabled = yes

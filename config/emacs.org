@@ -1,4 +1,5 @@
-#+PROPERTY: results silent tangle yes
+#+PROPERTY: results silent
+#+PROPERTY: tangle yes
 # CAREFULL: the global "tanlge yes" seems only to work for 
 #           org-babel-file-load and not org-babel-tangle
 #+CATEGORY: emacs-config
@@ -597,6 +598,7 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 :END:
 ***** Nützlich:
 + \ :: evil-execute-in-emacs-state (wird überschrieben von evil-leader)
++ C-z :: switch to emacs mode and back
 + :registers :: zeigt alle yanks und deletes
 + undo / redo :: C-r oder M-
 + scrolling :: down: C-f,C-d,C-e   up: C-b, ... , C-y
@@ -677,6 +679,7 @@ funkioniert irgendwie nicht in help-mode+
   ;; (evil-set-initial-state 'help-mode 'emacs) http://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evil
   (evil-set-initial-state 'package-menu-mode 'emacs)
   
+  (add-to-list 'evil-buffer-regexps '("\\*notmuch-help" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*Mingus" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*buffer-selection\\*" . emacs))
 #+END_SRC
@@ -1550,8 +1553,8 @@ there is also auto-fill-mode
 - i :: goto info page
 *** viewer: C-c C-v
 [[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]]
-**** TODO settings
-#+BEGIN_SRC emacs-lisp :tangle yes
+**** settings
+#+BEGIN_SRC emacs-lisp
     (eval-after-load 'latex
     '
       (add-to-list 'TeX-view-program-selection '(output-pdf "Evince"))
@@ -2131,6 +2134,15 @@ Problems with hard links, that get destroyed:
 #+END_SRC
 ** restore
 * Mail
+** Settings
+#+BEGIN_SRC emacs-lisp
+  (setq send-mail-function 'sendmail-send-it)
+#+END_SRC
+** notmuch
+#+BEGIN_SRC emacs-lisp
+(require 'notmuch)
+#+END_SRC
+** unuesd moslty wanderlust stuff from the golden windows days
 #+BEGIN_SRC emacs-lisp :tangle no
   ;; TODO dired? http://www.stat.ufl.edu/~presnell/Links/gnus-brief.org
   

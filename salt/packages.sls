@@ -30,6 +30,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - inotify-tools
       - perl-rename
       - vbetool
       - traceroute
