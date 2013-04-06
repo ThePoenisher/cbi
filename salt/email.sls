@@ -3,6 +3,7 @@ mail_packages:
     - names:
       - postfix
       - offlineimap
+      - notmuch
 
 postfix:
   service.running:

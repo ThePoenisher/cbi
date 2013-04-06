@@ -532,7 +532,7 @@ http://ergoemacs.org/emacs/emacs_rsi_my_experiences.html
 - https://gitorious.org/at-home-modifier/pages/Home
 - http://www.emacswiki.org/emacs/MovingTheCtrlKey
 **** DONE make CAPS LOCK -> Control!!
-#+BEGIN_SRC sh
+#+BEGIN_SRC sh :tangle no
   setxkbmap -layout "$(setxkbmap -print | awk -F + '/xkb_symbols/ {print $2}')" -option ctrl:nocaps
 #+END_SRC
 from http://www.emacswiki.org/emacs/MovingTheCtrlKey
@@ -992,7 +992,7 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
 ** Copy/Paster, Clipboard, Selection
 [[info:emacs#Cut%20and%20Paste][info:emacs#Cut and Paste]]
 ** Commands:
-*** read only: C-x C-@
+*** read only: C-x C-q
 * Writing (natural language)
 #+BEGIN_SRC emacs-lisp
   (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
@@ -2140,7 +2140,7 @@ Problems with hard links, that get destroyed:
 #+END_SRC
 ** notmuch
 #+BEGIN_SRC emacs-lisp
-(require 'notmuch)
+  (autoload 'notmuch "notmuch" nil t)
 #+END_SRC
 ** unuesd moslty wanderlust stuff from the golden windows days
 #+BEGIN_SRC emacs-lisp :tangle no
