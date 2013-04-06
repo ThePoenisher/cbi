@@ -1,4 +1,3 @@
-# -*- muttrc -*-
 #
 # Color settings for mutt.
 #
@@ -68,7 +67,7 @@ color index magenta       red     "~x \"(mithrandir|aragorn)\\.aperiodic\\.net|t
 color index cyan          default "~C \"(root|postmaster|abuse|mailer-daemon)@\" !~N !~P !~p"
 color index cyan          white   "~C \"(root|postmaster|abuse|mailer-daemon)@\" ~N !~P !~p"
 # big messages
-color index brightred     default "!~N ~z 10240-"
+#color index brightred     default "!~N ~z 10240-"
 color index brightred     cyan    "~T !~F !~p !~P ~z 10240-"
 color index brightred     white   "~N ~z 10240-"
 

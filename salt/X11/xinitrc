@@ -66,6 +66,8 @@ xsetroot -cursor_name left_ptr
 devmon --info-on-mount &>> .xlog &
 xscreensaver &
 
+maildir_watch &
+
 #xmobar &
 xbindkeys
 #xcompmgr & (macht die borders von xmonad irgendwie auf nervige weise durchsichtig)

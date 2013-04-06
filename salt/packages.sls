@@ -30,6 +30,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - html2text
       - inotify-tools
       - perl-rename
       - vbetool
@@ -78,6 +79,7 @@ base_packages:
       - xdialog #for (my) xrename
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - dunst # für libnotify
       - espeak
       - gimp
       - virtualbox

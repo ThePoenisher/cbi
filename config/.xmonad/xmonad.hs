@@ -60,9 +60,9 @@ myMM=mod4Mask
 main = do
    myStatusBarPipe <- spawnPipe myStatusBar
    conkyBar <- spawnPipe myConkyBar
-   xmonad $ myUrgencyHook $ myConfig { 
-      logHook = myDzenPP2 myStatusBarPipe  >> historyHook
-      }
+   xmonad $ myUrgencyHook $  myConfig {
+     logHook = myDzenPP2 myStatusBarPipe  >> historyHook >> ewmhDesktopsLogHook
+     }
      
 myConfig = defaultConfig
       { terminal = my_term_attach
@@ -70,12 +70,12 @@ myConfig = defaultConfig
       , focusedBorderColor = myActiveBorderColor
       , manageHook = scratchpadManageHookDefault <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
       , layoutHook = avoidStruts myLayoutHook
-      , startupHook =  takeTopFocus >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
+      , startupHook =  takeTopFocus >> ewmhDesktopsStartup >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
       , workspaces = myWorkspaces
-      , handleEventHook = fullscreenEventHook
-      , borderWidth = myBorderWidth                          
+      , handleEventHook = fullscreenEventHook -- >> ewmhDesktopsEventHook -- führt dazu, dass xmonad beim start auf pidgin wechselt (wg. spawnOn " 0 " "pidgin", um wmctrl -l benutzen zu können,  benötigt man das aber eh nicht
+      , borderWidth = myBorderWidth
      }   
  
 -- Paths
@@ -102,7 +102,8 @@ myVisibleWsBgColor = "gray20"
 myHiddenWsWithCopyBg = "gray30"
 myHiddenWsFgColor = "gray80"
 myHiddenEmptyWsFgColor = "gray50"
-myUrgentWsBgColor = "brown"
+myUrgentWsBgColor = "red"
+myUrgentWsFgColor = "black"
 myTitleFgColor = "white"
  
 myUrgencyHintFgColor = "white"
@@ -152,9 +153,9 @@ myLayoutHook = id
 myStartupHook = do 
   spawnOn " 1 " my_emacs
   spawnOn " 2 " "firefox"
-  spawnOn " 3 " my_term_attach
-  spawnOn " 8 " "thunderbird"
-  spawnOn " 9 " my_term_attach
+  -- spawnOn " 3 " my_term_attach
+  spawnOn " 8 " $ my_term_new ++ " new-session -s mutt mutt"
+  -- spawnOn " 9 " my_term_attach
   spawnOn " 0 " "pidgin -c /home/data/personal/misc/pidgin"
   
 -- Workspaces
@@ -172,15 +173,17 @@ myWorkspaces = map ( pad . show ) ( [1..9] ++ [0] )
    -- ]
  
 -- Urgency hint configuration
-myUrgencyHook = withUrgencyHook dzenUrgencyHook
-    {
-      args = [
-         "-x", "0", "-y", "576", "-h", "15", "-w", "1024",
-         "-ta", "r",
-         "-fg", "" ++ myUrgencyHintFgColor ++ "",
-         "-bg", "" ++ myUrgencyHintBgColor ++ ""
-         ]
-    }
+myUrgencyHook = withUrgencyHook NoUrgencyHook
+--  dzenUrgencyHook { args = ["-bg", "darkgreen", "-xs", "1"] }
+  -- withUrgencyHook dzenUrgencyHook
+  --   {
+  --     args = [
+  --        "-x", "0", "-y", "576", "-h", "15", "-w", "1024",
+  --        "-ta", "r",
+  --        "-fg", "" ++ myUrgencyHintFgColor ++ "",
+  --        "-bg", "" ++ myUrgencyHintBgColor ++ ""
+  --        ]
+  --   }
 
 -- http://www.haskell.org/haskellwiki/Xmonad/Frequently_asked_questions#I_need_to_find_the_class_title_or_some_other_X_property_of_my_program
 -- find out using xprop
@@ -283,7 +286,7 @@ myDzenPP h = defaultPP {
   ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor,
   ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor,
   ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor,
-  ppUrgent = wrapBg myUrgentWsBgColor,
+  ppUrgent = wrapFgBg myUrgentWsFgColor myUrgentWsBgColor,
   ppTitle = (\x -> " " ++ wrapFg myTitleFgColor x),
   ppLayout  = dzenColor myFgColor"" .  pad . filter f . map m
   }

@@ -26,3 +26,4 @@ export JAVA_FONTS=/usr/share/fonts/TTF
 {% endif %}
 
 
+export LESS=-Ri

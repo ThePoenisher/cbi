@@ -1,0 +1,3 @@
+## Color switching
+macro	index,pager	',n'	"<enter-command> source '~/.mutt/scripts/themes.sh next'| <enter>" "next color theme"
+macro	index,pager	',p'	"<enter-command> source '~/.mutt/scripts/themes.sh previous'| <enter>" "previous color theme"

@@ -88,7 +88,7 @@ nametrans = lambda foldername: re.sub('^INBOX\.', '', foldername)
 # see http://docs.offlineimap.org/en/latest/nametrans.html
 createfolders = False
 
-maxconnections = 2
+maxconnections = 1
 type = IMAP
 #reference = INBOX (auskommentieren, sonst gibts die inbox nicht)
 folderfilter = lambda foldername: foldername not in ['INBOX.Sent Items','INBOX.Deleted Items']

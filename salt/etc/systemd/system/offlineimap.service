@@ -5,7 +5,7 @@ After=network.target
 
 [Service]
 User=johannes
-ExecStart=-/usr/bin/tmux -2 new-session -ds OfflineIMAP /usr/bin/offlineimap
+ExecStart=-/usr/bin/tmux -2 new-session -ds OfflineIMAP "/usr/bin/offlineimap"
 Type=forking
 PIDFile=/home/johannes/.offlineimap/pid
 Restart=always

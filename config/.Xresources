@@ -86,3 +86,6 @@ URxvt*color12: #0099FF
 ! ! color15 (bright white) 	= White
 ! ! foreground 		= Black
 ! ! background 		= White
+
+URxvt*urgentOnBell: true
+

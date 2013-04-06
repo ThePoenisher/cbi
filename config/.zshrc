@@ -29,12 +29,26 @@ alias -g xa="xargs -d '\n' "
 
 alias r="ranger"
 
+alias hd=/home/data
+
 alias f="find"
 alias pidgin="pidgin -c /home/data/personal/misc/pidgin"
-export GPG_TTY=`tty`
+
+alias grepc="grep --color=always"
+alias egrep="egrep --color=auto"
+alias egrepc="egrep --color=always"
 
 alias android-mount="sudo mkdir -p /media/android && sudo chown johannes:johannes /media/android/ && mtpfs -o user,allow_other /media/android && cd /media/android"
 alias android-umount="sudo umount /media/android"
+
+export MAIL=$HOME/Mail/local
+export GPG_TTY=`tty`
+
+unsetopt correct_all
+
+# does not work anymore since grml-zsh 0.8: DONTSETRPROMPT=1
+#instead:
+prompt off
 
 
 # Path to your oh-my-zsh configuration.
@@ -81,6 +95,7 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git vi-mode)
 
 source $ZSH/oh-my-zsh.sh
+
 
 
 if (( EUID != 0 )); then
@@ -130,9 +145,9 @@ PROMPT="%(?..%{$fg[red]%}%?%1v )${user}${NO_COLOUR}@%{${hostcolor[`hostname`]}%}
 RPROMPT='$(my_git_prompt) $(vi_mode_prompt_info)'
 #git_branch}"
 
-DONTSETRPROMPT=1
 
-if [ $CBI_MACHINE = 'scriabin' -o $CBI_MACHINE = 'debussy' ]; then
+
+if [ "$CBI_MACHINE" = 'scriabin' -o "$CBI_MACHINE" = 'debussy' ]; then
 HISTFILE=/home/data/personal/zsh_history
 fi
 HISTSIZE=30000
@@ -143,4 +158,4 @@ KEYTIMEOUT=1
 
 
 # archey # takes sometimes too lon gto spawn a terminal!
-cd /home
+# cd /home

@@ -1,0 +1,13 @@
+[Unit]
+Description=run maildir_watch
+Requires=dbus.service dbus.socket
+After=multi-user.target
+
+[Service]
+User=johannes
+ExecStart= {{ grains['cbi_home'] }}/bin/maildir_watch 
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

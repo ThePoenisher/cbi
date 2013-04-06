@@ -1419,6 +1419,10 @@ org-de/encrypt-entries/entry
 ** Agenda
 - l :: log mode
 - v :: change view (e.g. to month)
+** Mutt integration
+http://upsilon.cc/~zack/blog/posts/2010/02/integrating_Mutt_with_Org-mode/
+sehr gut!
+[2013-04-06 Sat]
 * Ediff
 ** M-x eregistry (ediff sessions)
 ** Settings
@@ -2003,6 +2007,7 @@ Change to standard compilation / eval key, but only in shell mode
   (add-to-list 'ac-modes 'conf-mode)
   (add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
   (add-to-list 'auto-mode-alist '("^/etc/"  conf-mode t))
+  (add-to-list 'auto-mode-alist '("/\.?mutt/"  conf-mode t))
 #+END_SRC
 ** El Doc Mode
 http://emacswiki.org/emacs/ElDoc
@@ -2137,6 +2142,11 @@ Problems with hard links, that get destroyed:
 ** Settings
 #+BEGIN_SRC emacs-lisp
   (setq send-mail-function 'sendmail-send-it)
+#+END_SRC
+** mutt
+#+BEGIN_SRC emacs-lisp
+  ;; Mutt support.
+  (setq auto-mode-alist (append '(("/tmp/mutt.*" . message-mode)) auto-mode-alist))
 #+END_SRC
 ** notmuch
 #+BEGIN_SRC emacs-lisp

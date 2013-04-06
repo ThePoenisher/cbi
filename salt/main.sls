@@ -8,6 +8,7 @@
   file.managed:
     - source: salt://etc/profile.d-cbi.sh
     - template: jinja
+    - mode: 755
 
 {% if grains['os'] == 'Ubuntu' %}
 {% set file="/etc/environment" %}
@@ -23,12 +24,15 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ############  Login ##########
 {% set usr = "johannes" %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
-{{ home }}/.zlogin:
+{% set files = ['.zlogin','.config/dunst/dunstrc'] %}
+{% for file in files %}
+{{ home }}/{{ file }}:
   file.symlink:
-    - target: {{ grains['cbi_home'] }}/config/.zlogin
+    - target: {{ grains['cbi_home'] }}/config/{{ file }}
     - user: {{ usr }}
     - group: {{ usr }}
     - force: True
+{% endfor %}
       
 ###########  Groups ###############
 groupsasd:
@@ -198,10 +202,12 @@ cups:
 {% if pillar['arch_desktop'] %}
 
 {% set services = [ ('autologin@',['tty1']) , ('wol@',['eth0']), ('offlineimap',['']) ] %}
+###, ('maildir_watch',['']) ] %}
 {% for service, instances in services %}
 {% set x = "/etc/systemd/system/"~service~".service" %}
 {{ x }}:
   file.managed:
+    - template: jinja
     - source: salt:/{{ x }}
       
 {% for instance in instances %}

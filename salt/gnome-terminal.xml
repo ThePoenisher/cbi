@@ -3,7 +3,7 @@
 	<entry name="scrollbar_position" mtime="1364740259" type="string">
 		<stringvalue>hidden</stringvalue>
 	</entry>
-	<entry name="silent_bell" mtime="1364404653" type="bool" value="true"/>
+	<entry name="silent_bell" mtime="1364404653" type="bool" value="false"/>
 	<entry name="default_show_menubar" mtime="1364404653" type="bool" value="false"/>
 	<entry name="background_darkness" mtime="1364404653" type="float" value="0.89145499467849731"/>
 	<entry name="background_type" mtime="1364404653" type="string">

@@ -1,0 +1,7 @@
+set my_theme=`ls ~/.mutt/themes | shuf | head -1 | tee -a /tmp/themes `
+set asd=`$(($sad +1))`
+set ?asd
+# source ~/.mutt/uncolor
+uncolor index *
+source ~/.mutt/themes/$my_theme
+set ?my_theme
