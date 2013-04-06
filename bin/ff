@@ -1,8 +1,8 @@
 #!/bin/bash
 # TODO: allow array of paths (z.B. ff  .* blabla)
 if [ "$2" ]; then
-		find "$1" -iname \*"$2"\*
+		unbuffer find "$1" -iname \*"$2"\*
 else
-		find * -iname \*"$1"\*
+		unbuffer find * -iname \*"$1"\*
 fi
 
