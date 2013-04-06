@@ -97,7 +97,7 @@ idlefolders = ['INBOX','INBOX.j@cityhaus-de']
 
 [mbnames]
 enabled = yes
-filename = ~/.mutt_mailboxes
+filename = ~/.mutt/mailboxes
 header = "mailboxes "
 peritem = "+%(accountname)s/%(foldername)s"
 sep = " "

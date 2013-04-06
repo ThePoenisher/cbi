@@ -35,3 +35,10 @@ postmap /etc/postfix/sasl_passwd:
     - template: jinja
     - user: {{ usr }}
     - group: {{ usr }}
+
+{{ home }}/.mutt:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/mutt
+    - user: {{ usr }}
+    - group: {{ usr }}
+    - force: True

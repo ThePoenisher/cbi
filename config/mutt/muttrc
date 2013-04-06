@@ -1,0 +1,28 @@
+# -*- mode: conf-unix; -*-
+
+# andere: http://xblast.sourceforge.net/rado/mutt/
+# https://github.com/redondos/mutt (with theme switcher)
+# more: http://dev.mutt.org/trac/wiki/ConfigList
+
+set mbox_type=Maildir
+set folder=~/Mail
+set spoolfile=+"j@g/INBOX" 
+set move=no
+set sleep_time = 0
+
+
+source ~/.mutt/mailboxes
+
+
+# source ~/.mutt/themes/lazygenestheme
+# source ~/.mutt/themes/phil
+# source ~/.mutt/themes/archwiki
+# source ~/.mutt/themes/rado
+# source ~/.mutt/themes/rohrbach
+# source ~/.mutt/themes/davep
+source ~/.mutt/themes/tomastheme
+# source /usr/share/doc/mutt/samples/colors.default
+# source /usr/share/doc/mutt/samples/colors.linux
+
+
+#source ~/.mutt/source-muttrc.d|
