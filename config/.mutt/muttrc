@@ -13,7 +13,16 @@ set spoolfile=+"j@g/INBOX"
 set move=no
 set sleep_time = 0
 
+set history=1000
+set history_file="~/.mutt/history"
+set save_history=1
 
+set sort=threads
+
+
+set pager_index_lines=10
+
+								 
 source ~/.mutt/macros
 source ~/.mutt/mailboxes
 

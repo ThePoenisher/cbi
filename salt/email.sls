@@ -4,6 +4,10 @@ mail_packages:
       - postfix
       - offlineimap
       - notmuch
+      - notmuch-mutt
+    - require:
+        - pkg: perl-mime-tools
+
 
 postfix:
   service.running:
@@ -36,9 +40,12 @@ postmap /etc/postfix/sasl_passwd:
     - user: {{ usr }}
     - group: {{ usr }}
 
-{{ home }}/.mutt:
+{% set files = ['.mutt','.urlview'] %}
+{% for file in files %}
+{{ home }}/{{ file }}:
   file.symlink:
-    - target: {{ grains['cbi_home'] }}/config/mutt
+    - target: {{ grains['cbi_home'] }}/config/{{ file }}
     - user: {{ usr }}
     - group: {{ usr }}
     - force: True
+{% endfor %}

@@ -1,0 +1,25 @@
+## Color switching
+macro	index,pager	',n'	"<enter-command> source '~/.mutt/scripts/themes.sh next'| <enter>" "next color theme"
+macro	index,pager	',p'	"<enter-command> source '~/.mutt/scripts/themes.sh previous'| <enter>" "previous color theme"
+
+## URLView
+macro index,pager,attach,compose B "\
+	<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
+	<pipe-message> urlview<Enter>\
+	<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
+	"call urlview to extract URLs out of a message"
+# macro index,pager B '<pipe-entry>urlview<enter>' 'URLView'
+# macro index,pager \cb '<pipe-message> urlview<enter>' 'URLView'
+macro index,pager \cb "<enter-command> set my_pdsave=\$pipe_decode<enter>\
+<enter-command> unset pipe_decode<enter>\
+<pipe-message>~/.mutt/scripts/extract_url.pl<enter>\
+<enter-command> set pipe_decode=\$my_pdsave<enter>" "get URLs"
+
+
+macro index <F8> \
+                 "<enter-command>unset wait_key<enter><shell-escape>notmuch-mutt -r --prompt search<enter><change-folder-readonly>~/.cache/notmuch/mutt/results<enter>" \
+                 "notmuch: search mail"
+
+macro index <F9> \
+                 "<enter-command>unset wait_key<enter><pipe-message>notmuch-mutt -r thread<enter><change-folder-readonly>~/.cache/notmuch/mutt/results<enter><enter-command>set wait_key<enter>" \
+                 "notmuch: reconstruct thread"

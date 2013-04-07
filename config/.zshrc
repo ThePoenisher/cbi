@@ -43,6 +43,7 @@ alias android-umount="sudo umount /media/android"
 
 export MAIL=$HOME/Mail/local
 export GPG_TTY=`tty`
+export BROWSER=firefox
 
 unsetopt correct_all
 

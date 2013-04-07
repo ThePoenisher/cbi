@@ -30,6 +30,9 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - perl-mime-tools
+      - perl-image-exiftool
+      - python2-eyed3
       - html2text
       - inotify-tools
       - perl-rename
