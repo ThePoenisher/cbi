@@ -1,0 +1,24 @@
+pkgname=git-annex
+pkgver=4.20130405
+pkgrel=1
+pkgdesc='Precompiled version of git-annex, webapp and assistant included.'
+arch=('i686' 'x86_64')
+url="http://git-annex.branchable.com/"
+license=(GPL3)
+provides=(git-annex)
+conflicts=(git-annex git-annex-standalone)
+
+# bundle includes all other libs needed!
+depends=(glibc)
+
+source=(http://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz)
+md5sums=('aabbb3aa2397be206cae86f33db9eef4')
+
+package() {
+		cd $srcdir
+		echo -e '#!/bin/sh\nexec /usr/share/git-annex/git-annex "$@"' > git-annex
+		install -Dm755 git-annex "$pkgdir/usr/bin/git-annex"
+		install -d "$pkgdir/usr/share"
+		mv git-annex.linux "$pkgdir/usr/share/git-annex"
+		ln -s git-annex "$pkgdir/usr/bin/git-annex-shell"
+}

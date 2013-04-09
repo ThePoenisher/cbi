@@ -145,7 +145,7 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - makedirs: True
     
       
-{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf' ] %}
+{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.managed:
