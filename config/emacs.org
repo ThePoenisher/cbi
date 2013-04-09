@@ -127,8 +127,6 @@ Ursache:
 #+END_SRC
 * Package Managers
 ** DONE ELPA / packages.el 
-:LOGBOOK:
-:END:
 *** List of selected packages
 #+BEGIN_SRC emacs-lisp
   (setq prelude-packages  '(  auto-complete
@@ -155,6 +153,7 @@ Ursache:
                              ;helm
                               latex-pretty-symbols
                               evil-numbers
+                              csv-mode
                               )
         )
   
