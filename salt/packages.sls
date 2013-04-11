@@ -23,7 +23,9 @@ base_packages:
       - figlet
       - ranger
       - subversion
+      - lsof
       - w3m
+      - parted
       - lynx
       - unrar
 {% if pillar['has_battery'] %}
