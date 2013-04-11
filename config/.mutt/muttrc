@@ -7,11 +7,15 @@ set use_envelope_from=yes
 # https://github.com/redondos/mutt (with theme switcher)
 # more: http://dev.mutt.org/trac/wiki/ConfigList
 
+
 set mbox_type=Maildir
 set folder=~/Mail
 set spoolfile=+"j@g/INBOX" 
 set move=no
 set sleep_time = 0
+
+set postponed=+"j@g/Drafts"
+set record=+"j@g/INBOX"
 
 set history=1000
 set history_file="~/.mutt/history"
@@ -20,7 +24,7 @@ set save_history=1
 set sort=threads
 
 
-set pager_index_lines=10
+set pager_index_lines=20
 
 								 
 source ~/.mutt/macros
