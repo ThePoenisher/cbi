@@ -1,27 +1,25 @@
 # -*- mode: conf; -*-
-# Sample minimal config file.  Copy this to ~/.offlineimaprc and edit to
-# get started fast.
+
+####################
+####################
+####################
+####################
+# ~/cbi/salt/offlineimaprc #########
+####################
+####################
+####################
+####################
+
 
 [general]
-accounts = j@g
-#, kuerzn
+accounts= j@g, kuerzn
+maxsyncaccounts = 2
+# Note: if you are using autorefresh and have more than one account,
+# you must set this number to be >= to the number of accounts you have;
+# since any given sync run never "finishes" due to a timer, you will never
+# sync your additional accounts if this is 1.
 
-# You can specify one or more user interface modules for OfflineIMAP
-# to use.  OfflineIMAP will try the first in the list, and if it
-# fails, the second, and so forth.
-#
-# The pre-defined options are:
-# Blinkenlights -- A fancy (terminal) interface
-# TTYUI         -- a txt-based (terminal) interface
-# Basic         -- Noninteractive interface suitable for cron'ing
-# Quiet         -- Noninteractive interface, generates no output
-#                  except for errors.
-# MachineUI     -- Interactive interface suitable for machine
-#                  parsing.
-#
-# You can override this with a command-line option -u.
 
-#ui = Blinkenlights
 
 [Account kuerzn]
 localrepository = LocalKuerzn
@@ -93,13 +91,14 @@ type = IMAP
 #reference = INBOX (auskommentieren, sonst gibts die inbox nicht)
 folderfilter = lambda foldername: foldername not in ['INBOX.Sent Items','INBOX.Deleted Items']
 
-idlefolders = ['INBOX','INBOX.j@cityhaus-de']
+idlefolders = ['INBOX']
 
 [mbnames]
 enabled = yes
 filename = ~/.mutt/mailboxes
 header = "mailboxes "
 peritem = "+%(accountname)s/%(foldername)s"
+folderfilter = lambda account, folder: not re.search('(Trash|^j@cityhaus-de$)', folder)
 sep = " "
 footer = "\n"
 

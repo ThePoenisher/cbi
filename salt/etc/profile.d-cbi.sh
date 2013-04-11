@@ -11,7 +11,7 @@ export EDITOR
 ALTERNATE_EDITOR=""
 export ALTERNATE_EDITOR
 
-PATH=$PATH:$CBI/bin
+PATH=$PATH:$CBI/bin:/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin
 export PATH
 
 {% if pillar['arch_desktop'] %}

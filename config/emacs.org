@@ -153,7 +153,6 @@ Ursache:
                              ;helm
                               latex-pretty-symbols
                               evil-numbers
-                              csv-mode
                               )
         )
   
@@ -231,6 +230,7 @@ consequently non-working autoloaders!)
                       ac-math
                       moz-repl
                       ;evil-org
+                      ledger-mode
                       )
         )
   
@@ -431,7 +431,7 @@ http://ethanschoonover.com/solarized
 :END:
 http://stackoverflow.com/questions/8257009/emacs-insert-word-at-point-into-replace-string-query
 **** replace+ (el-get)
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
     (require 'replace+)
 #+END_SRC
 " This means that the symbol or word near or at the cursor is the
@@ -985,6 +985,8 @@ Transpose two lines (transpose-lines).
 words: M-t
 **** move lines
 is provided my org-metaup?
+*** Line wrap
+M-x toogle-truncate-lines
 ** Bugs und Warnings
 *** (lambda (a) ...) quoted with ' rather than with #'
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
