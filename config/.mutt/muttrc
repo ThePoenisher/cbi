@@ -26,6 +26,7 @@ set sort=threads
 
 set pager_index_lines=20
 
+set sort_browser=reverse-date
 								 
 source ~/.mutt/macros
 source ~/.mutt/mailboxes
