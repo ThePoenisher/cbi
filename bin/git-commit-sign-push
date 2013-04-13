@@ -1,6 +1,6 @@
 #!/bin/bash
 git commit -m "automatic cbi commit" $@ -S
 git pull
-git commit -m "automatic cbi commit" $@ -S
+git commit -m "automatic cbi commit" -S
 git push
 
