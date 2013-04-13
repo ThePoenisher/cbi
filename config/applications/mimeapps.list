@@ -70,6 +70,7 @@ video/x-ogm+ogg=mplayer.desktop
 video/x-quicktime=mplayer.desktop
 video/x-theora=mplayer.desktop
 video/x-webm=mplayer.desktop
+application/vnd.rn-realmedia=mplayer.desktop
 
 [Added Associations]
 x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop;

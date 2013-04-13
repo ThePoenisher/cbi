@@ -4,7 +4,7 @@
 #          ""       to just change it to the next image
 #          "d"      to delete last BG image
 
-l=`find -L $CBI/desktop-artwork/wallpapers/ ! -path \*/meh/\* \( -name \*.png -o -name \*.jpg \)`
+l=`find -L $CBI/desktop-artwork/wallpapers/wallbase ! -path \*/meh/\* \( -name \*.png -o -name \*.jpg \)`
 if [ "$1" = "l" ]; then
 		echo "$l"
 elif [ "$1" = "d" ]; then
