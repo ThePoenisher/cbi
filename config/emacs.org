@@ -677,6 +677,8 @@ funkioniert irgendwie nicht in help-mode+
   (evil-set-initial-state 'reftex-select-label-mode  'emacs) 
   ;; (evil-set-initial-state 'help-mode 'emacs) http://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evil
   (evil-set-initial-state 'package-menu-mode 'emacs)
+
+  (evil-set-initial-state 'inferior-haskell-mode 'emacs)
   
   (add-to-list 'evil-buffer-regexps '("\\*notmuch-help" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*Mingus" . emacs))
@@ -2022,9 +2024,26 @@ function call you are currently writing. Very handy.
   (add-hook 'org-mode-hook  'turn-on-eldoc-mode)
 #+END_SRC
 ** Haskell
+see Mode Help
+http://www.haskell.org/haskellwiki/Emacs/Inferior_Haskell_processes
+*** Keys
+http://www.haskell.org/haskellwiki/Emacs/Keybindings_and_simple_usage
+C-c C-t might need C-c C-l before
+*** inferior-haskell-load-and-run
+*** switch-to-haskell
+interact
+C-c C-b 
+C-b C-z
+*** Settings
 #+BEGIN_SRC emacs-lisp
-      (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
+  (eval-after-load 'haskell-mode
+    '(define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
+    )
 #+END_SRC
+
 ** TODO imenu gives a list of all functions in a file, and lets you jump to them.
 idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
 ** Javascript
