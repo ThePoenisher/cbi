@@ -4,7 +4,7 @@
 
 maildir_path="/home/johannes/Mail/j@g"		# Path to Maildir root.
 mailboxes=(INBOX)			# Mailboxes to watch.
-watchdirs="/home/johannes/Mail/local/new" # manuall additional folder to watch
+watchdirs="" # manuall additional folder to watch
 watchdirs="${watchdirs} $(for box in ${mailboxes[*]}; do echo ${maildir_path}/$box/new; done)"
 timeout=5000
 
@@ -61,6 +61,7 @@ if [ -n "$1" ]; then
 	exit 0
 fi
 
+echo "starting to start inotifywait in blocking manner."
 
 # Let inotifywait monitor changes and output each event on it's own line.
 inotifywait --monitor --event create --event moved_to ${watchdirs} 2>/dev/null | while read mail

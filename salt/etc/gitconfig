@@ -17,3 +17,6 @@
 [merge "keepMine"]
         name = always keep mine during merge
         driver = keepMine %O %A %B
+				
+[core]
+        excludesfile = /etc/gitignore

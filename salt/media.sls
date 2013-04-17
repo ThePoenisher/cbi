@@ -10,6 +10,7 @@ sound_packages:
       - mplayer2
       - vlc
       - gecko-mediaplayer
+      - rtmpdump
 {% if grains['cbi_machine'] == 'scriabin' %}
 {% endif %}
 {% endif %}

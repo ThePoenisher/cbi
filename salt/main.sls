@@ -172,7 +172,7 @@ mkinitcpio -p linux:
       - file: /etc/mkinitcpio.conf
         
 ######  Symlinked etc Files  #########
-{% set files = ['udevil/udevil.conf', 'locale.conf','vimrc','modules-load.d','fuse.conf','tmux.conf' ] %}
+{% set files = ['udevil/udevil.conf', 'locale.conf','vimrc','modules-load.d','fuse.conf','gitignore','tmux.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.symlink:

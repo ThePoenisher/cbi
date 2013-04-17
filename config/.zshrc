@@ -19,7 +19,7 @@ alias gvp="git verify-pull"
 alias gvl="git verify-log"
 alias gsp="git commit-sign-push"
 
-alias feh2="feh -. --keep-zoom-vp --action2 'xrename \"%f\" ' "
+alias feh2="feh --scale-down --keep-zoom-vp --action2 'xrename \"%f\" ' "
 
 alias -g vi="vim"
 # global collides with unrar x so use \x

@@ -130,7 +130,7 @@ Ursache:
 *** List of selected packages
 #+BEGIN_SRC emacs-lisp
   (setq prelude-packages  '(  auto-complete
-                              bookmark+
+                              ;;bookmark+
                               js2-mode
                               lua-mode
                               move-text
@@ -153,6 +153,9 @@ Ursache:
                              ;helm
                               latex-pretty-symbols
                               evil-numbers
+                              smex
+                              ido-ubiquitous
+                              ido-vertical-mode
                               )
         )
   
@@ -410,7 +413,7 @@ http://www.nongnu.org/color-theme/#sec4
 #+BEGIN_SRC emacs-lisp
   (require 'color-theme)
   (color-theme-initialize)
-  (color-theme-dark-laptop)
+  ;;(color-theme-dark-laptop)
   ;; alternativ? color-theme-comidia, 
 #+END_SRC
 ***** Schöne Themes: 
@@ -595,6 +598,8 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 :ID:       026ded4c-be19-4a12-8f0c-a702ef796ec8
 :Attachments: vi-vim-cheat-sheet.gif
 :END:
+***** motion
+http://vimdoc.sourceforge.net/htmldoc/motion.html
 ***** Nützlich:
 + \ :: evil-execute-in-emacs-state (wird überschrieben von evil-leader)
 + C-z :: switch to emacs mode and back
@@ -607,8 +612,9 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
 + g;  g, :: goto last change (requires ELPA package goto-chg)
 + D :: delete till end of line
 + man page :: K
-+ jump paragraphs: { , }
-+ i, a :: use the whole object (Word, paragraph, sentense, (, <, {, … )
++ jump paragraphs :: { , }
++ jump sentences :: ( , )
++ i, a :: use the whole object ((w)ord, (p)aragraph, (s)entense, (, <, {, … )
 + C-o :: last location (previous) http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations
 + C-i :: next location
 + C-w :: window mode (more see (load "evil-maps.elo"))
@@ -988,7 +994,8 @@ words: M-t
 **** move lines
 is provided my org-metaup?
 *** Line wrap
-M-x toogle-truncate-lines
+M-x toggle-truncate-lines
+*** auto-fill-mode
 ** Bugs und Warnings
 *** (lambda (a) ...) quoted with ' rather than with #'
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
@@ -1692,16 +1699,18 @@ vorerst bibtex (als biblatex backend) benutzen
               (setq reftex-insert-label-flags (quote ("shladcmi" "sfhladcmi")))
               (setq reftex-label-alist
                     ;; find out code using (string-to-char "m") BETTER: ?m
-                    '(("theorem" 104 "thm:" " \\ref{%s}" 1 ("theorem" "th.") nil)
+                    '(
                       ("lemma" 108 "lem:" " \\ref{%s}" 1 ("lemma" "lem.") nil)
                       ("axiom" 109 "ax:" " \\ref{%s}" 1 ("axiom" "Axiom") nil)
                       ("assumption" 97 "ass:" " \\ref{%s}" 1 ("assumption" "ass.") nil)
-                      ("definition" 100 "def:" " \\ref{%s}" 1 ("definition" "def.") nil)
+                      ("definition" ?d "def:" " \\ref{%s}" 1 ("definition" "def.") nil)
+                      ("definitionenum" ?D "def:" " \\ref{%s}" 1 ("definition" "def.") nil)
                       ("remark" 114 "rmk:" " \\ref{%s}" t ("remark") nil)
                       ("example" 120 "ex:" " \\ref{%s}" t ("example" "ex.") nil)
                       ("corollary" ?c "cly:" " \\ref{%s}" 1 ("corollary" "cor.") nil)
                       ("corollaryenum" ?C "cly:" " \\ref{%s}" item nil nil)
                       ("theoremenum" ?T "thm:" " \\ref{%s}" item nil nil)
+                      ("theorem" 104 "thm:" " \\ref{%s}" 1 ("theorem" "th.") nil)
                       ("lemmaenum" ?L "lem:" " \\ref{%s}" item nil nil)
                       ))
               (turn-on-reftex)
@@ -1908,6 +1917,7 @@ the windows does follow the cursor around in the list of tags. I'll
 guess this is what you want."
 http://stackoverflow.com/questions/8006347/how-can-i-make-emacs-speedbar-auto-expand-file-class-info-based-on-the-cursor
 ** IDO
+*** Stuff
 - http://emacswiki.org/emacs/InteractivelyDoThings
 - demo? http://cpansearch.perl.org/src/YEWENBIN/Emacs-PDE-0.2.16/lisp/doc/QuickStartEn.html
 - benutztung und VIEL mehr: http://www.masteringemacs.org/articles/2010/10/10/introduction-to-ido-mode/
@@ -1923,13 +1933,23 @@ http://stackoverflow.com/questions/8006347/how-can-i-make-emacs-speedbar-auto-ex
 
 
 http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire
-
+*** possible enhancements
+http://marmalade-repo.org/packages/ido-better-flex
+*** Settings
 #+BEGIN_SRC emacs-lisp
   (setq ido-enable-flex-matching t)
   (setq ido-everywhere t)
- (setq ido-use-filename-at-point 'guess)
- (setq ido-use-url-at-point 'guess)
-(ido-mode 1)
+  (setq ido-use-filename-at-point 'guess)
+  (setq ido-use-url-at-point 'guess)
+  (ido-mode 1)
+  (ido-ubiquitous-mode 1)
+  (setq ido-ignore-files
+   (append
+    ;; haskell
+    '("\\.o$" "\\.hi$" ) 
+    ;; TEX
+    '("\\.toc$" "\\.out$" "\\.log$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
+    ido-ignore-files))  
 #+END_SRC
 *** Files
 **** Other's 
@@ -1954,6 +1974,23 @@ http://www.xsteve.at/prg/emacs/power-user-tips.html
 superseded by  (setq ido-use-filename-at-point 'guess) etc.
 #+BEGIN_SRC emacs-lisp :tangle no
 (ffap-bindings)
+#+END_SRC
+*** Smex
+**** docs
+https://github.com/nonsequitur/smex/
+http://www.emacswiki.org/emacs/Smex
+
+C-h f, while Smex is active, runs describe-function on the currently selected command.
+
+M-. jumps to the definition of the selected command.
+
+C-h w shows the key bindings for the selected command. (Via where-is.)
+**** settings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-M-x") 'execute-extended-command)
 #+END_SRC
 * Programming / Development
 ** Allgemeine Tipps
@@ -2813,8 +2850,8 @@ http://vimgolf.com/
 #+BEGIN_SRC emacs-lisp
   ;; installed via ELPA
   
-  (setq bmkp-last-as-first-bookmark-file nil)
-  (setq bookmark-default-file "~/emacs/org-notes/bookmarks")
+  ;;(setq bmkp-last-as-first-bookmark-file nil)
+  ;;(setq bookmark-default-file ~/emacs/org-notes/bookmarks")
   
   
   
