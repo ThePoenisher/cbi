@@ -1,0 +1,12 @@
+feh_*_filelist
+.pdb
+.obj
+\#*#
+*~
+*.swp
+.#*
+nohup.out
+dont-backup
+*.orig
+*.hi
+*.o
