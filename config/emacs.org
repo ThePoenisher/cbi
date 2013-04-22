@@ -379,10 +379,18 @@ from http://www.emacswiki.org/emacs/AlarmBell
 #+BEGIN_SRC emacs-lisp
   (setq ring-bell-function 
         (lambda ()
-          (unless (memq this-command '(isearch-abort
-                                       abort-recursive-edit exit-minibuffer
-                                       keyboard-quit))
-            (ding))))
+          (when nil
+            (unless (memq this-command '(isearch-abort
+                                         abort-recursive-edit
+                                         exit-minibuffer
+                                         scroll-up-command
+                                         scroll-down-command
+                                         org-sparse-tree
+                                         nil
+                                         org-ctrl-c-ctrl-c
+                                         keyboard-quit))
+              (print this-command)
+              (ding)))))
   
   (setq visible-bell t)
 #+END_SRC
@@ -485,7 +493,7 @@ http://ergoemacs.org/emacs/text_editor_cursor_behavior.html
 ** Help / Hilfe
 *** ehelp (electric help)
 - http://emacswiki.org/emacs/ElectricHelp
-- eher nervig 
+- EXTREM nervig wenn man nicht sofort mit q oder r entscheidet!!!
 - OBSOLETE? :: help-mode bekommt meistens eh den focus und kann dann
                mit `q' geschlossen werden. FALSCH! (zumindest kann
                ichs nicht reproduzieren)
@@ -689,6 +697,8 @@ funkioniert irgendwie nicht in help-mode+
   (add-to-list 'evil-buffer-regexps '("\\*notmuch-help" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*Mingus" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*buffer-selection\\*" . emacs))
+
+  (add-to-list 'evil-buffer-regexps '("\\*Reconcile\\*" . emacs))
 #+END_SRC
 **** evil-numbers (MELPA)
 increment/decrement (see eigene keys, z.Z. C-c C-+/-)
@@ -723,6 +733,8 @@ some tips."
 http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
 - yank does NOT include the character under point (which is bad at the end of a lin). wheras visual mode includes it. (Scheint aber in VIM auch so zu sein)
 
+***** Suche mit "*"  und "#" matched scheiße wegen komischem such pattern in 
+[[file:~/.emacs.d/elpa/evil-20130129.1415/evil-search.el::(defun%20evil-search-symbol%20(forward)][file:~/.emacs.d/elpa/evil-20130129.1415/evil-search.el::(defun evil-search-symbol (forward)]]
 **** and Org
 Only thing currently used: jo/enter-org-speed
 ***** not used
@@ -1433,8 +1445,18 @@ org-de/encrypt-entries/entry
 http://upsilon.cc/~zack/blog/posts/2010/02/integrating_Mutt_with_Org-mode/
 sehr gut!
 [2013-04-06 Sat]
+* Ledger
+#+BEGIN_SRC emacs-lisp
+  (let ((p "/home/data/finanzen/ledger/lisp"))
+    (when (file-exists-p p)
+      (add-to-list 'load-path p)
+      (load "ldg-new")
+      ))
+#+END_SRC
 * Ediff
 ** M-x eregistry (ediff sessions)
+** hooks
+http://www.gnu.org/software/emacs/manual/html_node/ediff/Hooks.html
 ** Settings
 If ediff is required too early, (with emacs --daemon) it sets a lot of
 weird stuff (no floating small ediff window, no highlighting or auto
@@ -1444,19 +1466,24 @@ will not be overriden, if the package is loaded later on)
   ;; (eval-after-load 'ediff '(setq-default ediff-auto-refine 'on))
   (setq-default ediff-auto-refine 'on)
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  
+  ;; ediff for org-mode files
+  (add-hook 'ediff-prepare-buffer-hook 
+      (lambda () 
+        (cond ((eq major-mode 'org-mode)
+         (visible-mode 1)))))
+  
+  (add-hook 'ediff-cleanup-hook
+      (lambda () 
+        (cond ((eq major-mode 'org-mode)
+         (visible-mode 0)))))
 #+END_SRC
 *** problems: ediff multiframe frame als Float bringt xmonad zum hängen
-solution: windows-plain
+solution: windows-plain (s.o.)
 ** git
 taken from http://stackoverflow.com/a/4512729
-#+BEGIN_SRC emacs-lisp
-  
-  (defvar ediff-after-quit-hooks nil
-    "* Hooks to run after ediff or emerge is quit.")
-  
-  (defadvice ediff-quit (after edit-after-quit-hooks activate)
-    (run-hooks 'ediff-after-quit-hooks))
-  
+shit. instead use cbi/bin/ediff script
+#+BEGIN_SRC emacs-lisp :tangle no
   (setq git-mergetool-emacsclient-ediff-active nil)
   
   (defun local-ediff-frame-maximize ()
@@ -1700,18 +1727,18 @@ vorerst bibtex (als biblatex backend) benutzen
               (setq reftex-label-alist
                     ;; find out code using (string-to-char "m") BETTER: ?m
                     '(
-                      ("lemma" 108 "lem:" " \\ref{%s}" 1 ("lemma" "lem.") nil)
-                      ("axiom" 109 "ax:" " \\ref{%s}" 1 ("axiom" "Axiom") nil)
-                      ("assumption" 97 "ass:" " \\ref{%s}" 1 ("assumption" "ass.") nil)
-                      ("definition" ?d "def:" " \\ref{%s}" 1 ("definition" "def.") nil)
-                      ("definitionenum" ?D "def:" " \\ref{%s}" 1 ("definition" "def.") nil)
-                      ("remark" 114 "rmk:" " \\ref{%s}" t ("remark") nil)
-                      ("example" 120 "ex:" " \\ref{%s}" t ("example" "ex.") nil)
-                      ("corollary" ?c "cly:" " \\ref{%s}" 1 ("corollary" "cor.") nil)
-                      ("corollaryenum" ?C "cly:" " \\ref{%s}" item nil nil)
-                      ("theoremenum" ?T "thm:" " \\ref{%s}" item nil nil)
-                      ("theorem" 104 "thm:" " \\ref{%s}" 1 ("theorem" "th.") nil)
-                      ("lemmaenum" ?L "lem:" " \\ref{%s}" item nil nil)
+                      ("lemma" 108 "lem:" "\\ref{%s}" 1 ("lemma" "lem.") nil)
+                      ("axiom" 109 "ax:" "\\ref{%s}" 1 ("axiom" "Axiom") nil)
+                      ("assumption" 97 "ass:" "\\ref{%s}" 1 ("assumption" "ass.") nil)
+                      ("definition" ?d "def:" "\\ref{%s}" 1 ("definition" "def.") nil)
+                      ("definitionenum" ?D "def:" "\\ref{%s}" 1 ("definition" "def.") nil)
+                      ("remark" 114 "rmk:" "\\ref{%s}" t ("remark") nil)
+                      ("example" 120 "ex:" "\\ref{%s}" t ("example" "ex.") nil)
+                      ("corollary" ?c "cly:" "\\ref{%s}" 1 ("corollary" "cor.") nil)
+                      ("corollaryenum" ?C "cly:" "\\ref{%s}" item nil nil)
+                      ("theoremenum" ?T "thm:" "\\ref{%s}" item nil nil)
+                      ("theorem" 104 "thm:" "\\ref{%s}" 1 ("theorem" "th.") nil)
+                      ("lemmaenum" ?L "lem:" "\\ref{%s}" item nil nil)
                       ))
               (turn-on-reftex)
               ))
@@ -2047,6 +2074,7 @@ Change to standard compilation / eval key, but only in shell mode
   (add-to-list 'ac-modes 'conf-mode)
   (add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
   (add-to-list 'auto-mode-alist '("^/etc/"  conf-mode t))
+  (add-to-list 'auto-mode-alist '("/salt/etc/"  conf-mode t))
   (add-to-list 'auto-mode-alist '("/\.?mutt/"  conf-mode t))
 #+END_SRC
 ** El Doc Mode
@@ -2175,7 +2203,7 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 #+END_SRC
 ** YAML (auch für Salt Stack) (via ELPA)
 #+BEGIN_SRC emacs-lisp 
-  (add-to-list 'auto-mode-alist '("\\.\\(sls\\|ya?ml\\)$" . yaml-mode))
+  (add-to-list 'auto-mode-alist '("\\.\\(sls\\|ya?ml\\)" . yaml-mode))
   (add-to-list 'ac-modes 'yaml-mode)
 #+END_SRC
 ** Clojure
@@ -2203,7 +2231,23 @@ Problems with hard links, that get destroyed:
 ** mutt
 #+BEGIN_SRC emacs-lisp
   ;; Mutt support.
-  (setq auto-mode-alist (append '(("/tmp/mutt.*" . message-mode)) auto-mode-alist))
+  (setq auto-mode-alist (append '(("/tmp/mutt.*" . mutt-mode)) auto-mode-alist))
+  
+  (define-derived-mode mutt-mode
+    message-mode "MuttMessage"
+    "Major mode for editing mutt message.
+            \\{mutt-mode-map}"
+    nil)
+  
+  (define-key mutt-mode-map (kbd "C-c C-c") 'save-and-server-edit)
+  (define-key mutt-mode-map (kbd "C-x #") 'save-and-server-edit)
+  (define-key mutt-mode-map (kbd "C-x k") 'save-and-server-edit)
+  
+  (defun save-and-server-edit ()
+    (interactive)
+    (save-buffer)
+    (server-edit)
+    )  
 #+END_SRC
 ** notmuch
 #+BEGIN_SRC emacs-lisp
@@ -2455,7 +2499,9 @@ editing: http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
 ** dired (file system, also remote)
 *** Delete Backup and Auto Save files: `#' and `~'
 *** Jump to current file: C-x C-j
+dired-jump
 DOES NOT WORK ANYNMORE!?!?!?
+works angain [2013-04-22 Mon]
 *** Open files: just hit RET!
 *** wdired-change-to-wdired-mode (cool rename files in dirs)
 Put a dired buffer in a mode in which filenames are editable.
@@ -2647,7 +2693,7 @@ http://vimgolf.com/
                            ))
       )
   
-    ;; Save current buffer and kill it
+    ;; Save current buffer and kill it (overwrite default)
     (defun save-and-kill () 
       (interactive) 
       (if (buffer-modified-p) (jo/save-current-buffer))
@@ -2793,6 +2839,7 @@ http://vimgolf.com/
   
     ;; Show column number
     (column-number-mode 1)
+    (setq line-number-display-limit-width 2000)
   
     ;; Use ediff instead of diff in `save-some-buffers'
     (eval-after-load "files"

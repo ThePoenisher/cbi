@@ -40,7 +40,7 @@ postmap /etc/postfix/sasl_passwd:
     - user: {{ usr }}
     - group: {{ usr }}
 
-{% set files = ['.mutt','.urlview'] %}
+{% set files = ['.mutt','.urlview','.mailcap'] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
   file.symlink:

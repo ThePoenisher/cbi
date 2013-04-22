@@ -23,6 +23,8 @@ set save_history=1
 
 set sort=threads
 
+set edit_headers=yes
+set autoedit=yes
 
 set pager_index_lines=20
 
@@ -38,3 +40,5 @@ source ~/.mutt/scripts/themes.sh|
 
 
 #source ~/.mutt/source-muttrc.d|
+auto_view text/html
+auto_view application/pdf

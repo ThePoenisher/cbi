@@ -51,6 +51,7 @@ import System.IO
 
 my_term_new = "gnome-terminal -x tmux -2"
 my_term_attach = "gnome-terminal -x tmux-detached-or-new"
+my_term_scratch = "gnome-terminal --disable-factory --name scratchpad -x tmux -2 new-session -s Scratchpad" 
 -- find out using xprop
 my_term_class = "Gnome-terminal"
 my_emacs ="emacsclient -c -n"
@@ -257,7 +258,7 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm .|. controlMask, xK_y    ), sendMessage $ Toggle REFLECTY)
   , ((modm .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
   , ((modm .|. controlMask, xK_m    ), sendMessage $ Toggle MIRROR)
-  , ((modm .|. controlMask, xK_p    ), scratchpadSpawnActionCustom "gnome-terminal --disable-factory --name scratchpad" )
+  , ((modm .|. controlMask, xK_p    ), scratchpadSpawnActionCustom my_term_scratch)
   ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
