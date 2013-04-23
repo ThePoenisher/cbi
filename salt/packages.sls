@@ -87,6 +87,7 @@ base_packages:
       - xdialog #for (my) xrename
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - aqbanking
       - dunst # für libnotify
       - espeak
       - gimp

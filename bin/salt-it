@@ -4,9 +4,13 @@ export GNUPGHOME="$(gpgconf --list-dirs | sed -nre 's/homedir://p')"
 
 (cd $DIR && 
 git-verify-commit-signature HEAD &&
+if [ "$1" = "-t" ]; then
+		t="test=True"
+		shift
+fi
 if [ "$1" ]; then
-sudo -E salt-call state.sls "$1"
+sudo -E salt-call state.sls "$t" "$1"
 else
-sudo -E salt-call state.highstate
+sudo -E salt-call state.highstate "$t"
 fi		
 )
