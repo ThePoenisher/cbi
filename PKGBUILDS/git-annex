@@ -12,13 +12,13 @@ conflicts=(git-annex git-annex-standalone)
 depends=(glibc)
 
 source=(http://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz)
-md5sums=('aabbb3aa2397be206cae86f33db9eef4')
+md5sums=('6ade42e0739530b25b8a2fbea8544d72')
 
 package() {
 		cd $srcdir
 		echo -e '#!/bin/sh\nexec /usr/share/git-annex/git-annex "$@"' > git-annex
 		install -Dm755 git-annex "$pkgdir/usr/bin/git-annex"
 		install -d "$pkgdir/usr/share"
-		mv git-annex.linux "$pkgdir/usr/share/git-annex"
-		ln -s git-annex "$pkgdir/usr/bin/git-annex-shell"
+		#mv git-annex.linux "$pkgdir/usr/share/git-annex"
+		#ln -s git-annex "$pkgdir/usr/bin/git-annex-shell"
 }
