@@ -10,9 +10,11 @@
     use_system_font = False
     foreground_color = "#ffffff"
     show_titlebar = False
-
+{% if grains['cbi_machine'] == 'scriabin' %}
     font = DejaVu Sans Mono 9
-
+{% elif grains['cbi_machine'] == 'debussy' %}
+    font = DejaVu Sans Mono 10
+{% endif %}
   [[New Profile]]
 [layouts]
   [[default]]

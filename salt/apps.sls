@@ -59,15 +59,15 @@ gconfshut:
     - user: {{ usr }}
 
         
-gnome-terminal.conf:
+{{ home }}/.config/terminator/config:
   file.managed:
-    - name: {{ home }}/.gconf/apps/gnome-terminal/profiles/Default/%gconf.xml
     - user: {{ usr }}
     - group: {{ usr }}
     - require:
         - user: {{ usr }}
     - template: jinja
-    - source: salt://gnome-terminal.xml
+    - source: salt://terminator
+    - makedirs: True
 
 {{ home }}/.gtkrc-2.0.mine:
   file.managed:

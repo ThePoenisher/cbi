@@ -151,8 +151,8 @@ RPROMPT='$(my_git_prompt) $(vi_mode_prompt_info)'
 if [ "$CBI_MACHINE" = 'scriabin' -o "$CBI_MACHINE" = 'debussy' ]; then
 HISTFILE=/home/data/personal/zsh_history
 fi
-HISTSIZE=30000
-SAVEHIST=30000
+HISTSIZE=40000
+SAVEHIST=40000
 
 #make the esc key faster (to exit vi insert mode!
 KEYTIMEOUT=1
