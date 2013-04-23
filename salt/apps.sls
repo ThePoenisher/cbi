@@ -50,13 +50,13 @@ arch_browser_packages:
     - force: True
     - makedirs: True
       
-gconfshut:
-  cmd.wait:
-    - name: killall -9 gconfd-2
-    #- name: gconftool-2 --shutdown
-    - watch:
-      - file: gnome-terminal.conf
-    - user: {{ usr }}
+# gconfshut:
+#   cmd.wait:
+#     - name: killall -9 gconfd-2
+#     #- name: gconftool-2 --shutdown
+#     - watch:
+#       - file: gnome-terminal.conf
+#     - user: {{ usr }}
 
         
 {{ home }}/.config/terminator/config:

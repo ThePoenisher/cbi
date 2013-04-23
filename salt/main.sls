@@ -24,7 +24,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ############  Login ##########
 {% set usr = "johannes" %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
-{% set files = ['.zlogin','.config/dunst','.config/terminator'] %}
+{% set files = ['.zshenv','.zlogin','.config/dunst','.config/terminator'] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
   file.symlink:
@@ -172,7 +172,7 @@ mkinitcpio -p linux:
       - file: /etc/mkinitcpio.conf
         
 ######  Symlinked etc Files  #########
-{% set files = ['zshenv','udevil/udevil.conf', 'locale.conf','vimrc','modules-load.d','fuse.conf','gitignore','tmux.conf' ] %}
+{% set files = ['udevil/udevil.conf', 'locale.conf','vimrc','modules-load.d','fuse.conf','gitignore','tmux.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.symlink:

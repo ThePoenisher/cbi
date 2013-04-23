@@ -11,8 +11,7 @@ export EDITOR
 ALTERNATE_EDITOR=""
 export ALTERNATE_EDITOR
 
-# is now in /etc/zshenv
-source /etc/zshenv
+# is now in /.zshenv
 # PATH=$PATH:$CBI/bin:/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin
 
 export PATH

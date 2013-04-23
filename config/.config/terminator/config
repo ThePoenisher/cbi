@@ -11,7 +11,7 @@
     foreground_color = "#ffffff"
     show_titlebar = False
 
-    font = DejaVu Sans Mono 9
+    font = DejaVu Sans Mono 10
 
   [[New Profile]]
 [layouts]
