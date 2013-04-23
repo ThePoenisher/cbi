@@ -1,5 +1,14 @@
 ! Activate these setting with "xrdb ~/.Xresources"
 
+! xterm
+xterm*termName: xterm-256color
+XTerm*locale: true
+XTerm*background: rgb:00/00/00
+XTerm*foreground: rgb:ff/ff/ff
+xterm*faceName:xft:DejaVu Sans Mono:style=Regular:size=10
+XTerm*metaSendsEscape: true
+! https://wiki.archlinux.org/index.php/Xterm
+
 
 ! Real Transparency
 URxvt.depth: 32
@@ -22,7 +31,7 @@ Xft.rgba:       rgb
 
 !-- xfc Fonts -- !
 xscreensaver.Dialog.headingFont:xft:Droid Sans Mono:style=Regular:size=11
-!URxvt.font:xft:Droid Sans Mono:style=Regular:size=11
+URxvt.font:xft:Droid Sans Mono:style=Regular:size=11
 !xft:Bitstream Vera Sans Mono:style=Roman:size=1
 !xft:Liberation Mono:style=Regular:size=10!
 !URxvt.font: xft:Ubuntu Mono:style=Regular:size=10:antialias=true

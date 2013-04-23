@@ -6,7 +6,6 @@ arch_browser_packages:
       - flashplugin
       - thunderbird
       - chromium
-      - gnome-terminal
 {% endif %}
 
 {% set usr = pillar['desktop_user'] %}

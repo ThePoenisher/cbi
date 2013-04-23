@@ -90,6 +90,7 @@ base_packages:
       - aqbanking
       - dunst # für libnotify
       - espeak
+      - terminator
       - gimp
       - virtualbox
       - virtualbox-host-modules
@@ -126,7 +127,7 @@ base_packages:
       - xsane-gimp
       - gvfs-afc
       - gvfs-afp
-      - gvfs-gphoto2
+      - gvfs-gphoto2 # für andoird phone via usb
       - gvfs-smb
 {% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
       - libreoffice-{{ p }}
@@ -136,7 +137,7 @@ base_packages:
       - file: /etc/pacman.conf
 
 # do I need gvfs-mtp-git. given it limited power.  what does ubuntu use ? gphotos2?
-{% for p in ['epson-inkjet-printer-workforce-635-nx625-series', 'perl-string-util', 'perl-file-find-rule', 'aurvote', 'python2-gnupg', 'mendeleydesktop', 'urlview', 'downgrade', 'ledger', 'dbacl'] %}
+{% for p in ['epson-inkjet-printer-workforce-635-nx625-series', 'perl-string-util', 'perl-file-find-rule', 'aurvote', 'python2-gnupg', 'mendeleydesktop', 'urlview', 'downgrade'] %}
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
     - unless: pacman -Q {{ p }}

@@ -1,0 +1,2 @@
+#find /home/data2/music/* -type d  > /home/data2/music/all
+e=`shuf -n1 /home/data2/music/all`; echo $e

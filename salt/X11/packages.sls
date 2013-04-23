@@ -25,6 +25,7 @@ arch_X11_packages:
       - xbindkeys
       - scrot
       - gksu
+      - gconf-editor
 # file opener: https://wiki.archlinux.org/index.php/Xdg-open      
       - xdg-utils
       - dmenu

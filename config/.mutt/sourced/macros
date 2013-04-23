@@ -26,7 +26,7 @@ macro index,pager,attach,compose B "\
 	<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
 	<pipe-message> urlview<Enter>\
 	<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
-	"call urlview to extract URLs out of a message"
+	"2call urlview to extract URLs out of a message"
 # macro index,pager B '<pipe-entry>urlview<enter>' 'URLView'
 # macro index,pager \cb '<pipe-message> urlview<enter>' 'URLView'
 macro index,pager \cb "<enter-command> set my_pdsave=\$pipe_decode<enter>\

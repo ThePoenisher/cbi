@@ -24,7 +24,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ############  Login ##########
 {% set usr = "johannes" %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
-{% set files = ['.zlogin','.config/dunst'] %}
+{% set files = ['.zlogin','.config/dunst','.config/terminator'] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
   file.symlink:
