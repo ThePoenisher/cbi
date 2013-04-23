@@ -125,7 +125,7 @@ base_packages:
       - xsane-gimp
       - gvfs-afc
       - gvfs-afp
-      - gvfs-gphoto2
+      - gvfs-gphoto2 # für andoird phone via usb
       - gvfs-smb
 {% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
       - libreoffice-{{ p }}

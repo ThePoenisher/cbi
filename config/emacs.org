@@ -1977,6 +1977,8 @@ http://marmalade-repo.org/packages/ido-better-flex
     ;; TEX
     '("\\.toc$" "\\.out$" "\\.log$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
     ido-ignore-files))  
+  (setq ido-max-work-file-list 1000)
+  (setq ido-max-dir-file-cache 1000)
 #+END_SRC
 *** Files
 **** Other's 
@@ -2240,8 +2242,6 @@ Problems with hard links, that get destroyed:
     nil)
   
   (define-key mutt-mode-map (kbd "C-c C-c") 'save-and-server-edit)
-  (define-key mutt-mode-map (kbd "C-x #") 'save-and-server-edit)
-  (define-key mutt-mode-map (kbd "C-x k") 'save-and-server-edit)
   
   (defun save-and-server-edit ()
     (interactive)

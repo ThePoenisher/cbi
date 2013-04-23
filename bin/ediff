@@ -39,7 +39,7 @@ fi
 if ${_EMACSCLIENT} ${_EMACSCLIENTOPTS} -a "" -e "(${_EVAL})" 2>&1; then
 
 		# check modified file
-		if [ ! $(egrep -c '^(<<<<<<<|=======|>>>>>>>|####### Ancestor)' ${_MERGED}) = 0 ]; then
+		if egrep -q '^(<<<<<<<|=======|>>>>>>>|####### Ancestor)' ${_MERGED}; then
 				_MERGEDSAVE=$(${_MKTEMP} --tmpdir `${_BASENAME} ${_MERGED}`.XXXXXXXXXX)
 				${_CP} ${_MERGED} ${_MERGEDSAVE}
 				echo 1>&2 "Oops! Conflict markers detected in $_MERGED."
