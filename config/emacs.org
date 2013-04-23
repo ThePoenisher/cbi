@@ -327,7 +327,13 @@ http://www.emacswiki.org/emacs/WinnerMode
 #+BEGIN_SRC emacs-lisp
   (winner-mode 1)
   (windmove-default-keybindings 'super)  
+
+;; siehe probleme:
+    (remove-hook 'post-command-hook 'winner-save-old-configurations)
+    (remove-hook 'post-command-hook 'winner-save-conditionally)
 #+END_SRC
+**** gelöste probleme: mit den pfeiltasten im buffer auf und ab extrem slow
+hooks removed (s.o.)
 **** keys
 - C-c <left> / <right> :: undo/redo window configuration changes
 - <windmove-key> <arrow-key> :: directly navigate between windows
@@ -1974,8 +1980,9 @@ http://marmalade-repo.org/packages/ido-better-flex
    (append
     ;; haskell
     '("\\.o$" "\\.hi$" ) 
+    ;; sometimes needed? '("\\.log$" )
     ;; TEX
-    '("\\.toc$" "\\.out$" "\\.log$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
+    '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
     ido-ignore-files))  
   (setq ido-max-work-file-list 1000)
   (setq ido-max-dir-file-cache 1000)

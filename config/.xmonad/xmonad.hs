@@ -42,18 +42,17 @@ import XMonad.Actions.GroupNavigation
 import XMonad.Actions.FindEmptyWorkspace
 import XMonad.Actions.SpawnOn
 
-import XMonad.Util.Scratchpad
+import XMonad.Util.NamedScratchpad
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
 import Graphics.X11.Xlib
 import qualified Data.Map as M
 import System.IO
 
-my_term_new = "gnome-terminal -x tmux -2"
-my_term_attach = "gnome-terminal -x tmux-detached-or-new"
-my_term_scratch = "gnome-terminal --disable-factory --name scratchpad -x tmux -2 new-session -s Scratchpad" 
+my_term_new = "-terminator -x tmux -2"
+my_term_attach = "terminator -x tmux-detached-or-new"
 -- find out using xprop
-my_term_class = "Gnome-terminal"
+my_term_class = "Terminator"
 my_emacs ="emacsclient -c -n"
                 
 myMM=mod4Mask
@@ -69,7 +68,7 @@ myConfig = defaultConfig
       { terminal = my_term_attach
       , normalBorderColor  = myInactiveBorderColor
       , focusedBorderColor = myActiveBorderColor
-      , manageHook = scratchpadManageHookDefault <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
+      , manageHook = namedScratchpadManageHook scratchpads <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
       , layoutHook = avoidStruts myLayoutHook
       , startupHook =  takeTopFocus >> ewmhDesktopsStartup >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
@@ -172,7 +171,27 @@ myWorkspaces = map ( pad . show ) ( [1..9] ++ [0] )
    --    wrapBitmap "sm4tik/eye_l.xbm",
    --    wrapBitmap "sm4tik/eye_r.xbm"
    -- ]
- 
+
+scratchpads = [
+
+  -- run scratchpad in tmux in terminator
+  NS "scratch" "terminator --title scratchpad -x tmux -2 new-session -As Scratchpad"
+  (title =? "scratchpad")
+  (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)) ,
+  
+  -- run htop in xterm, find it by title, use default floating window placement
+  NS "htop" "xterm -e htop" (title =? "htop") defaultFloating ,
+
+  -- run stardict, find it by class name, place it in the floating window
+  -- 1/6 of screen width from the left, 1/6 of screen height
+  -- from the top, 2/3 of screen width by 2/3 of screen height
+  NS "stardict" "stardict" (className =? "Stardict")
+  (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)) ,
+
+  -- run gvim, find by role, don't float
+  NS "notes" "gvim --role notes ~/notes.txt" (role =? "notes") nonFloating
+  ] where role = stringProperty "WM_WINDOW_ROLE"  
+               
 -- Urgency hint configuration
 myUrgencyHook = withUrgencyHook NoUrgencyHook
 --  dzenUrgencyHook { args = ["-bg", "darkgreen", "-xs", "1"] }
@@ -258,7 +277,7 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm .|. controlMask, xK_y    ), sendMessage $ Toggle REFLECTY)
   , ((modm .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
   , ((modm .|. controlMask, xK_m    ), sendMessage $ Toggle MIRROR)
-  , ((modm .|. controlMask, xK_p    ), scratchpadSpawnActionCustom my_term_scratch)
+  , ((modm .|. controlMask, xK_p    ), namedScratchpadAction scratchpads "scratch" )
   ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
@@ -280,7 +299,7 @@ myDzenPP2 h = do
 -- Dzen config
 myDzenPP h = defaultPP {
   -- alternative sorts: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-WorkspaceCompare.html
-  ppSort =   fmap (. scratchpadFilterOutWorkspace) $ ppSort defaultPP,
+  ppSort =   fmap (. namedScratchpadFilterOutWorkspace) $ ppSort defaultPP,
   ppOutput = hPutStrLn h,
   ppSep = "^bg(" ++ myBgBgColor ++ ")^r(1,15)^bg()",
   ppWsSep = "",

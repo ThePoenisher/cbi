@@ -89,6 +89,7 @@ base_packages:
       - pdfedit
       - dunst # für libnotify
       - espeak
+      - terminator
       - gimp
       - virtualbox
       - virtualbox-host-modules
