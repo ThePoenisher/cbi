@@ -16,9 +16,9 @@ md5sums=('6ade42e0739530b25b8a2fbea8544d72')
 
 package() {
 		cd $srcdir
-		echo -e '#!/bin/sh\nexec /usr/share/git-annex/git-annex "$@"' > git-annex
-		install -Dm755 git-annex "$pkgdir/usr/bin/git-annex"
+		#echo -e '#!/bin/sh\nexec /usr/share/git-annex/git-annex "$@"' > git-annex
+		#install -Dm755 git-annex "$pkgdir/usr/bin/git-annex"
 		install -d "$pkgdir/usr/share"
-		#mv git-annex.linux "$pkgdir/usr/share/git-annex"
+		mv git-annex.linux "$pkgdir/usr/share/git-annex"
 		#ln -s git-annex "$pkgdir/usr/bin/git-annex-shell"
 }
