@@ -5,7 +5,7 @@ then
 fi
 
 #use the "ends with a space trick" (see man zshall) for alias expansion after a sudo:
-alias sudo='command sudo '
+alias sudo='command sudo env PATH=$PATH'
 
 # run client in terminal
 alias -g en="my_emacs -c -nw"
