@@ -24,7 +24,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ############  Login ##########
 {% set usr = "johannes" %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
-{% set files = ['.zshenv','.zlogin','.config/dunst','.config/terminator'] %}
+{% set files = ['.zlogin','.config/dunst','.config/terminator'] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
   file.symlink:
@@ -145,7 +145,7 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - makedirs: True
     
       
-{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf' ] %}
+{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf','zsh/zshenv' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.managed:

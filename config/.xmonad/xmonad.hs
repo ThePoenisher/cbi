@@ -49,7 +49,7 @@ import Graphics.X11.Xlib
 import qualified Data.Map as M
 import System.IO
 
-my_term_new = "-terminator -x tmux -2"
+my_term_new = "terminator -x tmux -2"
 my_term_attach = "terminator -x tmux-detached-or-new"
 -- find out using xprop
 my_term_class = "Terminator"

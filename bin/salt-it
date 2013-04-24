@@ -9,7 +9,7 @@ if [ "$1" = "-t" ]; then
 		shift
 fi
 if [ "$1" ]; then
-sudo -E salt-call state.sls "$t" "$1"
+sudo -E salt-call state.sls "$@" $t # darf nicht mehr "$t" sein, wenn leer (seit 13-04-23)
 else
 sudo -E salt-call state.highstate "$t"
 fi		

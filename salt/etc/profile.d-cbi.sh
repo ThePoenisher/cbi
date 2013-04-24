@@ -1,20 +1,7 @@
 # -*- mode: shell-script; -*-
-CBI="{{ grains['cbi_home'] }}"
-export CBI
-
-CBI_MACHINE="{{ grains['cbi_machine'] }}"
-export CBI_MACHINE
-
-EDITOR="my_emacs -c -nw"
-export EDITOR
-
-ALTERNATE_EDITOR=""
-export ALTERNATE_EDITOR
-
-# is now in /.zshenv
-# PATH=$PATH:$CBI/bin:/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin
-
-export PATH
+source /etc/zsh/zshenv
+# scheiße: brauche ich, weil xmonad bash aufruft und deshalb der path dann fehlt,
+# mit toller fehler meldung: "Unable to find a shell" bei befehl: terminator -x sasdfhksjfh
 
 {% if pillar['arch_desktop'] %}
 

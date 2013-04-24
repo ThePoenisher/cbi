@@ -95,3 +95,5 @@ Defaults:%sudo      timestamp_timeout=20
 
 #dont ask for pass
 #Defaults:%sudo      !authenticate
+
+#?Defaults secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/some/custom/directory

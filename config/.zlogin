@@ -1,6 +1,6 @@
-(echo "zlogin"; date; tty; echo "CBI: $CBI" ) >> /home/johannes/testlog 
+#(echo "zlogin"; date; tty; echo "CBI: $CBI" ) >> /home/johannes/testlog 
 if [[ $TERM != "dumb" ]]; then
-		eval `keychain --eval -Q /home/johannes/.ssh/id_rsa /home/johannes/.ssh/github-kuerzn`
+				eval `keychain --eval -Q /home/johannes/.ssh/id_rsa /home/johannes/.ssh/github-kuerzn`
 		if [[ $TERM != "screen-"*  ]]; then
 				if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
 						#start X
