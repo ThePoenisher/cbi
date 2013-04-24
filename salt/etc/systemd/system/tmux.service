@@ -1,0 +1,12 @@
+[Unit]
+Description=Tmux Server
+After=network.target
+
+[Service]
+User=johannes
+RemainAfterExit=yes
+ExecStart=/bin/zsh -l
+ExecStop=/usr/bin/tmux kill-server
+
+[Install]
+WantedBy=multi-user.target
