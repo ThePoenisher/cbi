@@ -1,8 +1,7 @@
 # -*- mode: conf; -*-
 
-#text/html; firefox %s ; # the test makes is very slow with auto_view! test=RunningX;
-
-text/html; w3m -I %{charset} -T text/html
+text/html; firefox %s ; # the test makes is very slow with auto_view! test=RunningX;
+# text/html; w3m -I %{charset} -T text/html
 text/html; w3m -I %{charset} -T text/html; copiousoutput
 
 
