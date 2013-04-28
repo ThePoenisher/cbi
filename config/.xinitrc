@@ -58,6 +58,8 @@ xscreensaver &
 
 maildir_watch &
 
+/usr/bin/tmux -2 new-session -ds OfflineIMAP "/usr/bin/offlineimap"
+
 #xmobar &
 xbindkeys
 #xcompmgr & (macht die borders von xmonad irgendwie auf nervige weise durchsichtig)

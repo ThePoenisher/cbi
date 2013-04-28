@@ -17,6 +17,10 @@ postfix:
     - watch:
       - file: /etc/postfix/main.cf
 
+############  Offlineimap  is startet in xinitrc ########
+# the systemd service has the problem, that tmux is startet without my
+# env and I no not want login shells in every new tmux window
+# 13-04-28
 
 {% set files = ['main.cf','sasl_passwd'] %}
 {% for file in files %}
