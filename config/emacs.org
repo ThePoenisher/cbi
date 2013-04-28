@@ -705,6 +705,7 @@ funkioniert irgendwie nicht in help-mode+
   (add-to-list 'evil-buffer-regexps '("\\*buffer-selection\\*" . emacs))
 
   (add-to-list 'evil-buffer-regexps '("\\*Reconcile\\*" . emacs))
+  (add-to-list 'evil-buffer-regexps '("\\*undo-tree\\*" . emacs))
 #+END_SRC
 **** evil-numbers (MELPA)
 increment/decrement (see eigene keys, z.Z. C-c C-+/-)
@@ -1046,11 +1047,33 @@ bei ihm scheints zu funktionieren:
 https://github.com/pavpanchekha/dotfiles/blob/master/.emacs.d/emacs.org
 ACH KOMISCH: jetzt gehts!
 *** languages
-seeh variable ispell-aspell-dictionary-alist
+**** M-x ispell-change-dictionary
+**** seeh variable ispell-aspell-dictionary-alist
 might need ispell-kill-ispell to change it while running
+**** file local vars
+%%% Local Variables:
+%%% ispell-local-dictionary: "british"
+%%% End:
 *** settings
 #+BEGIN_SRC emacs-lisp
-(setq ispell-silently-savep t)
+  (setq ispell-silently-savep t)
+  (setq ispell-tex-skip-alists
+      (list
+       (append
+        (car ispell-tex-skip-alists) ;tell ispell to ignore content of this:
+        '(
+          ;; ("\\\\cite"            ispell-tex-arg-end)
+          ;; ("\\\\nocite"          ispell-tex-arg-end)
+          ;; ("\\\\includegraphics" ispell-tex-arg-end)
+          ("\\\\listoftheorems"            ispell-tex-arg-end)
+          ("\\\\cref"            ispell-tex-arg-end)
+          ;;("\\\\label"           ispell-tex-arg-end)
+          ))
+       (append
+        (cadr ispell-tex-skip-alists)
+        '(
+          ("longtable"    ispell-tex-arg-end 2)
+        ))))
 #+END_SRC
 ** Wcheck mode
 https://github.com/tlikonen/wcheck-mode/blob/master/README.org
@@ -1719,6 +1742,8 @@ vorerst bibtex (als biblatex backend) benutzen
               ;; reftex-insert-label-flags festgelegt. Dazu muss die Umgebung aber
               ;; auch in reftex-label-alist definiert sein
               ;; siehe für variable LaTeX-environment-list für optionen
+  
+              ;; http://www.gnu.org/software/auctex/manual/auctex/Adding-Environments.html#Adding-Environments
               (LaTeX-add-environments
                ;; '("theorem" LaTeX-env-label)
                ;; '("assumption" LaTeX-env-label)
@@ -1727,24 +1752,30 @@ vorerst bibtex (als biblatex backend) benutzen
                ;;               '("equation") ;;has no effect, for already in the list?
                '("example" LaTeX-env-label);ask for label
                '("remark" LaTeX-env-label)
+               '("corollaryenum" LaTeX-env-item)
+               '("definitionenum" LaTeX-env-item)
+               '("assumptionenum" LaTeX-env-item)
+               '("theoremenum"   LaTeX-env-item)
+               '("lemmaenum"     LaTeX-env-item)
                ;; '("corollary"   LaTeX-env-label) 
                )
               (setq reftex-insert-label-flags (quote ("shladcmi" "sfhladcmi")))
               (setq reftex-label-alist
                     ;; find out code using (string-to-char "m") BETTER: ?m
                     '(
-                      ("lemma" 108 "lem:" "\\ref{%s}" 1 ("lemma" "lem.") nil)
-                      ("axiom" 109 "ax:" "\\ref{%s}" 1 ("axiom" "Axiom") nil)
-                      ("assumption" 97 "ass:" "\\ref{%s}" 1 ("assumption" "ass.") nil)
-                      ("definition" ?d "def:" "\\ref{%s}" 1 ("definition" "def.") nil)
-                      ("definitionenum" ?D "def:" "\\ref{%s}" 1 ("definition" "def.") nil)
-                      ("remark" 114 "rmk:" "\\ref{%s}" t ("remark") nil)
-                      ("example" 120 "ex:" "\\ref{%s}" t ("example" "ex.") nil)
-                      ("corollary" ?c "cly:" "\\ref{%s}" 1 ("corollary" "cor.") nil)
-                      ("corollaryenum" ?C "cly:" "\\ref{%s}" item nil nil)
-                      ("theoremenum" ?T "thm:" "\\ref{%s}" item nil nil)
-                      ("theorem" 104 "thm:" "\\ref{%s}" 1 ("theorem" "th.") nil)
-                      ("lemmaenum" ?L "lem:" "\\ref{%s}" item nil nil)
+                      ("lemma" 108         "lem:" "\\ref{%s}" 1    ("lemma" "lem.") nil)
+                      ("lemmaenum" ?L      "lem:" "\\ref{%s}" item nil nil)
+                      ("axiom" 109         "ax:"  "\\ref{%s}" 1    ("axiom" "Axiom") nil)
+                      ("assumption" ?a     "ass:" "\\ref{%s}" 1    ("assumption" "ass.") nil)
+                      ("assumptionenum" ?A "ass:" "\\ref{%s}" item ("assumption" "ass.") nil)
+                      ("definition" ?d     "def:" "\\ref{%s}" 1    ("definition" "def.") nil)
+                      ("definitionenum" ?D "def:" "\\ref{%s}" item ("definition" "def.") nil)
+                      ("remark" 114        "rmk:" "\\ref{%s}" t    ("remark") nil)
+                      ("example" 120       "ex:"  "\\ref{%s}" t    ("example" "ex.") nil)
+                      ("corollary" ?c      "cly:" "\\ref{%s}" 1    ("corollary" "cor.") nil)
+                      ("corollaryenum" ?C  "cly:" "\\ref{%s}" item nil nil)
+                      ("theorem" 104       "thm:" "\\ref{%s}" 1    ("theorem" "th.") nil)
+                      ("theoremenum" ?T    "thm:" "\\ref{%s}" item nil nil)
                       ))
               (turn-on-reftex)
               ))
@@ -2504,11 +2535,16 @@ w3m-view-url-with-external-browser `M'
 editing: http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
 *** emacs integration
 ** dired (file system, also remote)
+*** Settings
+#+BEGIN_SRC emacs-lisp
+  (require 'dired-x)
+#+END_SRC
 *** Delete Backup and Auto Save files: `#' and `~'
 *** Jump to current file: C-x C-j
 dired-jump
 DOES NOT WORK ANYNMORE!?!?!?
 works angain [2013-04-22 Mon]
+need (require dired-x)!!!
 *** Open files: just hit RET!
 *** wdired-change-to-wdired-mode (cool rename files in dirs)
 Put a dired buffer in a mode in which filenames are editable.

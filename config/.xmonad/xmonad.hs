@@ -172,12 +172,14 @@ myWorkspaces = map ( pad . show ) ( [1..9] ++ [0] )
    --    wrapBitmap "sm4tik/eye_r.xbm"
    -- ]
 
+niceRect x y = W.RationalRect x y (1-2*x) (1-2*y)
+
 scratchpads = [
 
   -- run scratchpad in tmux in terminator
   NS "scratch" "terminator --title scratchpad -x tmux -2 new-session -As Scratchpad"
   (title =? "scratchpad")
-  (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)) ,
+  (customFloating $ niceRect (1/5) (1/4)) ,
   
   -- run htop in xterm, find it by title, use default floating window placement
   NS "htop" "xterm -e htop" (title =? "htop") defaultFloating ,

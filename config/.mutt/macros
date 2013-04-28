@@ -3,9 +3,10 @@ macro	index,pager	',n'	"<enter-command> source '~/.mutt/scripts/themes.sh next'|
 macro	index,pager	',p'	"<enter-command> source '~/.mutt/scripts/themes.sh previous'| <enter>" "previous color theme"
 
 ## URLView
-macro index,pager,attach,compose A "<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
+macro index,pager,attach,compose A "<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode;\
+set wait_key=no<Enter>\
 	<pipe-message> urlview<Enter>\
-	<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
+	<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode; set wait_key=yes<Enter>" \
 	"1call urlview to extract URLs out of a message"
 # macro index,pager B '<pipe-entry>urlview<enter>' 'URLView'
 # macro index,pager \cb '<pipe-message> urlview<enter>' 'URLView'
