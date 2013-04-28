@@ -68,6 +68,10 @@
 (xbindkey '(XF86AudioMute) "audio-cli toggle_all")
 (xbindkey '(XF86AudioRaiseVolume) "audio-cli volup")
 (xbindkey '(XF86AudioLowerVolume) "audio-cli voldown")
+(xbindkey '(shift XF86MonBrightnessDown) "xbacklight -dec 3")
+(xbindkey '(shift XF86MonBrightnessUp) "xbacklight -inc 3")
+(xbindkey '(XF86MonBrightnessDown) "xbacklight -dec 20")
+(xbindkey '(XF86MonBrightnessUp) "xbacklight -inc 20")
 
 (xbindkey '(Mod4 Escape) "dmenu_session")
 (xbindkey '(Mod4 F1) "dmenu_session 1")
