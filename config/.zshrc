@@ -29,6 +29,7 @@ alias -g vi="vim"
 alias -g xa="xargs -d '\n' "
 
 alias r="ranger"
+alias mut="TMUX= tmux -2 new-session -ds mutt mutt; tmux switch-client -t mutt"
 
 alias hd=/home/data
 

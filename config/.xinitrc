@@ -1,15 +1,5 @@
 #!/bin/sh
 
-####################
-####################
-####################
-####################
-# ~/cbi/salt/X11/xinitrc #########
-####################
-####################
-####################
-####################
-
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
@@ -63,7 +53,7 @@ xsetroot -cursor_name left_ptr
 
 #trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 6 --transparent true --alpha 0 --tint 0x000000 --height 16 &
 
-devmon --info-on-mount &>> .xlog &
+systemd-cat devmon --info-on-mount &
 xscreensaver &
 
 maildir_watch &

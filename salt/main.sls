@@ -201,7 +201,8 @@ cups:
 
 {% if pillar['arch_desktop'] %}
 
-{% set services = [ ('autologin@',['tty1']) , ('wol@',['eth0']), ('offlineimap',['']) ] %}
+{% set services = [ ('autologin@',['tty1']) , ('wol@',['eth0']) ] %}
+#### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
 {% for service, instances in services %}
 {% set x = "/etc/systemd/system/"~service~".service" %}

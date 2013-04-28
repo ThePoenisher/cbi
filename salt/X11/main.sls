@@ -1,14 +1,6 @@
 ######   Templates  #########
 {% set usr = pillar['desktop_user'] %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
-{{ home }}/.xinitrc:
-  file.managed:
-    - source: salt://X11/xinitrc
-    - require:
-        - user: {{ usr }}
-    - force: True
-    - user: {{ usr }}
-    - group: {{ usr }}
 
 #autostart is done in .zlogin:
       
@@ -26,7 +18,7 @@
     - template: jinja
 
 ######  Symlinked Files  #########
-{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources','.xbindkeysrc.scm' ] %}
+{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources','.xbindkeysrc.scm','.xinitrc' ] %}
 {% for file in files %}
 {{ home+'/'+file }}:
   file.symlink:
