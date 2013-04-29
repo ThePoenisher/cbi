@@ -49,6 +49,13 @@ root:
     - shell: /bin/zsh
 {% endif %}
 
+{% if pillar['users']['daniela'] is defined %}
+# geht irgendwie nicht
+daniela:
+  user.present:
+    - shell: /bin/zsh
+{% endif %}
+
 
 {% if pillar['users']['johannes'] is defined %}
 johannes:
@@ -145,7 +152,7 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - makedirs: True
     
       
-{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf','zsh/zshenv' ] %}
+{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf','zsh/zshenv','vsftpd.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.managed:

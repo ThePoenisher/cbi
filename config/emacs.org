@@ -233,7 +233,7 @@ consequently non-working autoloaders!)
                       ac-math
                       moz-repl
                       ;evil-org
-                      ledger-mode
+                      ;ledger-mode
                       )
         )
   
@@ -1475,11 +1475,16 @@ http://upsilon.cc/~zack/blog/posts/2010/02/integrating_Mutt_with_Org-mode/
 sehr gut!
 [2013-04-06 Sat]
 * Ledger
+** org
+http://sachachua.com/blog/2010/11/emacs-recording-ledger-entries-with-org-capture-templates/
+http://ledger-cli.org/3.0/doc/ledger3.html#EMACS-org-mode
+** Settings
 #+BEGIN_SRC emacs-lisp
   (let ((p "/home/data/finanzen/ledger/lisp"))
     (when (file-exists-p p)
       (add-to-list 'load-path p)
       (load "ldg-new")
+      ;; note needed (require 'ledger)
       ))
 #+END_SRC
 * Ediff

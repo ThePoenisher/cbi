@@ -34,6 +34,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - vsftpd
       - cabal-install
       - perl-mime-tools
       - perl-image-exiftool
