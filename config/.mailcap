@@ -10,3 +10,4 @@ application/pdf;                mutt_bgrun xdg-open %s
 application/pdf;                pdftotext %s -; copiousoutput
 
 image/*; mutt_bgrun xdg-open %s
+application/*; mutt_bgrun xdg-open %s

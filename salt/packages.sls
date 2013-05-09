@@ -34,6 +34,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - socat
       - cabal-install
       - perl-mime-tools
       - perl-image-exiftool
@@ -87,6 +88,7 @@ base_packages:
       - xdialog #for (my) xrename
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - calibre
       - aqbanking
       - dunst # für libnotify
       - espeak
@@ -127,7 +129,9 @@ base_packages:
       - xsane-gimp
       - gvfs-afc
       - gvfs-afp
-      - gvfs-gphoto2 # für andoird phone via usb
+      - gvfs-gphoto2 # für andoird phone via usb (geht nicht, doch
+                     # besser mtp?)
+      - gvfs-mtp
       - gvfs-smb
 {% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
       - libreoffice-{{ p }}

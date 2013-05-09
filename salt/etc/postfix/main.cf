@@ -661,7 +661,7 @@ mynetworks_style = host
 smtpd_client_restrictions = 
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated 	    defer_unauth_destination
 
-relayhost = [josg.de]:25
+relayhost = [josg.de]:submission
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
 smtp_sasl_tls_security_options = noanonymous

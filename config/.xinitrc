@@ -58,7 +58,7 @@ xscreensaver &
 
 maildir_watch &
 
-/usr/bin/tmux -2 new-session -ds OfflineIMAP "/usr/bin/offlineimap"
+#/usr/bin/tmux -2 new-session -ds OfflineIMAP "/usr/bin/offlineimap"
 
 #xmobar &
 xbindkeys
