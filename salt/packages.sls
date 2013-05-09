@@ -35,6 +35,7 @@ base_packages:
 {% if grains['os'] == 'Arch' %}
       - p7zip
       - socat
+      - vsftpd
       - cabal-install
       - perl-mime-tools
       - perl-image-exiftool

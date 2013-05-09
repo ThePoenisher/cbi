@@ -42,4 +42,11 @@ lighttpd:
   file.symlink:
     - target: /home/data/archive/OneNote
       
+  
+# vsftpd:
+#   service.running:
+#     - enable: True
+#     - require:
+#       - pkg: vsftpd
+      
 {% endif %}
