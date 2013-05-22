@@ -87,6 +87,9 @@ base_packages:
       - sshfs
       - ntp
       - xdialog #for (my) xrename
+      # haskell
+      - haskell-parsec
+      - haddock
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - calibre
