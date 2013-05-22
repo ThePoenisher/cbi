@@ -57,6 +57,166 @@ correctly, which would not happen, if org was autoloaded within the
 *** org-load-hook also does not work, as it is already to late, when registered
 - Use eval-after-load instead
 - org-mode-hook?
+* Defuns Function Definitions
+#+BEGIN_SRC emacs-lisp
+  
+  (when t
+    
+    (defun jo/initialize () (interactive)
+      "Load  ~/.emacs.d/init.el"
+      (load-file (expand-file-name "~/.emacs.d/init.el"))
+      )
+    
+  
+    ;; pacakge refresh once
+    (defun package-refresh-contents-once ()
+      (interactive)
+      (whebn (not (boundp 'package-contents-refreshed))
+        (package-refresh-contents)
+        (setq package-contents-refreshed t)
+        )
+      )
+  
+    ;; Mark word
+    ;; alternative zu from http://emacswiki.org/emacs/MarkCommands#toc5 :
+    ;;              (backward-sexp)                 (mark-sexp)
+  
+  
+    ;; from http://emacswiki.org/emacs/ToggleWindowSplit
+    (defun toggle-window-split ()
+      (interactive)
+      (if (= (count-windows) 2)
+          (let* ((this-win-buffer (window-buffer))
+                 (next-win-buffer (window-buffer (next-window)))
+                 (this-win-edges (window-edges (selected-window)))
+                 (next-win-edges (window-edges (next-window)))
+                 (this-win-2nd (not (and (<= (car this-win-edges)
+                                             (car next-win-edges))
+                                         (<= (cadr this-win-edges)
+                                             (cadr next-win-edges)))))
+                 (splitter
+                  (if (= (car this-win-edges)
+                         (car (window-edges (next-window))))
+                      'split-window-horizontally
+                    'split-window-vertically)))
+            (delete-other-windows)
+            (let ((first-win (selected-window)))
+              (funcall splitter)
+              (if this-win-2nd (other-window 1))
+              (set-window-buffer (selected-window) this-win-buffer)
+              (set-window-buffer (next-window) next-win-buffer)
+              (select-window first-win)
+              (if this-win-2nd (other-window 1))))))
+  
+    
+    ;; open  ~/.emacs
+    (defun dotemacs ()
+      (interactive)
+      (find-file "~/cbi/config/emacs.org")
+      )
+    ;; save and commit ~/.emacs
+    (defun dotemacs-commit ()
+      (interactive)
+      (switch-to-buffer ".emacs")
+      (basic-save-buffer)
+      (shell-command (concat "svn ci -m \"\" " (expand-file-name "~/.emacs")))
+      )
+    
+    ;; from http://geosoft.no/development/emacs.html
+    (defvar LIMIT 1) 
+    (defvar time 0) 
+    (defvar mylist nil) 
+  
+    (defun time-now () 
+      (car (cdr (current-time)))) 
+  
+    (defun bubble-buffer () 
+      (interactive) 
+      (if (or (> (- (time-now) time) LIMIT) (null mylist)) 
+          (progn (setq mylist (copy-alist (buffer-list))) 
+                 (delq (get-buffer " *Minibuf-0*") mylist) 
+                 (delq (get-buffer " *Minibuf-1*") mylist))) 
+      (bury-buffer (car mylist)) 
+      (setq mylist (cdr mylist)) 
+      (setq newtop (car mylist)) 
+      (switch-to-buffer (car mylist)) 
+  
+      (while rest 
+        (bury-buffer (car rest)) 
+        (setq rest (cdr rest))) 
+      (setq time (time-now))) 
+  
+    ;; save current buffer
+    (defun jo/save-current-buffer () 
+      (interactive) 
+      (let ((b (buffer-name (current-buffer))))
+        (save-some-buffers nil (lambda () 
+                                 (string= b (buffer-name (current-buffer)))
+                                 )
+                           ))
+      )
+  
+    ;; Save current buffer and kill it (overwrite default)
+    (defun save-and-kill () 
+      (interactive) 
+      (if (buffer-modified-p) (jo/save-current-buffer))
+      (kill-this-buffer)
+      )
+  
+  
+    ;;      Kill buffer with ediff!
+    ;; http://stackoverflow.com/questions/331569/diff-save-or-kill-when-killing-buffers-in-emacs
+    ;;      (defadvice kill-buffer (around my-kill-buffer-check activate)
+    ;;        "Prompt when a buffer is about to be killed."
+    ;;        (let* ((buffer-file-name (buffer-file-name))
+    ;;               backup-file)
+    ;;          ;; see 'backup-buffer
+    ;;          (if (and (buffer-modified-p)
+    ;;                   buffer-file-name
+    ;;                   (file-exists-p buffer-file-name)
+    ;;                   (setq backup-file (car (find-backup-file-name buffer-file-name))))
+    ;;              (let ((answer (read-key (format "Buffer modified %s, (d)iff, (s)ave, (k)ill? " (buffer-name))
+    ;; ;;                                          '("d" "s" "k") nil t
+    ;; )))
+    ;;                (cond ((equal answer 100)
+    ;;                       (set-buffer-modified-p nil)
+    ;;                       (let ((orig-buffer (current-buffer))
+    ;;                             (file-to-diff (if (file-newer-than-file-p buffer-file-name backup-file)
+    ;;                                               buffer-file-name
+    ;;                                             backup-file)))
+    ;;                         (set-buffer (get-buffer-create (format "%s last-revision" (file-name-nondirectory file-to-diff))))
+    ;;                         (buffer-disable-undo)
+    ;;                         (insert-file-contents file-to-diff nil nil nil t)
+    ;;                         (set-buffer-modified-p nil)
+    ;;                         (setq buffer-read-only t)
+    ;;                         (ediff-buffers (current-buffer) orig-buffer)))
+    ;;                      ((equal answer 107)
+    ;;                       (set-buffer-modified-p nil)
+    ;;                       ad-do-it)
+    ;;                      (t
+    ;;                       (save-buffer)
+    ;;                       ad-do-it)))
+    ;;            ad-do-it)))
+  
+    ;;sudo find file from
+    ;;http://stackoverflow.com/questions/95631/open-a-file-with-su-sudo-inside-emacs
+    (defun sudo-find-file (file-name)
+      "Like find file, but opens the file as root."
+      (interactive "FSudo Find File: ")
+      (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+        (find-file tramp-file-name)))
+  
+  
+    (defun my-multi-occur-in-matching-buffers (regexp &optional allbufs)
+      "Show all lines matching REGEXP in all buffers."
+      (interactive (occur-read-primary-args))
+      (multi-occur-in-matching-buffers ".*" regexp))
+  
+  
+    )
+  
+  
+#+END_SRC
 * Client / Server
 ** General 
 Start server, so that the external commands can open docs in
@@ -471,6 +631,14 @@ default value. " http://www.emacswiki.org/emacs/ReplacePlus
 *** Undo Limit
 #+BEGIN_SRC emacs-lisp
 (setq undo-limit 10000000)
+#+END_SRC
+*** Modes auto modes
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
+  (add-to-list 'auto-mode-alist '("^/etc/"  conf-mode t))
+  (add-to-list 'auto-mode-alist '("/salt/etc/"  conf-mode t))
+  (add-to-list 'auto-mode-alist '("/\.?mutt/"  conf-mode t))
+  (add-to-list 'auto-mode-alist '("\\.dat$"  ledger-mode t))
 #+END_SRC
 ** Macros
 record and later insert equivalent code!
@@ -2113,15 +2281,11 @@ Change to standard compilation / eval key, but only in shell mode
   (view-buffer-other-window (get-buffer "*Shell Command Output*"))
   )
 #+END_SRC
-**** executable-interpret?
 ** Config Files / /etc/files
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'ac-modes 'conf-mode)
-  (add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
-  (add-to-list 'auto-mode-alist '("^/etc/"  conf-mode t))
-  (add-to-list 'auto-mode-alist '("/salt/etc/"  conf-mode t))
-  (add-to-list 'auto-mode-alist '("/\.?mutt/"  conf-mode t))
 #+END_SRC
+**** executable-interpret?
 ** El Doc Mode
 http://emacswiki.org/emacs/ElDoc
 A very simple but effective thing, eldoc-mode is a MinorMode
@@ -2153,7 +2317,6 @@ C-b C-z
     '(define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
     )
 #+END_SRC
-
 ** TODO imenu gives a list of all functions in a file, and lets you jump to them.
 idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
 ** Javascript
@@ -2639,166 +2802,6 @@ http://vimgolf.com/
   (add-to-list 'load-path (expand-file-name "~/"))
   (add-to-list 'load-path (expand-file-name "~/emacs"))
   (add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
-  
-  
-#+END_SRC
-** Defuns Function Definitions
-#+BEGIN_SRC emacs-lisp
-  
-  (when t
-    
-    (defun jo/initialize () (interactive)
-      "Load  ~/.emacs.d/init.el"
-      (load-file (expand-file-name "~/.emacs.d/init.el"))
-      )
-    
-  
-    ;; pacakge refresh once
-    (defun package-refresh-contents-once ()
-      (interactive)
-      (whebn (not (boundp 'package-contents-refreshed))
-        (package-refresh-contents)
-        (setq package-contents-refreshed t)
-        )
-      )
-  
-    ;; Mark word
-    ;; alternative zu from http://emacswiki.org/emacs/MarkCommands#toc5 :
-    ;;              (backward-sexp)                 (mark-sexp)
-  
-  
-    ;; from http://emacswiki.org/emacs/ToggleWindowSplit
-    (defun toggle-window-split ()
-      (interactive)
-      (if (= (count-windows) 2)
-          (let* ((this-win-buffer (window-buffer))
-                 (next-win-buffer (window-buffer (next-window)))
-                 (this-win-edges (window-edges (selected-window)))
-                 (next-win-edges (window-edges (next-window)))
-                 (this-win-2nd (not (and (<= (car this-win-edges)
-                                             (car next-win-edges))
-                                         (<= (cadr this-win-edges)
-                                             (cadr next-win-edges)))))
-                 (splitter
-                  (if (= (car this-win-edges)
-                         (car (window-edges (next-window))))
-                      'split-window-horizontally
-                    'split-window-vertically)))
-            (delete-other-windows)
-            (let ((first-win (selected-window)))
-              (funcall splitter)
-              (if this-win-2nd (other-window 1))
-              (set-window-buffer (selected-window) this-win-buffer)
-              (set-window-buffer (next-window) next-win-buffer)
-              (select-window first-win)
-              (if this-win-2nd (other-window 1))))))
-  
-    
-    ;; open  ~/.emacs
-    (defun dotemacs ()
-      (interactive)
-      (find-file "~/cbi/config/emacs.org")
-      )
-    ;; save and commit ~/.emacs
-    (defun dotemacs-commit ()
-      (interactive)
-      (switch-to-buffer ".emacs")
-      (basic-save-buffer)
-      (shell-command (concat "svn ci -m \"\" " (expand-file-name "~/.emacs")))
-      )
-    
-    ;; from http://geosoft.no/development/emacs.html
-    (defvar LIMIT 1) 
-    (defvar time 0) 
-    (defvar mylist nil) 
-  
-    (defun time-now () 
-      (car (cdr (current-time)))) 
-  
-    (defun bubble-buffer () 
-      (interactive) 
-      (if (or (> (- (time-now) time) LIMIT) (null mylist)) 
-          (progn (setq mylist (copy-alist (buffer-list))) 
-                 (delq (get-buffer " *Minibuf-0*") mylist) 
-                 (delq (get-buffer " *Minibuf-1*") mylist))) 
-      (bury-buffer (car mylist)) 
-      (setq mylist (cdr mylist)) 
-      (setq newtop (car mylist)) 
-      (switch-to-buffer (car mylist)) 
-  
-      (while rest 
-        (bury-buffer (car rest)) 
-        (setq rest (cdr rest))) 
-      (setq time (time-now))) 
-  
-    ;; save current buffer
-    (defun jo/save-current-buffer () 
-      (interactive) 
-      (let ((b (buffer-name (current-buffer))))
-        (save-some-buffers nil (lambda () 
-                                 (string= b (buffer-name (current-buffer)))
-                                 )
-                           ))
-      )
-  
-    ;; Save current buffer and kill it (overwrite default)
-    (defun save-and-kill () 
-      (interactive) 
-      (if (buffer-modified-p) (jo/save-current-buffer))
-      (kill-this-buffer)
-      )
-  
-  
-    ;;      Kill buffer with ediff!
-    ;; http://stackoverflow.com/questions/331569/diff-save-or-kill-when-killing-buffers-in-emacs
-    ;;      (defadvice kill-buffer (around my-kill-buffer-check activate)
-    ;;        "Prompt when a buffer is about to be killed."
-    ;;        (let* ((buffer-file-name (buffer-file-name))
-    ;;               backup-file)
-    ;;          ;; see 'backup-buffer
-    ;;          (if (and (buffer-modified-p)
-    ;;                   buffer-file-name
-    ;;                   (file-exists-p buffer-file-name)
-    ;;                   (setq backup-file (car (find-backup-file-name buffer-file-name))))
-    ;;              (let ((answer (read-key (format "Buffer modified %s, (d)iff, (s)ave, (k)ill? " (buffer-name))
-    ;; ;;                                          '("d" "s" "k") nil t
-    ;; )))
-    ;;                (cond ((equal answer 100)
-    ;;                       (set-buffer-modified-p nil)
-    ;;                       (let ((orig-buffer (current-buffer))
-    ;;                             (file-to-diff (if (file-newer-than-file-p buffer-file-name backup-file)
-    ;;                                               buffer-file-name
-    ;;                                             backup-file)))
-    ;;                         (set-buffer (get-buffer-create (format "%s last-revision" (file-name-nondirectory file-to-diff))))
-    ;;                         (buffer-disable-undo)
-    ;;                         (insert-file-contents file-to-diff nil nil nil t)
-    ;;                         (set-buffer-modified-p nil)
-    ;;                         (setq buffer-read-only t)
-    ;;                         (ediff-buffers (current-buffer) orig-buffer)))
-    ;;                      ((equal answer 107)
-    ;;                       (set-buffer-modified-p nil)
-    ;;                       ad-do-it)
-    ;;                      (t
-    ;;                       (save-buffer)
-    ;;                       ad-do-it)))
-    ;;            ad-do-it)))
-  
-    ;;sudo find file from
-    ;;http://stackoverflow.com/questions/95631/open-a-file-with-su-sudo-inside-emacs
-    (defun sudo-find-file (file-name)
-      "Like find file, but opens the file as root."
-      (interactive "FSudo Find File: ")
-      (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
-        (find-file tramp-file-name)))
-  
-  
-    (defun my-multi-occur-in-matching-buffers (regexp &optional allbufs)
-      "Show all lines matching REGEXP in all buffers."
-      (interactive (occur-read-primary-args))
-      (multi-occur-in-matching-buffers ".*" regexp))
-  
-  
-    )
   
   
 #+END_SRC

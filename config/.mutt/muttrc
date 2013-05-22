@@ -7,6 +7,7 @@ set use_envelope_from=yes
 # https://github.com/redondos/mutt (with theme switcher)
 # more: http://dev.mutt.org/trac/wiki/ConfigList
 
+set attach_charset="utf-8"
 
 set mbox_type=Maildir
 set folder=~/Mail
