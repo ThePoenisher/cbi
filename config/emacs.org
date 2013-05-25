@@ -316,6 +316,7 @@ Ursache:
                               smex
                               ido-ubiquitous
                               ido-vertical-mode
+                              graphviz-dot-mode
                               )
         )
   

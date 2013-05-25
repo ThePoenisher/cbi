@@ -5,6 +5,7 @@ mail_packages:
       - offlineimap
       - notmuch
       - notmuch-mutt
+      - mutt
     - require:
         - pkg: perl-mime-tools
 
