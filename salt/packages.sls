@@ -145,7 +145,7 @@ base_packages:
       - file: /etc/pacman.conf
 
 # do I need gvfs-mtp-git. given it limited power.  what does ubuntu use ? gphotos2?
-{% for p in ['epson-inkjet-printer-workforce-635-nx625-series', 'perl-string-util', 'perl-file-find-rule', 'aurvote', 'python2-gnupg', 'mendeleydesktop', 'urlview', 'downgrade','ledger-git','pdftk-bin'] %}
+{% for p in ['epson-inkjet-printer-workforce-635-nx625-series', 'perl-string-util', 'perl-file-find-rule', 'aurvote', 'python2-gnupg', 'mendeleydesktop', 'urlview', 'downgrade','ledger-git','pdftk-bin','dbacl'] %}
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
     - unless: pacman -Q {{ p }}

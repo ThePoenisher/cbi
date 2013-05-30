@@ -60,6 +60,11 @@ correctly, which would not happen, if org was autoloaded within the
 * Defuns Function Definitions
 #+BEGIN_SRC emacs-lisp
   
+  (defun jo/search-symbol-in-other ()
+   (interactive)
+		 (switch-to-buffer-other-window (current-buffer))
+		 (evil-search-symbol-forward))
+
   (when t
     
     (defun jo/initialize () (interactive)
@@ -789,8 +794,6 @@ http://vimdoc.sourceforge.net/htmldoc/motion.html
 + :registers :: zeigt alle yanks und deletes
 + undo / redo :: C-r oder M-
 + scrolling :: down: C-f,C-d,C-e   up: C-b, ... , C-y
-+ case insensitive search :: toogle with M-c
-+ Searchging :: * - Search word under point
 + Block Visual :: Enter with C-v and then: I (insert) A (append)
 + g;  g, :: goto last change (requires ELPA package goto-chg)
 + D :: delete till end of line
@@ -811,10 +814,20 @@ or use `~' to toggle case
 + f/t :: (forward find stop at / before)
 + F/T :: (backward find ...            )
 + ; , :: repeat search
+         
+****** Search
++ / ? : forward / backward
++ case iSearchgingnsensitive search :: toogle with M-c
++ * :: Search symbol under point
++ g* :: same as bove, but unbounded
++ C-* :: Search symbol under point in another window (eigen)
 ***** Eigene
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c C-+") 'evil-numbers/inc-at-pt)
   (global-set-key (kbd "C-c C--") 'evil-numbers/dec-at-pt)
+
+  (define-key evil-motion-state-map (kbd "C-*") 'jo/search-symbol-in-other)
+  ;; (define-key evil-motion-state-map "g*" 'evil-search-unbounded-symbol-forward)
   
   (define-key evil-motion-state-map "y" 'evil-yank)
   (define-key evil-motion-state-map "Y" 'evil-yank-line)
@@ -2318,6 +2331,10 @@ C-b C-z
     '(define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
     )
 #+END_SRC
+*** Formatting
+https://github.com/jaspervdj/stylish-haskell
+*** Tags
+http://www.haskell.org/ghc/docs/6.10.3/html/users_guide/utils.html
 ** TODO imenu gives a list of all functions in a file, and lets you jump to them.
 idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
 ** Javascript
@@ -2372,6 +2389,7 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 ** Tags
 *** see SemanticBovinator
 *** http://emacswiki.org/emacs/ExuberantCtags
+
 ** TODO Web Developement
 :PROPERTIES:
 :ID:       b0eb141d-2384-4fa2-841b-28c36fb9e0d6
@@ -2418,6 +2436,11 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 ** Clojure
 ** Yasnippet Mal checken!!
 http://youtu.be/18xYbPCJOho?t=1m17s
+** Lisp
+*** Keys
+- C-j :: eval-print-last-sexp 
+- C-x C-e :: eval-last-sexp
+- M-: :: eval-buffer
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
