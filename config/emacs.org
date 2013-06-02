@@ -62,9 +62,11 @@ correctly, which would not happen, if org was autoloaded within the
   
   (defun jo/search-symbol-in-other ()
    (interactive)
-		 (switch-to-buffer-other-window (current-buffer))
-		 (evil-search-symbol-forward))
-
+   (let ((curPoint (point)))
+         (switch-to-buffer-other-window (current-buffer))
+         (set-window-point nil curPoint)
+         (evil-search-symbol-forward)))
+    
   (when t
     
     (defun jo/initialize () (interactive)

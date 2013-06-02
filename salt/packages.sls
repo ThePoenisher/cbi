@@ -88,6 +88,7 @@ base_packages:
       - ntp
       - xdialog #for (my) xrename
       # haskell
+      - happy
       - haskell-parsec
       - haddock
 {% if pillar['arch_desktop'] %}
