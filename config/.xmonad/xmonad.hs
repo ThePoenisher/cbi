@@ -27,7 +27,8 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.SetWMName -- java workaround http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-SetWMName.html
 import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.ICCCMFocus -- java workaround http://www.eng.uwaterloo.ca/~aavogt/xmonad/docs/xmonad-contrib/XMonad-Hooks-ICCCMFocus.html
+-- import XMonad.Hooks.ICCCMFocus -- java workaround http://www.eng.uwaterloo.ca/~aavogt/xmonad/docs/xmonad-contrib/XMonad-Hooks-ICCCMFocus.html (angeblich deprecated und nicht mehr benötigt:       , startupHook =  takeTopFocus >> )
+
 -- http://code.google.com/p/xmonad/issues/detail?id=177
 import XMonad.Hooks.EwmhDesktops -- chrome/firefox F11 (enabled with handleEventHook = fullscreenEventHook)
   
@@ -70,7 +71,7 @@ myConfig = defaultConfig
       , focusedBorderColor = myActiveBorderColor
       , manageHook = namedScratchpadManageHook scratchpads <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
       , layoutHook = avoidStruts myLayoutHook
-      , startupHook =  takeTopFocus >> ewmhDesktopsStartup >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
+      , startupHook =  ewmhDesktopsStartup >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
       , workspaces = myWorkspaces
@@ -154,7 +155,7 @@ myStartupHook = do
   spawnOn " 1 " my_emacs
   spawnOn " 2 " "firefox"
   -- spawnOn " 3 " my_term_attach
- -   spawnOn " 8 " $ my_term_new ++ " new-session -s mutt \"sleep 10; mutt\""
+  spawnOn " 8 " $ my_term_new ++ " new-session -s mutt \"sleep 10; mutt\""
   -- spawnOn " 9 " my_term_attach
   spawnOn " 0 " "pidgin -c /home/data/personal/misc/pidgin"
   
