@@ -1151,9 +1151,8 @@ http://ergoemacs.org/emacs/emacs_encoding_decoding_faq.html
 *** Reread using different encoding
 C-x RET r
 [[info:emacs#Specify%20Coding][info:emacs#Specify Coding]]
-*** Change encoding used to save the buffer
+*** Change encoding used to save the buffer (or line endings)
 C-x RET f
-*** Line endings
 M-x set-buffer-file-coding-system
 *** Describe the coding systems currently in use.
 C-h C <RET>

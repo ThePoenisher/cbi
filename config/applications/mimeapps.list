@@ -1,7 +1,7 @@
 [Default Applications]
-application/pdf=zathura.desktop
+application/pdf=evince.desktop
 application/postscript=zathura.desktop
-application/x-pdf=zathua.desktop
+application/x-pdf=evince.desktop
 x-scheme-handler/http=userapp-Firefox-GCTROW.desktop
 x-scheme-handler/https=userapp-Firefox-GCTROW.desktop
 x-scheme-handler/mailto=userapp-Thunderbird-9KCOOW.desktop
