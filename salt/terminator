@@ -1,3 +1,4 @@
+###  -*- mode: conf-unix; -*-
 [global_config]
 [keybindings]
 [profiles]
@@ -26,3 +27,4 @@
       type = Window
       parent = ""
 [plugins]
+

@@ -30,6 +30,13 @@ $endif\
 ^fg(\#ff3333)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_up_03.xbm)${upspeed wlan0} \
 $endif\
+^fg(\#ebac54)${if_existing /proc/net/route usb0}\
+^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/wifi_01.xbm) \
+^fg(\#00aa4a)\
+^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_down_03.xbm)${downspeed usb0}\
+^fg(\#ff3333)\
+^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_up_03.xbm)${upspeed usb0} \
+$endif\
 ^fg(\#00ffff)\
 ${exec audio-cli conky} \
 ${if_existing /sys/class/power_supply/BAT0/uevent}\

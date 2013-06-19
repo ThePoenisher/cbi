@@ -91,10 +91,13 @@ base_packages:
       - happy
       - haskell-parsec
       - haddock
+      - minidlna
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - calibre
       - aqbanking
+      - wine
+      - winetricks
       - dunst # für libnotify
       - espeak
       - terminator
