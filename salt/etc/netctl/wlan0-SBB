@@ -1,0 +1,18 @@
+DESCRIPTION='http://wlan.spk-berlin.de/anleitung/sbb/WLAN-DOK-SBB/WLAN-DOK-SBB-linux.html'
+Interface=wlan0
+Connection=wireless
+Security=wpa-configsection
+IP=dhcp
+WPAConfigSection=(
+    'ssid="SBB"'
+    'scan_ssid=1'
+    'proto=WPA RSN'
+    'key_mgmt=WPA-EAP'
+    'pairwise=TKIP CCMP'
+    'group=TKIP'
+    'eap=TTLS'
+    'anonymous_identity="anonymous@spk.de"'
+    {{ pillar['SBB-credentials'] }}
+    'ca_cert="/home/johannes/cbi/config/certs/SBB"'
+    'phase2="auth=PAP"'
+)

@@ -151,12 +151,13 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - text: KEYMAP=de-latin1
     - makedirs: True
     
-      
-{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf','zsh/zshenv','vsftpd.conf' ] %}
+#######  managed etc files #######
+{% set files = [ 'netctl/wlan0-SBB', 'locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf','zsh/zshenv','vsftpd.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.managed:
     - source: salt://etc/{{ file }}
+    - makedirs: True
     - template: jinja
 {% endfor %}
 
@@ -178,8 +179,10 @@ mkinitcpio -p linux:
     - watch:
       - file: /etc/mkinitcpio.conf
         
+
+        
 ######  Symlinked etc Files  #########
-{% set files = ['udevil/udevil.conf', 'locale.conf','vimrc','modules-load.d','fuse.conf','gitignore','tmux.conf' ] %}
+{% set files = [ 'udevil/udevil.conf', 'locale.conf','vimrc','modules-load.d','fuse.conf','gitignore','tmux.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.symlink:
@@ -191,6 +194,8 @@ mkinitcpio -p linux:
 hostnamectl set-hostname {{ grains['cbi_machine'] }}:
   cmd.run:
     - unless: test `hostname` = "{{ grains['cbi_machine'] }}"
+
+
 
 ##### printing ####
 cups:
