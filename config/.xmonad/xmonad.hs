@@ -83,7 +83,7 @@ myConfig = defaultConfig
 myBitmapsPath = "/home/johannes/cbi/desktop-artwork/icons/"
  
 -- Font
-myFont = "xft:DejaVu Sans Mono:size=9" -- dzen only uses the size. fontname seems to be ignored
+myFont = "xft:DejaVu Sans Mono:size=8" -- dzen only uses the size. fontname seems to be ignored
  
 -- Colors
 myBgBgColor="black"
@@ -111,7 +111,7 @@ myUrgencyHintFgColor = "white"
 myUrgencyHintBgColor = "brown"
  
 -- dzen general options
-myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '15'"
+myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '13'"
  
 -- Status Bar
 myStatusBar = "dzen2 -ta l " ++ myDzenGenOpts
