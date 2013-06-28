@@ -34,6 +34,13 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
     - force: True
 {% endfor %}
       
+'{{ home }}/VirtualBox VMs':
+  file.symlink:
+    - target: /home/dont_backup/VirtualBox VMs
+    - user: {{ usr }}
+    - group: {{ usr }}
+    - force: True
+      
 ###########  Groups ###############
 groupsasd:
   group.present:
@@ -151,8 +158,18 @@ grub-mkconfig -o /boot/grub/grub.cfg:
     - text: KEYMAP=de-latin1
     - makedirs: True
     
+## samba
+sambaservices:
+  service.running:
+    - names:
+        - smbd
+        - nmbd
+    - enable: true
+    - watch:
+      - file: /etc/samba/smb.conf
+
       
-{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf','zsh/zshenv','vsftpd.conf' ] %}
+{% set files = ['locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf','zsh/zshenv','vsftpd.conf','samba/smb.conf' ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.managed:

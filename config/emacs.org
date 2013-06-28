@@ -632,7 +632,7 @@ default value. " http://www.emacswiki.org/emacs/ReplacePlus
   (eval-after-load "grep"
     '(grep-apply-setting
       'grep-find-command
-      "find . ! -name \"*~\" ! -name \"#*#\" ! -path \"*/.svn/*\" ! -path \"*/.git/*\" -type f -print0 | xargs -0 -e grep -nH -e " )
+      "find . ! -name \"*~\" ! -name \"#*#\" ! -path \"*/.svn/*\" ! -path \"*/.git/*\" -type f -print0 | xargs -0 -e grep -nH -ie " )
     )
 #+END_SRC
 ***** TODO use parallel / xargs -P ?
@@ -1658,7 +1658,7 @@ http://upsilon.cc/~zack/blog/posts/2010/02/integrating_Mutt_with_Org-mode/
 sehr gut!
 [2013-04-06 Sat]
 * Ledger
-** org
+** in org
 http://sachachua.com/blog/2010/11/emacs-recording-ledger-entries-with-org-capture-templates/
 http://ledger-cli.org/3.0/doc/ledger3.html#EMACS-org-mode
 ** Settings
@@ -2099,6 +2099,9 @@ erst
  (require 'latex-pretty-symbols)
 dann
 M-x unicode-simplified 
+* Git (in emacs)
+http://www.emacswiki.org/emacs/Git
+** blame: vc-annotate
 * Navigate, Access, Cycles, Completen, Suggest,..
 ** Completion
 *** Hippie Expand 

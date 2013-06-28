@@ -4,9 +4,9 @@ if [[ $TERM != "dumb" ]]; then
 		if [[ $TERM != "screen-"*  ]]; then
 				if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
 						#start X
-						startx &>> ~/.xlog &!
-						vlock
-						logout
+						#startx &>> ~/.xlog &!
+						#vlock
+						#logout
 				elif [[ $TERM != "linux" ]]; then
 						exec tmux -2
 				fi

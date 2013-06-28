@@ -51,6 +51,7 @@ import qualified Data.Map as M
 import System.IO
 
 my_term_new = "terminator -x tmux -2"
+my_term_without_tmux = "terminator"
 my_term_attach = "terminator -x tmux-detached-or-new"
 -- find out using xprop
 my_term_class = "Terminator"
@@ -276,6 +277,7 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm                , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
   , ((modm .|. controlMask, xK_a    ), (spawnHere my_term_new))
   , ((modm                , xK_a    ), (spawnHere my_term_attach))
+  , ((modm .|. shiftMask  , xK_a    ), (spawnHere my_term_without_tmux))
   , ((modm .|. controlMask, xK_x    ), sendMessage $ Toggle REFLECTX)
   , ((modm .|. controlMask, xK_y    ), sendMessage $ Toggle REFLECTY)
   , ((modm .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
