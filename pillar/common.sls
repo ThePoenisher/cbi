@@ -11,6 +11,7 @@ desktop_user: johannes
 zsh_users:
   - root
   - johannes
+  - daniela
 
 ssh_users_with_auth_keys:
   - johannes
@@ -18,6 +19,7 @@ ssh_users_with_auth_keys:
 users:  
   root:
   johannes:
+  daniela:
 
 
 {% elif grains['cbi_machine'] == 'strauss' %}

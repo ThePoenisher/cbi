@@ -34,11 +34,13 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - p7zip
+      - dnsutils
       - socat
       - vsftpd
       - cabal-install
       - perl-mime-tools
       - perl-image-exiftool
+      - pastebinit
       - python2-eyed3
       - html2text
       - inotify-tools
@@ -92,12 +94,13 @@ base_packages:
       - haskell-parsec
       - haddock
       - minidlna
+      - samba
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - calibre
       - aqbanking
-      - wine
-      - winetricks
+      # - wine
+      # - winetricks
       - dunst # für libnotify
       - espeak
       - terminator
