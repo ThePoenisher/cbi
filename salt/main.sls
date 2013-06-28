@@ -170,7 +170,21 @@ sambaservices:
 
       
 #######  managed etc files #######
-{% set files = [ 'netctl/wlan0-SBB', 'locale.gen','mkinitcpio.conf','fstab','gitconfig','systemd/journald.conf','systemd/logind.conf', 'pacman.d/mirrorlist', 'pacman.conf', 'makepkg.conf','zsh/zshenv','vsftpd.conf' ] %}
+{% set files =
+['fstab'
+,'gitconfig'
+,'locale.gen'
+,'makepkg.conf'
+,'mkinitcpio.conf'
+,'netctl/wlan0-SBB'
+,'pacman.conf'
+,'pacman.d/mirrorlist'
+,'samba/smb.conf'
+,'systemd/journald.conf'
+,'systemd/logind.conf'
+,'vsftpd.conf'
+,'zsh/zshenv'
+] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.managed:
