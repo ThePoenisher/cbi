@@ -3,12 +3,27 @@ arch_web_packages:
   pkg.installed:
     - names:
       - lighttpd
-  
+      - php
+      - php-cgi
+      
+{% set files = ['php/php.ini'] %}
+{% for file in files %}
+/etc/{{ file }}:
+  file.managed:
+    - source: salt://etc/{{ file }}
+    - makedirs: True
+    - template: jinja
+{% endfor %}
+
 lighttpd:
   service.running:
     - enable: True
     - require:
       - pkg: lighttpd
+    - watch:
+{% for file in files %}
+      - file: /etc/{{ file }}
+{% endfor %}
 
 
 /etc/lighttpd/lighttpd.conf:
