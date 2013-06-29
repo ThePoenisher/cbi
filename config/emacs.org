@@ -271,7 +271,7 @@ Ursache:
   ;;(set-frame-font jo/font)
   (setq jo/font 
         (if (string= (getenv "CBI_MACHINE") "scriabin") 
-            "DejaVu Sans Mono-9"
+            "DejaVu Sans Mono-9" ;; 8 is only 4 lines more, but 3 colums LESS than 9
           "DejaVu Sans Mono-10"
           ))
  
