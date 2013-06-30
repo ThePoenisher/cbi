@@ -2346,9 +2346,8 @@ idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for 
   ;; (add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
   
   ;; Javascript  (ELPA)
-  (autoload 'js2-mode "js2" nil t)
+  (require 'js2-mode)
   (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-  )
 #+END_SRC
 *** perldoc: cperl-perldoc
 ** Markdown
@@ -2430,7 +2429,7 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
   
    ;; geht meistens eh nicth (non valid) und ist extrem buggy
    ;;(add-hook 'nxhtml-mode-hook 'nxml-where-mode)
-  
+  )
 #+END_SRC
 ** YAML (auch für Salt Stack) (via ELPA)
 #+BEGIN_SRC emacs-lisp 
