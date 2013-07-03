@@ -2023,7 +2023,7 @@ see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Binding
         (define-key LaTeX-mode-map
           [f5] (tex-build-command-function "LaTeX" nil t))
         (define-key LaTeX-mode-map
-          [f6] (tex-build-command-function "BibTeX" nil t))
+          [f6] (tex-build-command-function "Biber" nil t))
         (define-key LaTeX-mode-map
           [f7] (tex-build-command-function "View" nil))
         ;; (define-key LaTeX-mode-map 
@@ -2059,7 +2059,7 @@ see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Binding
          (TeX-command ,cmd 'TeX-master-file (if ,override-confirm 1 -1)))
   )
   
-  ;; warum habe ich eine eigene?
+  ;; warum habe ich eine eigene? keine Ahnung
   (defun jo/Tex-next-command ()
     (interactive)
     (let ((name (TeX-master-file)))
@@ -2076,7 +2076,7 @@ see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Binding
                                            (LaTeX-bibliography-list))
                                    BibTeX-file-extensions))
              ;; We should check for bst files here as well.
-             TeX-command-BibTeX)
+             TeX-command-Biber)
             ((TeX-process-get-variable name
                                        'TeX-command-next
                                        TeX-command-Show))
