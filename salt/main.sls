@@ -24,7 +24,11 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ############  Login ##########
 {% set usr = "johannes" %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
-{% set files = ['.zlogin','.config/dunst'] %}
+{% set files =
+['.config/dunst'
+,'.lircrc'
+,'.zlogin'
+] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
   file.symlink:
@@ -173,6 +177,7 @@ sambaservices:
 {% set files =
 ['fstab'
 ,'gitconfig'
+,'lirc/lircd.conf'
 ,'locale.gen'
 ,'makepkg.conf'
 ,'mkinitcpio.conf'
@@ -214,7 +219,15 @@ mkinitcpio -p linux:
 
         
 ######  Symlinked etc Files  #########
-{% set files = [ 'udevil/udevil.conf', 'locale.conf','vimrc','modules-load.d','fuse.conf','gitignore','tmux.conf' ] %}
+{% set files =
+['fuse.conf'
+,'gitignore'
+,'locale.conf'
+,'modules-load.d'
+,'tmux.conf'
+,'udevil/udevil.conf'
+,'vimrc'
+ ] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.symlink:
@@ -245,10 +258,14 @@ cups:
 
 {% if pillar['arch_desktop'] %}
 
-{% set services = [ ('autologin@',['tty1']) , ('wol@',['eth0']) ] %}
+{% set services =
+[('autologin@',['tty1'],[])
+,('wol@',['eth0'],[])
+,('lirc',[''],['/etc/lirc/lircd.conf'])
+]%}
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
-{% for service, instances in services %}
+{% for service, instances, confs in services %}
 {% set x = "/etc/systemd/system/"~service~".service" %}
 {{ x }}:
   file.managed:
@@ -261,6 +278,10 @@ cups:
     - enable: True
     - watch:
       - cmd: systemd-reload-{{service~instance}}
+{% for conf in confs %}
+      - file: {{ conf }}
+{% endfor %}
+
         
 systemd-reload-{{service~instance}}:
   cmd.wait:

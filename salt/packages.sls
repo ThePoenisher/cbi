@@ -91,6 +91,7 @@ base_packages:
       - xdialog #for (my) xrename
       # haskell
       - happy
+      - net-tools
       - haskell-parsec
       - haddock
       - minidlna
