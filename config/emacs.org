@@ -447,10 +447,11 @@ not "include path"
 #+BEGIN_SRC emacs-lisp
   (when t
   
+    (global-set-key (kbd "<M-kp-prior>") 'scroll-other-window-down)
+    (global-set-key (kbd "<M-prior>") 'scroll-other-window-down)
     (global-set-key (kbd "M-s 7") 'my-multi-occur-in-matching-buffers)
     (define-key ctl-x-4-map "t" 'toggle-window-split)
     (global-set-key (kbd "C-x C-,") 'comment-or-uncomment-region)
-    (global-set-key (kbd "<C-tab>") 'other-window)
     (global-set-key (kbd "M-D") 'backward-kill-word)
     (global-set-key (kbd "M-n") 'clone-indirect-buffer)
     (global-set-key (kbd "C-x C-b") 'bs-show)
