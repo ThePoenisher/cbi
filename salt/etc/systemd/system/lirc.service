@@ -1,0 +1,12 @@
+[Unit]
+Description=Linux Infrared Remote Control
+
+[Service]
+ExecStartPre=/usr/bin/ln -sf /run/lirc/lircd /dev/lircd
+ExecStart=/usr/bin/lircd -d /dev/lirc0 --pidfile=/run/lirc/lircd.pid
+EnvironmentFile=/etc/conf.d/lircd.conf
+Type=forking
+PIDFile=/run/lirc/lircd.pid
+
+[Install]
+WantedBy=multi-user.target

@@ -11,6 +11,8 @@ sound_packages:
       - vlc
       - gecko-mediaplayer
       - rtmpdump
+      - lirc-utils
+      - xbmc
 {% if grains['cbi_machine'] == 'scriabin' %}
 {% endif %}
 {% endif %}

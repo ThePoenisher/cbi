@@ -36,6 +36,7 @@ base_packages:
       - p7zip
       - dnsutils
       - socat
+      - aria2
       - vsftpd
       - cabal-install
       - perl-mime-tools
@@ -91,6 +92,7 @@ base_packages:
       - xdialog #for (my) xrename
       # haskell
       - happy
+      - net-tools
       - haskell-parsec
       - haddock
       - minidlna
@@ -158,6 +160,8 @@ base_packages:
 ,'downgrade'
 ,'epson-inkjet-printer-workforce-635-nx625-series'
 ,'git-annex-standalone'
+,'google-talkplugin'
+,'jdownloader2' 
 ,'ledger-git'
 ,'mendeleydesktop'
 ,'pdftk-bin'
@@ -165,7 +169,6 @@ base_packages:
 ,'perl-string-util'
 ,'python2-gnupg'
 ,'urlview'
-,'google-talkplugin'
 ] %}
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
