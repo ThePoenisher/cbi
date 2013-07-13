@@ -20,7 +20,7 @@ begin
 # remote = mceusb
 prog = mplayer
 button = Play
-config = pause
+config = play
 repeat = 0
 delay = 0
 end

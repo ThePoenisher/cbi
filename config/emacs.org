@@ -312,6 +312,8 @@ Ursache:
                              ; evil-leader
                               haskell-mode
                               helm
+                              gnuplot
+                              gnuplot-mode
                               pandoc-mode
                               yaml-mode
                               markdown-mode

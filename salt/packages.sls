@@ -58,6 +58,7 @@ base_packages:
       - perl-file-slurp
       - evince
       - auctex
+      - sqliteman
       - texlive-bibtexextra
       - texlive-bin
       - texlive-core
