@@ -533,10 +533,10 @@ schonmal für fullscreen getestet, dann aber selbst implimientiert
 **** Use a good window manager to manage ALL windos (emacs buffers and terminals, browser,...)
 *** resize 
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
-  (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
-  (global-set-key (kbd "S-C-<down>") 'shrink-window)
-  (global-set-key (kbd "S-C-<up>") 'enlarge-window)
+  (global-set-key (kbd "S-s-<left>") 'shrink-window-horizontally)
+  (global-set-key (kbd "S-s-<right>") 'enlarge-window-horizontally)
+  (global-set-key (kbd "S-s-<down>") 'shrink-window)
+  (global-set-key (kbd "S-s-<up>") 'enlarge-window)
 #+END_SRC
 enlarge-window
 shrink-window
