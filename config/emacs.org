@@ -532,6 +532,12 @@ schonmal für fullscreen getestet, dann aber selbst implimientiert
 
 **** Use a good window manager to manage ALL windos (emacs buffers and terminals, browser,...)
 *** resize 
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+  (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+  (global-set-key (kbd "S-C-<down>") 'shrink-window)
+  (global-set-key (kbd "S-C-<up>") 'enlarge-window)
+#+END_SRC
 enlarge-window
 shrink-window
 http://emacswiki.org/emacs/WindowResize
@@ -920,6 +926,9 @@ some tips."
 **** Search and Replace
 - /c :: confirmation
 - http://vim.wikia.com/wiki/Search_and_replace
+- \C :: Case sensitive search :%s/\C.*/aaa/ 
+- /I :: Deaktivate case-replace :%s/.*/aaa/I
+https://bitbucket.org/lyro/evil/issue/140/regex-searching-issues
 **** Probleme
 ***** Select /cursor off by one: 
 (setq evil-want-visual-char-semi-exclusive t)  
