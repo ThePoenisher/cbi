@@ -298,7 +298,6 @@ Ursache:
 #+BEGIN_SRC emacs-lisp
   (setq prelude-packages  '(  auto-complete
                               ;;bookmark+
-                              js2-mode
                               lua-mode
                               move-text
                               popup
@@ -632,7 +631,7 @@ http://stackoverflow.com/questions/8257009/emacs-insert-word-at-point-into-repla
 default value. " http://www.emacswiki.org/emacs/ReplacePlus
 **** LazySearch ?
 
-**** TODO better search at point than C-w
+**** TODO better search at point then C-w
 :PROPERTIES:
 :ID:       89f2518c-05cb-489b-b3bf-1a8b3fa58a0d
 :END:
@@ -645,6 +644,14 @@ default value. " http://www.emacswiki.org/emacs/ReplacePlus
     )
 #+END_SRC
 ***** TODO use parallel / xargs -P ?
+**** replace in several files
+***** dired GEIL
+http://ergoemacs.org/emacs/find_replace_inter.html
+***** icicles
+***** ibuffer (see mode help)
+***** ...mehr 
+http://www.emacswiki.org/emacs/SearchBuffers
+http://stackoverflow.com/questions/7494203/how-do-i-m-x-replace-string-across-all-buffers-in-emacs
 *** Undo Limit
 #+BEGIN_SRC emacs-lisp
 (setq undo-limit 10000000)
@@ -2353,8 +2360,9 @@ https://github.com/jaspervdj/stylish-haskell
 http://www.haskell.org/ghc/docs/6.10.3/html/users_guide/utils.html
 ** TODO imenu gives a list of all functions in a file, and lets you jump to them.
 idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
-** Javascript
-#+BEGIN_SRC emacs-lisp
+** Javascript 
+js2 is obsolete
+#+BEGIN_SRC emacs-lisp :tangle no
   ;; (add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
   
   ;; Javascript  (ELPA)

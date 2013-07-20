@@ -28,6 +28,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ['.config/dunst'
 ,'.lircrc'
 ,'.zlogin'
+,'.xbmc/userdata/keymaps/remote.xml'
 ] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
