@@ -471,11 +471,10 @@ not "include path"
     ;;(global-set-key [f6] 'compile)
     ;;(global-set-key [f7] 'recompile)
     (global-set-key [f8] 'shell)
-    (global-set-key [f9] 'find-next-matching-tag)
+    (global-set-key [f9] 'xdict-query)
+    (global-set-key [f10] 'xdict-query-with-word-at-point)
     (global-set-key [f12] 'ansi-term)
     )
-  
-  
 #+END_SRC
 
 ** Material / Understanding
@@ -898,6 +897,7 @@ funkioniert irgendwie nicht in help-mode+
   ;; (evil-set-initial-state 'help-mode 'emacs) http://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evil
   (evil-set-initial-state 'package-menu-mode 'emacs)
 
+  (evil-set-initial-state 'xdict-mode 'emacs)
   (evil-set-initial-state 'inferior-haskell-mode 'emacs)
   
   (add-to-list 'evil-buffer-regexps '("\\*notmuch-help" . emacs))
@@ -1317,6 +1317,13 @@ http://ergoemacs.org/emacs/emacs_spell_checker_problems.html
 * TODO Übersetzung / Dictionaries
 http://sourceforge.net/projects/dictem/
 http://wordyenglish.com/musing/dict_open_source_probs.html
+** x-dict
+http://www.xsteve.at/prg/python/
+#+BEGIN_SRC emacs-lisp
+  (unless (getenv "CBI") (error "CBI envrionment variable not set"))
+  (load (concat (getenv "CBI") "/config/x-dict.el"))
+#+END_SRC
+
 * Debugging
 http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
 #+BEGIN_SRC emacs-lisp :tangle no
