@@ -1323,7 +1323,20 @@ http://www.xsteve.at/prg/python/
   (unless (getenv "CBI") (error "CBI envrionment variable not set"))
   (load (concat (getenv "CBI") "/config/x-dict.el"))
 #+END_SRC
-
+*** keys
+  (define-key xdict-mode-map "X" 'xdict-erase-buffer)
+  (define-key xdict-mode-map "x" 'xdict-delete-entry)
+  (define-key xdict-mode-map "p" 'xdict-previous-entry)
+  (define-key xdict-mode-map "n" 'xdict-next-entry)
+  (define-key xdict-mode-map "." 'xdict-query-with-word-at-point)
+  (define-key xdict-mode-map "l" 'xdict-query)
+  (define-key xdict-mode-map "w" 'xdict-copy-translation)
+  (define-key xdict-mode-map "s" 'xdict-select-dictionary)
+  (define-key xdict-mode-map "m" 'xdict-pop-back)
+  (define-key xdict-mode-map "b" 'xdict-resize-and-pop-back)
+  (define-key xdict-mode-map "f" 'xdict-resize-to-fit)
+  (define-key xdict-mode-map (kbd "TAB") 'xdict-toggle-column)
+  (define-key xdict-mode-map "q" 'xdict-quit))
 * Debugging
 http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
 #+BEGIN_SRC emacs-lisp :tangle no
