@@ -58,6 +58,8 @@ base_packages:
       - perl-file-slurp
       - evince
       - auctex
+      - dia
+      - inkscape
       - sqliteman
       - texlive-bibtexextra
       - texlive-bin
