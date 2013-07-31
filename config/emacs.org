@@ -2003,6 +2003,7 @@ vorerst bibtex (als biblatex backend) benutzen
                       ("corollaryenum" ?C  "cly:" "\\ref{%s}" item nil nil)
                       ("theorem" 104       "thm:" "\\ref{%s}" 1    ("theorem" "th.") nil)
                       ("theoremenum" ?T    "thm:" "\\ref{%s}" item nil nil)
+                      ("theoremenum*" ?T    "thm:" "\\ref{%s}" item nil nil)
                       ))
               (turn-on-reftex)
               ))
