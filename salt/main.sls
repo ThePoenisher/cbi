@@ -137,7 +137,7 @@ systemd-logind:
 {% if grains['os'] == 'Arch' %}
 /etc/dhcpcd.conf:
   file.append:
-    - text: clientid
+    - text: clientid  #für Fritzbox etc
 
       
 
@@ -175,7 +175,7 @@ sambaservices:
       - file: /etc/samba/smb.conf
 
       
-#######  managed etc files #######
+#######  managed etc (template) files #######
 {% set files =
 ['fstab'
 ,'gitconfig'
@@ -190,6 +190,7 @@ sambaservices:
 ,'samba/smb.conf'
 ,'systemd/journald.conf'
 ,'systemd/logind.conf'
+,'texmf/web2c/texmf.cnf'
 ,'vsftpd.conf'
 ,'zsh/zshenv'
 ] %}
@@ -199,6 +200,17 @@ sambaservices:
     - source: salt://etc/{{ file }}
     - makedirs: True
     - template: jinja
+{% endfor %}
+#######  managed etc files #######
+{% set files =
+[
+'texmf/web2c/texmf.cnf'
+] %}
+{% for file in files %}
+/etc/{{ file }}:
+  file.managed:
+    - source: salt://etc/{{ file }}
+    - makedirs: True
 {% endfor %}
 
 locale-gen:
