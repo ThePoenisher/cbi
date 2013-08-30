@@ -1848,6 +1848,8 @@ there is also auto-fill-mode
 - b :: buffer
 - d :: document
 - i :: goto info page
+       
+**** Problem [2013-08-30 Fri]: Funktioniert nicht mit ghostscript 9.09-1 aber mit 9.07-3
 *** viewer: C-c C-v
 [[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]]
 **** settings
