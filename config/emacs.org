@@ -1985,6 +1985,7 @@ vorerst bibtex (als biblatex backend) benutzen
                '("definitionenum" LaTeX-env-item)
                '("assumptionenum" LaTeX-env-item)
                '("theoremenum"   LaTeX-env-item)
+               '("axiomenum"   LaTeX-env-item)
                '("lemmaenum"     LaTeX-env-item)
                ;; '("corollary"   LaTeX-env-label) 
                )
@@ -1994,7 +1995,8 @@ vorerst bibtex (als biblatex backend) benutzen
                     '(
                       ("lemma" 108         "lem:" "\\ref{%s}" 1    ("lemma" "lem.") nil)
                       ("lemmaenum" ?L      "lem:" "\\ref{%s}" item nil nil)
-                      ("axiom" 109         "ax:"  "\\ref{%s}" 1    ("axiom" "Axiom") nil)
+                      ("axiom" ?m         "ax:"  "\\ref{%s}" 1    ("axiom" "Axiom") nil)
+                      ("axiomenum" ?M         "ax:"  "\\ref{%s}" 1    ("axiom" "Axiom") nil)
                       ("assumption" ?a     "ass:" "\\ref{%s}" 1    ("assumption" "ass.") nil)
                       ("assumptionenum" ?A "ass:" "\\ref{%s}" item ("assumption" "ass.") nil)
                       ("definition" ?d     "def:" "\\ref{%s}" 1    ("definition" "def.") nil)
