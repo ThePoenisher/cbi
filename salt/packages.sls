@@ -103,6 +103,7 @@ base_packages:
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - calibre
+      - abcde
       - aqbanking
       # - wine
       # - winetricks
