@@ -1,4 +1,3 @@
-{% if pillar['arch_desktop'] %}
 
 {% for i in ['sshd_config','ssh_config'] %}
 /etc/ssh/{{ i }}:
@@ -15,6 +14,7 @@ sshd:
 
 {% endif %}
 
+{% if pillar['arch_desktop'] %}
         
 {% for usr in pillar['ssh_users_with_auth_keys'] %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}

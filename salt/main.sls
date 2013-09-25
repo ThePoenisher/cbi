@@ -207,7 +207,6 @@ sambaservices:
 ,'systemd/journald.conf'
 ,'systemd/logind.conf'
 ,'texmf/web2c/texmf.cnf'
-,'vsftpd.conf'
 ,'zsh/zshenv'
 ] %}
 {% for file in files %}

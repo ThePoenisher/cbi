@@ -117,8 +117,6 @@ UsePrivilegeSeparation sandbox		# Default for new installations.
 # no default banner path
 #Banner none
 
-# override default of no subsystems
-Subsystem	sftp	/usr/lib/ssh/sftp-server
 
 # Example of overriding settings on a per-user basis
 #Match User anoncvs
@@ -131,6 +129,17 @@ X11Forwarding yes
 PasswordAuthentication no
 
 {% if grains['cbi_machine'] in ['scriabin','debussy'] %}
+# override default of no subsystems
+Subsystem	sftp	/usr/lib/ssh/sftp-server
+
 Match Address 192.168.0.0/16
     PasswordAuthentication yes
+{% elif grains['cbi_machine'] == 'strauss' %}
+
+Subsystem	sftp	internal-sftp
+
+ Match User sftpusers
+   ChrootDirectory %h
+   ForceCommand internal-sftp
+
 {% endif %}
