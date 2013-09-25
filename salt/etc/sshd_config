@@ -210,7 +210,7 @@ TCPKeepAlive yes
 # Allow client to pass locale environment variables
 AcceptEnv LANG LC_*
 
-Subsystem sftp /usr/lib/openssh/sftp-server
+#Subsystem sftp /usr/lib/openssh/sftp-server
 
 # Set this to 'yes' to enable PAM authentication, account processing,
 # and session processing. If this is enabled, PAM authentication will
@@ -223,10 +223,13 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
 
-# Subsystem	sftp	internal-sftp
+Subsystem	sftp	internal-sftp
 
-#  Match User sftpusers
-#    ChrootDirectory %h
-#    ForceCommand internal-sftp
+Match Group sftpusers
+  ChrootDirectory %h
+  ForceCommand internal-sftp
+  AllowTcpForwarding no
+
+
 
 {% endif %}
