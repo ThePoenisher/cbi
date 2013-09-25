@@ -12,9 +12,7 @@ sshd:
     - watch:
       - file: /etc/ssh/sshd_config
 
-{% endif %}
 
-{% if pillar['arch_desktop'] %}
         
 {% for usr in pillar['ssh_users_with_auth_keys'] %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
