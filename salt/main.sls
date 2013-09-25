@@ -22,6 +22,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 {% endif %}
 
 ############  Login ##########
+{% if grains['os'] == 'Arch' %}
 {% set usr = "johannes" %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
 {% set files =
@@ -54,6 +55,7 @@ groupsasd:
     - names:
         - sudo
         - wireshark
+{% endif %} # arch
 
 ###########  Users ###############
 {% if pillar['users']['root'] is defined %}
