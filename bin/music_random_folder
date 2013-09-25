@@ -1,2 +1,2 @@
-#find /home/data2/music/* -type d  > /home/data2/music/all
+#find /home/data/music/* -type d  > /home/data/music/all
 e=`cat /home/data/music/all | grep -v Hörspiel | shuf -n1`; echo $e

@@ -102,6 +102,20 @@ org:
   user.present:
     - home: /var/jo/mobileorg
     - password: {{ pillar['org.password'] }} 
+
+# strauss etc files      
+{% set files =
+[
+'vsftpd.conf'
+] %}
+{% for file in files %}
+/etc/{{ file }}:
+  file.managed:
+    - source: salt://etc/{{ file }}
+    - makedirs: True
+    - template: jinja
+{% endfor %}
+
 {% endif %}
 
 

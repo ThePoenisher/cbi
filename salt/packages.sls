@@ -20,6 +20,7 @@ base_packages:
       - hwinfo
       - wget
       - colordiff
+      - vsftpd
       - figlet
       - ranger
       - subversion
@@ -37,7 +38,6 @@ base_packages:
       - dnsutils
       - socat
       - aria2
-      - vsftpd
       - cabal-install
       - perl-mime-tools
       - perl-image-exiftool
