@@ -45,6 +45,5 @@ ssh_users_with_auth_keys:
   
 users:  
   root:
-  daniela:
 
 {% endif %}

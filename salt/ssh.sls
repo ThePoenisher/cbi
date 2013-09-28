@@ -1,4 +1,3 @@
-{% if pillar['arch_desktop'] %}
 
 {% for i in ['sshd_config','ssh_config'] %}
 /etc/ssh/{{ i }}:
@@ -13,7 +12,6 @@ sshd:
     - watch:
       - file: /etc/ssh/sshd_config
 
-{% endif %}
 
         
 {% for usr in pillar['ssh_users_with_auth_keys'] %}

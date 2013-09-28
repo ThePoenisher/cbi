@@ -45,8 +45,7 @@ Subjet: Error in $1
 
 $1
 
-Error ID: $e
-less $2
+less -p $e $2
 EOF
 }
 

@@ -22,6 +22,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 {% endif %}
 
 ############  Login ##########
+{% if grains['os'] == 'Arch' %}
 {% set usr = "johannes" %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
 {% set files =
@@ -54,6 +55,7 @@ groupsasd:
     - names:
         - sudo
         - wireshark
+{% endif %} # arch
 
 ###########  Users ###############
 {% if pillar['users']['root'] is defined %}
@@ -102,6 +104,20 @@ org:
   user.present:
     - home: /var/jo/mobileorg
     - password: {{ pillar['org.password'] }} 
+
+# strauss etc files      
+{% set files =
+[
+'vsftpd.conf'
+] %}
+{% for file in files %}
+/etc/{{ file }}:
+  file.managed:
+    - source: salt://etc/{{ file }}
+    - makedirs: True
+    - template: jinja
+{% endfor %}
+
 {% endif %}
 
 
@@ -192,7 +208,6 @@ sambaservices:
 ,'systemd/journald.conf'
 ,'systemd/logind.conf'
 ,'texmf/web2c/texmf.cnf'
-,'vsftpd.conf'
 ,'zsh/zshenv'
 ] %}
 {% for file in files %}
