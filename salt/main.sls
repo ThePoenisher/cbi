@@ -182,6 +182,7 @@ sambaservices:
 ,'lirc/lircd.conf'
 ,'locale.gen'
 ,'makepkg.conf'
+,'minidlna.conf'
 ,'mkinitcpio.conf'
 ,'modules-load.d/cbi.conf'
 ,'netctl/wlan0-SBB'

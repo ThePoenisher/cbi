@@ -98,7 +98,6 @@ base_packages:
       - net-tools
       - haskell-parsec
       - haddock
-      - minidlna
       - samba
 {% if pillar['arch_desktop'] %}
       - pdfedit
