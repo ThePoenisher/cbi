@@ -312,6 +312,7 @@ Ursache:
                               haskell-mode
                               helm
                               gnuplot
+                              dired-details
                               gnuplot-mode
                               pandoc-mode
                               yaml-mode
@@ -644,7 +645,7 @@ default value. " http://www.emacswiki.org/emacs/ReplacePlus
 #+END_SRC
 ***** TODO use parallel / xargs -P ?
 **** replace in several files
-***** dired GEIL
+***** wdired GEIL
 http://ergoemacs.org/emacs/find_replace_inter.html
 ***** icicles
 ***** ibuffer (see mode help)
@@ -2779,12 +2780,17 @@ editing: http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
 #+BEGIN_SRC emacs-lisp
   (require 'dired-x)
 #+END_SRC
-*** Delete Backup and Auto Save files: `#' and `~'
-*** Jump to current file: C-x C-j
+*** dired-details
+hide details from listing (dired-details-toggle)
+http://www.emacswiki.org/emacs/DiredDetails
+*** dired-x
+**** hide unintereseting files: M-o (see C-h i m dired-x)
+**** Jump to current file: C-x C-j
 dired-jump
 DOES NOT WORK ANYNMORE!?!?!?
 works angain [2013-04-22 Mon]
 need (require dired-x)!!!
+*** Delete Backup and Auto Save files: `#' and `~'
 *** Open files: just hit RET!
 *** wdired-change-to-wdired-mode (cool rename files in dirs)
 Put a dired buffer in a mode in which filenames are editable.
