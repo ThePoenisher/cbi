@@ -98,7 +98,6 @@ base_packages:
       - net-tools
       - haskell-parsec
       - haddock
-      - minidlna
       - samba
 {% if pillar['arch_desktop'] %}
       - pdfedit
@@ -149,6 +148,7 @@ base_packages:
                      # besser mtp?)
       - gvfs-mtp
       - gvfs-smb
+      - unoconv
 {% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
       - libreoffice-{{ p }}
 {% endfor %}

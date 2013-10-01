@@ -6,12 +6,15 @@ sound_packages:
       - pulseaudio
       - pulseaudio-alsa
       #GUI
+      - paprefs
       - pavucontrol
       - mplayer2
       - vlc
       - gecko-mediaplayer
       - rtmpdump
       - lirc-utils
+      - minidlna
+      - rygel
       - xbmc
 {% if grains['cbi_machine'] == 'scriabin' %}
 {% endif %}
