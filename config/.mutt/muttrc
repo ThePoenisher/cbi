@@ -31,6 +31,8 @@ set pager_index_lines=20
 
 set sort_browser=reverse-date
 								 
+set mime_forward=ask-yes
+
 source ~/.mutt/macros
 source ~/.mutt/mailboxes
 
