@@ -43,7 +43,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
       
 '{{ home }}/VirtualBox VMs':
   file.symlink:
-    - target: /home/dont_backup/VirtualBox VMs
+    - target: /home/data/downloads/VirtualBox VMs
     - user: {{ usr }}
     - group: {{ usr }}
     - force: True
