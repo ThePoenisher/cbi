@@ -291,6 +291,7 @@ cups:
 {% set services =
 [('autologin@',['tty1'],[])
 ,('wol@',['eth0'],[])
+,('resume@',['johannes'],[])
 ,('lirc',[''],['/etc/lirc/lircd.conf'])
 ]%}
 #### ('offlineimap',['']) ] %}
