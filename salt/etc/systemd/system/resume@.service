@@ -1,0 +1,11 @@
+[Unit]
+Description=User resume actions
+After=suspend.target
+
+[Service]
+User=%I
+Type=simple
+ExecStart=/usr/bin/pkill -SIGUSR1 -u %u offlineimap
+
+[Install]
+WantedBy=suspend.target
