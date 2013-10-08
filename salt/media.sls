@@ -8,7 +8,8 @@ sound_packages:
       #GUI
       - paprefs
       - pavucontrol
-      - mplayer2
+      - mplayer
+      - mpv #new mplayer2
       - vlc
       - gecko-mediaplayer
       - rtmpdump
