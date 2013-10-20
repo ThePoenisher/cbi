@@ -2341,7 +2341,7 @@ Change to standard compilation / eval key, but only in shell mode
     "runs the current buffer usign bash"
     (interactive)
   (shell-command-on-region (point-min) (point-max) "bash")
-  (view-buffer-other-window (get-buffer "*Shell Command Output*"))
+  ;; (view-buffer-other-window (get-buffer "*Shell Command Output*"))
   )
 #+END_SRC
 ** Config Files / /etc/files
