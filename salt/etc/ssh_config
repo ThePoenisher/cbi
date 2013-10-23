@@ -62,4 +62,8 @@ Host strauss
 HostName josg.de
 User root
 
+# Host bitbucket.org
+# User johannes_g
+# IdentityFile ~/.ssh/github-kuerzn
+
 Host *

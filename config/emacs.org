@@ -462,7 +462,7 @@ not "include path"
     (global-set-key (kbd "M-# M-e") 'dotemacs)
     (global-set-key (kbd "C-# C-c") 'dotemacs-commit)
     (global-set-key [S-f1] 'browse-url-at-point)
-    (global-set-key [f1] 'browse-url-default-windows-browser)
+    (global-set-key [f1] 'browse-url-of-file)
     (global-set-key [f2] 'grep-find)
     ;;      (global-set-key [f3] 'isearch-forward)
     (global-set-key [f3] 'bubble-buffer)
@@ -1706,7 +1706,7 @@ http://ledger-cli.org/3.0/doc/ledger3.html#EMACS-org-mode
   (let ((p "/home/data/finanzen/ledger/lisp"))
     (when (file-exists-p p)
       (add-to-list 'load-path p)
-      (load "ldg-new")
+      (load "ledger-mode")
       ;; note needed (require 'ledger)
       ))
 #+END_SRC
@@ -2341,7 +2341,7 @@ Change to standard compilation / eval key, but only in shell mode
     "runs the current buffer usign bash"
     (interactive)
   (shell-command-on-region (point-min) (point-max) "bash")
-  (view-buffer-other-window (get-buffer "*Shell Command Output*"))
+  ;; (view-buffer-other-window (get-buffer "*Shell Command Output*"))
   )
 #+END_SRC
 ** Config Files / /etc/files
@@ -2779,6 +2779,7 @@ editing: http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
 *** Settings
 #+BEGIN_SRC emacs-lisp
   (require 'dired-x)
+  (setq dired-listing-switches "-alh")
 #+END_SRC
 *** dired-details
 hide details from listing (dired-details-toggle)
