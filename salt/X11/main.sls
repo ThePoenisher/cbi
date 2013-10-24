@@ -50,13 +50,13 @@ fc-cache:
         
 yesb:
   file.symlink:
-    - name:  /etc/fonts/conf.d/70-yes-bitmaps.conf
-    - target: /etc/fonts/conf.avail/70-yes-bitmaps.conf
+    - name:  /etc/fonts/conf.d/70-no-bitmaps.conf
+    - target: /etc/fonts/conf.avail/70-no-bitmaps.conf
     - force: True
       
 nob:
   file.absent:
-    - name: /etc/fonts/conf.d/70-no-bitmaps.conf
+    - name: /etc/fonts/conf.d/70-yes-bitmaps.conf
       
 packer --noconfirm --noedit  -S ttf-ms-fonts:
   cmd.run:
