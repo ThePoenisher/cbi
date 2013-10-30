@@ -22,7 +22,7 @@ switch($ARGV[0]){
 				{
 						$a[$i] =~ m/([0-9])+\t/;
 						my $v=`pactl list sinks | sed -nre '/Sink #$1/,/Volume/p'`;
-						$v =~ m/Volume: front-left: [^\/]* \/  ([^%]+).*/;
+						$v =~ m/Volume: front-left: [^\/]* \/[ ]*([^%]+).*/;
 						my $p=$1;
 						print "^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/".($v =~ m/Mute: yes/ ? "vol-mute.xbm) M": "spkr_01.xbm)")." $p%";
 				}
