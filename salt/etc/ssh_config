@@ -49,18 +49,19 @@
 
 #GitHub kuerzn
 Host ghk
-HostName github.com
-User git
-IdentityFile ~/.ssh/github-kuerzn
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/github-kuerzn
+
 #GitHub johannesgerer
 Host ghj
-HostName github.com
-User git
-IdentityFile ~/.ssh/github-jg
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/github-jg
 
 Host strauss
-HostName josg.de
-User root
+    HostName josg.de
+    User root
 
 # Host bitbucket.org
 # User johannes_g

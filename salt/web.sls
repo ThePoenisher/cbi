@@ -34,7 +34,6 @@ lighttpd:
     - force: True
     - makedirs: True
         
-{% if grains['cbi_machine'] == 'scriabin' %}
 /srv/http/music:
   file.symlink:
     - target: /home/data/music
@@ -42,15 +41,6 @@ lighttpd:
 /srv/http/library:
   file.symlink:
     - target: /home/data/library
-{% else %}
-/srv/http/music:
-  file.symlink:
-    - target: /home/data2/music
-
-/srv/http/library:
-  file.symlink:
-    - target: /home/data2/library
-{% endif %}
 
 
 /srv/http/OneNote:

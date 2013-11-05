@@ -7,7 +7,7 @@ GRUB_CMDLINE_LINUX_DEFAULT="resume=UUID=44b8266a-2402-4afd-ab58-083ad3e0e03b"
 {% elif grains['cbi_machine'] == 'debussy' %}
 GRUB_CMDLINE_LINUX_DEFAULT="resume=UUID=cfbfb905-676f-44d4-9431-f3b9d7003651"
 {% endif %}
-GRUB_CMDLINE_LINUX="acpi_backlight=vendor"
+GRUB_CMDLINE_LINUX="acpi_backlight=vendor rw"
 #GRUB_CMDLINE_LINUX="acpi_osi=Linux"
 
 # Preload both GPT and MBR modules so that they are not missed
