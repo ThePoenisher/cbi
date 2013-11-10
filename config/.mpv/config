@@ -3,6 +3,6 @@
 stop-screensaver="yes"
 fstype=fullscreen
 #font=/usr/share/fonts/TTF/DejaVuSans-Bold.ttf
-
+vo=xv
 
 

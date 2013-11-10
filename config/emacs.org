@@ -482,7 +482,7 @@ not "include path"
 - substitute-key-definition vs. define-key MAP [remap ...]
 http://lists.gnu.org/archive/html/emacs-devel/2010-07/msg00747.html
 - http://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Key-Bindings.html
-- http://www.gnu.org/software/emacs/manual/html_node/elisp/Remapping-Commands.html#Remapping-Commands
+- http://www.gnu.org/software/emacs/manual/html_node/elisp/Remapping-Commands.html#Remapping-
 * Emacs
 :LOGBOOK:
 :END:
@@ -555,6 +555,7 @@ Guile
 #+BEGIN_SRC emacs-lisp
 (show-paren-mode t)
 #+END_SRC
+**** TODO Autopair
 *** Reduce the number of warnings
 from http://www.emacswiki.org/emacs/AlarmBell
 
@@ -897,14 +898,15 @@ funkioniert irgendwie nicht in help-mode+
   (evil-set-initial-state 'reftex-select-label-mode  'emacs) 
   ;; (evil-set-initial-state 'help-mode 'emacs) http://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evilhttp://emacswiki.org/emacs/Evil
   (evil-set-initial-state 'package-menu-mode 'emacs)
-
+  
   (evil-set-initial-state 'xdict-mode 'emacs)
   (evil-set-initial-state 'inferior-haskell-mode 'emacs)
+  (evil-set-initial-state 'semantic-symref-results-mode 'emacs)
   
   (add-to-list 'evil-buffer-regexps '("\\*notmuch-help" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*Mingus" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*buffer-selection\\*" . emacs))
-
+  
   (add-to-list 'evil-buffer-regexps '("\\*Reconcile\\*" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*undo-tree\\*" . emacs))
 #+END_SRC
@@ -2207,6 +2209,7 @@ http://www.emacswiki.org/emacs/ImenuMode
 M-x imenu (navigiert durch eine Struktur?)
 ** Code Browsing (auch JAVA):
 http://ecb.sourceforge.net/screenshots/index.html
+http://truongtx.me/2013/03/10/emacs-setting-up-perfect-environment-for-cc-programming/
 ** TODO Follow the point
 :PROPERTIES:
 :ID:       3dc41844-ba72-447f-8dd9-351299b8225f
@@ -2490,6 +2493,12 @@ http://youtu.be/18xYbPCJOho?t=1m17s
 - C-j :: eval-print-last-sexp 
 - C-x C-e :: eval-last-sexp
 - M-: :: eval-buffer
+         
+** Finding References / Definitions
+*** M-x semantic-mode
+semantic-symref
+semantic-ia-fast-jump
+
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
