@@ -35,6 +35,7 @@ base_packages:
 {% if grains['os'] == 'Arch' %}
       - p7zip
       - dnsutils
+      - pptpclient
       - socat
       - aria2
       - vsftpd
