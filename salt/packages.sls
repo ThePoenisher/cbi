@@ -102,6 +102,8 @@ base_packages:
       - samba
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - bitcoin-qt
+      - bitcoin-daemon
       - calibre
       - aqbanking
       # - wine
@@ -162,6 +164,7 @@ base_packages:
 ['aurvote'
 ,'dbacl'
 ,'downgrade'
+,'electrum'
 ,'epson-inkjet-printer-workforce-635-nx625-series'
 ,'git-annex-standalone'
 ,'google-talkplugin'
@@ -172,6 +175,7 @@ base_packages:
 ,'perl-file-find-rule'
 ,'perl-string-util'
 ,'python2-gnupg'
+,'python2-zbar'
 ,'urlview'
 ] %}
 packer --noconfirm --noedit  -S {{ p }}:
