@@ -15,3 +15,6 @@ base:
     - email
     - web
 {% endif %}
+{% if grains['cbi_machine'] == 'debussy' %}
+    - tor
+{% endif %}
