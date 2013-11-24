@@ -1,0 +1,8 @@
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [2:104]
+-A INPUT -i torbr0 -p tcp -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i torbr0 -p tcp --dport 9100 -j ACCEPT
+-A INPUT -i torbr0 -j DROP
+COMMIT
