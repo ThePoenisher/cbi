@@ -48,6 +48,10 @@
 #   RekeyLimit 1G 1h
 
 #GitHub kuerzn
+Host p1
+    HostName 192.168.123.2
+    User u1
+		
 Host ghk
     HostName github.com
     User git

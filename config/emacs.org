@@ -641,7 +641,7 @@ default value. " http://www.emacswiki.org/emacs/ReplacePlus
   (eval-after-load "grep"
     '(grep-apply-setting
       'grep-find-command
-      "find . ! -name \"*~\" ! -name \"#*#\" ! -path \"*/.svn/*\" ! -path \"*/.git/*\" -type f -or -type -l -print0 | xargs -0 -e grep -nH -ie " )
+      "find . ! -name \"*~\" ! -name \"#*#\" ! -path \"*/.svn/*\" ! -path \"*/.git/*\" \\( -type f -or -type l \\) -print0 | xargs -0 -e grep -nH -ie " )
     )
 #+END_SRC
 ***** TODO use parallel / xargs -P ?

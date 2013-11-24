@@ -4,6 +4,7 @@ arch_X11_packages:
     - names:
       - xorg-server
       - xorg-xinit
+      - terminator
       - xorg-server-utils
       - xterm
       - arandr
@@ -13,7 +14,6 @@ arch_X11_packages:
       - xcompmgr
       - xclip
       - xsel
-      - xpdf
       - transset-df
       - mesa-demos #glxgears
       - feh
