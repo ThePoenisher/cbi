@@ -3,6 +3,13 @@ tor_packages:
     - names:
       - bridge-utils
       - tor
+      
+{% for p in
+ ['arm'] %}
+packer --noconfirm --noedit  -S {{ p }}:
+  cmd.run:
+    - unless: pacman -Q {{ p }}
+{% endfor %}
   
 {% set files =
 [
