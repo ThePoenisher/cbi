@@ -197,4 +197,5 @@ SocksPort 192.168.123.1:9102 #chromium
 SocksPort 192.168.123.1:9103 IsolateDestPort IsolateDestAddr #curl
 SocksPort 192.168.123.1:9104 IsolateDestPort IsolateDestAddr #torsocks
 SocksPort 192.168.123.1:9106 IsolateDestPort IsolateDestAddr #electrum
+SocksPort 192.168.123.1:9107 IsolateDestPort IsolateDestAddr #ssh, thunderbird
 ClientOnly 1
