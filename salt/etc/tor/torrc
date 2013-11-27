@@ -189,13 +189,8 @@ CookieAuthentication 1
 
 VirtualAddrNetwork 10.192.0.0/10
 AutomapHostsOnResolve 1
-TransPort 192.168.123.1:9040 IsolateDestPort IsolateDestAddr
-DNSPort   192.168.123.1:9053 IsolateDestPort IsolateDestAddr
-SocksPort 192.168.123.1:9101
-SocksPort 192.168.123.1:9105
-SocksPort 192.168.123.1:9102
-SocksPort 192.168.123.1:9103 IsolateDestPort IsolateDestAddr
-SocksPort 192.168.123.1:9104 IsolateDestPort IsolateDestAddr
-SocksPort 192.168.123.1:9106 IsolateDestPort IsolateDestAddr
-SocksPort 192.168.123.1:9107 IsolateDestPort IsolateDestAddr
+SocksPort 172.16.0.1:9100 IsolateDestPort IsolateDestAddr
+SocksPort 172.16.0.1:9101
+SocksPort 172.16.0.1:9102
+SocksPort 172.16.0.1:9103
 ClientOnly 1

@@ -47,11 +47,10 @@
 #   ProxyCommand ssh -q -W %h:%p gateway.example.com
 #   RekeyLimit 1G 1h
 
-#GitHub kuerzn
 Host p1
-    HostName 192.168.123.2
-    User u1
+    HostName 172.16.0.2
 		
+#GitHub kuerzn
 Host ghk
     HostName github.com
     User git
