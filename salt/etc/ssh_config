@@ -49,6 +49,7 @@
 
 Host p1
     HostName 172.16.0.2
+		Port 9200
 		
 #GitHub kuerzn
 Host ghk
