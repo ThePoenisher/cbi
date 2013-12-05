@@ -195,3 +195,8 @@ SocksPort 172.16.0.1:9102
 SocksPort 172.16.0.1:9103
 ClientOnly 1
 DisableDebuggerAttachment 0
+
+
+SocksPort 127.0.0.1:9300 IsolateDestPort IsolateDestAddr
+SocksPort 127.0.0.1:9301
+SocksPort 127.0.0.1:9302

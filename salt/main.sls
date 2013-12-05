@@ -48,6 +48,14 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
     - group: {{ usr }}
     - force: True
       
+'{{ home }}/.gnupg/gpg.conf':
+  file.managed:
+    - mode: 600
+    - user: johannes
+    - template: jinja
+    - source: salt://gpg.conf.gpg
+  
+      
 ###########  Groups ###############
 groupsasd:
   group.present:
@@ -281,6 +289,11 @@ cups:
 /etc/pacman.d/mirrorlist:
   file.managed:
     - source: salt://etc/pacman.d/mirrorlist.gpg
+
+/etc/pacman.d/mirrorlist:
+  file.managed:
+    - source: salt://etc/pacman.d/mirrorlist.gpg
+
 
   
 
