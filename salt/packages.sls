@@ -44,6 +44,7 @@ base_packages:
       - perl-image-exiftool
       - pastebinit
       - python2-eyed3
+      - pass
       - html2text
       - inotify-tools
       - perl-rename
