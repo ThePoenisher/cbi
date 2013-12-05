@@ -101,6 +101,7 @@ base_packages:
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - bitcoin-qt
+      - ntfs-3g
       - bitcoin-daemon
       - calibre
       - aqbanking
