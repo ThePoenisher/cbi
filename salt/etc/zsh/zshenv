@@ -1,3 +1,4 @@
+
 CBI="{{ grains['cbi_home'] }}"
 export CBI
 
@@ -14,3 +15,9 @@ export ALTERNATE_EDITOR
 PATH=$PATH:$CBI/bin:/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin
 
 export PATH
+
+
+if [ "$TERM" = "dumb" ]
+then
+       setopt no_global_rcs 
+fi

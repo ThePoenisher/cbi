@@ -3,7 +3,6 @@ base_packages:
   pkg.installed:
     - names:
       - tree
-      - wget
       - git
       - tmux
       - vim
@@ -58,7 +57,6 @@ base_packages:
       - perl-dbd-sqlite
       - perl-dbi
       - perl-file-slurp
-      - evince
       - auctex
       - dia
       - inkscape
@@ -104,6 +102,7 @@ base_packages:
 {% if pillar['arch_desktop'] %}
       - pdfedit
       - bitcoin-qt
+      - ntfs-3g
       - bitcoin-daemon
       - calibre
       - aqbanking
@@ -111,7 +110,6 @@ base_packages:
       # - winetricks
       - dunst # für libnotify
       - espeak
-      - terminator
       - gimp
       - virtualbox
       - virtualbox-host-modules

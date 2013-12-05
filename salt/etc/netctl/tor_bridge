@@ -1,0 +1,16 @@
+Description="Tor Bridge connection"
+Interface=torbr0
+Mode=tap
+Connection=tuntap
+User=tor
+Group=tor
+IP=static
+Address=('172.16.0.1/24')
+
+
+# Description="Tor Bridge connection"
+# Interface=torbr0
+# Connection=bridge
+# BindsToInterfaces=()
+# IP=static
+# Address=('192.168.123.1/24')

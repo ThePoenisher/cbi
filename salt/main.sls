@@ -48,6 +48,14 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
     - group: {{ usr }}
     - force: True
       
+'{{ home }}/.gnupg/gpg.conf':
+  file.managed:
+    - mode: 600
+    - user: johannes
+    - template: jinja
+    - source: salt://gpg.conf.gpg
+  
+      
 ###########  Groups ###############
 groupsasd:
   group.present:
@@ -282,6 +290,11 @@ cups:
   file.managed:
     - source: salt://etc/pacman.d/mirrorlist.gpg
 
+/etc/pacman.d/mirrorlist:
+  file.managed:
+    - source: salt://etc/pacman.d/mirrorlist.gpg
+
+
   
 
 ##### Systemd services
@@ -289,19 +302,21 @@ cups:
 {% if pillar['arch_desktop'] %}
 
 {% set services =
-[('autologin@',['tty1'],[])
-,('wol@',['eth0'],[])
-,('resume@',['johannes'],[])
-,('lirc',[''],['/etc/lirc/lircd.conf'])
+[('autologin@',['tty1'],['systemd/system/autologin@.service'])
+,('wol@',['eth0'],['systemd/system/wol@.service'])
+,('resume@',['johannes'],['systemd/system/resume@.service'])
+,('iptables',[''],['iptables/iptables.rules'])
+,('lirc',[''],['lirc/lircd.conf'])
 ]%}
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
 {% for service, instances, confs in services %}
-{% set x = "/etc/systemd/system/"~service~".service" %}
-{{ x }}:
+{% for conf in confs %}
+/etc/{{ conf }}:
   file.managed:
     - template: jinja
-    - source: salt:/{{ x }}
+    - source: salt://etc/{{ conf }}
+{% endfor %}
       
 {% for instance in instances %}
 {{ service~instance }}:
@@ -310,7 +325,7 @@ cups:
     - watch:
       - cmd: systemd-reload-{{service~instance}}
 {% for conf in confs %}
-      - file: {{ conf }}
+      - file: /etc/{{ conf }}
 {% endfor %}
 
         
@@ -318,7 +333,9 @@ systemd-reload-{{service~instance}}:
   cmd.wait:
     - name: systemctl --system daemon-reload
     - watch:
-      - file: {{ x }}
+{% for conf in confs %}
+      - file: /etc/{{ conf }}
+{% endfor %}
 {% endfor %}
 
 {% endfor %}

@@ -1,0 +1,13 @@
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [2:104]
+-A INPUT -i torbr0 -p tcp -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+#IMPORTANT: dont allow host to leak anything through the same circuts as guest
+-A INPUT -i lo     -p tcp --dport 9100:9110 -j DROP 
+-A INPUT -i torbr0 -p tcp --dport 9100:9110 -j ACCEPT
+-A INPUT -i torbr0 -j DROP
+-A OUTPUT -o torbr0 -p tcp  -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A OUTPUT -o torbr0 -p tcp --dport 9200 -j ACCEPT
+-A OUTPUT -o torbr0 -j DROP
+COMMIT
