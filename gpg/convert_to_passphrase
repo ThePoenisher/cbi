@@ -9,10 +9,11 @@ if false; then
 		e=`mktemp`
 		curl -LO http://www.ids-mannheim.de/kl/derewo/derewo-v-ww-bll-320000g-2012-12-31-1.0.zip
 		unzip derewo-v-ww-bll-320000g-2012-12-31-1.0.zip
-    cat derewo-v-ww-bll-320000g-2012-12-31-1.0.txt | iconv -f latin1 -t utf8 | cut -f 1 -d\ |  sed -e 's/./\L\0/g' -e '/.*[(),#].*/d' | sort -u > $e
+    cat derewo-v-ww-bll-320000g-2012-12-31-1.0.txt | iconv -f latin1 -t utf8 | cut -f 1 -d\ |  sed -e 's/./\L\0/g' -e '/.*[-(),#].*/d' | sort -u > $e
 		cat $e | perl -nle '$l=length($_);print $l<5||$l>9 ? "" : $_ ' | sed -e '/^$/d' > "$f"
     cat $e | perl -nle '$l=length($_);print $l!=10 ? "" : $_ ' | sed -e '/^$/d' | shuf -n $((65536 - $(cat "$f" | wc -l ))) >> "$f"
-		rm $e
+		shuf "$f" > $e
+		mv $e "$f"
 		exit
 #		ALTERNATIVES:
 		14bit: 5-7   ->  84bit: 6 w max 42 c
@@ -30,12 +31,14 @@ fi
 
 echo "VERIFY THE SIGNATURE OF THIS FILE!!!!!!!" 1>&2
 
-echo 285e4a02d2650bad552bbf91d9c79639f591774aa1a69e8908eec896fd1cb931e3b56105f4f4030b1194654b2543f28c79b9ecbe2a8a272116e7cd95a6180ec9 "$f" | sha512sum -c --strict 1>&2
+if ! echo 319b4c08b3ce29390699c96b31c48b863247da85d39a90d9e16b6d338b8289594e68cd20f39572ec8491faffc8c7dc8dc1b3ad8a239d0652670c61c3027acb7f "$f" | sha512sum -c --strict 1>&2; then
+		sha512sum "$f"
+fi
 
 if [ "$1" != "test" ]; then
 		t=$(echo -e "\xff\xff\xff\xff\xff$(echo test123 | sha512sum | xxd -r -p)" | ./$0 test 2>/dev/null)
 		if [ -n "$debug" ]; then echo -n "$t" 1>&2 ; fi 
-		if [ "$t" != "blastomere blastomere verheerend farbreiz anwesen peeling allfrisch sparbank einheizer lokalbahn drogenfall spalter radmelde fachring geblumt siegwette umsegeln sitzrohr tarocken giftig kräcker exegese hausgeld myles helmbusch fühlen ringerin scharre oligarch westjude melano dachform barwagen farbtest schöffin " ]; then
+		if [ "$t" != "slavistik slavistik menüplan filmebene einaktig nebelhorn münzen stehzeit radfahrer korselett weißklee überaus seeanker pepita verknoten ratwatte fanggrund datenbahn farblos schuhband singultus gringoland backware rittermahl zugaberuf obendrein ölschock jackett grasebene feiertag perlfluss brudermord einblick mausklick kultplatz " ]; then
 		echo TEST FAILED 1>&2
 		fi
 fi
