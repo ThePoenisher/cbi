@@ -1,13 +1,26 @@
 #!/bin/bash
+f="Wortliste"
 
 # converts a hex encoded number to a list of words
 
 # the list:
 # http://www1.ids-mannheim.de/kl/projekte/methoden/derewo.html
-# http://www.ids-mannheim.de/kl/derewo/derewo-v-ww-bll-320000g-2012-12-31-1.0.zip
-#converted to utf8-unix
-# iconv -f latin1 -t utf8 | cut -f 1 -d\ |  sed -e 's/./\L\0/g' -e '/.*[(),#].*/d' | perl -nle '$l=length($_);print $l<6||$l>7 ? "" : $_ ' | sed -e 's/ö/oe/g' -e 's/ä/ae/g' -e 's/ü/ue/g' -e 's/ß/ss/g' -e '/^$/d' -e's/ //g' | sort -R
-
+if false; then
+		e=`mktemp`
+		curl -LO http://www.ids-mannheim.de/kl/derewo/derewo-v-ww-bll-320000g-2012-12-31-1.0.zip
+		unzip derewo-v-ww-bll-320000g-2012-12-31-1.0.zip
+    cat derewo-v-ww-bll-320000g-2012-12-31-1.0.txt | iconv -f latin1 -t utf8 | cut -f 1 -d\ |  sed -e 's/./\L\0/g' -e '/.*[(),#].*/d' | sort -u > $e
+		cat $e | perl -nle '$l=length($_);print $l<5||$l>9 ? "" : $_ ' | sed -e '/^$/d' > "$f"
+    cat $e | perl -nle '$l=length($_);print $l!=10 ? "" : $_ ' | sed -e '/^$/d' | shuf -n $((65536 - $(cat "$f" | wc -l ))) >> "$f"
+		rm $e
+		exit
+#		ALTERNATIVES:
+		14bit: 5-7   ->  84bit: 6 w max 42 c
+* 	16bit: 5-10  ->  80bit: 5 w max 50 c
+		17bit: 5-12  ->  85bit: 5 w max 60 c
+		18bit: 4-16 ->   90bit: 5 w max 80 c
+		                 72bit: 4 w max 64 c
+fi
 # 17292 words -> 2^14 = 16384
 
 if [ "debug" = "$1" ]; then
@@ -17,30 +30,34 @@ fi
 
 echo "VERIFY THE SIGNATURE OF THIS FILE!!!!!!!" 1>&2
 
-echo 1dcb4d17d20338314a42f1913c91ba0f804795f13fc53b5f5e8d45640742b634065feac375e48dbcf86ca2e376ef018cfd8c4a6f21860c282306643056f9c9cf  Wortliste | sha512sum -c --strict 1>&2
+echo 285e4a02d2650bad552bbf91d9c79639f591774aa1a69e8908eec896fd1cb931e3b56105f4f4030b1194654b2543f28c79b9ecbe2a8a272116e7cd95a6180ec9 "$f" | sha512sum -c --strict 1>&2
 
 if [ "$1" != "test" ]; then
-		t=$(echo test123 | sha512sum | xxd -r -p | ./$0 test 2>/dev/null)
+		t=$(echo -e "\xff\xff\xff\xff\xff$(echo test123 | sha512sum | xxd -r -p)" | ./$0 test 2>/dev/null)
 		if [ -n "$debug" ]; then echo -n "$t" 1>&2 ; fi 
-		if [ "$t" != "leotard tanktop abteil softie whisky jaguar baaske liquet kumulus zusatz gedurft kelter alpinum gelocht mokant chemie lachen arznei timecop kullern henker rinnen bluter obenauf gehoert konvex access etwaig knille persil exarch umlage flappe jacuzzi bachab dealen tenakel tombola " ]; then
+		if [ "$t" != "blastomere blastomere verheerend farbreiz anwesen peeling allfrisch sparbank einheizer lokalbahn drogenfall spalter radmelde fachring geblumt siegwette umsegeln sitzrohr tarocken giftig kräcker exegese hausgeld myles helmbusch fühlen ringerin scharre oligarch westjude melano dachform barwagen farbtest schöffin " ]; then
 		echo TEST FAILED 1>&2
 		fi
 fi
 
 
 declare -a words
-readarray words < Wortliste
+readarray words < "$f"
 
+l=$(cat "$f" | wc -l )
 hx="`head | xxd -p | tr '[:lower:]' '[:upper:]'`"
 if [ -n "$debug" ]; then echo $hx; fi
-bi="$(echo "ibase=16;obase=2;$hx" | BC_LINE_LENGTH=16 bc | tr -d "\\" 2> /dev/null)"
+bi="$(echo "ibase=16;obase=2;$hx" | BC_LINE_LENGTH=18 bc | tr -d "\\" 2> /dev/null)"
 if [ -n "$debug" ]; then echo $bi; fi
 for b in $bi; do
 		d=$(echo "obase=10;ibase=2;$b" | bc)
+		if [ $l -le $d ]; then
+				echo DECODING ERROR: $b = $d >= $l 1>&2
+		fi
 		if [ -n "$debug" ]; then echo $b $d; fi
 		echo -n ${words[$d]}
 		echo -n " "
-		done
+done
 
 
 
