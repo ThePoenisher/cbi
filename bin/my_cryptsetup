@@ -1,0 +1,125 @@
+#!/usr/bin/perl -w
+
+#uses pinentry to ask for passphrase,
+# applies PBKDF and calls my_cryptsetup2
+
+# to create new container (this can destroy everything) do
+# echo -n pass | time ./a.out "4b43666e2b4f57576c4a314a66317177627337714455544a35724237476278777a534a6c50377355534332684d374c68396e59377a345a7a6a53556c433957365145737a423648797a374a464f524378463863697355504c724d763573356258465236496f3262616d36476f524151714f624330523268374b6e36" 250000 64 | xxd -r -p |  sudo cryptsetup plainOpen -q --key-file - drive new
+# sh -c 'echo -n pass | ./a.out "4b43666e2b4f57576c4a314a66317177627337714455544a35724237476278777a534a6c50377355534332684d374c68396e59377a345a7a6a53556c433957365145737a423648797a374a464f524378463863697355504c724d763573356258465236496f3262616d36476f524151714f624330523268374b6e36" 250000 64 | xxd -r -p |  sha512sum | xdd -r -p > /dev/mapper/new'
+# sudo cryptsetup close new
+
+use strict;
+use utf8;
+use FileHandle;
+use IPC::Open2;
+use IPC::Open3;
+use Env qw( LC_CTYPE DISPLAY SSH_TTY );
+
+my $key_iter=250000;
+my $key_size=64; #bytes
+
+my $salt="KCfn+OWWlJ1Jf1qwbs7qDUTJ5rB7GbxwzSJlP7sUSC2hM7Lh9nY7z4ZzjSUlC9W6QEszB6Hyz7JFORCxF8cisUPLrMv5s5bXFR6Io2bam6GoRAQqObC0R2h7Kn6";
+
+my $name = "My Cryptsetup";
+
+
+binmode(STDOUT, ":utf8");
+
+if(scalar @ARGV != 2){
+     print "usage: $0  <device> <mountpoint>\n";
+		 exit 10;
+}
+
+# get a tty
+open F, "tty |" || die ("can't fork to tty");
+my $tty = <F>;
+close F;
+my $pid = open2(*IN, *OUT, "pinentry --ttyname $tty") || die;
+binmode(IN, ":utf8");
+while ( <IN> ){ if(/^OK/){last;}}
+
+my $lctype = "en_US.UTF-8";
+if ( defined($LC_CTYPE) ) {
+	$lctype = $LC_CTYPE;
+}
+
+############################################################################
+sub putt($) {
+	my $t=shift;
+	my $v="";
+	print OUT "$t\n";
+#	print "M: $t\n";
+	while ( <IN> ) {
+#		print "M: $_\n";
+		if ( /^OK/ ) { 
+			return $v;
+		} elsif ( /^ERR \d+ (.*)/ ) {
+			print STDERR $1."\n";
+			exit 1;
+			last;
+		} elsif ( /^D (.*)/ ) {
+			$v=$1;
+		}
+	}
+}
+
+putt("OPTION lc-ctype=$lctype");
+
+sub getpass($) {
+	my $prompt = shift;
+	putt("SETDESC $name Passphrase");
+	putt("SETPROMPT $prompt");
+	return putt("GETPIN");
+}
+
+# if ( defined($arg) &&  $arg eq "invalid" ) {
+# 	putt("SETERROR Invalid $name Passphrase, try again");
+# }
+
+
+if(pbkdf2("ä","a",64,100) ne "f3b2744dcf9e925487d7488545b47cd260b0a075cbfabf6ed2b01091d3599df797250976d7bf0021dd9876e623d565f1f33d5fdac55cabeffb09df499dac8b7f"){
+	print "ERROR: PBKDF2 Test failed!\n";
+	exit(1);
+}
+
+my $p = getpass("Enter Passphrase");
+if(!($p =~ m/^([0-9]+) (.*)$/)){
+	print "ERROR: Wrong password format!\n";
+	exit(1);
+}	
+
+
+my $key=pbkdf2($p,$salt,$key_size,$key_iter);
+my $pid3 = open2(*IN3,*OUT3,"sudo my_cryptsetup2") || die;
+print OUT3 "$1\n";
+print OUT3 "$ARGV[0]\n";
+print OUT3 "$ARGV[1]\n";
+print OUT3 "$key\n";
+my $err="";
+while ( <IN3> ) {
+	$err.="cryptsetupE: $_";
+}
+if($err eq ""){
+	exit 0;
+}
+print $err;
+exit 1;
+
+sub pbkdf2 {
+	#dklen in byte
+	#result hex fomrated
+	#pass and salt as strings
+	my ($pass,$salt,$dklen,$iter)=@_;
+	$dklen*=2;
+	my $php =  "php -r '
+\$p=trim(fgets(STDIN));
+\$s=trim(fgets(STDIN));
+\$d=trim(fgets(STDIN));
+\$i=trim(fgets(STDIN));
+echo hash_pbkdf2(\"sha1\",\$p,\$s,\$i,\$d);'";
+	my $pid2 = open2(*IN2, *OUT2,$php) || die;
+	binmode(OUT2, ":utf8");
+ print OUT2 "$pass\n$salt\n$dklen\n$iter\n";
+	my $res = <IN2>;
+	return $res;
+}

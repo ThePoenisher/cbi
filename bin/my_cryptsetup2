@@ -1,0 +1,25 @@
+#!/bin/bash
+# 1. reads parameters fo dm-crypt from stdin
+# 2. checks, if sha512(key) is stored at beginning of container
+# 3. mappes container (skipping the first block)
+cc="cryptsetup plainOpen -h plain -c aes-xts-plain64 -q --key-file - "
+(
+		read o;
+		read d;
+		read n;
+		read k;
+		k2="`echo -n "$k" | xxd -r -p `"
+		o1=$((o))
+		echo -n "$k2" | sh -c "$cc -o$o1 \"$d\" \"$n\""
+		s2="`head /dev/mapper/test1 -c 64`" 
+		cryptsetup close "$n"
+		s="`echo -n "$k2" | sha512sum | xxd -r -p`"
+		if [ \( "$s" = "$s2" \) -a \( "`echo -n "$s2" | wc -c`" -eq 64 \) ]; then
+			o1=$((++o1))
+   		echo -n "$k" | xxd -r -p | sh -c "$cc -o$o1 \"$d\" \"$n\""
+		else
+				echo "invalid key"
+		fi
+) 2>&1
+# 
+

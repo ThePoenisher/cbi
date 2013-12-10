@@ -1,0 +1,65 @@
+#!/usr/bin/perl -w
+
+use strict;
+use utf8;
+use FileHandle;
+use IPC::Open2;
+use Env qw( LC_CTYPE DISPLAY SSH_TTY );
+
+my $name = shift(@ARGV);
+my $arg = shift(@ARGV);
+
+# get a tty
+open F, "tty |" || die ("can't fork to tty");
+my $tty = <F>;
+close F;
+my $pid = open2(*IN, *OUT, "pinentry --ttyname $tty") || die;
+while ( <IN> ){ if(/^OK/){last;}}
+
+my $lctype = "en_US.UTF-8";
+if ( defined($LC_CTYPE) ) {
+	$lctype = $LC_CTYPE;
+}
+
+############################################################################
+sub putt($) {
+	my $t=shift;
+	my $v="";
+	print OUT "$t\n";
+#	print "M: $t\n";
+	while ( <IN> ) {
+#		print "M: $_\n";
+		if ( /^OK/ ) { 
+			return $v;
+		} elsif ( /^ERR \d+ (.*)/ ) {
+			print STDERR $1."\n";
+			exit 1;
+			last;
+		} elsif ( /^D (.*)/ ) {
+			$v=$1;
+		}
+	}
+}
+
+putt("OPTION lc-ctype=$lctype");
+
+sub getpass($) {
+	my $prompt = shift;
+	putt("SETDESC $name Passphrase");
+	putt("SETPROMPT $prompt");
+	return putt("GETPIN");
+}
+
+if ( defined($arg) &&  $arg eq "invalid" ) {
+	putt("SETERROR Invalid $name Passphrase, try again");
+}
+
+my $p = getpass("Enter Passphrase");
+if ( defined($arg) &&  $arg eq "confirm" ) {
+	while ( $p ne getpass("Confirm Passphrase") ) {
+		putt("SETDESC Passhphrases do not match");
+		putt("MESSAGE");
+		$p = getpass("Re-Enter $name passphrase");
+	}
+}
+print "$p";
