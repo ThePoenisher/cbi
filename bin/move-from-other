@@ -1,0 +1,10 @@
+#!/bin/bash
+i="$@"
+
+if (export link=$(readlink  "$i"| sed 's/\.\.\///g' ); sudo mkdir -p `dirname "$link"`; sudo mv -n /home/data/movies/"$link" "$link")  then
+   echo "SUCCESS: $i"
+else
+   echo "ERROR: $i to $link"
+fi
+
+#find Library -type l -print0 | xargs -0 -n 1 replace-by-target

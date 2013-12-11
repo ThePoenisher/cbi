@@ -31,7 +31,7 @@ void print_hex(unsigned char *buf, int len)
 
 void hex_to_binary(unsigned char *buf, unsigned char *hex)
 {
-  for( ; sscanf( hex, "%2X", buf++ ) == 1 ; hex+=2 );
+  for( ; sscanf( hex, "%2x", buf++ ) == 1 ; hex+=2 );
   *buf = 0;  // null terminate -- precaution
 }
 

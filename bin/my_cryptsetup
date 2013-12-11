@@ -15,12 +15,12 @@ use IPC::Open2;
 use IPC::Open3;
 use Env qw( LC_CTYPE DISPLAY SSH_TTY );
 
+my $debug=0;
 my $key_iter=250000;
 my $key_size=64; #bytes
 
 my $salt="KCfn+OWWlJ1Jf1qwbs7qDUTJ5rB7GbxwzSJlP7sUSC2hM7Lh9nY7z4ZzjSUlC9W6QEszB6Hyz7JFORCxF8cisUPLrMv5s5bXFR6Io2bam6GoRAQqObC0R2h7Kn6";
 
-my $name = "My Cryptsetup";
 
 
 binmode(STDOUT, ":utf8");
@@ -29,6 +29,7 @@ if(scalar @ARGV != 2){
      print "usage: $0  <device> <mountpoint>\n";
 		 exit 10;
 }
+my $name = "My Cryptsetup for device $ARGV[0] and name $ARGV[1]";
 
 # get a tty
 open F, "tty |" || die ("can't fork to tty");
@@ -67,15 +68,10 @@ putt("OPTION lc-ctype=$lctype");
 
 sub getpass($) {
 	my $prompt = shift;
-	putt("SETDESC $name Passphrase");
+	putt("SETDESC $name");
 	putt("SETPROMPT $prompt");
 	return putt("GETPIN");
 }
-
-# if ( defined($arg) &&  $arg eq "invalid" ) {
-# 	putt("SETERROR Invalid $name Passphrase, try again");
-# }
-
 
 if(pbkdf2("ä","a",64,100) ne "f3b2744dcf9e925487d7488545b47cd260b0a075cbfabf6ed2b01091d3599df797250976d7bf0021dd9876e623d565f1f33d5fdac55cabeffb09df499dac8b7f"){
 	print "ERROR: PBKDF2 Test failed!\n";
@@ -83,14 +79,21 @@ if(pbkdf2("ä","a",64,100) ne "f3b2744dcf9e925487d7488545b47cd260b0a075cbfabf6ed
 }
 
 my $p = getpass("Enter Passphrase");
+
+if($debug){print "pass: $p\n";}
+
 if(!($p =~ m/^([0-9]+) (.*)$/)){
 	print "ERROR: Wrong password format!\n";
 	exit(1);
 }	
 
 
+
+
 my $key=pbkdf2($p,$salt,$key_size,$key_iter);
+if($debug){print "key: $key\n";}
 my $pid3 = open2(*IN3,*OUT3,"sudo my_cryptsetup2") || die;
+	binmode(IN3, ":utf8");
 print OUT3 "$1\n";
 print OUT3 "$ARGV[0]\n";
 print OUT3 "$ARGV[1]\n";
