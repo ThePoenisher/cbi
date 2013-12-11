@@ -1,7 +1,7 @@
 #!/bin/bash
 i="$@"
 
-if (export link=$(readlink  "$i"| sed 's/\.\.\///g' ); sudo mkdir -p `dirname "$link"`; sudo mv -n /home/data/movies/"$link" "$link")  then
+if (export link=$(readlink  "$i"| sed 's/\.\.\///g' ); mkdir -p `dirname "$link"`; sudo mv -n /home/data/movies/"$link" "$link"; sudo chown johannes:johannes "$link"  )  then
    echo "SUCCESS: $i"
 else
    echo "ERROR: $i to $link"
