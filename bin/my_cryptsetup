@@ -1,128 +1,115 @@
-#!/usr/bin/perl -w
+#!/bin/bash
+# bash cannot store null values in variables
 
-#uses pinentry to ask for passphrase,
-# applies PBKDF and calls my_cryptsetup2
+# 10MB steps converted to 512 block counts
+factor=20480
+ic=250000
+dklen=64
+hashhexlen=128
+salt="KCfnOWWlJ1Jf1qwbs7qDUTJ5rB7GbxwzSJlP7sUSC2hM7Lh9nY7z4ZzjSUlC9W6QEszB6Hyz7JFORCxF8cisUPLrMv5s5bXFR6Io2bam6GoRAQqObC0R2h7Kn6";
+cc="sudo cryptsetup plainOpen -h plain -c aes-xts-plain64 -q --key-size 512 --key-file - -o"
 
-# to create new container (this can destroy everything) do
-# echo -n pass | time ./a.out "4b43666e2b4f57576c4a314a66317177627337714455544a35724237476278777a534a6c50377355534332684d374c68396e59377a345a7a6a53556c433957365145737a423648797a374a464f524378463863697355504c724d763573356258465236496f3262616d36476f524151714f624330523268374b6e36" 250000 64 | xxd -r -p |  sudo cryptsetup plainOpen -q --key-file - drive new
-# sh -c 'echo -n pass | ./a.out "4b43666e2b4f57576c4a314a66317177627337714455544a35724237476278777a534a6c50377355534332684d374c68396e59377a345a7a6a53556c433957365145737a423648797a374a464f524378463863697355504c724d763573356258465236496f3262616d36476f524151714f624330523268374b6e36" 250000 64 | xxd -r -p |  sha512sum | xdd -r -p > /dev/mapper/new'
-# sudo cryptsetup close new
+if [ $# -ne 2 ]; then
+		cat <<EOF
+     usage: ${0##*/} name path|-resume|-suspend|-close
+EOF
+		exit 1
+fi
 
-use strict;
-use utf8;
-use FileHandle;
-use IPC::Open2;
-use IPC::Open3;
-use Env qw( LC_CTYPE DISPLAY SSH_TTY );
+name="$1"
+tmpname=cryptsetupcreate"$name"
+dev="$2"
 
-my $debug=0;
-my $key_iter=250000;
-my $key_size=64; #bytes
-
-my $salt="KCfn+OWWlJ1Jf1qwbs7qDUTJ5rB7GbxwzSJlP7sUSC2hM7Lh9nY7z4ZzjSUlC9W6QEszB6Hyz7JFORCxF8cisUPLrMv5s5bXFR6Io2bam6GoRAQqObC0R2h7Kn6";
-
-
-
-binmode(STDOUT, ":utf8");
-
-if(scalar @ARGV != 2){
-     print "usage: $0  <device> <mountpoint>\n";
-		 exit 10;
-}
-my $name = "My Cryptsetup for device $ARGV[0] and name $ARGV[1]";
-
-# get a tty
-open F, "tty |" || die ("can't fork to tty");
-my $tty = <F>;
-close F;
-my $pid = open2(*IN, *OUT, "pinentry --ttyname $tty") || die;
-binmode(IN, ":utf8");
-while ( <IN> ){ if(/^OK/){last;}}
-
-my $lctype = "en_US.UTF-8";
-if ( defined($LC_CTYPE) ) {
-	$lctype = $LC_CTYPE;
+# return pbkdf2 as hex string. pass, salt (string), ic, dklen (bytes)
+function pbkdf2 { 
+php <<EOF
+<?php echo hash_pbkdf2("sha1","$1","$2",$3,$(( $4 * 2 )));  ?>
+EOF
 }
 
-############################################################################
-sub putt($) {
-	my $t=shift;
-	my $v="";
-	print OUT "$t\n";
-#	print "M: $t\n";
-	while ( <IN> ) {
-#		print "M: $_\n";
-		if ( /^OK/ ) { 
-			return $v;
-		} elsif ( /^ERR \d+ (.*)/ ) {
-			print STDERR $1."\n";
-			exit 1;
-			last;
-		} elsif ( /^D (.*)/ ) {
-			$v=$1;
-		}
-	}
-}
+if [ "$dev" = "-close" ]; then
+		sudo cryptsetup close "$name"
+		exit 1;
+fi
+		
+if [ "$dev" = "-suspend" ]; then
+		(sudo dmsetup suspend "$name" &&
+				sudo dmsetup message "$name" 0 key wipe &&
+				sudo dmsetup info "$name" &&
+				sudo dmsetup table --target crypt --showkeys "$name")
+		exit $?
+fi
 
-putt("OPTION lc-ctype=$lctype");
+#test
+if [ "`pbkdf2 ä a 100 64`" != "f3b2744dcf9e925487d7488545b47cd260b0a075cbfabf6ed2b01091d3599df797250976d7bf0021dd9876e623d565f1f33d5fdac55cabeffb09df499dac8b7f" ]; then
+	echo "ERROR: PBKDF2 Test failed!";
+	exit 1;
+fi
 
-sub getpass($) {
-	my $prompt = shift;
-	putt("SETDESC $name");
-	putt("SETPROMPT $prompt");
-	return putt("GETPIN");
-}
+p=`my_pinentry "My Cryptsetup"`
+key=`pbkdf2 "$p" "$salt" "$ic" "$dklen"`
+fp=`echo -n suspended"$key" | sha512sum | cut -f1 -d' '`
+fp2=`echo -n created"$key" | sha512sum | cut -f1 -d' '`
+fpf="/tmp/cryptsetup_key_$name"
 
-if(pbkdf2("ä","a",64,100) ne "f3b2744dcf9e925487d7488545b47cd260b0a075cbfabf6ed2b01091d3599df797250976d7bf0021dd9876e623d565f1f33d5fdac55cabeffb09df499dac8b7f"){
-	print "ERROR: PBKDF2 Test failed!\n";
-	exit(1);
-}
+p2=`echo "$p" | sed -nr 's/^([0-9]+) .+/\1/p'`
+if [ -z "$p2" ]; then
+		echo "ERROR: bad passphrase"
+		exit 1
+fi
+o=$(( factor * p2 ))
 
-my $p = getpass("Enter Passphrase");
+if [ "$dev" = "-resume" ]; then
+		if [ "$fp" != "`cat "$fpf"`" -a \( ${#fp} -eq "$hashhexlen" \) ]; then
+				echo "ERROR: $fpf does not match given passphrase"
+				exit 1;
+		fi
+		(sudo dmsetup message "$name" 0 key set  "$key" &&
+				sudo dmsetup resume "$name")
+		exit $?
+fi
 
-if($debug){print "pass: $p\n";}
+if [ "$dev" = "-create" ]; then
+		cat <<EOF
+WARNING!
+========
+This will overwrite data on drive irrevocably.
+`ls -lah $name`
+Are you sure? (Type uppercase yes):
+EOF
+		read str
+		if [ "$str" = "YES" ]; then
+				( echo -n "$key" | xxd -r -p | sh -c "$cc $o \"$name\" \"$tmpname\"" &&	
+						sudo sh -c "echo -n \"$fp2\" > \"/dev/mapper/$tmpname\"" &&
+						sudo cryptsetup close "$tmpname")
+				exit $?
+		else
+				exit 1
+		fi
 
-if(!($p =~ m/^([0-9]+) (.*)$/)){
-	print "ERROR: Wrong password format!\n";
-	exit(1);
-}	
-
-
-
-
-my $key=pbkdf2($p,$salt,$key_size,$key_iter);
-if($debug){print "key: $key\n";}
-my $pid3 = open2(*IN3,*OUT3,"sudo my_cryptsetup2") || die;
-	binmode(IN3, ":utf8");
-print OUT3 "$1\n";
-print OUT3 "$ARGV[0]\n";
-print OUT3 "$ARGV[1]\n";
-print OUT3 "$key\n";
-my $err="";
-while ( <IN3> ) {
-	$err.="cryptsetupE: $_";
-}
-if($err eq ""){
-	exit 0;
-}
-print $err;
-exit 1;
-
-sub pbkdf2 {
-	#dklen in byte
-	#result hex fomrated
-	#pass and salt as strings
-	my ($pass,$salt,$dklen,$iter)=@_;
-	$dklen*=2;
-	my $php =  "php -r '
-\$p=trim(fgets(STDIN));
-\$s=trim(fgets(STDIN));
-\$d=trim(fgets(STDIN));
-\$i=trim(fgets(STDIN));
-echo hash_pbkdf2(\"sha1\",\$p,\$s,\$i,\$d);'";
-	my $pid2 = open2(*IN2, *OUT2,$php) || die;
-	binmode(OUT2, ":utf8");
- print OUT2 "$pass\n$salt\n$dklen\n$iter\n";
-	my $res = <IN2>;
-	return $res;
-}
+else #open the device
+		function fp3 {
+				sudo dd if=/dev/mapper/"$2" bs=512 skip=$1 count=1 2>/dev/null | sha512sum | cut -f1 -d' '
+		}			
+		echo -n "$key" | xxd -r -p | sh -c "$cc $o --readonly \"$dev\" \"$tmpname\""
+		test1="`sudo head /dev/mapper/"$tmpname" -c "$hashhexlen"`" 
+		test2="`fp3 1 "$tmpname"`"
+		sudo cryptsetup close "$tmpname"
+		if [ \( "$fp2" = "$test1" \) -a \( ${#test1} -eq "$hashhexlen" \) ]; then
+				o1=$((1+o))
+   			if echo -n "$key" | xxd -r -p | sh -c "$cc $o1 -p1 \"$dev\" \"$name\""; then
+						if [ "$test2" = "`fp3 0 "$name"`" -a \( ${#test2} -eq "$hashhexlen" \) ]; then
+								sudo sh -c "echo -n \"$fp\" > \"$fpf\""
+						else
+								echo PLAINTEXT CHECK failed. possible Passphrase missmatch
+								sudo cryptsetup close "$name"
+								exit 1
+						fi
+				else
+						exit 1		
+				fi
+		else
+				echo "invalid key"
+				exit 1
+		fi
+fi
