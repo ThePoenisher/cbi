@@ -6,20 +6,23 @@ factor=20480
 ic=250000
 dklen=64
 hashhexlen=128
-salt="KCfnOWWlJ1Jf1qwbs7qDUTJ5rB7GbxwzSJlP7sUSC2hM7Lh9nY7z4ZzjSUlC9W6QEszB6Hyz7JFORCxF8cisUPLrMv5s5bXFR6Io2bam6GoRAQqObC0R2h7Kn6";
-cc="sudo cryptsetup plainOpen -h plain -c aes-xts-plain64 -q --key-size 512 --key-file - -o"
+salt="saltyKCfnOWWlJ1Jf1qwbs7qDUTJ5rB7GbxwzSJlP7sUSC2hM7Lh9nY7z4ZzjSUlC9W6QEszB6Hyz7JFORCxF8cisUPLrMv5s5bXFR6Io2bam6GoRAQqObC0R2h7Kn6";
+cc="sudo cryptsetup plainOpen -h plain -c aes-xts-plain64 -q --key-size $(( dklen * 8 )) --key-file - -o"
 
+if [ "$1" = "fd3" ]; then fd3=1; shift; fi
 if [ $# -ne 2 ]; then
 		cat <<EOF
- usage: ${0##*/} name            path
- usage: ${0##*/} name|-all       -resume|-suspend|-close
- usage: ${0##*/} path            -create
+ usage: ${0##*/} [fd3]    name            path
+ usage: ${0##*/} [fd3]    name|-all       -resume|-suspend|-close
+ usage: ${0##*/} [fd3]    path            -create  (reads pass from fd3)
 EOF
 		exit 1
 fi
 
+
 name="$1"
-tmpname=cryptsetupcreate"$name"
+hexname="`xxd -p <<<$name | tr -d '\n'`"
+tmpname=cryptsetupcreate$hexname
 dev="$2"
 
 if [ "$name"  = "-all" ]; then
@@ -59,8 +62,12 @@ if [ "$dev" = "-create" ]; then
 				exit 1
 		fi
 fi
+if [ "$fd3" ]; then
+		read p < /dev/fd/3
+else
+		p=`my_pinentry "${0##*/}  $name $dev"`
+fi
 
-p=`my_pinentry "${0##*/}  $name $dev"`
 key=`pbkdf2 "$p" "$salt" "$ic" "$dklen"`
 fp=`echo -n suspended"$key" | sha512sum | cut -f1 -d' '`
 fp2=`echo -n created"$key" | sha512sum | cut -f1 -d' '`
@@ -93,9 +100,12 @@ Are you sure? (Type uppercase yes):
 EOF
 		read str
 		if [ "$str" = "YES" ]; then
-				( echo -n "$key" | xxd -r -p | sh -c "$cc $o \"$name\" \"$tmpname\"" &&	
+				(echo -n "$key" | xxd -r -p | sh -c "$cc $o \"$name\" \"$tmpname\"" &&	
 						sudo sh -c "echo -n \"$fp2\" > \"/dev/mapper/$tmpname\"" &&
-						sudo cryptsetup close "$tmpname")
+						while ! sudo cryptsetup close "$tmpname"; do
+								echo Retry in 1 sec...
+								sleep 1;
+						done)
 				exit $?
 		else
 				exit 1
