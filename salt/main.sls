@@ -245,9 +245,10 @@ locale-gen:
 
 
 /usr/lib/systemd/system-sleep/lock.sh:
-  file.symlink:
-    - target: {{ grains['cbi_home'] }}/config/system-sleep-lock.sh
-    - force: True
+  file.managed:
+    - source: salt://system-sleep-lock.sh
+    - template: jinja
+    - mode: 755
 
 ### kernel
 mkinitcpio -p linux:

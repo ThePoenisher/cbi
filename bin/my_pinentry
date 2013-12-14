@@ -45,7 +45,7 @@ putt("OPTION lc-ctype=$lctype");
 
 sub getpass($) {
 	my $prompt = shift;
-	putt("SETDESC $name Passphrase");
+	putt("SETDESC $name");
 	putt("SETPROMPT $prompt");
 	return putt("GETPIN");
 }
@@ -59,7 +59,7 @@ if ( defined($arg) &&  $arg eq "confirm" ) {
 	while ( $p ne getpass("Confirm Passphrase") ) {
 		putt("SETDESC Passhphrases do not match");
 		putt("MESSAGE");
-		$p = getpass("Re-Enter $name passphrase");
+		$p = getpass("Re-Enter $name");
 	}
 }
 print "$p";

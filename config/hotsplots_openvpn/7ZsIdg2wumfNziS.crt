@@ -1,0 +1,67 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 1 (0x1)
+        Signature Algorithm: md5WithRSAEncryption
+        Issuer: C=DE, ST=Berlin, L=Berlin, O=hotsplots GmbH, OU=certificate authority, CN=www.hotsplots.de/emailAddress=ca@hotsplots.de
+        Validity
+            Not Before: Oct 17 06:57:32 2013 GMT
+            Not After : Oct 15 06:57:32 2023 GMT
+        Subject: C=DE, O=hotsplots GmbH, OU=Common User, CN=7ZsIdg2wumfNziS
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (1024 bit)
+                Modulus (1024 bit):
+                    00:c9:1e:43:fc:56:c6:0b:bc:ba:02:3b:5d:c0:de:
+                    f2:b4:a5:93:ac:93:07:f4:80:12:5e:ab:c8:69:3c:
+                    19:35:cc:88:73:b7:82:86:fe:0c:6a:3f:d3:eb:f2:
+                    7d:33:17:5a:eb:55:8f:50:93:36:51:c7:aa:a2:ae:
+                    97:7b:37:06:69:6b:f2:38:a6:20:f9:f7:08:4c:70:
+                    6c:70:90:f0:e6:77:b0:da:3c:86:a8:30:ee:55:78:
+                    aa:05:dd:f3:8e:2a:4c:a8:aa:85:5d:20:1c:20:d3:
+                    58:f3:cc:28:31:7c:19:98:4f:a6:6c:b4:97:7d:20:
+                    08:30:48:e8:93:04:b2:53:8f
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                OpenSSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                75:B7:53:FD:28:37:A8:1A:A2:95:F9:46:67:C8:B1:E1:BB:6E:A7:B3
+            X509v3 Authority Key Identifier: 
+                keyid:27:C9:9C:0E:D3:13:F7:2B:63:BD:F8:9C:4E:C6:B5:09:CF:EA:E3:0B
+                DirName:/C=DE/ST=Berlin/L=Berlin/O=hotsplots GmbH/OU=certificate authority/CN=www.hotsplots.de/emailAddress=ca@hotsplots.de
+                serial:00
+
+    Signature Algorithm: md5WithRSAEncryption
+        36:9b:df:1d:90:2d:64:1a:1e:fc:05:46:4a:b3:eb:a2:2e:92:
+        52:ca:57:71:3b:c3:1e:df:20:68:58:2b:ea:a3:f3:15:8e:e4:
+        d6:cd:7f:17:f4:08:03:55:11:5f:20:8a:50:33:bd:5e:1d:2e:
+        86:79:a4:66:93:a7:50:03:8f:50:89:f7:48:1c:6c:38:84:10:
+        03:f7:7c:7d:38:08:75:db:a1:69:00:73:f8:f6:40:e5:ee:00:
+        af:32:a6:f3:af:70:97:66:1e:bf:bd:ec:e1:85:43:fb:c8:11:
+        85:0d:37:f8:bd:e3:37:83:b0:fc:bb:17:85:08:ce:a9:0d:7a:
+        ea:c2
+-----BEGIN CERTIFICATE-----
+MIIDoTCCAwqgAwIBAgIBATANBgkqhkiG9w0BAQQFADCBozELMAkGA1UEBhMCREUx
+DzANBgNVBAgTBkJlcmxpbjEPMA0GA1UEBxMGQmVybGluMRcwFQYDVQQKEw5ob3Rz
+cGxvdHMgR21iSDEeMBwGA1UECxMVY2VydGlmaWNhdGUgYXV0aG9yaXR5MRkwFwYD
+VQQDExB3d3cuaG90c3Bsb3RzLmRlMR4wHAYJKoZIhvcNAQkBFg9jYUBob3RzcGxv
+dHMuZGUwHhcNMTMxMDE3MDY1NzMyWhcNMjMxMDE1MDY1NzMyWjBWMQswCQYDVQQG
+EwJERTEXMBUGA1UEChMOaG90c3Bsb3RzIEdtYkgxFDASBgNVBAsTC0NvbW1vbiBV
+c2VyMRgwFgYDVQQDEw83WnNJZGcyd3VtZk56aVMwgZ8wDQYJKoZIhvcNAQEBBQAD
+gY0AMIGJAoGBAMkeQ/xWxgu8ugI7XcDe8rSlk6yTB/SAEl6ryGk8GTXMiHO3gob+
+DGo/0+vyfTMXWutVj1CTNlHHqqKul3s3Bmlr8jimIPn3CExwbHCQ8OZ3sNo8hqgw
+7lV4qgXd844qTKiqhV0gHCDTWPPMKDF8GZhPpmy0l30gCDBI6JMEslOPAgMBAAGj
+ggEvMIIBKzAJBgNVHRMEAjAAMCwGCWCGSAGG+EIBDQQfFh1PcGVuU1NMIEdlbmVy
+YXRlZCBDZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQUdbdT/Sg3qBqilflGZ8ix4btup7Mw
+gdAGA1UdIwSByDCBxYAUJ8mcDtMT9ytjvficTsa1Cc/q4wuhgamkgaYwgaMxCzAJ
+BgNVBAYTAkRFMQ8wDQYDVQQIEwZCZXJsaW4xDzANBgNVBAcTBkJlcmxpbjEXMBUG
+A1UEChMOaG90c3Bsb3RzIEdtYkgxHjAcBgNVBAsTFWNlcnRpZmljYXRlIGF1dGhv
+cml0eTEZMBcGA1UEAxMQd3d3LmhvdHNwbG90cy5kZTEeMBwGCSqGSIb3DQEJARYP
+Y2FAaG90c3Bsb3RzLmRlggEAMA0GCSqGSIb3DQEBBAUAA4GBADab3x2QLWQaHvwF
+Rkqz66IuklLKV3E7wx7fIGhYK+qj8xWO5NbNfxf0CANVEV8gilAzvV4dLoZ5pGaT
+p1ADj1CJ90gcbDiEEAP3fH04CHXboWkAc/j2QOXuAK8ypvOvcJdmHr+97OGFQ/vI
+EYUNN/i94zeDsPy7F4UIzqkNeurC
+-----END CERTIFICATE-----

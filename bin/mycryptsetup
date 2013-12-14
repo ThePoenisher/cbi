@@ -11,7 +11,9 @@ cc="sudo cryptsetup plainOpen -h plain -c aes-xts-plain64 -q --key-size 512 --ke
 
 if [ $# -ne 2 ]; then
 		cat <<EOF
-     usage: ${0##*/} name path|-resume|-suspend|-close
+ usage: ${0##*/} name            path
+ usage: ${0##*/} name|-all       -resume|-suspend|-close
+ usage: ${0##*/} path            -create
 EOF
 		exit 1
 fi
@@ -19,6 +21,11 @@ fi
 name="$1"
 tmpname=cryptsetupcreate"$name"
 dev="$2"
+
+if [ "$name"  = "-all" ]; then
+		sudo dmsetup table | sed -r 's/^([^:]+): .*/\1/' | xargs -d '\n' -I{} "${BASH_SOURCE[0]}"  "{}" "$dev"
+		exit
+fi
 
 # return pbkdf2 as hex string. pass, salt (string), ic, dklen (bytes)
 function pbkdf2 { 
@@ -46,7 +53,14 @@ if [ "`pbkdf2 ä a 100 64`" != "f3b2744dcf9e925487d7488545b47cd260b0a075cbfabf6e
 	exit 1;
 fi
 
-p=`my_pinentry "My Cryptsetup"`
+if [ "$dev" = "-create" ]; then
+		if sudo [ ! -w "$name" ] ; then
+				echo "$name not writable"
+				exit 1
+		fi
+fi
+
+p=`my_pinentry "${0##*/}  $name $dev"`
 key=`pbkdf2 "$p" "$salt" "$ic" "$dklen"`
 fp=`echo -n suspended"$key" | sha512sum | cut -f1 -d' '`
 fp2=`echo -n created"$key" | sha512sum | cut -f1 -d' '`
@@ -54,7 +68,7 @@ fpf="/tmp/cryptsetup_key_$name"
 
 p2=`echo "$p" | sed -nr 's/^([0-9]+) .+/\1/p'`
 if [ -z "$p2" ]; then
-		echo "ERROR: bad passphrase"
+		echo "ERROR: bad passphrase format"
 		exit 1
 fi
 o=$(( factor * p2 ))
@@ -100,8 +114,9 @@ else #open the device
    			if echo -n "$key" | xxd -r -p | sh -c "$cc $o1 -p1 \"$dev\" \"$name\""; then
 						if [ "$test2" = "`fp3 0 "$name"`" -a \( ${#test2} -eq "$hashhexlen" \) ]; then
 								sudo sh -c "echo -n \"$fp\" > \"$fpf\""
+								sudo cryptsetup status "$name"
 						else
-								echo PLAINTEXT CHECK failed. possible Passphrase missmatch
+								echo PLAINTEXT CHECK failed. possible encryption key mismatch
 								sudo cryptsetup close "$name"
 								exit 1
 						fi
@@ -109,7 +124,7 @@ else #open the device
 						exit 1		
 				fi
 		else
-				echo "invalid key"
+				echo "Key has mismatch"
 				exit 1
 		fi
 fi

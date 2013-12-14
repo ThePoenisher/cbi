@@ -1,9 +1,21 @@
 #!/bin/sh
+####################
+####################
+####################
+####################
+# ~/cbi/salt/system-sleep-lock.sh #########
+####################
+####################
+####################
+####################
 # adapted from https://wiki.archlinux.org/index.php/Pm-utils#Locking_the_screen_saver_on_hibernate_or_suspend
 # 00screensaver-lock: lock workstation on hibernate or suspend
 
 if [ "$1" = "pre" ]; then
 
+     if [ "$2" = "hibernate" -o "$2" = "hybrid-sleep" ]; then
+				 {{ grains['cbi_home'] }}/bin/mycryptsetup -all -suspend &!
+     fi	
 
 		DBUS=$(ps aux | grep 'dbus-launch' | grep -v root)
 		if [[ ! -z $DBUS ]];then
@@ -27,4 +39,6 @@ if [ "$1" = "pre" ]; then
 		# su $USER -c "xlock" &
 		exec su $USER -c "xscreensaver-command -lock"
 		
+	
+
 fi

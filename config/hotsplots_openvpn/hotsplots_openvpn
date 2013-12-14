@@ -1,0 +1,1 @@
+sudo openvpn /home/dont_backup/hotsplots_openvpn/hotsplots.conf&!
