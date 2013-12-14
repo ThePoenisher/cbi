@@ -1,0 +1,5 @@
+#!/bin/bash
+# return pbkdf2 as hex string. pass, salt (string), ic, dklen (bytes)
+php <<EOF
+<?php echo hash_pbkdf2("sha1","$1","$2",$3,$(( $4 * 2 )));  ?>
+EOF
