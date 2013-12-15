@@ -45,7 +45,7 @@ fi
 
 
 declare -a words
-readarray words < "$f"
+readarray -t words < "$f"
 
 l=$(cat "$f" | wc -l )
 hx="`head | xxd -p | tr '[:lower:]' '[:upper:]'`"
@@ -58,8 +58,7 @@ for b in $bi; do
 				echo DECODING ERROR: $b = $d >= $l 1>&2
 		fi
 		if [ -n "$debug" ]; then echo $b $d; fi
-		echo -n ${words[$d]}
-		echo -n " "
+		echo -n "${words[$d]} "
 done
 
 
