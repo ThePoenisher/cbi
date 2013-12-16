@@ -30,7 +30,7 @@ tmpname=cryptsetupcreate$hexname
 dev="$2"
 
 if [ "$name"  = "-all" ]; then
-		sudo dmsetup table | sed -r 's/^([^:]+): .*/\1/' | xargs -d '\n' -I{} "${BASH_SOURCE[0]}"  "{}" "$dev"
+		sudo dmsetup table --target crypt | sed -r 's/^([^:]+): .*/\1/' | xargs -d '\n' -I{} "${BASH_SOURCE[0]}"  "{}" "$dev"
 		exit
 fi
 

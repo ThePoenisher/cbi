@@ -296,8 +296,6 @@ cups:
     - source: salt://etc/pacman.d/mirrorlist.gpg
 
 
-  
-
 ##### Systemd services
 
 {% if pillar['arch_desktop'] %}
@@ -308,6 +306,7 @@ cups:
 ,('resume@',['johannes'],['systemd/system/resume@.service'])
 ,('iptables',[''],['iptables/iptables.rules'])
 ,('lirc',[''],['lirc/lircd.conf'])
+,('dm-crypt-suspend',[''],['systemd/system/dm-crypt-suspend.service'])
 ]%}
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}

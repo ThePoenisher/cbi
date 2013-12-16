@@ -1,0 +1,11 @@
+
+[Unit]
+Description=Suspend dm-crypt devices
+After=hibernate.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/johannes/cbi/bin/mycryptsetup -all -suspend
+
+[Install]
+WantedBy=hibernate.target
