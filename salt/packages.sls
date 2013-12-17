@@ -144,6 +144,9 @@ base_packages:
       - sane
       - xsane
       - xsane-gimp
+{% if grains['cbi_machine'] == 'scriabin' %}
+      - hplip
+{% endif %}
       - gvfs-afc
       - gvfs-afp
       - gvfs-gphoto2 # für andoird phone via usb (geht nicht, doch

@@ -209,6 +209,7 @@ sambaservices:
 ,'minidlna.conf'
 ,'mkinitcpio.conf'
 ,'modules-load.d/cbi.conf'
+,'netctl/wlan0-chris-KDG-C32A4.gpg'
 ,'netctl/wlan0-SBB'
 ,'pacman.conf'
 ,'pacman.d/mirrorlist'
