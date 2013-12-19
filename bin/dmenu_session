@@ -22,6 +22,9 @@ b[5]="systemctl hybrid-sleep"
 a[6]="reboot       (Win+F6) = Neustarten"
 b[6]="systemctl reboot"
 
+a[7]="wipe keys    (Win+F7) = Verschlüsselte Laufwerke sperren"
+b[7]="$CBI/bin/mycryptsetup -all -suspend"
+
 [ "$1" ] && exec ${b[$1]}
 
 #xft not supported!

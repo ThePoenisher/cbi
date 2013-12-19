@@ -81,6 +81,11 @@ root ALL=(ALL) ALL
 ## Uncomment to allow members of group sudo to execute any command
 %sudo	ALL=(ALL) ALL
 
+johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup suspend *
+johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup message * 0 key wipe
+johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup table --target crypt
+
+
 ## Uncomment to allow any user to run sudo if they know the password
 ## of the user they are running the command as (root by default).
 # Defaults targetpw  # Ask for the password of the target user
