@@ -1,0 +1,29 @@
+#!/bin/bash
+action="$1"
+homedir="$2"
+catdir="$homedir"/cat
+
+[ -r "/var/jo/vmail/gerer.name/johannes/cat/.Archiv_cat" ]
+echo $? 1>&2
+
+if [ "$action" = "learn" ]; then
+		mkdir -p "$catdir"
+		(cd "$homedir"; find -maxdepth 1 -type d -name ".*") |  sed -re's|.*/([^/].*)|\1|' | grep -v Papierkorb | grep -v Trash | while read j; do
+				paths=()
+				if [ -d "$homedir/$j/cur" ]; then
+						paths+=("$homedir/$j/cur")
+				fi
+				if [ -d "$homedir/$j/new" ]; then
+						paths+=("$homedir/$j/new")
+				fi
+				dbacl -T "email:headers" -H20  -l "$catdir/${j}_cat" "${paths[@]}"
+		done
+else
+		cmd="hexdump -n3 /var/jo/vmail/gerer.name/johannes/cat/.Archiv_cat; dbacl -T \"email:headers\" "
+		for i in "$catdir"/.*_cat; do
+				cmd="$cmd -c \"$i\""
+		done
+		echo $cmd 1>&2
+		echo $(whoami)  1>&2
+		sh /dev/fd/3 3<<<"$cmd -v" | sed -re 's/(.*)_cat/\1/'
+fi
