@@ -1,2 +1,19 @@
-#find /home/data/music/* -type d  > /home/data/music/all
-e=`cat /home/data/music/all | grep -v Hörspiel | shuf -n1`; echo $e
+#!/bin/zsh
+while true; do
+ 			e=`cat /home/data/music/all | grep -v Hörspiel | shuf -n1`; echo $e\?
+			print -S "nvlc \"$e\" #random suggestion" 
+			while true; do
+					read -k 1 a
+					echo
+					if [ "$a" = "n" ]; then break;
+					elif [ "$a" = "u"  ]; then
+							echo updating /home/data/music/all ...
+							find /home/data/music/* -type d  > /home/data/music/all
+							echo done
+					else
+							print -S "nvlc \"$e\"" 
+							nvlc "$e";
+							break;
+					fi
+			done
+done  

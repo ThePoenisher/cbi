@@ -307,8 +307,8 @@ cups:
 ,('resume@',['johannes'],['systemd/system/resume@.service'])
 ,('iptables',[''],['iptables/iptables.rules'])
 ,('lirc',[''],['lirc/lircd.conf'])
-,('dm-crypt-suspend',[''],['systemd/system/dm-crypt-suspend.service'])
 ]%}
+#,('dm-crypt-suspend',[''],['systemd/system/dm-crypt-suspend.service'])
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
 {% for service, instances, confs in services %}

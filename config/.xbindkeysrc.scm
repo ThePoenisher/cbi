@@ -80,6 +80,7 @@
 (xbindkey '(Mod4 F4) "dmenu_session 4")
 (xbindkey '(Mod4 F5) "dmenu_session 5")
 (xbindkey '(Mod4 F6) "dmenu_session 6")
+(xbindkey '(Mod4 F7) "dmenu_session 7")
 
 ;; ;; set directly keycode (here control + f with my keyboard)
 ;; (xbindkey '("m:0x4" "c:41") "xterm")
