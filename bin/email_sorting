@@ -2,9 +2,8 @@
 action="$1"
 homedir="$2"
 catdir="$homedir"/cat
+export LANG=de_DE.UTF-8
 
-[ -r "/var/jo/vmail/gerer.name/johannes/cat/.Archiv_cat" ]
-echo $? 1>&2
 
 if [ "$action" = "learn" ]; then
 		mkdir -p "$catdir"
@@ -16,14 +15,12 @@ if [ "$action" = "learn" ]; then
 				if [ -d "$homedir/$j/new" ]; then
 						paths+=("$homedir/$j/new")
 				fi
-				dbacl -T "email:headers" -H20  -l "$catdir/${j}_cat" "${paths[@]}"
+				sudo -u vmail dbacl -T "email:headers" -H20  -l "$catdir/${j}_cat" "${paths[@]}"
 		done
 else
-		cmd="hexdump -n3 /var/jo/vmail/gerer.name/johannes/cat/.Archiv_cat; dbacl -T \"email:headers\" "
+		cmd="dbacl -T \"email:headers\" "
 		for i in "$catdir"/.*_cat; do
 				cmd="$cmd -c \"$i\""
 		done
-		echo $cmd 1>&2
-		echo $(whoami)  1>&2
 		sh /dev/fd/3 3<<<"$cmd -v" | sed -re 's/(.*)_cat/\1/'
 fi
