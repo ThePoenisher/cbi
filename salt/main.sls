@@ -211,6 +211,7 @@ sambaservices:
 ,'modules-load.d/cbi.conf'
 ,'netctl/wlan0-chris-KDG-C32A4.gpg'
 ,'netctl/wlan0-SBB'
+,'netctl/wlan0-test.gpg'
 ,'pacman.conf'
 ,'pacman.d/mirrorlist'
 ,'samba/smb.conf'

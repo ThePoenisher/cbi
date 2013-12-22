@@ -89,13 +89,44 @@ nametrans = lambda foldername: re.sub('^INBOX\.', '', foldername)
 # see http://docs.offlineimap.org/en/latest/nametrans.html
 createfolders = False
 
-maxconnections = 1
+maxconnections = 30
 type = IMAP
 #reference = INBOX (auskommentieren, sonst gibts die inbox nicht)
 folderfilter = lambda foldername: foldername not in ['INBOX.Sent Items','INBOX.Deleted Items']
 
-idlefolders = ['INBOX']
-
+idlefolders = ['INBOX.1&-1'
+               ,'INBOX.1000ps'
+               ,'INBOX.Archiv'
+               ,'INBOX.Archives.2012'
+               ,'INBOX.Bestellungen'
+               ,'INBOX.Bitcoins'
+               ,'INBOX.Cityhaus'
+               ,'INBOX.Drafts'
+               ,'INBOX.Ebay'
+               ,'INBOX.Entw&APw-rfe'
+               ,'INBOX.Gesendet'
+               ,'INBOX.INBOX'
+               ,'INBOX.Papierkorb'
+               ,'INBOX.Promotion'
+               ,'INBOX.Reisen 2012'
+               ,'INBOX.Sent'
+               ,'INBOX.Tagebuch'
+               ,'INBOX.Vattenfall'
+               ,'INBOX.Wanda'
+               ,'INBOX.Wanda.Wanda Fun'
+               ,'INBOX.Wanda.gelesen'
+               ,'INBOX.dundjoh@gmail'
+               ,'INBOX.elance'
+               ,'INBOX.elance.Eisel'
+               ,'INBOX.elance.cartrawler'
+               ,'INBOX.elance.criteo'
+               ,'INBOX.elance.flug'
+               ,'INBOX.elance.taxi'
+               ,'INBOX.elance.white label widget'
+               ,'INBOX.gerer1'
+               ,'INBOX.spam'
+							 ]
+							 
 [mbnames]
 enabled = yes
 filename = ~/.mutt/mailboxes
