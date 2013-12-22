@@ -1,0 +1,26 @@
+#!/bin/bash
+action="$1"
+homedir="$2"
+catdir="$homedir"/cat
+export LANG=de_DE.UTF-8
+
+
+if [ "$action" = "learn" ]; then
+		mkdir -p "$catdir"
+		(cd "$homedir"; find -maxdepth 1 -type d -name ".*") |  sed -re's|.*/([^/].*)|\1|' | grep -v Papierkorb | grep -v Trash | while read j; do
+				paths=()
+				if [ -d "$homedir/$j/cur" ]; then
+						paths+=("$homedir/$j/cur")
+				fi
+				if [ -d "$homedir/$j/new" ]; then
+						paths+=("$homedir/$j/new")
+				fi
+				sudo -u vmail dbacl -T "email:headers" -H20  -l "$catdir/${j}_cat" "${paths[@]}"
+		done
+else
+		cmd="dbacl -T \"email:headers\" "
+		for i in "$catdir"/.*_cat; do
+				cmd="$cmd -c \"$i\""
+		done
+		sh /dev/fd/3 3<<<"$cmd -v" | sed -re 's/(.*)_cat/\1/'
+fi
