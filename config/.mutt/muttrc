@@ -28,6 +28,7 @@ set edit_headers=yes
 set autoedit=yes
 
 set pager_index_lines=20
+set index_format="%4C %Z %[!%y/%m/%d] %-17.17F (%3l) %s"
 
 set sort_browser=reverse-date
 								 
