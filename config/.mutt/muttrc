@@ -46,3 +46,7 @@ source ~/.mutt/scripts/themes.sh|
 #source ~/.mutt/source-muttrc.d|
 auto_view text/html
 auto_view application/pdf
+
+set header_cache = "~/.cache/mutt"
+#set message_cachedir = "/tmp/msg" 
+set certificate_file=~/.mutt/certs
