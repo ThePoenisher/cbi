@@ -22,14 +22,13 @@ if false; then
 		18bit: 4-16 ->   90bit: 5 w max 80 c
 		                 72bit: 4 w max 64 c
 fi
-# 17292 words -> 2^14 = 16384
 
 if [ "debug" = "$1" ]; then
 		debug=1
 		shift
 fi
 
-echo "VERIFY THE SIGNATURE OF THIS FILE!!!!!!!" 1>&2
+echo "VERIFY THE INTEGRITY OF THIS FILE!!!!!!!" 1>&2
 
 if ! echo 319b4c08b3ce29390699c96b31c48b863247da85d39a90d9e16b6d338b8289594e68cd20f39572ec8491faffc8c7dc8dc1b3ad8a239d0652670c61c3027acb7f "$f" | sha512sum -c --strict 1>&2; then
 		sha512sum "$f"
