@@ -18,10 +18,11 @@ package() {
 		cd $srcdir
 		#echo -e '#!/bin/sh\nexec /usr/share/git-annex/git-annex "$@"' > git-annex
 		#install -Dm755 git-annex "$pkgdir/usr/bin/git-annex"
-		install -d "$pkgdir/usr/share"
+		install -d "$pkgdir/usr/share" "$pkgdir/usr/bin/"
+		cp -rp git-annex.linux/usr/share/man "$pkgdir/usr/share"
 		mv git-annex.linux "$pkgdir/usr/share/git-annex"
-		mkdir -p "$pkgdir/usr/bin/"
 		ln -s /usr/share/git-annex/git-annex        "$pkgdir/usr/bin/git-annex"
 		ln -s /usr/share/git-annex/git-annex-shell  "$pkgdir/usr/bin/git-annex-shell"
 		ln -s /usr/share/git-annex/git-annex-webapp "$pkgdir/usr/bin/git-annex-webapp"
+		
 }
