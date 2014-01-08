@@ -163,13 +163,13 @@ base_packages:
       - file: /etc/pacman.conf
 
 # do I need gvfs-mtp-git. given it limited power.  what does ubuntu use ? gphotos2?
+#,'git-annex-standalone' use own PKGBUILD instead
 {% for p in
 ['aurvote'
 ,'dbacl'
 ,'downgrade'
 ,'electrum'
 ,'epson-inkjet-printer-workforce-635-nx625-series'
-#,'git-annex-standalone' use own PKGBUILD instead
 ,'google-talkplugin'
 ,'jdownloader2' 
 ,'ledger-git'
