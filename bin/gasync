@@ -29,7 +29,7 @@ while true; do
 				break
 		fi
 done
-dirs=( "/home/data" "/home/data2")
+dirs=( "/home/data")
 if [ "$1" ]; then dirs=("${@}"); fi
 
 _central(){
@@ -54,11 +54,11 @@ _do (){
 		(if cd $j &> /dev/null; then
 				# check for git-annex
 				if git annex status --fast &> /dev/null; then
-						t="Git Annex Sync of $j"
-						echo -e "\n\nACTION $(date)\n$t" >> $log
+						t="Git Annex found in $j"
+						echo -e "\n\nACTION Date $(date)\n$t" >> $log
 						_central "$j"
 						if ( 
-								( [ "$gc" ] && echo ACTION GC && ! git gc ) || \
+								( [ "$gc" ] && echo ACTION GC && ! git gc  --aggressive ) || \
 								( [ "$prune" ] && echo ACTION PRUNE && ! git prune ) || \
 								(echo ACTION ADD && ! git annex add --backend=SHA1) || \
 								(echo ACTION SYNC && ! git annex sync) ||  \
