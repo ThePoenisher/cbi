@@ -169,7 +169,7 @@ base_packages:
 ,'downgrade'
 ,'electrum'
 ,'epson-inkjet-printer-workforce-635-nx625-series'
-,'git-annex-standalone'
+#,'git-annex-standalone' use own PKGBUILD instead
 ,'google-talkplugin'
 ,'jdownloader2' 
 ,'ledger-git'
