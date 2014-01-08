@@ -37,7 +37,7 @@ fi
 
 if [ "$dev" = "-close" ]; then
 		sudo cryptsetup close "$name"
-		exit 1;
+		exit 0;
 fi
 		
 if [ "$dev" = "-suspend" ]; then
@@ -97,12 +97,15 @@ WARNING!
 ========
 This will overwrite data on drive irrevocably.
 `ls -lah $name`
+`sudo blkid $name`
+`sudo lsblk $name`
 Are you sure? (Type uppercase yes):
 EOF
 		read str
 		if [ "$str" = "YES" ]; then
 				(do_cc "$key" "$o \"$name\" \"$tmpname\"" &&	
 						(echo "echo -n \"$fp2\" > \"/dev/mapper/$tmpname\"" | sudo sh) &&
+						echo "closing..." && sync && sleep 1 &&
 						(while ! sudo cryptsetup close "$tmpname"; do
 								echo "Retry in 1 sec..."
 								sleep 1;

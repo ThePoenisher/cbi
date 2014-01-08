@@ -1,18 +1,18 @@
 pkgname=git-annex
-pkgver=4.20130405
+pkgver=current
 pkgrel=1
 pkgdesc='Precompiled version of git-annex, webapp and assistant included.'
 arch=('i686' 'x86_64')
 url="http://git-annex.branchable.com/"
 license=(GPL3)
 provides=(git-annex)
-conflicts=(git-annex git-annex-standalone)
+conflicts=(git-annex git-annex-standalone git-annex-bin git-annex-git)
 
 # bundle includes all other libs needed!
 depends=(glibc)
 
 source=(http://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz)
-md5sums=('ea74f037b3fe7d7088197f15aa329b23')
+md5sums=('4cf89bb65cf8d79f916660d1a28d95ff')
 
 package() {
 		cd $srcdir
@@ -20,5 +20,8 @@ package() {
 		#install -Dm755 git-annex "$pkgdir/usr/bin/git-annex"
 		install -d "$pkgdir/usr/share"
 		mv git-annex.linux "$pkgdir/usr/share/git-annex"
-		#ln -s git-annex "$pkgdir/usr/bin/git-annex-shell"
+		mkdir -p "$pkgdir/usr/bin/"
+		ln -s /usr/share/git-annex/git-annex        "$pkgdir/usr/bin/git-annex"
+		ln -s /usr/share/git-annex/git-annex-shell  "$pkgdir/usr/bin/git-annex-shell"
+		ln -s /usr/share/git-annex/git-annex-webapp "$pkgdir/usr/bin/git-annex-webapp"
 }

@@ -747,6 +747,9 @@ http://ergoemacs.org/emacs/emacs_rsi_my_experiences.html
 from http://www.emacswiki.org/emacs/MovingTheCtrlKey
 
 Gegenargument: http://ergoemacs.org/emacs/swap_CapsLock_Ctrl.html
+
+***** Console level:
+(echo `dumpkeys |grep -i keymap`; echo keycode 58 = Control ) | loadkeys -
 **** TODO Space 2 CTRL
 :PROPERTIES:
 :ID:       1d97030e-577b-467a-867b-10a786b6bcd9

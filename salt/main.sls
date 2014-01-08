@@ -305,6 +305,7 @@ cups:
 {% set services =
 [('autologin@',['tty1'],['systemd/system/autologin@.service'])
 ,('wol@',['eth0'],['systemd/system/wol@.service'])
+,('mycapsremap',[''],['systemd/system/mycapsremap.service'])
 ,('resume@',['johannes'],['systemd/system/resume@.service'])
 ,('iptables',[''],['iptables/iptables.rules'])
 ,('lirc',[''],['lirc/lircd.conf'])
