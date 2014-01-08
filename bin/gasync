@@ -58,10 +58,10 @@ _do (){
 						echo -e "\n\nACTION Date $(date)\n$t" >> $log
 						_central "$j"
 						if ( 
-								( [ "$gc" ] && echo ACTION GC && ! git gc  --aggressive ) || \
+								( [ "$gc" ] && echo ACTION GC && ! unbuffer git gc ) || \
 								( [ "$prune" ] && echo ACTION PRUNE && ! git prune ) || \
 								(echo ACTION ADD && ! git annex add --backend=SHA1) || \
-								(echo ACTION SYNC && ! git annex sync) ||  \
+								(echo ACTION SYNC && ! unbuffer git annex sync) ||  \
 								( [ "$drop" ] && echo ACTION DROP && ! git annex drop --auto ) || \
 								( [ "$get" ] && echo ACTION GET && ! git annex get --auto ) || \
 								( [ "$get" -o "$drop" ] && echo ACTION SYNC && ! git annex sync) || \
