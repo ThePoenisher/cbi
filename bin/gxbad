@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#
+grep "Bad file" -B1 | sed -nre 's/.*fsck (.*) \(checksum\.\.\.\).*/\1/p'
+
+# for i in .git/annex/bad/*; do
+# 		echo $i sed -e 's|.*/SHA/\L\0/g'
+# 		echo $i
+# done
