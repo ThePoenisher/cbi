@@ -3,9 +3,9 @@ Description=Caps Remapping on Console
 After=sysinit.target
 
 [Service]
-Type=Simple
+Type=simple
 RemainAfterExit=yes
-ExecStart=/bin/bash "(echo `dumpkeys |grep -i keymap`; echo keycode 58 = Control ) | loadkeys -"
+ExecStart=/bin/bash -c "(echo $(dumpkeys |grep -i keymap); echo keycode 58 = Control ) | loadkeys -"
 
 [Install]
 WantedBy=sysinit.target
