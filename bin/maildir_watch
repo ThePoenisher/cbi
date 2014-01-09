@@ -3,13 +3,11 @@
 # Dependencies: inotifywait from inotify-tools package.
 
 maildir_path="/home/johannes/Mail/j@g"		# Path to Maildir root.
-mailboxes=(INBOX)			# Mailboxes to watch.
 watchdirs="" # manuall additional folder to watch
-watchdirs="${watchdirs} $(for box in ${mailboxes[*]}; do echo ${maildir_path}/$box/new; done)"
+watchdirs="${watchdirs} $(for box in ${maildir_path}/*; do if [ -d "$box/new" ]; then echo "$box/new"; fi; done)"
 timeout=5000
 
 echo $watchdirs
-
 
 trim() {
     local var="$1"
