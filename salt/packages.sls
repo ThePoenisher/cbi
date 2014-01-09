@@ -34,6 +34,8 @@ base_packages:
 {% if grains['os'] == 'Arch' %}
       - p7zip
       - dnsutils
+      - exfat-utils
+      - fuse-exfat
       - dosfstools
       - pptpclient
       - socat
