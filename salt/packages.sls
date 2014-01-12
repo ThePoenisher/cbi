@@ -106,6 +106,7 @@ base_packages:
       - pdfedit
       - bitcoin-qt
       - ntfs-3g
+      - stellarium
       - bitcoin-daemon
       - calibre
       - aqbanking

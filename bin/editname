@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ -e "$1" ]; then
+		e=`mktemp`
+		trap "rm $e; exit" SIGHUP SIGINT SIGTERM
+		dialog --inputbox 'new name' 10 100 "$1" 2> $e
+		mv "$1" "$(<$e)"
+else
+		echo "$1" does not exist  1>&2
+		exit 1
+fi
