@@ -2243,6 +2243,10 @@ http://stackoverflow.com/questions/8006347/how-can-i-make-emacs-speedbar-auto-ex
   - C-t :: toggle regex  matching
   - C-p :: toogle prefix matching
   - M-s :: force to search (again)
+  - M-f and M-d :: prompts and uses find to locate files or directories.
+           
+
+           
 
 
 http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire
@@ -2250,26 +2254,26 @@ http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files
 http://marmalade-repo.org/packages/ido-better-flex
 *** Settings
 #+BEGIN_SRC emacs-lisp
-  (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
-  (setq ido-use-filename-at-point 'guess)
-  (setq ido-use-url-at-point 'guess)
-  ;; leave default, and use ctrl-d instead (setq ido-show-dot-for-dired nil)
-  (ido-mode 1)
-  (ido-ubiquitous-mode 1)
-  (ido-vertical-mode 1)
-  (setq ido-ignore-files
-   (append
-    ;; haskell
-    '("\\.o$" "\\.hi$" ) 
-    ;; sometimes needed? '("\\.log$" )
-    ;; TEX
-    '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
-    ido-ignore-files))  
-  (setq ido-max-work-file-list 1000)
-  (setq ido-max-dir-file-cache 1000)
-  (ido-sort-mtime-mode 1)
-  (ido-complete-space-or-hyphen-enable)
+    (setq ido-enable-flex-matching t)
+    (setq ido-everywhere t)
+    (setq ido-use-filename-at-point 'guess)
+    (setq ido-use-url-at-point 'guess)
+    ;; leave default, and use ctrl-d instead (setq ido-show-dot-for-dired nil)
+    (ido-mode 1)
+    (ido-ubiquitous-mode 1)
+    (ido-vertical-mode 1)
+    (setq ido-ignore-files
+     (append
+      ;; haskell
+      '("\\.o$" "\\.hi$" ) 
+      ;; sometimes needed? '("\\.log$" )
+      ;; TEX
+      '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
+      ido-ignore-files))  
+    (setq ido-max-work-file-list 1000)
+    (setq ido-max-dir-file-cache 1000)
+    (ido-sort-mtime-mode 1)
+    (ido-complete-space-or-hyphen-enable)
 #+END_SRC
 *** Files
 **** Other's 
@@ -3216,6 +3220,7 @@ http://www.emacswiki.org/BookmarkPlus (indirect via [[info:emacs#Bookmarks]])
 :END:
 ** Project Support (EDE)???
 ** Längere Histories (z.B. M-x)
+** wgrep [2014-01-24 Fri]
 * Funny
 artist-mode
 use middle mouse -> e.g. spray-can 
