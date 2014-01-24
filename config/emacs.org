@@ -296,41 +296,43 @@ Ursache:
 ** DONE ELPA / packages.el 
 *** List of selected packages
 #+BEGIN_SRC emacs-lisp
-    (setq prelude-packages  '(  auto-complete
-                                ;;bookmark+
-                                lua-mode
-                                move-text
-                                popup
-                                color-theme
-                                puppet-mode
-                                icicles
-                                w3m
-                                evil
-                                goto-chg
-                                php-mode
-                               ; evil-leader
-                                haskell-mode
-                                helm
-                                gnuplot
-                                dired-details
-                                gnuplot-mode
-                                pandoc-mode
-                                yaml-mode
-                                markdown-mode
-                                jinja2-mode
-                                clojure-mode
-                               ;helm
-                                latex-pretty-symbols
-                                evil-numbers
-                                smex
-                                ido-ubiquitous
-                                ido-vertical-mode
-                                ido-complete-space-or-hyphen
-                                ido-sort-mtime
-                                graphviz-dot-mode
-                                )
-          )
-    
+  (setq prelude-packages  '(  auto-complete
+                              ;;bookmark+
+                              lua-mode
+                              move-text
+                              popup
+                              color-theme
+                              puppet-mode
+                              icicles
+                              w3m
+                              evil
+                              goto-chg
+                              php-mode
+                             ; evil-leader
+                              haskell-mode
+                              helm
+                              gnuplot
+                              dired-details
+                              gnuplot-mode
+                              pandoc-mode
+                              yaml-mode
+                              markdown-mode
+                              jinja2-mode
+                              clojure-mode
+                             ;helm
+                              latex-pretty-symbols
+                              evil-numbers
+                              smex
+                              ido-ubiquitous
+                              ido-vertical-mode
+                              ido-complete-space-or-hyphen
+                              ido-sort-mtime
+                              flx
+                              flx-ido
+                              graphviz-dot-mode
+                              )
+        )
+  
 #+END_SRC
 *** Loading /Configuration
 #+BEGIN_SRC emacs-lisp
@@ -666,6 +668,11 @@ http://stackoverflow.com/questions/7494203/how-do-i-m-x-replace-string-across-al
   (add-to-list 'auto-mode-alist '("/salt/etc/"  conf-mode t))
   (add-to-list 'auto-mode-alist '("/\.?mutt/"  conf-mode t))
   (add-to-list 'auto-mode-alist '("\\.dat$"  ledger-mode t))
+#+END_SRC
+*** Garbage collection
+as suggested on https://github.com/lewang/flx
+#+BEGIN_SRC emacs-lisp
+(setq gc-cons-threshold 20000000)
 #+END_SRC
 ** Macros
 record and later insert equivalent code!
@@ -2244,36 +2251,49 @@ http://stackoverflow.com/questions/8006347/how-can-i-make-emacs-speedbar-auto-ex
   - C-p :: toogle prefix matching
   - M-s :: force to search (again)
   - M-f and M-d :: prompts and uses find to locate files or directories.
-           
-
-           
-
 
 http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire
 *** possible enhancements
 http://marmalade-repo.org/packages/ido-better-flex
 *** Settings
 #+BEGIN_SRC emacs-lisp
-    (setq ido-enable-flex-matching t)
-    (setq ido-everywhere t)
-    (setq ido-use-filename-at-point 'guess)
-    (setq ido-use-url-at-point 'guess)
-    ;; leave default, and use ctrl-d instead (setq ido-show-dot-for-dired nil)
-    (ido-mode 1)
-    (ido-ubiquitous-mode 1)
-    (ido-vertical-mode 1)
-    (setq ido-ignore-files
-     (append
-      ;; haskell
-      '("\\.o$" "\\.hi$" ) 
-      ;; sometimes needed? '("\\.log$" )
-      ;; TEX
-      '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
-      ido-ignore-files))  
-    (setq ido-max-work-file-list 1000)
-    (setq ido-max-dir-file-cache 1000)
-    (ido-sort-mtime-mode 1)
-    (ido-complete-space-or-hyphen-enable)
+  ;; use flx instead (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (setq ido-use-filename-at-point 'guess)
+  (setq ido-use-url-at-point 'guess)
+  ;; leave default, and use ctrl-d instead (setq ido-show-dot-for-dired nil)
+  (ido-mode 1)
+  (ido-ubiquitous-mode 1)
+  (ido-vertical-mode 1)
+  
+  (flx-ido-mode 1)
+
+  ;; (mapc 
+  ;;  (lambda (x) 
+  ;;    (add-hook (car x) 
+  ;;              (lambda nil 
+  ;;                (set 
+  ;;                 (make-local-variable 'ido-ignore-files)
+  ;;                 (append (cdr x) ido-ignore-files)))))
+  ;;  '(
+  ;;    (LaTeX-mode-hook 
+  ;;     '("\\.log$" "\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/"))
+  ;;    (haskell-mode-hook 
+  ;;     '("\\.o$" "\\.hi$" ))
+  ;;    ))
+  
+  (setq ido-max-work-file-list 1000)
+  (setq ido-max-dir-file-cache 1000)
+  ;; maybe better use flx? -> (ido-sort-mtime-mode 1)
+  (ido-complete-space-or-hyphen-enable)
+  
+  (nconc ido-ignore-files
+         ;; haskell
+         '("\\.o$" "\\.hi$") ;; sometimes needed? 
+         '("\\.log$" )
+         ;; TEX
+         '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
+         )
 #+END_SRC
 *** Files
 **** Other's 
@@ -2319,6 +2339,8 @@ C-h w shows the key bindings for the selected command. (Via where-is.)
 *** Ubiquotious for describe-function / describe-variable
 https://github.com/DarwinAwardWinner/ido-ubiquitous/blob/bleeding-edge/ChangeLog
 **** Problem: https://github.com/DarwinAwardWinner/ido-ubiquitous/issues/43
+*** flx (installed via MELPA) [2014-01-24 Fri]
+https://github.com/lewang/flx
 ** Projectile? find file ...
 https://github.com/bbatsov/projectile
 * Programming / Development
