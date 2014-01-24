@@ -20,6 +20,8 @@ alias gvp="git verify-pull"
 alias gvl="git verify-log"
 alias gsp="git commit-sign-push"
 
+alias latexdiff2="latexdiff-vc --git  --packages=amsmath,hyperref -c \"$CBI/config/latexdiff.cfg\""
+
 alias feh2="feh --scale-down --keep-zoom-vp --action2 'xrename \"%f\" ' "
 
 alias -g vi="vim"
@@ -163,3 +165,5 @@ KEYTIMEOUT=1
 # archey # takes sometimes too lon gto spawn a terminal!
 # cd /home
 unsetopt correct_all
+
+setopt BRACE_CCL #allow {a-z} expansion

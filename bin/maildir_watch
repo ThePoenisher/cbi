@@ -4,7 +4,7 @@
 
 maildir_path="/home/johannes/Mail/j@g"		# Path to Maildir root.
 watchdirs="" # manuall additional folder to watch
-watchdirs="${watchdirs} $(for box in ${maildir_path}/*; do if [ -d "$box/new" ]; then echo "$box/new"; fi; done)"
+watchdirs="${watchdirs} $(for box in ${maildir_path}/*; do if ! grep -q ".*Trash" <<<"$box"; then mkdir -p "$box/new"; echo "$box/new"; fi; done)"
 timeout=5000
 
 echo $watchdirs

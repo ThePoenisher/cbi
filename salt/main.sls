@@ -305,12 +305,12 @@ cups:
 {% set services =
 [('autologin@',['tty1'],['systemd/system/autologin@.service'])
 ,('wol@',['eth0'],['systemd/system/wol@.service'])
+,('dm-crypt-suspend',[''],['systemd/system/dm-crypt-suspend.service'])
 ,('mycapsremap',[''],['systemd/system/mycapsremap.service'])
 ,('resume@',['johannes'],['systemd/system/resume@.service'])
 ,('iptables',[''],['iptables/iptables.rules'])
 ,('lirc',[''],['lirc/lircd.conf'])
 ]%}
-#,('dm-crypt-suspend',[''],['systemd/system/dm-crypt-suspend.service'])
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
 {% for service, instances, confs in services %}

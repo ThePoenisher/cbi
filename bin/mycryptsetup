@@ -27,6 +27,7 @@ fi
 name="$1"
 hexname="`xxd -p <<<$name | tr -d '\n'`"
 tmpname=cryptsetupcreate$hexname
+fpf="/tmp/cryptsetup_key_$name"
 dev="$2"
 
 if [ "$name"  = "-all" ]; then
@@ -36,7 +37,7 @@ fi
 
 
 if [ "$dev" = "-close" ]; then
-		sudo cryptsetup close "$name"
+		sudo cryptsetup close "$name" && sudo rm "$fpf"
 		exit 0;
 fi
 		
@@ -70,7 +71,6 @@ key=`pbkdf2 "$p" "$salt" "$ic" "$dklen"`
 salt2=`xxd -p <(head -c 100 /dev/urandom) | tr -d '\n'`
 fp=`echo -n "$salt2$key" | sha512sum | cut -f1 -d' '`
 fp2=`echo -n created"$key" | sha512sum | cut -f1 -d' '`
-fpf="/tmp/cryptsetup_key_$name"
 
 p2=`echo "$p" | sed -nr 's/^([0-9]+) .+/\1/p'`
 if [ -z "$p2" ]; then
