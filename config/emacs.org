@@ -2254,26 +2254,41 @@ http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files
 http://marmalade-repo.org/packages/ido-better-flex
 *** Settings
 #+BEGIN_SRC emacs-lisp
-    (setq ido-enable-flex-matching t)
-    (setq ido-everywhere t)
-    (setq ido-use-filename-at-point 'guess)
-    (setq ido-use-url-at-point 'guess)
-    ;; leave default, and use ctrl-d instead (setq ido-show-dot-for-dired nil)
-    (ido-mode 1)
-    (ido-ubiquitous-mode 1)
-    (ido-vertical-mode 1)
-    (setq ido-ignore-files
-     (append
-      ;; haskell
-      '("\\.o$" "\\.hi$" ) 
-      ;; sometimes needed? '("\\.log$" )
-      ;; TEX
-      '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
-      ido-ignore-files))  
-    (setq ido-max-work-file-list 1000)
-    (setq ido-max-dir-file-cache 1000)
-    (ido-sort-mtime-mode 1)
-    (ido-complete-space-or-hyphen-enable)
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (setq ido-use-filename-at-point 'guess)
+  (setq ido-use-url-at-point 'guess)
+  ;; leave default, and use ctrl-d instead (setq ido-show-dot-for-dired nil)
+  (ido-mode 1)
+  (ido-ubiquitous-mode 1)
+  (ido-vertical-mode 1)
+  
+  ;; (mapc 
+  ;;  (lambda (x) 
+  ;;    (add-hook (car x) 
+  ;;              (lambda nil 
+  ;;                (set 
+  ;;                 (make-local-variable 'ido-ignore-files)
+  ;;                 (append (cdr x) ido-ignore-files)))))
+  ;;  '(
+  ;;    (LaTeX-mode-hook 
+  ;;     '("\\.log$" "\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/"))
+  ;;    (haskell-mode-hook 
+  ;;     '("\\.o$" "\\.hi$" ))
+  ;;    ))
+  
+  (setq ido-max-work-file-list 1000)
+  (setq ido-max-dir-file-cache 1000)
+  (ido-sort-mtime-mode 1)
+  (ido-complete-space-or-hyphen-enable)
+  
+  (nconc ido-ignore-files
+         ;; haskell
+         '("\\.o$" "\\.hi$") ;; sometimes needed? 
+         '("\\.log$" )
+         ;; TEX
+         '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
+         )
 #+END_SRC
 *** Files
 **** Other's 
