@@ -5,7 +5,7 @@ if [[ $TERM != "dumb" ]]; then
 				export PASSWORD_STORE_DIR=$PASSWORD_STORE_GIT/password_store
 		if [[ $TERM != "screen-"*  ]]; then
 				if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-						startx -- vt7 &>> ~/.xlog &!
+						startx  &>> ~/.xlog &!
 						vlock
 						logout
 				elif [[ $TERM != "linux" ]]; then

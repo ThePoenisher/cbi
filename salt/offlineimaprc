@@ -49,7 +49,6 @@ idlefolders = ['INBOX']
 localrepository = Local
 remoterepository = Remote
 status_backend = sqlite
-autorefresh = 3
 
 ########## Advanced settings
 

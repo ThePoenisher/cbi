@@ -135,7 +135,7 @@ base_packages:
       - skype
       - lib32-libpulse
       - tk #for gitk
-      - tightvnc
+      - tigervnc
       - smartmontools
       - hdparm
       - cdrkit #cds brennen: https://wiki.archlinux.org/index.php/CD_Burning
