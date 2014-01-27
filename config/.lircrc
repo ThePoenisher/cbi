@@ -10,8 +10,8 @@ end
 begin
 # remote = mceusb
     prog = mplayer
-    button = Pause
-    config = pause
+    button = cycle pause
+    config = cycle pause
     repeat = 0
     delay = 0
 end
@@ -20,7 +20,7 @@ begin
 # remote = mceusb
 prog = mplayer
 button = Play
-config = play
+config = cycle pause
 repeat = 0
 delay = 0
 end
@@ -29,7 +29,7 @@ begin
 # remote = mceusb
 prog = mplayer
 button = OK
-config = pause
+config = cycle pause
 repeat = 0
 delay = 0
 end
@@ -63,7 +63,7 @@ begin
 # remote = mceusb
 prog = mplayer
 button = VolDown
-config = volume -1
+config = add volume -1
 repeat = 0
 delay = 0
 end
@@ -72,7 +72,7 @@ begin
 # remote = mceusb
 prog = mplayer
 button = Skip
-config = seek +15 0
+config = seek +200 0
 repeat = 0
 delay = 0
 end
@@ -81,7 +81,7 @@ begin
 # remote = mceusb
 prog = mplayer
 button = Enter
-config = pause
+config = cycle pause
 repeat = 0
 delay = 0
 end
@@ -108,7 +108,7 @@ begin
 # remote = mceusb
 prog = mplayer
 button = VolUp
-config = volume +1
+config = add volume +1
 repeat = 0
 delay = 0
 end
@@ -126,7 +126,7 @@ begin
 # remote = mceusb
 prog = mplayer
 button = Replay
-config = seek -15 0
+config = seek -200 0
 repeat = 0
 delay = 0
 end
@@ -135,7 +135,7 @@ begin
 # remote = mceusb
 prog = mplayer
 button = Right
-config = seek +6 0
+config = seek +10 0
 repeat = 0
 delay = 0
 end
@@ -171,7 +171,16 @@ begin
 # remote = mceusb
 prog = mplayer
 button = Left
-config = seek -6 0
+config = seek -10 0
+repeat = 0
+delay = 0
+end
+
+begin
+# remote = mceusb
+prog = mplayer
+button = Guide
+config = cycle fullscreen
 repeat = 0
 delay = 0
 end
