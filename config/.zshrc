@@ -21,6 +21,7 @@ alias gvl="git verify-log"
 alias gsp="git commit-sign-push"
 
 alias scl="sudo systemctl"
+alias uumount="udevil umount"
 
 alias latexdiff2="latexdiff-vc --git  --packages=amsmath,hyperref -c \"$CBI/config/latexdiff.cfg\""
 
