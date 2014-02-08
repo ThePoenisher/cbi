@@ -63,6 +63,7 @@ groupsasd:
     - names:
         - sudo
         - wireshark
+        - kismet
 {% endif %} # arch
 
 ###########  Users ###############
@@ -91,6 +92,7 @@ johannes:
       - optical
       - network
       - scanner
+      - kismet
       - power
       - storage
       - video
@@ -99,6 +101,7 @@ johannes:
     - require:
       - group: sudo
       - group: wireshark
+      - group: kismet
 {% endif %}
 
 
@@ -304,17 +307,17 @@ cups:
 {% if pillar['arch_desktop'] %}
 
 {% set services =
-[('autologin@',['tty1'],['systemd/system/autologin@.service'])
-,('wol@',['eth0'],['systemd/system/wol@.service'])
-,('dm-crypt-suspend',[''],['systemd/system/dm-crypt-suspend.service'])
-,('mycapsremap',[''],['systemd/system/mycapsremap.service'])
-,('resume@',['johannes'],['systemd/system/resume@.service'])
-,('iptables',[''],['iptables/iptables.rules'])
-,('lirc',[''],['lirc/lircd.conf'])
+[('autologin@'       ,true ,['tty1']    ,['systemd/system/autologin@.service'])
+,('wol@'             ,true ,['eth0']    ,['systemd/system/wol@.service'])
+,('dm-crypt-suspend' ,false,['']        ,['systemd/system/dm-crypt-suspend.service'])
+,('mycapsremap'      ,true ,['']        ,['systemd/system/mycapsremap.service'])
+,('resume@'          ,true ,['johannes'],['systemd/system/resume@.service'])
+,('iptables'         ,true ,['']        ,['iptables/iptables.rules'])
+,('lirc'             ,true ,['']        ,['lirc/lircd.conf'])
 ]%}
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
-{% for service, instances, confs in services %}
+{% for service, start, instances, confs in services %}
 {% for conf in confs %}
 /etc/{{ conf }}:
   file.managed:
@@ -324,8 +327,13 @@ cups:
       
 {% for instance in instances %}
 {{ service~instance }}:
-  service.running:
+  service:
+{% if start %}
+    - running
     - enable: True
+{% else %}
+    - enabled
+{% endif %}
     - watch:
       - cmd: systemd-reload-{{service~instance}}
 {% for conf in confs %}

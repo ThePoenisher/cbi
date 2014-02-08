@@ -473,7 +473,7 @@ not "include path"
     (global-set-key [M-f4] 'save-and-kill)
     (global-set-key (kbd "C-x k") 'save-and-kill)
     ;;(global-set-key [f5] 'asd)
-    ;;(global-set-key [f6] 'compile)
+    (global-set-key [f6] 'compile)
     ;;(global-set-key [f7] 'recompile)
     (global-set-key [f8] 'shell)
     (global-set-key [f9] 'xdict-query)
@@ -1826,11 +1826,11 @@ Lösungsmöglichkeiten:
 *** installation
 AUCTeX was installed using archlinux's pacman (most up-to-date source!, newer than  (M)ELPA)
 Dann doch auf MELPA ungestiegen [2014-01-24 Fri]
+und wieder pacman [2014-01-27 Mon]
 *** activation
 #+BEGIN_SRC emacs-lisp
-    ;; (load "auctex.el" nil t t)
-    ;; (load "preview-latex.el" nil t t)
-  
+    (load "auctex.el" nil t t)
+    (load "preview-latex.el" nil t t)
 #+END_SRC
 *** WICHTIG: eigentlich geht fast alles automatisch
 z.B: wann er direct DVI previewed und wann erst über umwandlung,
@@ -2266,7 +2266,8 @@ http://marmalade-repo.org/packages/ido-better-flex
   (ido-ubiquitous-mode 1)
   (ido-vertical-mode 1)
   
-  (flx-ido-mode 1)
+  ;; nicht so toll, weil history nicht gut mit einbezgoen wird. z.b. preview-cache-preamble 
+  ;; (flx-ido-mode 1)
 
   ;; (mapc 
   ;;  (lambda (x) 

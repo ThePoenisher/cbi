@@ -20,6 +20,7 @@ base_packages:
       - wget
       - colordiff
       - figlet
+      - syslinux
       - ranger
       - subversion
       - lsof
