@@ -54,7 +54,7 @@ which will install the following loader into ~/.emacs.d/init.el:
 This is to assure, that org-confirm-babel-evaluate is loaded
 correctly, which would not happen, if org was autoloaded within the
 (let ((org-confirm-babel-evaluate nil))).
-*** org-load-hook also does not work, as it is already to late, when registered
+*** also org-load-hook does not work, as it is already to late, when registered
 - Use eval-after-load instead
 - org-mode-hook?
 * Defuns Function Definitions
