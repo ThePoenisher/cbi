@@ -29,8 +29,10 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ['.config/dunst'
 ,'.lircrc'
 ,'.zlogin'
-,'.xbmc/userdata/keymaps/remote.xml'
 ,'.xbmc/userdata/Lircmap.xml'
+,'.xbmc/userdata/guisettings.xml'
+,'.xbmc/userdata/keymaps/remote.xml'
+,'.xbmc/userdata/sources.xml'
 ] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
@@ -38,6 +40,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
     - target: {{ grains['cbi_home'] }}/config/{{ file }}
     - user: {{ usr }}
     - group: {{ usr }}
+    - makedirs: true
     - force: True
 {% endfor %}
       

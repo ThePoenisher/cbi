@@ -1,7 +1,7 @@
 
 # Show OSD
 begin
-prog = mplayer
+prog = mpv
 button = More
 repeat = 3
 config = osd
@@ -9,7 +9,7 @@ end
 
 begin
 # remote = mceusb
-    prog = mplayer
+    prog = mpv
     button = cycle pause
     config = cycle pause
     repeat = 0
@@ -18,7 +18,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Play
 config = cycle pause
 repeat = 0
@@ -27,7 +27,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = OK
 config = cycle pause
 repeat = 0
@@ -36,7 +36,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Power
 config = quit
 repeat = 0
@@ -44,7 +44,7 @@ delay = 0
 end
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Back
 config = quit
 repeat = 0
@@ -52,7 +52,7 @@ delay = 0
 end
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Mute
 config = mute
 repeat = 0
@@ -61,7 +61,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = VolDown
 config = add volume -1
 repeat = 0
@@ -70,7 +70,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Skip
 config = seek +200 0
 repeat = 0
@@ -79,7 +79,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Enter
 config = cycle pause
 repeat = 0
@@ -88,7 +88,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Stop
 config = quit
 repeat = 0
@@ -97,7 +97,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Up
 config = seek +60 0
 repeat = 0
@@ -106,7 +106,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = VolUp
 config = add volume +1
 repeat = 0
@@ -115,7 +115,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Down
 config = seek -60 0
 repeat = 0
@@ -124,7 +124,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Replay
 config = seek -200 0
 repeat = 0
@@ -133,7 +133,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Right
 config = seek +10 0
 repeat = 0
@@ -142,7 +142,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Rewind
 config = seek -30 0
 repeat = 0
@@ -151,7 +151,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Forward
 config = seek +30 0
 repeat = 0
@@ -160,7 +160,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Home
 config = quit
 repeat = 0
@@ -169,7 +169,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Left
 config = seek -10 0
 repeat = 0
@@ -178,7 +178,7 @@ end
 
 begin
 # remote = mceusb
-prog = mplayer
+prog = mpv
 button = Guide
 config = cycle fullscreen
 repeat = 0

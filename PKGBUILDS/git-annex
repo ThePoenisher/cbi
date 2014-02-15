@@ -1,4 +1,4 @@
-pkgname=git-annex
+pkgname=git-annex-own
 pkgver=current
 pkgrel=1
 pkgdesc='Precompiled version of git-annex, webapp and assistant included.'
@@ -12,7 +12,7 @@ conflicts=(git-annex git-annex-standalone git-annex-bin git-annex-git)
 depends=(glibc)
 
 source=(http://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz)
-md5sums=('4cf89bb65cf8d79f916660d1a28d95ff')
+sha512sums=('f70a2829c119c4377e49318220bb1ee89d2f75a6e5fc8bcf39f57727075fb23611d81706546e04294f4dc24366ad0a5029d34a95cca70fe29baab8d0434b5af3')
 
 package() {
 		cd $srcdir
