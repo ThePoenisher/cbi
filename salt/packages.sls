@@ -183,6 +183,8 @@ base_packages:
 ,'perl-string-util'
 ,'python2-gnupg'
 ,'python2-zbar'
+,'stockfish-git'
+,'scid_vs_pc'
 ,'urlview'
 ] %}
 packer --noconfirm --noedit  -S {{ p }}:
