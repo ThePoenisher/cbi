@@ -1,0 +1,50 @@
+# Analysis Engines configuration for Scid vs. PC 4.10
+
+engine {
+  Name Toga
+  Cmd  fruit
+  Args {}
+  Dir  /home/johannes/.scidvspc
+  Elo  0
+  Time 0
+  URL  {}
+  UCI  1
+  UCIoptions {}
+}
+
+engine {
+  Name Phalanx
+  Cmd  phalanx
+  Args {}
+  Dir  /home/johannes/.scidvspc
+  Elo  0
+  Time 0
+  URL  {}
+  UCI  0
+  UCIoptions {}
+}
+
+engine {
+  Name Scidlet
+  Cmd  scidlet
+  Args {}
+  Dir  .
+  Elo  0
+  Time 0
+  URL  {}
+  UCI  0
+  UCIoptions {}
+}
+
+engine {
+  Name Stockfish
+  Cmd  /usr/bin/stockfish
+  Args {}
+  Dir  .
+  Elo  0
+  Time 1391871725
+  URL  {}
+  UCI  1
+  UCIoptions {{Hash 2048} {OwnBook false} {MultiPV 1} {{Write Debug Log} false} {{Write Search Log} false} {{Search Log Filename} SearchLog.txt} {{Book File} /usr/share/stockfish/book.bin} {{Best Book Move} false} {{Contempt Factor} 0} {{Mobility (Midgame)} 100} {{Mobility (Endgame)} 100} {{Pawn Structure (Midgame)} 100} {{Pawn Structure (Endgame)} 100} {{Passed Pawns (Midgame)} 100} {{Passed Pawns (Endgame)} 100} {Space 100} {Aggressiveness 100} {Cowardice 100} {{Min Split Depth} 0} {{Max Threads per Split Point} 5} {Threads 4} {{Idle Threads Sleep} true} {{Skill Level} 20} {{Emergency Move Horizon} 40} {{Emergency Base Time} 60} {{Emergency Move Time} 30} {{Minimum Thinking Time} 20} {{Slow Mover} 70}}
+}
+

@@ -1,0 +1,68 @@
+Scid vs. PC <--> Engine communication log file
+Engine: Phalanx
+Command: phalanx
+Arguments:  
+Directory: /home/johannes/.scidvspc
+Date: Sat Feb 08 16:18:44 CET 2014
+
+Engine: Phalanx XXIII
+Note: First line from engine seen; sending it initial commands now.
+Scid  : xboard
+Scid  : protover 2
+Scid  : easy
+Scid  : post
+Note: Seen "Phalanx"; assuming analyze command.
+Engine: telluser Phalanx: created learn file ./learn.phalanx
+Engine: learning file ./learn.phalanx, 262144 bytes
+Engine: telluser Phalanx: Cannot open both [sbook.phalanx] and [pbook.phalanx]
+Engine: tellics set 1 Phalanx XXIII, 820 kB hashtable, 0/0 kB P/S opening book
+Engine: [ white, 1 ]
+Engine: xboard mode on
+Engine: feature myname="Phalanx XXIII" analyze=1 setboard=1 sigint=1 time=1 draw=0 
+Engine: pondering off
+Engine: post on
+Scid  : setboard rnb1kbnr/ppp1pppp/8/3q4/8/2N5/PPPP1PPP/R1BQKBNR b KQkq - 1 3
+Scid  : analyze
+Engine: analyze mode, type 'exit' to terminate
+Engine:   3    -11     0      919  Qd5-d4  ??      
+Engine:   3   -121     0     1148  Qd5-d4  Bf1-b5  Bc8-d7  Ng1-f3  
+Engine:   3   -116     0     1391  Qd5-e5  !       
+Engine:   3    -78     0     1625  Qd5-e5  Bf1-e2             
+Engine:   3    -73     0     1723  Qd5-c5  !       
+Engine:   3    -73     0     2064  Qd5-c5  Bf1-b5             
+Engine:   3    -68     0     2134  Qd5-f5  !       
+Engine:   3    -66     0     2295  Qd5-f5  Ng1-f3             
+Engine:   3    -66     1     3044  Qd5-f5  Ng1-f3             
+Engine:   4   -116     1     3918  Qd5-f5  Ng1-f3  Ng8-f6  Pd2-d4  
+Engine:   4   -111     2     4595  Qd5-e5  !       
+Engine:   4    -56     2     5266  Qd5-e5  !!      
+Engine:   4    -49     2     6221  Qd5-e5  Bf1-e2  Qe5-g5  Nc3-b5  Nb8-a6  
+Engine:   4    -49     2     7304  Qd5-e5  Bf1-e2  Qe5-g5  Nc3-b5  Nb8-a6  
+Engine:   5   -108     4    13879  Qd5-e5  Bf1-e2  Qe5-g5  Be2-f3  Qg5-e5  Qd1-e2  
+Engine:   5   -103     5    15226  Qd5-f5  !       
+Engine:   5    -97     6    17526  Qd5-f5  Ng1-f3  Ng8-f6  Pd2-d4  Nb8-c6  
+Engine:   5    -97     8    28431  Qd5-f5  Ng1-f3  Ng8-f6  Pd2-d4  Nb8-c6  
+Engine:   6   -137    12    49105  Qd5-f5  Pd2-d4  Ng8-f6  
+Engine:   6   -132    13    52341  Qd5-e5  !       
+Engine:   6   -121    15    68806  Qd5-e5  Bf1-e2  Qe5-g5  Ke1-f1  Ng8-f6  Pd2-d4  Qg5-f5  
+Engine:   6   -116    16    74195  Qd5-e6  !       
+Engine:   6    -94    20    97749  Qd5-e6  Ng1-e2  Ng8-f6  Pd2-d4  
+Engine:   6    -94    22   113698  Qd5-e6  Ng1-e2  Ng8-f6  Pd2-d4  
+Engine:   7   -110    35   190606  Qd5-e6  Bf1-e2  Qe6-g6  Ng1-f3  Qg6xg2  Rh1-g1  Qg2-h3  Pd2-d4  
+Engine:   7   -109    43   245847  Qd5-f5  Pd2-d4  Ng8-f6  Ng1-f3  Nb8-c6  Bf1-d3  Qf5-g4  
+Engine:   7   -107    56   321091  Qd5-d7  Bf1-b5  Pc7-c6  Bb5-e2  Ng8-f6  Pd2-d4  Qd7-c7  
+Engine:   7   -104    75   446887  Qd5-a5  Ng1-f3  Ng8-f6  
+Engine:   7   -104    75   446887  Qd5-a5  Ng1-f3  Ng8-f6  
+Engine:   8   -107   141   777392  Qd5-a5  Bf1-c4  Nb8-c6  Pd2-d4  Pe7-e5  Pd4-d5  Qa5-b4  Bc4-b5  
+Engine:   8   -102   159   874523  Qd5-e6  !       
+Engine:   8    -90   183  1023804  Qd5-e6  Bf1-e2  Qe6-g6  Be2-f3  Pe7-e5  Ng1-e2  Ng8-f6  Pd2-d4  Bf8-d6  
+Engine:   8    -90   220  1253713  Qd5-e6  Bf1-e2  Qe6-g6  Be2-f3  Pe7-e5  Ng1-e2  Ng8-f6  Pd2-d4  Bf8-d6  
+Engine:   9   -112   306  1758599  Qd5-e6  Bf1-e2  Qe6-g6  Ng1-f3  Ng8-f6  Rh1-g1  Bc8-f5  Nf3-e5  Qg6-h6  
+Engine:   9   -107   368  2068699  Qd5-a5  !       
+Engine:   9   -101   563  3143827  Qd5-a5  Pd2-d4  Pe7-e5  Bf1-b5  Pc7-c6  Bb5-c4  Pb7-b5  Bc4-e2  Pe5xd4  Qd1xd4  Ng8-f6  
+Engine:   9    -96   703  3846600  Qd5-f5  !       
+Engine:   9    -96   737  4024327  Qd5-f5  Pd2-d4             
+Engine:   9    -95   935  5116536  Qd5-d6  Pd2-d4  Ng8-f6  Bf1-e2  Bc8-f5  Ng1-f3  Nb8-d7  Nc3-b5  Qd6-b6  
+Engine:   9    -95  1051  5772393  Qd5-d6  Pd2-d4  Ng8-f6  Bf1-e2  Bc8-f5  Ng1-f3  Nb8-d7  Nc3-b5  Qd6-b6  
+Scid  : exit
+Scid  : quit

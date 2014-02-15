@@ -30,9 +30,13 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ,'.lircrc'
 ,'.zlogin'
 ,'.xbmc/userdata/Lircmap.xml'
+<<<<<<< HEAD
 ,'.xbmc/userdata/guisettings.xml'
 ,'.xbmc/userdata/keymaps/remote.xml'
 ,'.xbmc/userdata/sources.xml'
+=======
+,'.scidvspc'
+>>>>>>> FETCH_HEAD
 ] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
