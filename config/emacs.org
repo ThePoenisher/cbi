@@ -2251,6 +2251,7 @@ http://stackoverflow.com/questions/8006347/how-can-i-make-emacs-speedbar-auto-ex
   - C-p :: toogle prefix matching
   - M-s :: force to search (again)
   - M-f and M-d :: prompts and uses find to locate files or directories.
+  - M-l :: Toggle literal reading of this file.
 
 http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire
 *** possible enhancements
@@ -2302,6 +2303,7 @@ http://www.xsteve.at/prg/emacs/power-user-tips.html
 **** recentf                                                        :keys:
 #+BEGIN_SRC emacs-lisp
   (recentf-mode 1)
+  (setq recentf-max-menu-items 2500)
   (defun xsteve-ido-choose-from-recentf ()
     "Use ido to select a recently opened file from the `recentf-list'"
     (interactive)

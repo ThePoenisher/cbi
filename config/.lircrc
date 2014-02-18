@@ -10,7 +10,7 @@ end
 begin
 # remote = mceusb
     prog = mpv
-    button = cycle pause
+    button = Pause
     config = cycle pause
     repeat = 0
     delay = 0
@@ -183,4 +183,94 @@ button = Guide
 config = cycle fullscreen
 repeat = 0
 delay = 0
+end
+
+
+#################################
+begin
+ prog = vlc
+ button = Play
+ config = key-play-pause
+end
+begin
+ prog = vlc
+ button = pause
+ config = key-play-pause
+end
+begin
+ prog = vlc
+ button = stop
+ config = key-stop
+end
+begin
+ prog = vlc
+ button = forward
+ config = key-jump+medium
+end
+begin
+ prog = vlc
+ button = rewind
+ config = key-jump-short
+end
+begin
+ prog = vlc
+ button = skip
+ config = key-next
+end
+begin
+ prog = vlc
+ button = replay
+ config = key-prev
+end
+begin
+ prog = vlc
+ button = up
+ config = key-nav-up
+end
+begin
+ prog = vlc
+ button = down
+ config = key-nav-down
+end
+begin
+ prog = vlc
+ button = left
+ config = key-lav-left
+end
+begin
+ prog = vlc
+ button = right
+ config = key-right
+end
+begin
+ prog = vlc
+ button = volup
+ config = key-vol-up
+ repeat = 1
+end
+begin
+ prog = vlc
+ button = voldown
+ config = key-vol-down
+ repeat = 1
+end
+begin
+ prog = vlc
+ button = mute
+ config = key-vol-mute
+end
+begin
+ prog = vlc
+ button = pictures
+ config = key-audiodelay-up
+end
+begin
+ prog = vlc
+ button = music
+ config = key-audiodelay-down
+end
+begin
+ prog = vlc
+ button = more
+ config = key-crop
 end

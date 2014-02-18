@@ -22,7 +22,7 @@
             <repeat>false</repeat>
             <shuffle>false</shuffle>
         </playlist>
-        <extractflags>false</extractflags>
+        <extractflags>true</extractflags>
         <extractthumb>true</extractthumb>
         <replacelabels>true</replacelabels>
         <selectaction>1</selectaction>
@@ -99,8 +99,8 @@
             <sortorder>1</sortorder>
         </pictures>
         <videofiles>
-            <viewmode>65536</viewmode>
-            <sortmethod>1</sortmethod>
+            <viewmode>65587</viewmode>
+            <sortmethod>2</sortmethod>
             <sortorder>1</sortorder>
         </videofiles>
         <musicfiles>
@@ -110,7 +110,7 @@
         </musicfiles>
     </viewstates>
     <general>
-        <systemtotaluptime>23454</systemtotaluptime>
+        <systemtotaluptime>23777</systemtotaluptime>
         <addonautoupdate>true</addonautoupdate>
         <addonnotifications>true</addonnotifications>
         <addonforeignfilter>false</addonforeignfilter>
@@ -139,7 +139,7 @@
     </defaultvideosettings>
     <audio>
         <mute>false</mute>
-        <fvolumelevel>1.000000</fvolumelevel>
+        <fvolumelevel>0.833333</fvolumelevel>
     </audio>
     <resolutions />
     <audiocds>
@@ -473,7 +473,7 @@
         <currentlocation>1</currentlocation>
     </weather>
     <window>
-        <height>1187</height>
+        <height>1200</height>
         <width>1920</width>
     </window>
     <skinsettings>
