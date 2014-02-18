@@ -32,11 +32,12 @@ dev="$2"
 
 if [ "$name"  = "-all" ]; then
 		# sudo dmsetup table --target crypt | sed -r 's/^([^:]+): .*/\1/' | xargs -n1 -d '\n' -I{} sh -c "${BASH_SOURCE[0]} \"{}\" \"$dev\" < /dev/tty"
-		while read p; do 
+		mapfile -t array < <(sudo dmsetup table --target crypt | sed -r 's/^([^:]+): .*/\1/')
+		for p in "${array[@]}"; do
 				if [ "$dev" != "-resume" ] || (sudo dmsetup info "$p" | grep -iq "state: *SUSPENDED"); then
-						"${BASH_SOURCE[0]}"  "$p" "$dev" # < /dev/tty
+						"${BASH_SOURCE[0]}"  "$p" "$dev"
 				fi
-		done < <(sudo dmsetup table --target crypt | sed -r 's/^([^:]+): .*/\1/')
+		done 
 		exit
 fi
 
