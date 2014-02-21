@@ -657,6 +657,10 @@ http://ergoemacs.org/emacs/find_replace_inter.html
 ***** ...mehr 
 http://www.emacswiki.org/emacs/SearchBuffers
 http://stackoverflow.com/questions/7494203/how-do-i-m-x-replace-string-across-all-buffers-in-emacs
+**** occurs (aus replace+)
+**** case
+search-upper-case
+case-fold-search (sometimes set locally!)
 *** Undo Limit
 #+BEGIN_SRC emacs-lisp
 (setq undo-limit 10000000)
@@ -950,7 +954,7 @@ some tips."
 - /c :: confirmation
 - http://vim.wikia.com/wiki/Search_and_replace
 - \C :: Case sensitive search :%s/\C.*/aaa/ 
-- /I :: Deaktivate case-replace :%s/.*/aaa/I
+- /I :: Deaktivate case sensitive-replace :%s/.*/aaa/I
 https://bitbucket.org/lyro/evil/issue/140/regex-searching-issues
 **** Probleme
 ***** Select /cursor off by one: 
