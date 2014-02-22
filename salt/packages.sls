@@ -84,6 +84,8 @@ base_packages:
       - curlftpfs
       - strace
       - calc
+      - dmidecode #for salt
+      - python2-pip
       - python2-pygments
       - nmap #(includes netcat implementation (ncat) with ipv6 support)
       - encfs
@@ -165,6 +167,7 @@ base_packages:
 {% endif %} #archdesktop
     - require:
       - file: /etc/pacman.conf
+    - sysupgrade: False    
 
 # do I need gvfs-mtp-git. given it limited power.  what does ubuntu use ? gphotos2?
 #,'git-annex-standalone' use own PKGBUILD instead

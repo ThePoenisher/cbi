@@ -208,30 +208,27 @@ sambaservices:
       
 #######  managed etc (template) files #######
 {% set files =
-['fstab'
-,'gitconfig'
-,'kismet.conf'
-,'lirc/lircd.conf'
-,'locale.gen'
-,'makepkg.conf'
-,'minidlna.conf'
-,'mkinitcpio.conf'
-,'modules-load.d/cbi.conf'
-,'netctl/wlan0-SBB'
-,'netctl/wlan0-chris-KDG-C32A4.gpg'
-,'netctl/wlan0-test.gpg'
-,'pacman.conf'
-,'pacman.d/mirrorlist'
-,'samba/smb.conf'
-,'systemd/journald.conf'
-,'systemd/logind.conf'
-,'texmf/web2c/texmf.cnf'
-,'zsh/zshenv'
+[('fstab','')
+,('gitconfig','')
+,('kismet.conf','')
+,('locale.gen','')
+,('makepkg.conf','')
+,('minidlna.conf','')
+,('mkinitcpio.conf','')
+,('modules-load.d/cbi.conf','')
+,('netctl/wlan0-SBB','')
+,('netctl/wlan0-chris-KDG-C32A4','.gpg')
+,('netctl/wlan0-test','.gpg')
+,('pacman.conf','')
+,('samba/smb.conf','')
+,('systemd/journald.conf','')
+,('systemd/logind.conf','')
+,('zsh/zshenv','')
 ] %}
-{% for file in files %}
+{% for file,ending in files %}
 /etc/{{ file }}:
   file.managed:
-    - source: salt://etc/{{ file }}
+    - source: salt://etc/{{ file }}{{ ending }}
     - makedirs: True
     - template: jinja
 {% endfor %}
@@ -295,16 +292,12 @@ hostnamectl set-hostname {{ grains['cbi_machine'] }}:
 cups:
   service.running:
     - enable: True
+      
 
 ##### pacman #### 
 /etc/pacman.d/mirrorlist:
   file.managed:
     - source: salt://etc/pacman.d/mirrorlist.gpg
-
-/etc/pacman.d/mirrorlist:
-  file.managed:
-    - source: salt://etc/pacman.d/mirrorlist.gpg
-
 
 ##### Systemd services
 
@@ -317,7 +310,7 @@ cups:
 ,('mycapsremap'      ,true ,['']        ,['systemd/system/mycapsremap.service'])
 ,('resume@'          ,true ,['johannes'],['systemd/system/resume@.service'])
 ,('iptables'         ,true ,['']        ,['iptables/iptables.rules'])
-,('lirc'             ,true ,['']        ,['lirc/lircd.conf'])
+,('lirc'             ,true ,['']        ,['systemd/system/lirc.service','lirc/lircd.conf'])
 ]%}
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
@@ -358,4 +351,3 @@ systemd-reload-{{service~instance}}:
 
 {% endif %} # arch desktop
 {% endif %} #ARCH OS
-
