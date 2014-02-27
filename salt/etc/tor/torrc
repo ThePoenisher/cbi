@@ -187,7 +187,7 @@ HiddenServicePort 22 172.16.0.2:9200
 ## address manually to your friends, uncomment this line:
 #PublishServerDescriptor 0
 
-VirtualAddrNetwork 10.192.0.0/10
+VirtualAddrNetworkIPv4 10.192.0.0/10
 AutomapHostsOnResolve 1
 SocksPort 172.16.0.1:9100 IsolateDestPort IsolateDestAddr
 SocksPort 172.16.0.1:9101
