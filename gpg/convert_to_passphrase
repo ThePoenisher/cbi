@@ -1,7 +1,7 @@
 #!/bin/bash
 f="Wortliste"
 
-# converts a hex encoded number to a list of words
+# converts a binary number to a list of words
 
 # the list:
 # http://www1.ids-mannheim.de/kl/projekte/methoden/derewo.html
@@ -31,6 +31,7 @@ fi
 echo "VERIFY THE INTEGRITY OF THIS FILE!!!!!!!" 1>&2
 
 if ! echo 319b4c08b3ce29390699c96b31c48b863247da85d39a90d9e16b6d338b8289594e68cd20f39572ec8491faffc8c7dc8dc1b3ad8a239d0652670c61c3027acb7f "$f" | sha512sum -c --strict 1>&2; then
+		echo checksum failed on "$f" 
 		sha512sum "$f"
 fi
 
@@ -49,6 +50,7 @@ readarray -t words < "$f"
 l=$(cat "$f" | wc -l )
 hx="`head | xxd -p | tr '[:lower:]' '[:upper:]'`"
 if [ -n "$debug" ]; then echo $hx; fi
+# bits per word +2 = BC_LINE_LENGTH (including newline and backslash character!)
 bi="$(echo "ibase=16;obase=2;$hx" | BC_LINE_LENGTH=18 bc | tr -d "\\" 2> /dev/null)"
 if [ -n "$debug" ]; then echo $bi; fi
 for b in $bi; do

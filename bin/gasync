@@ -1,6 +1,9 @@
 #!/bin/bash
 # git-annex sync
 
+echo handel personal repo on backup drive
+exit 1
+
 # Usage: gasync [ -d ] [ -gc ] [ -p ] [ -g ] [ -ff ] [ -f ] [ -1 ] [ <dirs> ]
 
 while true; do

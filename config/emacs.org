@@ -2432,13 +2432,18 @@ C-b C-z
   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
   (eval-after-load 'haskell-mode
-    '(define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
+    '(progn    
+       (define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
+       (setq haskell-program-name "cabal repl")
+       )
     )
 #+END_SRC
 *** Formatting
 https://github.com/jaspervdj/stylish-haskell
 *** Tags
 http://www.haskell.org/ghc/docs/6.10.3/html/users_guide/utils.html
+*** cabal sandbox
+
 ** TODO imenu gives a list of all functions in a file, and lets you jump to them.
 idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
 ** Javascript 
