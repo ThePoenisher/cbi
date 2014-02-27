@@ -3,7 +3,7 @@
 # If you edit this file, you must preserve valid its Tcl
 # format or it will not set your Scid options properly.
 
-set boardSize 25
+set boardSize 55
 set boardStyle Merida1
 set language E
 set ::pgn::showColor 1
@@ -145,7 +145,7 @@ set ::commenteditor::State(markColor) purple
 set ::commenteditor::State(markType) +
 set boardfile_lite emptySquare
 set boardfile_dark emptySquare
-set ::file::finder::data(dir) /home/johannes
+set ::file::finder::data(dir) /tmp
 set ::file::finder::data(sort) name
 set ::file::finder::data(recurse) 0
 set ::file::finder::data(Scid) 1
@@ -425,7 +425,7 @@ set initialDir(tex) /home/johannes
 set initialDir(epd) /home/johannes
 set initialDir(stm) /home/johannes
 set initialDir(sso) /home/johannes
-set initialDir(pgn) /home/johannes
+set initialDir(pgn) /tmp
 set initialDir(report) /home/johannes
 set initialDir(tablebase1) {}
 set initialDir(tablebase2) {}
