@@ -3,7 +3,7 @@
 # If you edit this file, you must preserve valid its Tcl
 # format or it will not set your Scid options properly.
 
-set boardSize 55
+set boardSize 80
 set boardStyle Merida1
 set language E
 set ::pgn::showColor 1

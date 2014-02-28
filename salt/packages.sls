@@ -43,6 +43,7 @@ base_packages:
       - aria2
       - vsftpd
       - cabal-install
+      - xdiskusage
       - perl-mime-tools
       - perl-image-exiftool
       - pastebinit
