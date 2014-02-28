@@ -47,6 +47,7 @@ alias egrep="egrep --color=auto"
 alias egrepc="egrep --color=always"
 
 alias curlm="curl -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0'"
+alias mpv="mpv --save-position-on-quit"
 
 alias android-mount="sudo mkdir -p /media/android && sudo chown johannes:johannes /media/android/ && mtpfs -o user,allow_other /media/android && cd /media/android"
 alias android-umount="sudo umount /media/android"
