@@ -3,7 +3,7 @@
 # If you edit this file, you must preserve valid its Tcl
 # format or it will not set your Scid options properly.
 
-set boardSize 80
+set boardSize 70
 set boardStyle Merida1
 set language E
 set ::pgn::showColor 1
@@ -89,7 +89,7 @@ set engines(F4) {}
 set analysis(logEngines) 1
 set scidBooksDir /home/data/personal/schach/books
 set scidBasesDir /usr/share/scid/share/scid/bases
-set ::book::lastBook1 {}
+set ::book::lastBook1 performance.bin
 set ::book::lastBook2 {}
 set ::book::lastTuning {}
 set ::book::sortAlpha 0
@@ -201,8 +201,8 @@ set winWidth(.crosstabWin)  75
 set winHeight(.crosstabWin) 15
 set winWidth(.enginelist)  43
 set winHeight(.enginelist) 34
-set winWidth(.helpWin)  50
-set winHeight(.helpWin) 32
+set winWidth(.helpWin)  117
+set winHeight(.helpWin) 52
 set winWidth(.pgnWin)  65
 set winHeight(.pgnWin) 20
 set winWidth(.playerInfoWin)  45
@@ -234,8 +234,8 @@ set winX(.glist)  -1
 set winY(.glist)  -1
 set winX(.glistWin)  -1
 set winY(.glistWin)  -1
-set winX(.helpWin)  -1
-set winY(.helpWin)  -1
+set winX(.helpWin)  0
+set winY(.helpWin)  0
 set winX(.main)  -1
 set winY(.main)  -1
 set winX(.maintWin)  -1

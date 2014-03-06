@@ -27,15 +27,14 @@ fi
 name="$1"
 hexname="`xxd -p <<<$name | tr -d '\n'`"
 tmpname=cryptsetupcreate$hexname
-fpf="/tmp/cryptsetup_key_$name"
+fpf="/tmp/cryptsetup_$name"
 dev="$2"
 
 if [ "$name"  = "-all" ]; then
-		# sudo dmsetup table --target crypt | sed -r 's/^([^:]+): .*/\1/' | xargs -n1 -d '\n' -I{} sh -c "${BASH_SOURCE[0]} \"{}\" \"$dev\" < /dev/tty"
-		mapfile -t array < <(sudo dmsetup table --target crypt | sed -r 's/^([^:]+): .*/\1/')
-		for p in "${array[@]}"; do
-				if [ "$dev" != "-resume" ] || (sudo dmsetup info "$p" | grep -iq "state: *SUSPENDED"); then
-						"${BASH_SOURCE[0]}"  "$p" "$dev"
+		mapfile -t array < <(ls /tmp/cryptsetup_* | sed -re's|/tmp/cryptsetup_(.*)|\1|p')
+		for d in "${array[@]}"; do
+				if [ "$dev" != "-resume" ] || (sudo dmsetup info "$d" | grep -iq "state: *SUSPENDED"); then
+						"${BASH_SOURCE[0]}"  "$d" "$dev"
 				fi
 		done 
 		exit
@@ -74,27 +73,31 @@ else
 fi
 
 key=`pbkdf2 "$p" "$salt" "$ic" "$dklen"`
-salt2=`xxd -p <(head -c 100 /dev/urandom) | tr -d '\n'`
-fp=`echo -n "$salt2$key" | sha512sum | cut -f1 -d' '`
+p2=`echo "$p" | sed -nr 's/^([0-9]+) .+/\1/p'`
+unset p
+
 fp2=`echo -n created"$key" | sha512sum | cut -f1 -d' '`
 
-p2=`echo "$p" | sed -nr 's/^([0-9]+) .+/\1/p'`
 if [ -z "$p2" ]; then
 		echo "ERROR: bad passphrase format"
 		exit 1
 fi
 o=$(( factor * p2 ))
 
+
 if [ "$dev" = "-resume" ]; then
-		readarray -n 2 -t fpcheck < "$fpf"
-		fp=`echo -n "${fpcheck[0]}$key" | sha512sum | cut -f1 -d' '`
-		if [ "$fp" != "${fpcheck[1]}" -a \( ${#fp} -eq "$hashhexlen" \) ]; then
-				echo "ERROR: $fpf does not match given passphrase"
-				exit 1;
+		resume="yes"
+		declare -a tab=(`sudo dmsetup table "$name"`)
+		if [ $(( o+1 )) -ne ${tab[7]} ]; then 
+				echo "ERROR: key mismatch (2)"
+				exit 1
 		fi
-		echo "dmsetup message \"$name\" 0 key set  \"$key\" &&
-				dmsetup resume \"$name\"" | sudo sh
-		exit $?
+		dev=/dev/block/${tab[6]}
+		if [ ! -b "$dev" ]; then
+				echo "ERROR parsing device for $name: $dev"
+				sudo dmsetup table "$name"
+				exit 1
+		fi
 fi
 
 if [ "$dev" = "-create" ]; then
@@ -121,23 +124,29 @@ EOF
 				exit 1
 		fi
 
-else #open the device
+else #open/resume the device
 		function fp3 {
 				sudo dd if=/dev/mapper/"$2" bs=512 skip=$1 count=1 2>/dev/null | sha512sum | cut -f1 -d' '
 		}			
-		do_cc "$key" "$o --readonly \"$dev\" \"$tmpname\""
+		do_cc "$key" "$o --readonly --shared \"$dev\" \"$tmpname\""
 		test1="`sudo head /dev/mapper/"$tmpname" -c "$hashhexlen"`" 
 		test2="`fp3 1 "$tmpname"`"
 		sudo cryptsetup close "$tmpname"
 		if [ \( "$fp2" = "$test1" \) -a \( ${#test1} -eq "$hashhexlen" \) ]; then
 				o1=$((1+o))
-   			if do_cc "$key" "$o1 -p1 \"$dev\" \"$name\""; then
+				if [ "$resume" ]; then
+						echo "dmsetup message \"$name\" 0 key set  \"$key\" &&
+	          			dmsetup resume \"$name\"" | sudo sh
+				else
+						do_cc "$key" "$o1 -p1 \"$dev\" \"$name\""
+				fi
+   			if [ $? -eq 0 ]; then
 						if [ "$test2" = "`fp3 0 "$name"`" -a \( ${#test2} -eq "$hashhexlen" \) ]; then
-								echo "echo \"$salt2\" > \"$fpf\"" | sudo sh
-								echo "echo -n \"$fp\" >> \"$fpf\"" | sudo sh
+								touch "$fpf"
 								sudo cryptsetup status "$name"
 						else
 								echo PLAINTEXT CHECK failed. possible encryption key mismatch
+								sudo cryptsetup status "$name"
 								sudo cryptsetup close "$name"
 								exit 1
 						fi
@@ -145,7 +154,7 @@ else #open the device
 						exit 1		
 				fi
 		else
-				echo "Key has mismatch"
+				echo "ERROR: Key mismatch"
 				exit 1
 		fi
 fi

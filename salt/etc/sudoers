@@ -84,7 +84,6 @@ root ALL=(ALL) ALL
 johannes ALL=(ALL) NOPASSWD: /usr/bin/cryptsetup close *
 johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup suspend *
 johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup message * 0 key wipe
-johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup table --target crypt
 
 
 ## Uncomment to allow any user to run sudo if they know the password
