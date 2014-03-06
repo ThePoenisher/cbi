@@ -1,7 +1,8 @@
 #!/bin/bash
 # git-annex sync
 
-echo handel personal repo on backup drive
+echo TODO: handle personal repo on backup drive
+echo TODO: update fp2 for external drive (mycryptsetup)
 exit 1
 
 # Usage: gasync [ -d ] [ -gc ] [ -p ] [ -g ] [ -ff ] [ -f ] [ -1 ] [ <dirs> ]

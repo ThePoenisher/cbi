@@ -4,9 +4,11 @@
 # 10MB steps converted to 512 block counts
 factor=20480
 ic=250000
+ic2=25000
 dklen=64
 hashhexlen=128
 salt="saltyKCfnOWWlJ1Jf1qwbs7qDUTJ5rB7GbxwzSJlP7sUSC2hM7Lh9nY7z4ZzjSUlC9W6QEszB6Hyz7JFORCxF8cisUPLrMv5s5bXFR6Io2bam6GoRAQqObC0R2h7Kn6";
+salt2="saltc95ac9c82f8c7d3c9705ba502da772dc3099818facc2e913fa338b8dc7ba22edf56e91e8c0ccafd6def36adecdafd2447e450bc5600b6bbd586e5524as";
 cc="cryptsetup plainOpen -h plain -c aes-xts-plain64 -q --key-size $(( dklen * 8 )) --key-file - -o"
 
 function do_cc {
@@ -19,14 +21,15 @@ if [ $# -ne 2 ]; then
  usage: ${0##*/} [fd3]    name            path
  usage: ${0##*/} [fd3]    name|-all       -resume|-suspend|-close
  usage: ${0##*/} [fd3]    path            -create  (reads pass from fd3)
+
+ fd3: 3<<(command)
 EOF
 		exit 1
 fi
 
 
 name="$1"
-hexname="`xxd -p <<<$name | tr -d '\n'`"
-tmpname=cryptsetupcreate$hexname
+tmpname=temp`echo -n $name | sha512sum | head -c 30`
 fpf="/tmp/cryptsetup_$name"
 dev="$2"
 
@@ -76,8 +79,6 @@ key=`pbkdf2 "$p" "$salt" "$ic" "$dklen"`
 p2=`echo "$p" | sed -nr 's/^([0-9]+) .+/\1/p'`
 unset p
 
-fp2=`echo -n created"$key" | sha512sum | cut -f1 -d' '`
-
 if [ -z "$p2" ]; then
 		echo "ERROR: bad passphrase format"
 		exit 1
@@ -100,9 +101,12 @@ if [ "$dev" = "-resume" ]; then
 		fi
 fi
 
+fp2old=`echo -n created"$key" | sha512sum | cut -f1 -d' '`
+fp2=`pbkdf2 "$p" "$salt2" "$ic2" "$dklen"`
+
 if [ "$dev" = "-create" ]; then
 		cat <<EOF
-WARNING!
+WARNING (generated from mycryptsetup)!
 ========
 This will overwrite data on drive irrevocably.
 `ls -lah $name`
@@ -113,7 +117,11 @@ EOF
 		read str
 		if [ "$str" = "YES" ]; then
 				(do_cc "$key" "$o \"$name\" \"$tmpname\"" &&	
-						(echo "echo -n \"$fp2\" > \"/dev/mapper/$tmpname\"" | sudo sh) &&
+						(if true && [ ! "`sudo head /dev/mapper/"$tmpname" -c "$hashhexlen"`" = "$fp2old" ]; then 
+								echo "ERROR: old key mismatch"
+						else
+						    echo "echo -n \"$fp2\" > \"/dev/mapper/$tmpname\"" | sudo sh
+						fi)
 						echo "closing..." && sync && sleep 1 &&
 						(while ! sudo cryptsetup close "$tmpname"; do
 								echo "Retry in 1 sec..."
@@ -132,7 +140,7 @@ else #open/resume the device
 		test1="`sudo head /dev/mapper/"$tmpname" -c "$hashhexlen"`" 
 		test2="`fp3 1 "$tmpname"`"
 		sudo cryptsetup close "$tmpname"
-		if [ \( "$fp2" = "$test1" \) -a \( ${#test1} -eq "$hashhexlen" \) ]; then
+		if [ \( "$fp2old" = "$test1" -o "$fp2" = "$test1" \) -a \( ${#test1} -eq "$hashhexlen" \) ]; then
 				o1=$((1+o))
 				if [ "$resume" ]; then
 						echo "dmsetup message \"$name\" 0 key set  \"$key\" &&
