@@ -41,6 +41,9 @@ base_packages:
       - pptpclient
       - socat
       - aria2
+      - cuetools
+      - shntool
+      - mac
       - vsftpd
       - cabal-install
       - xdiskusage

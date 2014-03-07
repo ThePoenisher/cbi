@@ -6,7 +6,7 @@ arch_web_packages:
       - php
       - php-cgi
       
-{% set files = ['php/php.ini'] %}
+{% set files = ['php/conf.d/cbi.ini'] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.managed:

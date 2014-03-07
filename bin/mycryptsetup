@@ -103,6 +103,9 @@ fi
 
 fp2old=`echo -n created"$key" | sha512sum | cut -f1 -d' '`
 fp2=`pbkdf2 "$p" "$salt2" "$ic2" "$dklen"`
+# hexzahlen sind immer leicht zu finden. besser: binary noch besser:
+# teil des passphrases abzweigen und als geheimen entschlüsselungstest
+# nutzen.
 
 if [ "$dev" = "-create" ]; then
 		cat <<EOF
