@@ -1235,8 +1235,18 @@ words: M-t
 **** move lines
 is provided my org-metaup?
 *** Line wrap
-M-x toggle-truncate-lines
-*** auto-fill-mode
+http://www.emacswiki.org/emacs/LineWrap
+**** M-x toggle-truncate-lines
+**** fill-paragraph
+**** auto-fill-mode
+**** visual-line-mode (ändert verhalten von navigationsbefehlen)
+**** (setq word-wrap t)
+**** longlines-mode 
+(einzige alternative, wenn umbruch bei fill-column erwünscht)
+
+nicht so toll: 
+- Zeilen nummern sitmmen nicht mehr
+- Kommentare werden nicht erweitert (wie bei fill-paragraph)
 ** Bugs und Warnings
 *** (lambda (a) ...) quoted with ' rather than with #'
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda

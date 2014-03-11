@@ -110,7 +110,7 @@
         </musicfiles>
     </viewstates>
     <general>
-        <systemtotaluptime>24013</systemtotaluptime>
+        <systemtotaluptime>24530</systemtotaluptime>
         <addonautoupdate>true</addonautoupdate>
         <addonnotifications>true</addonnotifications>
         <addonforeignfilter>false</addonforeignfilter>
@@ -139,7 +139,7 @@
     </defaultvideosettings>
     <audio>
         <mute>false</mute>
-        <fvolumelevel>0.766666</fvolumelevel>
+        <fvolumelevel>0.866666</fvolumelevel>
     </audio>
     <resolutions />
     <audiocds>

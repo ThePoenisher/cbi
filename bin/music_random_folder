@@ -8,7 +8,7 @@ while true; do
 					if [ "$a" = "n" ]; then break;
 					elif [ "$a" = "u"  ]; then
 							echo updating /home/data/music/all ...
-							find /home/data/music/* -type d  > /home/data/music/all
+							find /home/data/music/* -type d  | grep -vi "/Scans" > /home/data/music/all
 							echo done
 					else
 							nvlc "$e";
