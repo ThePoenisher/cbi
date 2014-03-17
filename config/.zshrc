@@ -48,6 +48,7 @@ alias egrepc="egrep --color=always"
 
 alias curlm="curl -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0'"
 alias mpv="mpv --save-position-on-quit"
+alias mpvl="mpv -playlist /dev/fd/0"
 
 alias cmatrix="cmatrix -b -a -u 3"
 
