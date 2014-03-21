@@ -1,6 +1,6 @@
 #!/bin/zsh
 while true; do
- 			e=`cat /home/data/music/all | shuf -n1`; echo $e\?
+ 			e=`shuf -n1 /home/data/music/all`; echo $e\?
 			print -S "nvlc \"$e\" #suggestion" 
 			while true; do
 					read -k 1 a

@@ -1882,7 +1882,10 @@ there is also auto-fill-mode
 **** Problem [2013-08-30 Fri]: Funktioniert nicht mit ghostscript 9.09-1 aber mit 9.07-3
 eigentliches Problem: tikz
 **** Problem [2014-03-17 Mon]: mit dem package tikz sind die vorschaubilder alle an der falschen stelle
-folgendes funktioniert nicht
+***** frage.
+test/preview-latex.tex
+http://tex.stackexchange.com/questions/166023/strange-preview-latex-problem-with-tikz-and-maketitle
+***** hilft nicht
 \\PreviewEnvironment{tikzpicture} (siehe settings)
 http://tex.stackexchange.com/questions/111726/preview-tikz-figure-in-auctex
 http://tex.stackexchange.com/questions/28564/tikzpicture-blank-in-preview
