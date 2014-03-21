@@ -31,6 +31,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ,'.lircrc'
 ,'.zlogin'
 ,'.xbmc/userdata/Lircmap.xml'
+,'.xbmc/userdata/advancedsettings.xml'
 ,'.xbmc/userdata/guisettings.xml'
 ,'.xbmc/userdata/keymaps/remote.xml'
 ,'.xbmc/userdata/sources.xml'

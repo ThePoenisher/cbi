@@ -110,7 +110,7 @@
         </musicfiles>
     </viewstates>
     <general>
-        <systemtotaluptime>24013</systemtotaluptime>
+        <systemtotaluptime>25290</systemtotaluptime>
         <addonautoupdate>true</addonautoupdate>
         <addonnotifications>true</addonnotifications>
         <addonforeignfilter>false</addonforeignfilter>
@@ -139,7 +139,7 @@
     </defaultvideosettings>
     <audio>
         <mute>false</mute>
-        <fvolumelevel>0.766666</fvolumelevel>
+        <fvolumelevel>0.677777</fvolumelevel>
     </audio>
     <resolutions />
     <audiocds>
@@ -190,7 +190,6 @@
     </cachevideo>
     <debug>
         <screenshotpath pathversion="1">select writable folder</screenshotpath>
-        <showloginfo>false</showloginfo>
     </debug>
     <dvds>
         <automenu>false</automenu>

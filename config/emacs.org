@@ -1235,8 +1235,18 @@ words: M-t
 **** move lines
 is provided my org-metaup?
 *** Line wrap
-M-x toggle-truncate-lines
-*** auto-fill-mode
+http://www.emacswiki.org/emacs/LineWrap
+**** M-x toggle-truncate-lines
+**** fill-paragraph
+**** auto-fill-mode
+**** visual-line-mode (ändert verhalten von navigationsbefehlen)
+**** (setq word-wrap t)
+**** longlines-mode 
+(einzige alternative, wenn umbruch bei fill-column erwünscht)
+
+nicht so toll: 
+- Zeilen nummern sitmmen nicht mehr
+- Kommentare werden nicht erweitert (wie bei fill-paragraph)
 ** Bugs und Warnings
 *** (lambda (a) ...) quoted with ' rather than with #'
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
@@ -1870,6 +1880,21 @@ there is also auto-fill-mode
 - i :: goto info page
        
 **** Problem [2013-08-30 Fri]: Funktioniert nicht mit ghostscript 9.09-1 aber mit 9.07-3
+eigentliches Problem: tikz
+**** Problem [2014-03-17 Mon]: mit dem package tikz sind die vorschaubilder alle an der falschen stelle
+***** frage.
+test/preview-latex.tex
+http://tex.stackexchange.com/questions/166023/strange-preview-latex-problem-with-tikz-and-maketitle
+***** hilft nicht
+\\PreviewEnvironment{tikzpicture} (siehe settings)
+http://tex.stackexchange.com/questions/111726/preview-tikz-figure-in-auctex
+http://tex.stackexchange.com/questions/28564/tikzpicture-blank-in-preview
+**** Setting
+#+BEGIN_SRC emacs-lisp :tangle no
+(eval-after-load "preview"
+  '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)
+  )
+#+END_SRC
 *** viewer: C-c C-v
 [[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]]
 **** settings

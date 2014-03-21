@@ -1,6 +1,6 @@
 #!/bin/zsh
 while true; do
- 			e=`cat /home/data/music/all | grep -v Hörspiel | shuf -n1`; echo $e\?
+ 			e=`shuf -n1 /home/data/music/all`; echo $e\?
 			print -S "nvlc \"$e\" #suggestion" 
 			while true; do
 					read -k 1 a
@@ -8,7 +8,9 @@ while true; do
 					if [ "$a" = "n" ]; then break;
 					elif [ "$a" = "u"  ]; then
 							echo updating /home/data/music/all ...
-							find /home/data/music/* -type d  > /home/data/music/all
+							find /home/data/music/* -type d | egrep -iv "(Hörspiel|/Scans|Booklet)" > /home/data/music/all
+							echo The following item have been expluded:
+							find /home/data/music/* -type d | egrep -i "(Hörspiel|/Scans|Booklet)"
 							echo done
 					else
 							nvlc "$e";
