@@ -27,6 +27,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
 {% set files =
 ['.config/dunst'
+,'.config/MusicBrainz'
 ,'.lircrc'
 ,'.zlogin'
 ,'.xbmc/userdata/Lircmap.xml'

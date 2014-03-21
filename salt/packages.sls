@@ -43,6 +43,8 @@ base_packages:
       - aria2
       - cuetools
       - shntool
+      - picard
+      - chromaprint
       - mac
       - vsftpd
       - cabal-install
