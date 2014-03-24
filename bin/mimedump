@@ -1,0 +1,101 @@
+#!/usr/bin/perl -w
+# from http://cpansearch.perl.org/src/DSKOLL/MIME-tools-5.505/examples/
+
+=head1 NAME
+
+mimedump - dump out the contents of a parsed MIME message
+
+=head1 DESCRIPTION
+
+Read a MIME stream from the stdin, and dump its contents to the stdout.
+
+=head1 SYNOPSIS
+
+    mimedump < mime.msg
+
+=head1 AUTHOR
+
+Andreas Koenig suggested this, and wrote the original code.
+Eryq perverted the hell out of it.
+
+=cut
+
+use MIME::Parser;
+use MIME::WordDecoder;
+use Encode;
+use IPC::Open2;
+
+binmode STDOUT, ':utf8';
+#------------------------------
+#
+# dump_entity ENTITY, NAME
+#
+# Recursive routine for dumping an entity.
+#
+sub dump_entity {
+    my ($entity, $name) = @_;
+    defined($name) or $name = "'anonymous'";
+    my $IO;
+
+    # Output the body:
+    my @parts = $entity->parts;
+    if (@parts) {                     # multipart...
+	my $i;
+	foreach $i (0 .. $#parts) {       # dump each part...
+	    dump_entity($parts[$i], ("$name, part ".(1+$i)));
+			print "\n", '=' x 60, "\n\n";
+	}
+    }
+    else {                            # single part...	
+
+	# Get MIME type, and display accordingly...
+	my $type = $entity->head->mime_type;
+	my $body = $entity->bodyhandle;
+	if ($type =~ /html/){
+		open2(\*A,\*B,"w3m -I 'UTF-8' -T text/html");
+		binmode B, ':utf8';
+		binmode A, ':utf8';
+		$body->print(\*B);
+		close B;
+		print $_ while(<A>);
+	} elsif ($type =~ /^(text\/|message\/)/) {     # text: display it...
+		$body->print(\*STDOUT);
+	}
+	else {                                 # binary: just summarize it...
+	    my $path = $body->path;
+	    my $size = ($path ? (-s $path) : '???');
+	    print ">>> This is a non-text message, $size bytes long.\n";
+	    print ">>> It is stored in ", ($path ? "'$path'" : 'core'),".\n\n";
+	}
+    }
+    1;
+}
+
+#------------------------------
+#
+# main
+#
+sub main {
+    print STDERR "(reading from stdin)\n" if (-t STDIN);
+
+    # Create a new MIME parser:
+    my $parser = new MIME::Parser;
+    
+    # Create and set the output directory:
+    (-d "mimedump-tmp") or mkdir "mimedump-tmp",0755 or die "mkdir: $!";
+    (-w "mimedump-tmp") or die "can't write to directory";
+    $parser->output_dir("mimedump-tmp");
+    
+    # Read the MIME message:
+    $entity = $parser->read(\*STDIN) or die "couldn't parse MIME stream";
+
+		my $a=mime_to_perl_string($entity->head->get('from')."Subject: ".$entity->head->get('subject'));
+		print $a;
+    # Dump it out:
+    dump_entity($entity);
+}
+exit(&main ? 0 : -1);
+
+#------------------------------
+1;
+
