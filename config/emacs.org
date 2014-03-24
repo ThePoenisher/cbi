@@ -2462,13 +2462,16 @@ C-b C-z
        (setq haskell-program-name "cabal repl")
        )
     )
+  ;; from https://github.com/haskell/haskell-mode/issues/44
+  (add-hook 'haskell-cabal-mode-hook 
+            (lambda() (setq indent-tabs-mode nil)))
 #+END_SRC
 *** Formatting
 https://github.com/jaspervdj/stylish-haskell
 *** Tags
 http://www.haskell.org/ghc/docs/6.10.3/html/users_guide/utils.html
 *** cabal sandbox
-
+see settings: "cabal repl"
 ** TODO imenu gives a list of all functions in a file, and lets you jump to them.
 idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
 ** Javascript 
