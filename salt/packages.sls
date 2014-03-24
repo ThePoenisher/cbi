@@ -44,6 +44,7 @@ base_packages:
       - cuetools
       - shntool
       - picard
+      - zbar
       - chromaprint
       - mac
       - vsftpd

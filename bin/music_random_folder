@@ -1,6 +1,7 @@
 #!/bin/zsh
 while true; do
- 			e=`shuf -n1 /home/data/music/all`; echo $e\?
+		#ohen /dev/random, of sehr nahe beieinander liegende Ergebnisse (+/- 1) <2014-03-24 Mon>
+ 			e=`shuf -n1 --random-source=/dev/random /home/data/music/all`; echo $e\?
 			print -S "nvlc \"$e\" #suggestion" 
 			while true; do
 					read -k 1 a

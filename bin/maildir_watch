@@ -9,48 +9,14 @@ timeout=5000
 
 echo $watchdirs
 
-trim() {
-    local var="$1"
-    var="${var#"${var%%[![:space:]]*}"}"   # Remove leading whitespace characters.
-    var="${var%"${var##*[![:space:]]}"}"   # Remove trailing whitespace characters.
-    echo -n "$var"
-}
-
 parse_send() {
 	local inbox="$1"
 	local mailfile="$2"
 
-	# Get subject and trim length.
-	local subject=$(grep -i "Subject: " "$mailfile")
-	subject=${subject:0:40}
-	subject=$(trim "$subject")
+	local body=$(cat "$mailfile" | mimedump |  sed '/^\s*$/d' | sed '6,$d' )
 
-	# Get from field and display name or email.
-	local from_row=$(grep -i "^From:" "$mailfile" | sed 's/From:\s*//I')
-	local from_name=$(echo "$from_row" | grep -Po "[^<>]+(?=(?:<|$))")
-	local from_email=$(echo "$from_row" | grep -Po "(?<=<).+(?=>)")
-	local from="From: "
-	if [ -n "$from_name" ]; then
-		from="${from}${from_name}"
-	elif [ -n "$from_email" ]; then
-		from="${from}${from_email}"
-	else
-		from="${from}<unknown>"
-	fi
-	from=${from:0:30}
-	from=$(trim "$from")
-
-	# Get the body. First scroll down to body, Content lines, random ID line, strip signature, convert HTML, remove empty lines, join lines, substitute spaces to get more text.
-	local body=$(sed '1,/^$/d' "$mailfile" | grep -v "^Content-.*:" | grep -v "^--[[:xdigit:]]\+" | sed -n '/-- /q;p' | html2text | sed '/^ *$/d' | tr "\\n" ' ' | sed 's/\s\s*/ /g')
-	body=${body:0:100}
-	body=$(trim "$body")
-
-	# Notify summary string.
-	local out_summary=$(printf "[%s] %s, %s,\\n" "$inbox" "$from" "$subject")
-	# Notify body string.
-	local out_body=$(printf "Body: %s \\n" "$body")
 	# Send the message with the name this scrip was invoked with.
-	notify-send -t $timeout -i '/usr/share/icons/oxygen/32x32/status/mail-unread-new.png' "$out_summary" "$out_body"
+	notify-send -t $timeout -i '/usr/share/icons/oxygen/32x32/status/mail-unread-new.png' "[$inbox]" "$body"
 }
 
 # Debug with static file.

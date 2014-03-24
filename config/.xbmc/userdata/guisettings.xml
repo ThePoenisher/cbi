@@ -110,7 +110,7 @@
         </musicfiles>
     </viewstates>
     <general>
-        <systemtotaluptime>25290</systemtotaluptime>
+        <systemtotaluptime>25822</systemtotaluptime>
         <addonautoupdate>true</addonautoupdate>
         <addonnotifications>true</addonnotifications>
         <addonforeignfilter>false</addonforeignfilter>
@@ -139,7 +139,7 @@
     </defaultvideosettings>
     <audio>
         <mute>false</mute>
-        <fvolumelevel>0.677777</fvolumelevel>
+        <fvolumelevel>0.988889</fvolumelevel>
     </audio>
     <resolutions />
     <audiocds>
@@ -472,8 +472,8 @@
         <currentlocation>1</currentlocation>
     </weather>
     <window>
-        <height>1200</height>
-        <width>1920</width>
+        <height>1185</height>
+        <width>1130</width>
     </window>
     <skinsettings>
         <setting type="bool" name="skin.confluence.Use_Startup_Playlist">false</setting>
