@@ -178,3 +178,4 @@ KEYTIMEOUT=1
 unsetopt correct_all
 
 setopt BRACE_CCL #allow {a-z} expansion
+

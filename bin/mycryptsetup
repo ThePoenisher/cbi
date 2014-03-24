@@ -46,7 +46,7 @@ fi
 
 if [ "$dev" = "-close" ]; then
 		sudo cryptsetup close "$name" && sudo rm "$fpf"
-		exit 0;
+		exit $?
 fi
 		
 if [ "$dev" = "-suspend" ]; then

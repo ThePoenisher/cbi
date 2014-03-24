@@ -1885,6 +1885,8 @@ eigentliches Problem: tikz
 ***** frage.
 test/preview-latex.tex
 http://tex.stackexchange.com/questions/166023/strange-preview-latex-problem-with-tikz-and-maketitle
+email conversation kuerzn
+http://osdir.com/ml/bug-auctex-gnu/2014-03/msg00008.html
 ***** hilft nicht
 \\PreviewEnvironment{tikzpicture} (siehe settings)
 http://tex.stackexchange.com/questions/111726/preview-tikz-figure-in-auctex
@@ -1952,7 +1954,7 @@ and then executes: `TeX-view-program-list-builtin'
 
 also some predicates can be used an defined: TeX-view-predicate-list
 
-*** "processing"
+*** "processing"
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
 Read info for:
 - TeX-command-list
@@ -1980,7 +1982,7 @@ C-c ` oder besser. M-g M-n
 ***** BUG geht nicht, weil bei latex die option -file-line-error benötigt wird
 http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=514431
 
-**** warnings: C-c C-t C-w
+**** warnings/references: C-c C-t C-w
 *** BibTex
 **** Settings
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
@@ -2083,6 +2085,10 @@ see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Binding
   ;; ask you for a master file:
   (setq-default TeX-master nil)
 #+END_SRC
+*** Probleme
+**** TeX-toggle-debug-warnings : Could not determine file for warning (when using hyperref)
+***** solution: wait for next version [2014-03-24 Mon]
+https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
 ** Script
 #+BEGIN_SRC emacs-lisp
   ;; TODO: test this
