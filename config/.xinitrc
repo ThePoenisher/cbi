@@ -48,6 +48,8 @@ xinput --disable "saa7134 IR (Terratec Cinergy 40"
 feh_bg BG &
 
 setxkbmap -layout de -option ctrl:nocaps
+setxkbmap -layout "us" -variant altgr-intl
+a=52;b=29;c=xmodmap;d="$c -e '";$c -pke | sed -nr "s/^(keycode *)$b(.*)/$d\1$a\2'/p;t;s/^(keycode *)$a(.*)/$d\1$b\2'/p" | sh
 
 xsetroot -cursor_name left_ptr
 
@@ -62,6 +64,8 @@ TMUX= /usr/bin/tmux -2 new-session -ds OfflineIMAP "/usr/bin/offlineimap" >> .xl
 
 #xmobar &
 xbindkeys
+
+
 #xcompmgr & (macht die borders von xmonad irgendwie auf nervige weise durchsichtig)
 exec xmonad
 

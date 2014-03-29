@@ -451,35 +451,35 @@ not "include path"
 :END:
 ** Custom Settings
 #+BEGIN_SRC emacs-lisp
-  (when t
-  
-    (global-set-key (kbd "<M-kp-prior>") 'scroll-other-window-down)
-    (global-set-key (kbd "<M-prior>") 'scroll-other-window-down)
-    (global-set-key (kbd "M-s 7") 'my-multi-occur-in-matching-buffers)
-    (define-key ctl-x-4-map "t" 'toggle-window-split)
-    (global-set-key (kbd "C-x C-,") 'comment-or-uncomment-region)
-    (global-set-key (kbd "M-D") 'backward-kill-word)
-    (global-set-key (kbd "M-n") 'clone-indirect-buffer)
-    (global-set-key (kbd "C-x C-b") 'bs-show)
-    (global-set-key (kbd "M-# M-s") 
-                    (lambda()(interactive) (find-file "/home/data/personal/org-notes/LinuxAdoption.org")))
-    (global-set-key (kbd "M-# M-e") 'dotemacs)
-    (global-set-key (kbd "C-# C-c") 'dotemacs-commit)
-    (global-set-key [S-f1] 'browse-url-at-point)
-    (global-set-key [f1] 'browse-url-of-file)
-    (global-set-key [f2] 'grep-find)
-    ;;      (global-set-key [f3] 'isearch-forward)
-    (global-set-key [f3] 'bubble-buffer)
-    (global-set-key [M-f4] 'save-and-kill)
-    (global-set-key (kbd "C-x k") 'save-and-kill)
-    ;;(global-set-key [f5] 'asd)
-    (global-set-key [f6] 'compile)
-    ;;(global-set-key [f7] 'recompile)
-    (global-set-key [f8] 'shell)
-    (global-set-key [f9] 'xdict-query)
-    (global-set-key [f10] 'xdict-query-with-word-at-point)
-    (global-set-key [f12] 'ansi-term)
-    )
+    (when t
+    
+      (global-set-key (kbd "<M-kp-prior>") 'scroll-other-window-down)
+      (global-set-key (kbd "<M-prior>") 'scroll-other-window-down)
+      (global-set-key (kbd "M-s 7") 'my-multi-occur-in-matching-buffers)
+      (define-key ctl-x-4-map "t" 'toggle-window-split)
+      (global-set-key (kbd "C-x C-,") 'comment-or-uncomment-region)
+      (global-set-key (kbd "M-D") 'backward-kill-word)
+      (global-set-key (kbd "M-n") 'clone-indirect-buffer)
+      (global-set-key (kbd "C-x C-b") 'bs-show)
+      (global-set-key (kbd "M-s M-s") 'linxad)
+      (defun linxad nil (interactive) (find-file "/home/data/personal/org-notes/LinuxAdoption.org"))
+      (global-set-key (kbd "M-s M-e") 'dotemacs)
+      (global-set-key (kbd "C-# C-c") 'dotemacs-commit)
+      (global-set-key [S-f1] 'browse-url-at-point)
+      (global-set-key [f1] 'browse-url-of-file)
+      (global-set-key [f2] 'grep-find)
+      ;;      (global-set-key [f3] 'isearch-forward)
+      (global-set-key [f3] 'bubble-buffer)
+      (global-set-key [M-f4] 'save-and-kill)
+      (global-set-key (kbd "C-x k") 'save-and-kill)
+      ;;(global-set-key [f5] 'asd)
+      (global-set-key [f6] 'compile)
+      ;;(global-set-key [f7] 'recompile)
+      (global-set-key [f8] 'shell)
+      (global-set-key [f9] 'xdict-query)
+      (global-set-key [f10] 'xdict-query-with-word-at-point)
+      (global-set-key [f12] 'ansi-term)
+      )
 #+END_SRC
 
 ** Material / Understanding
@@ -883,6 +883,7 @@ or use `~' to toggle case
   
   (define-key evil-insert-state-map (kbd "C-ö") 'jo/enter-org-speed)
   (define-key evil-normal-state-map "ö" 'jo/enter-org-speed)
+  (define-key evil-normal-state-map (kbd "C-;")  (lambda() (interactive) (org-refile t)))
 #+END_SRC
 ***** Outline ( for Minor Mode and also ORG!!!!!)
 #+BEGIN_SRC emacs-lisp
