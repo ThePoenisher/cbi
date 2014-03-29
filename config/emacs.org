@@ -763,6 +763,8 @@ Gegenargument: http://ergoemacs.org/emacs/swap_CapsLock_Ctrl.html
 
 ***** Console level:
 (echo `dumpkeys |grep -i keymap`; echo keycode 58 = Control ) | loadkeys -
+
+siehe ./salt/etc/systemd/system/mycapsremap.service
 **** TODO Space 2 CTRL
 :PROPERTIES:
 :ID:       1d97030e-577b-467a-867b-10a786b6bcd9
@@ -1415,7 +1417,7 @@ http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
    (setq org-refile-use-outline-path nil)
    (setq org-completion-use-ido t)
    
-   (setq org-support-shift-select t)
+   ;;(setq org-support-shift-select t) ;; nein, stattdessen: evil (vim bindings)
    (setq org-log-refile t)
    (setq org-startup-with-inline-images t)
 #+END_SRC
