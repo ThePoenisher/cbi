@@ -79,7 +79,6 @@ localfolders = ~/Mail/j@g
 
 [Repository Remote]
 # does not support imap idle
-# preauthtunnel = ssh -q strauss 'sudo -u vmail /usr/bin/imapd /var/jo/vmail/gerer.name/johannes'
 {{ pillar['j@g-credentials'] }}
 remotehost = josg.de
 #remoteport= 143

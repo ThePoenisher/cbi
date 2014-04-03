@@ -11,6 +11,3 @@ for d in "${MAPFILE[@]}"; do
 ^fg(#FFFFFF) $d  "
 		fi
 done
-# ^fg(\#fbf80d)\
-# ^i(/home/johannes/cbi/desktop-artwork/icons/eigene/lock_closed.xbm) \
-# ^fg(\#00ffff)\
