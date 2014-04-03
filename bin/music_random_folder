@@ -9,9 +9,9 @@ while true; do
 					if [ "$a" = "n" ]; then break;
 					elif [ "$a" = "u"  ]; then
 							echo updating /home/data/music/all ...
-							find /home/data/music/* -type d | egrep -iv "(Hörspiel|/Scans|Booklet)" > /home/data/music/all
+							find /home/data/music/* -type d | egrep -iv "(Hörspiel|/Scans?|Artwork|Booklet|/Covers)" > /home/data/music/all
 							echo The following item have been expluded:
-							find /home/data/music/* -type d | egrep -i "(Hörspiel|/Scans|Booklet)"
+							find /home/data/music/* -type d | egrep -i "(Hörspiel|/Scans?|Artwork|Booklet|/Covers)" 
 							echo done
 					else
 							nvlc "$e";

@@ -1900,6 +1900,8 @@ http://tex.stackexchange.com/questions/28564/tikzpicture-blank-in-preview
   '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)
   )
 #+END_SRC
+*** fold mode: C-c C-c C-f / C-b
+https://www.gnu.org/software/auctex/manual/auctex/Folding.html
 *** viewer: C-c C-v
 [[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]]
 **** settings
