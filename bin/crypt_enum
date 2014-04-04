@@ -1,0 +1,13 @@
+#!/bin/bash
+mapfile -t < <(sudo dmsetup table --target crypt  |  sed -nr 's/^([^:]+):.*/\1/p' )
+for d in "${MAPFILE[@]}"; do
+		if sudo dmsetup info "$d" | grep -iq "state: *SUSPENDED"; then
+				echo -n "^fg(#fbf80d)\
+^i(/home/johannes/cbi/desktop-artwork/icons/eigene/lock_closed.xbm)\
+^fg(#FFFFFF) $d  "
+		else
+				echo -n "^fg(#FFB03A)\
+^i(/home/johannes/cbi/desktop-artwork/icons/eigene/lock_open.xbm)\
+^fg(#FFFFFF) $d  "
+		fi
+done
