@@ -25,6 +25,7 @@ use warnings qw( FATAL utf8 );
 
 use MIME::Parser;
 use MIME::WordDecoder;
+use Data::Dumper;
 use Encode;
 use IPC::Open2;
 use File::Temp qw/tempdir/;
@@ -39,42 +40,43 @@ binmode STDOUT, ':encoding(UTF-8)';
 # Recursive routine for dumping an entity.
 #
 sub dump_entity {
-    my ($entity, $name) = @_;
-    defined($name) or $name = "'anonymous'";
-    my $IO;
-
-    # Output the body:
-    my @parts = $entity->parts;
-    if (@parts) {                     # multipart...
-	my $i;
-	foreach $i (0 .. $#parts) {       # dump each part...
-	    dump_entity($parts[$i], ("$name, part ".(1+$i)));
-			print "\n", '=' x 60, "\n\n";
+	my ($entity, $name) = @_;
+	defined($name) or $name = "'anonymous'";
+	my $IO;
+	
+	# Output the body:
+	my @parts =  $entity->parts;
+	if (@parts) {                     # multipart...
+		my $i;
+		sub cm { return $_[0]->head->mime_type =~ /html/ }
+		map { 
+			dump_entity($_);
+			print  '=' x 30, "\n";
+		} sort {cm($b) cmp cm($a)} @parts; #html first!
 	}
-    }
-    else {                            # single part...	
-
-	# Get MIME type, and display accordingly...
-	my $type = $entity->head->mime_type;
-	my $charset = $entity->head->mime_attr("content-type.charset");
-	# print "$charset\n";
-	my $body = $entity->bodyhandle;
-	if ($type =~ /html/){
-		open2(\*A,\*B,"w3m -I '$charset' -O 'UTF-8' -T text/html");
-		$body->print(\*B);
-		close B;
-		binmode A, ':utf8';
-		print $_ while(<A>);
-	} elsif ($type =~ /^(text\/|message\/)/) {     # text: display it...
-		print decode($charset,$body->as_string);
-}
-	else {                                 # binary: just summarize it...
+	else {                            # single part...	
+		
+		# Get MIME type, and display accordingly...
+		my $type = $entity->head->mime_type;
+		my $charset = $entity->head->mime_attr("content-type.charset");
+		# print "$charset\n";
+		my $body = $entity->bodyhandle;
+		if ($type =~ /html/){
+			open2(\*A,\*B,"w3m -I '$charset' -O 'UTF-8' -T text/html");
+			$body->print(\*B);
+			close B;
+			binmode A, ':utf8';
+			print $_ while(<A>);
+		} elsif ($type =~ /^(text\/|message\/)/) {     # text: display it...
+			print decode($charset,$body->as_string);
+		}
+		else {                                 # binary: just summarize it...
 	    my $path = $body->path;
 	    my $size = ($path ? (-s $path) : '???');
 	    print ">>> This is a non-text message, $size bytes long.\n";
+		}
 	}
-    }
-    1;
+	1;
 }
 
 #------------------------------
