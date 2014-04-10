@@ -2343,7 +2343,7 @@ http://www.xsteve.at/prg/emacs/power-user-tips.html
 **** recentf                                                        :keys:
 #+BEGIN_SRC emacs-lisp
   (recentf-mode 1)
-  (setq recentf-max-menu-items 2500)
+  (setq recentf-max-saved-items 2500)
   (defun xsteve-ido-choose-from-recentf ()
     "Use ido to select a recently opened file from the `recentf-list'"
     (interactive)
