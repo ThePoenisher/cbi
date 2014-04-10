@@ -9,3 +9,5 @@ config/.config/gtk-2.0/gtkfilechooser.ini
 config/.mutt/history
 a.out
 config/.scidvspc/log
+config/.mutt/certs
+config/.mpv/watch_later
