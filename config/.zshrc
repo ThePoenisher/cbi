@@ -52,8 +52,8 @@ alias mpvl="mpv -playlist /dev/fd/0"
 
 alias cmatrix="cmatrix -b -a -u 3"
 
-alias android-mount="sudo mkdir -p /media/android && sudo chown johannes:johannes /media/android/ && mtpfs -o user,allow_other /media/android && cd /media/android"
-alias android-umount="sudo umount /media/android"
+alias udm="udevil mount"
+alias udu="udevil umount"
 
 
 export MAIL=$HOME/Mail/local

@@ -1900,6 +1900,23 @@ http://tex.stackexchange.com/questions/28564/tikzpicture-blank-in-preview
   '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)
   )
 #+END_SRC
+**** newline in Overlay 
+http://www.gnu.org/software/emacs/manual/html_node/elisp/Overlay-Properties.html
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load 'preview
+    '(progn 
+       (defadvice preview-gs-place (before preview-gs-place-newline
+                                           (ov &rest rest))
+         "Append a newline, if the replaced expression has one."
+         (when (string-match "^$.*\n" 
+                             (buffer-substring-no-properties 
+                              (overlay-start ov)
+                              (overlay-end ov)))
+           (overlay-put ov 'after-string "\n")))
+       (ad-activate 'preview-gs-place)
+       ))
+#+END_SRC
+)
 *** fold mode: C-c C-c C-f / C-b
 https://www.gnu.org/software/auctex/manual/auctex/Folding.html
 *** viewer: C-c C-v
@@ -2343,7 +2360,8 @@ http://www.xsteve.at/prg/emacs/power-user-tips.html
 **** recentf                                                        :keys:
 #+BEGIN_SRC emacs-lisp
   (recentf-mode 1)
-  (setq recentf-max-menu-items 2500)
+  (setq recentf-exclude '("_region_\\.tex"))
+  (setq recentf-max-saved-items 2500)
   (defun xsteve-ido-choose-from-recentf ()
     "Use ido to select a recently opened file from the `recentf-list'"
     (interactive)
@@ -2470,7 +2488,7 @@ C-b C-z
   (eval-after-load 'haskell-mode
     '(progn    
        (define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
-       (setq haskell-program-name "cabal repl")
+       (setq haskell-program-name "cabalrepl")
        )
     )
   ;; from https://github.com/haskell/haskell-mode/issues/44
