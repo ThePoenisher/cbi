@@ -1908,7 +1908,7 @@ http://www.gnu.org/software/emacs/manual/html_node/elisp/Overlay-Properties.html
        (defadvice preview-gs-place (before preview-gs-place-newline
                                            (ov &rest rest))
          "Append a newline, if the replaced expression has one."
-         (when (string-match "\n" 
+         (when (string-match "^$.*\n" 
                              (buffer-substring-no-properties 
                               (overlay-start ov)
                               (overlay-end ov)))
@@ -2488,7 +2488,7 @@ C-b C-z
   (eval-after-load 'haskell-mode
     '(progn    
        (define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
-       (setq haskell-program-name "cabal repl")
+       (setq haskell-program-name "cabalrepl")
        )
     )
   ;; from https://github.com/haskell/haskell-mode/issues/44
