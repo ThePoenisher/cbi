@@ -17,6 +17,7 @@ arch_X11_packages:
       - transset-df
       - mesa-demos #glxgears
       - feh
+      - eog
       - xmonad
       - xmonad-contrib
       - xmobar

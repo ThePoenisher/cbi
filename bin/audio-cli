@@ -8,7 +8,15 @@ use Switch;
 my $SINK=0;
 		
 switch($ARGV[0]){
-		case ["mute","toggle_all"] { 
+		case ["100"] {
+				my @a=`pactl list short sinks`;
+				for (my $i=0;$i<scalar @a;$i++)
+				{
+						$a[$i] =~ m/([0-9])+\t/;
+					  system "pactl -- set-sink-volume $1  '100%'"
+				}
+		}
+		case ["mute","toggle_all"] {
 				my @a=`pactl list sinks   | grep -E "(Sink|Mute)"`;
 				for (my $i=0;$i<scalar @a;$i+=2)
 				{
