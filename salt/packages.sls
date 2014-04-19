@@ -72,6 +72,7 @@ base_packages:
       - dia
       - inkscape
       - sqliteman
+      - sqlitebrowser
       - texlive-bibtexextra
       - texlive-bin
       - texlive-core
