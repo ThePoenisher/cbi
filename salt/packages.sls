@@ -188,14 +188,17 @@ base_packages:
 ,'google-talkplugin'
 ,'jdownloader2' 
 ,'ledger-git'
+,'mediathek'
 ,'mendeleydesktop'
 ,'pdftk-bin'
 ,'perl-file-find-rule'
 ,'perl-string-util'
 ,'python2-gnupg'
 ,'python2-zbar'
-,'stockfish-git'
 ,'scid_vs_pc'
+,'scidb'
+,'stockfish-git'
+,'ttf-vista-fonts'
 ,'urlview'
 ] %}
 packer --noconfirm --noedit  -S {{ p }}:
