@@ -179,6 +179,7 @@ base_packages:
 
 # do I need gvfs-mtp-git. given it limited power.  what does ubuntu use ? gphotos2?
 #,'git-annex-standalone' use own PKGBUILD instead
+# ,'mediathek'
 {% for p in
 ['aurvote'
 ,'dbacl'
@@ -188,7 +189,6 @@ base_packages:
 ,'google-talkplugin'
 ,'jdownloader2' 
 ,'ledger-git'
-,'mediathek'
 ,'mendeleydesktop'
 ,'pdftk-bin'
 ,'perl-file-find-rule'
