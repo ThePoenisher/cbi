@@ -9,11 +9,11 @@ fi
 alias sudo='command sudo'
 
 # run client in terminal
-alias -g en="my_emacs -c -nw"
+alias  en="my_emacs -c -nw"
 # run client in new frame
-alias -g ec="my_emacs -c -n"
+alias  ec="my_emacs -c -n"
 # run client in existing frame
-alias -g e="my_emacs -n"
+alias  e="my_emacs -n"
 
 alias -g gx="git annex"
 alias gvp="git verify-pull"
