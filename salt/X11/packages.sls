@@ -70,5 +70,5 @@ fonts:
         - xorg-fonts-75dpi
         - gtk2fontsel
         - terminus-font
-#        - ttf-ms-fonts (aur)
 #        - monaco  sehr hässlich, z.B. in Firefox
+#        see also packer

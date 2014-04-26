@@ -160,7 +160,7 @@ case $1 in
 								rm -rf $tp
 				) && \
 						pacman -S --noconfirm --needed  python2-requests python-m2crypto python2 python2-crypto python2-jinja  python2-psutil python2-pyzmq python2-yaml sudo && \
-						packer --noconfirm --noedit -S python2-msgpack python2-gnupg && \
+						packer --noconfirm --noedit -S python2-gnupg && \
 						install_salt &&	checkout_cbi 
         ;;
 		

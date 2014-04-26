@@ -2136,6 +2136,10 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
   (eval-after-load 'latex
     '(progn    
         (define-key LaTeX-mode-map
+          (kbd "C-c C-/") 'reftex-view-crossref) ;; was: TeX-save-document
+        (define-key LaTeX-mode-map
+          (kbd "C-c C-d") 'reftex-view-crossref) ;; was: TeX-save-document
+        (define-key LaTeX-mode-map
           [f4] (tex-build-command-function '(jo/Tex-next-command) nil t))
         (define-key LaTeX-mode-map
           [f5] (tex-build-command-function "LaTeX" nil t))
