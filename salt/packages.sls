@@ -190,6 +190,9 @@ base_packages:
 ,'jdownloader2' 
 ,'ledger-git'
 ,'mendeleydesktop'
+,'otf-texgyre'
+,'python2-zbar'
+,'python2-gnup'
 ,'pdftk-bin'
 ,'perl-file-find-rule'
 ,'perl-string-util'
@@ -200,7 +203,7 @@ base_packages:
 ,'stockfish-git'
 ,'ttf-vista-fonts'
 ,'urlview'
-] %}
+] %} #see also bootstrap!!
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
     - unless: pacman -Q {{ p }}
