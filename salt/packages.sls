@@ -108,9 +108,12 @@ base_packages:
       - ntp
       - xdialog #for (my) xrename
       # haskell
+      - alex
+      - gtk2hs-buildtools
       - happy
       - net-tools
       - haskell-parsec
+      - haskell-pandoc
       - haddock
       - samba
 {% if pillar['arch_desktop'] %}
@@ -191,8 +194,6 @@ base_packages:
 ,'ledger-git'
 ,'mendeleydesktop'
 ,'otf-texgyre'
-,'python2-zbar'
-,'python2-gnup'
 ,'pdftk-bin'
 ,'perl-file-find-rule'
 ,'perl-string-util'

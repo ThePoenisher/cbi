@@ -18,8 +18,8 @@ arch_X11_packages:
       - mesa-demos #glxgears
       - feh
       - eog
-      - xmonad
-      - xmonad-contrib
+      - haskell-xmonad
+      - haskell-xmonad-contrib
       - xmobar
       - xscreensaver
       - rxvt-unicode
