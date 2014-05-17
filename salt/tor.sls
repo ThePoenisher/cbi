@@ -13,11 +13,12 @@ packer --noconfirm --noedit  -S {{ p }}:
   
 {% set files =
 [
+('torsocks.conf','')
 ] %}
-{% for file in files %}
+{% for file,ending in files %}
 /etc/{{ file }}:
   file.managed:
-    - source: salt://etc/{{ file }}
+    - source: salt://etc/{{ file }}{{ ending }}
     - makedirs: True
     - template: jinja
 {% endfor %}

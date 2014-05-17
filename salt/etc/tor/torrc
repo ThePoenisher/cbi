@@ -199,7 +199,8 @@ DisableDebuggerAttachment 0
 
 SocksPort 127.0.0.1:9300 IsolateDestPort IsolateDestAddr
 SocksPort 127.0.0.1:9301
-SocksPort 127.0.0.1:9302
+#torsocks
+SocksPort 127.0.0.1:9302 
 TransPort 127.0.0.1:9340
 
 DNSPort 127.0.0.1:9353

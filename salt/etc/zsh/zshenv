@@ -12,7 +12,7 @@ ALTERNATE_EDITOR=""
 export ALTERNATE_EDITOR
 
 
-PATH=$PATH:$CBI/bin:/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin
+PATH=$PATH:$CBI/bin:/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin:./.cabal-sandbox/bin
 
 export PATH
 

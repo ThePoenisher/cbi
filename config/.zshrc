@@ -61,6 +61,7 @@ export GPG_TTY=`tty`
 export BROWSER=firefox
 
 unsetopt correct_all
+unsetopt correct
 
 # does not work anymore since grml-zsh 0.8: DONTSETRPROMPT=1
 #instead:
