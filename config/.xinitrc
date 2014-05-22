@@ -47,8 +47,8 @@ xinput --disable "saa7134 IR (Terratec Cinergy 40"
 #if [ -f ~/.fehbg ]; then source ~/.fehbg; fi
 feh_bg BG &
 
-setxkbmap -layout de -option ctrl:nocaps
-setxkbmap -layout "us" -variant altgr-intl
+# setxkbmap -layout de 
+setxkbmap -layout "us" -variant altgr-intl -option ctrl:nocaps
 a=52;b=29;c=xmodmap;d="$c -e '";$c -pke | sed -nr "s/^(keycode *)$b(.*)/$d\1$a\2'/p;t;s/^(keycode *)$a(.*)/$d\1$b\2'/p" | sh
 
 xsetroot -cursor_name left_ptr
