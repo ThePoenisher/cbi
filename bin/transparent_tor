@@ -14,6 +14,12 @@ DNS_PORT="9353"
 # iptables -F
 # iptables -t nat -F
 
+
+if (( EUID != 0 )); then
+    echo "Run this script as root." 1>&2
+    exit 100
+fi
+
 iptables -t nat -A OUTPUT -m owner --uid-owner $TOR_UID -j RETURN
 # iptables -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT 
 for NET in $NON_TOR 127.0.0.0/9 127.128.0.0/10; do
@@ -28,9 +34,9 @@ iptables -t nat -A OUTPUT -p tcp -m multiport ! --dport 443,8080,80 --syn -j RED
 # iptables -A OUTPUT -m owner --uid-owner $TOR_UID -j ACCEPT
 # iptables -A OUTPUT -j REJECT
 
-sudo systemctl stop tor.service
+systemctl stop tor.service
 sudo -u tor tor --FascistFirewall 1
 
 
-sudo systemctl restart iptables.service
-sudo systemctl start tor.service
+systemctl restart iptables.service
+systemctl start tor.service

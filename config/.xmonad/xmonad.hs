@@ -11,16 +11,17 @@ import XMonad.Prompt.Shell
 import XMonad.Prompt.Man
 
 import XMonad.Layout hiding ( (|||) )
-import XMonad.Layout.NoBorders
-import XMonad.Layout.ResizableTile
-import XMonad.Layout.TwoPane
-import XMonad.Layout.LimitWindows
-import XMonad.Layout.PerWorkspace
+import XMonad.Layout.Gaps
 import XMonad.Layout.Grid
 import XMonad.Layout.LayoutCombinators
+import XMonad.Layout.LimitWindows
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
+import XMonad.Layout.NoBorders
+import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Reflect
+import XMonad.Layout.ResizableTile
+import XMonad.Layout.TwoPane
   
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -71,12 +72,12 @@ myConfig = defaultConfig
       , normalBorderColor  = myInactiveBorderColor
       , focusedBorderColor = myActiveBorderColor
       , manageHook = namedScratchpadManageHook scratchpads <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
-      , layoutHook = avoidStruts myLayoutHook
+      , layoutHook = gaps [(L,157)] $ avoidStruts myLayoutHook
       , startupHook =  ewmhDesktopsStartup >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
       , workspaces = myWorkspaces
-      , handleEventHook = fullscreenEventHook -- >> ewmhDesktopsEventHook -- führt dazu, dass xmonad beim start auf pidgin wechselt (wg. spawnOn " 0 " "pidgin", um wmctrl -l benutzen zu können,  benötigt man das aber eh nicht
+      , handleEventHook = fullscreenEventHook <+> docksEventHook -- >> ewmhDesktopsEventHook -- führt dazu, dass xmonad beim start auf pidgin wechselt (wg. spawnOn " 0 " "pidgin", um wmctrl -l benutzen zu können,  benötigt man das aber eh nicht
       , borderWidth = myBorderWidth
      }   
  
@@ -253,6 +254,8 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm .|. shiftMask , xK_Tab   ), rotSlavesUp)
   , ((modm, xK_minus )   , decreaseLimit )
   , ((modm, xK_plus )    , increaseLimit )
+  , ((modm, xK_equal )    , increaseLimit )
+  , ((modm .|. shiftMask, xK_equal), sendMessage $ ToggleGaps)  -- increment the right-hand gap
   -- , ((modMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
   --, ((modMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
   , ((modm                , xK_b    ), sendMessage ToggleStruts)
@@ -283,6 +286,7 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   , ((modm .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
   , ((modm .|. controlMask, xK_m    ), sendMessage $ Toggle MIRROR)
   , ((modm .|. controlMask, xK_p    ), namedScratchpadAction scratchpads "scratch" )
+
   ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
