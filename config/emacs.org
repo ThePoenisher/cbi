@@ -1765,6 +1765,8 @@ will not be overriden, if the package is loaded later on)
       (lambda () 
         (cond ((eq major-mode 'org-mode)
          (visible-mode 0)))))
+
+  ;; lieber doch manuell(setq ediff-diff-options "-w")
 #+END_SRC
 *** problems: ediff multiframe frame als Float bringt xmonad zum hängen
 solution: windows-plain (s.o.)
