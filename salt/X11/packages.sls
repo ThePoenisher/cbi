@@ -20,6 +20,7 @@ arch_X11_packages:
       - eog
       - haskell-xmonad
       - haskell-xmonad-contrib
+      - haskell-hostname
       - xmobar
       - xscreensaver
       - rxvt-unicode

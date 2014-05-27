@@ -1,55 +1,42 @@
---
--- Xmonad configuration file
---   overrides some defaults and adds a few more functionalities
-import Data.Char
-
-import XMonad hiding ( (|||) )
-import XMonad.Core
- 
-import XMonad.Prompt
-import XMonad.Prompt.Shell
-import XMonad.Prompt.Man
-
-import XMonad.Layout hiding ( (|||) )
-import XMonad.Layout.Gaps
-import XMonad.Layout.Grid
-import XMonad.Layout.LayoutCombinators
-import XMonad.Layout.LimitWindows
-import XMonad.Layout.MultiToggle
-import XMonad.Layout.MultiToggle.Instances
-import XMonad.Layout.NoBorders
-import XMonad.Layout.PerWorkspace
-import XMonad.Layout.Reflect
-import XMonad.Layout.ResizableTile
-import XMonad.Layout.TwoPane
-  
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.UrgencyHook
-import XMonad.Hooks.SetWMName -- java workaround http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-SetWMName.html
-import XMonad.Hooks.ManageHelpers
--- import XMonad.Hooks.ICCCMFocus -- java workaround http://www.eng.uwaterloo.ca/~aavogt/xmonad/docs/xmonad-contrib/XMonad-Hooks-ICCCMFocus.html (angeblich deprecated und nicht mehr benötigt:       , startupHook =  takeTopFocus >> )
-
--- http://code.google.com/p/xmonad/issues/detail?id=177
-import XMonad.Hooks.EwmhDesktops -- chrome/firefox F11 (enabled with handleEventHook = fullscreenEventHook)
-  
-
-  
-import XMonad.Actions.CycleRecentWS
-import XMonad.Actions.RotSlaves
-import XMonad.Actions.CopyWindow
-import qualified XMonad.StackSet as W
-import XMonad.Actions.CycleWindows
-import XMonad.Actions.GroupNavigation
-import XMonad.Actions.FindEmptyWorkspace
-import XMonad.Actions.SpawnOn
-
-import XMonad.Util.NamedScratchpad
-import XMonad.Util.EZConfig
-import XMonad.Util.Run
-import Graphics.X11.Xlib
+import           Data.Char
 import qualified Data.Map as M
-import System.IO
+import           Graphics.X11.Xlib
+import           Network.HostName
+import           System.IO
+import           XMonad hiding ( (|||) )
+import           XMonad.Actions.CopyWindow
+import           XMonad.Actions.CycleRecentWS
+import           XMonad.Actions.CycleWindows
+import           XMonad.Actions.FindEmptyWorkspace
+import           XMonad.Actions.GroupNavigation
+import           XMonad.Actions.RotSlaves
+import           XMonad.Actions.SpawnOn
+import           XMonad.Core
+import           XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops -- chrome/firefox F11 (enabled with handleEventHook = fullscreenEventHook)
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers -- import XMonad.Hooks.ICCCMFocus -- java workaround http://www.eng.uwaterloo.ca/~aavogt/xmonad/docs/xmonad-contrib/XMonad-Hooks-ICCCMFocus.html (angeblich deprecated und nicht mehr benötigt:       , startupHook =  takeTopFocus >> ) -- http://code.google.com/p/xmonad/issues/detail?id=177
+import XMonad.Hooks.SetWMName -- java workaround http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-SetWMName.html
+import XMonad.Hooks.UrgencyHook
+import           XMonad.Layout hiding ( (|||) )
+import           XMonad.Layout.Gaps
+import           XMonad.Layout.Grid
+import           XMonad.Layout.LayoutCombinators
+import           XMonad.Layout.LimitWindows
+import           XMonad.Layout.MultiToggle
+import           XMonad.Layout.MultiToggle.Instances
+import           XMonad.Layout.NoBorders
+import           XMonad.Layout.PerWorkspace
+import           XMonad.Layout.Reflect
+import           XMonad.Layout.ResizableTile
+import           XMonad.Layout.TwoPane
+import           XMonad.Prompt
+import           XMonad.Prompt.Man
+import           XMonad.Prompt.Shell
+import qualified XMonad.StackSet as W
+import XMonad.Util.EZConfig
+import XMonad.Util.NamedScratchpad
+import XMonad.Util.Run
 
 my_term_new = "terminator -x tmux -2"
 my_term_without_tmux = "terminator"
@@ -58,21 +45,19 @@ my_term_attach = "terminator -x tmux-detached-or-new"
 my_term_class = "Terminator"
 my_emacs ="emacsclient -c -n"
                 
-myMM=mod4Mask
+myMM=mod4Mask --Windows key
                 
 main = do
    myStatusBarPipe <- spawnPipe myStatusBar
    conkyBar <- spawnPipe myConkyBar
-   xmonad $ myUrgencyHook $  myConfig {
-     logHook = myDzenPP2 myStatusBarPipe  >> historyHook >> ewmhDesktopsLogHook
-     }
-     
-myConfig = defaultConfig
+   host <- getHostName
+   xmonad $ myUrgencyHook $ defaultConfig
       { terminal = my_term_attach
       , normalBorderColor  = myInactiveBorderColor
+      , logHook = myDzenPP2 myStatusBarPipe  >> historyHook >> ewmhDesktopsLogHook
       , focusedBorderColor = myActiveBorderColor
       , manageHook = namedScratchpadManageHook scratchpads <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
-      , layoutHook = gaps [(L,157)] $ avoidStruts myLayoutHook
+      , layoutHook = gaps (myGap host)  $ avoidStruts myLayoutHook
       , startupHook =  ewmhDesktopsStartup >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
@@ -80,6 +65,9 @@ myConfig = defaultConfig
       , handleEventHook = fullscreenEventHook <+> docksEventHook -- >> ewmhDesktopsEventHook -- führt dazu, dass xmonad beim start auf pidgin wechselt (wg. spawnOn " 0 " "pidgin", um wmctrl -l benutzen zu können,  benötigt man das aber eh nicht
       , borderWidth = myBorderWidth
      }   
+
+myGap "scriabin" = [(L,157)]
+myGap _          = []
  
 -- Paths
 myBitmapsPath = "/home/johannes/cbi/desktop-artwork/icons/"
@@ -245,53 +233,53 @@ myKeys x  = M.union (M.fromList (newKeys x)) (keys defaultConfig x)
 -- update on mouse move within unfocused window: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-UpdateFocus.html
 -- defaults: http://xmonad.org/xmonad-docs/xmonad/src/XMonad-Config.html      
 -- Add new and/or redefine key bindings
-newKeys conf@(XConfig {XMonad.modMask = modm}) = [
+newKeys conf = [
   -- Use shellPrompt instead of default dmenu
-  ((modm                 , xK_p    ), shellPrompt myXPConfig),
+  ((myMM                 , xK_p    ), shellPrompt myXPConfig),
   -- Do not leave useless conky and dzen after restart
-  ((modm, xK_q), spawn "killall conky dzen2; xmonad --recompile; xmonad --restart")
-  , ((modm               , xK_c     ), kill1) -- @@ remove from current workspace or close if single
-  , ((modm .|. shiftMask , xK_Tab   ), rotSlavesUp)
-  , ((modm, xK_minus )   , decreaseLimit )
-  , ((modm, xK_plus )    , increaseLimit )
-  , ((modm, xK_equal )    , increaseLimit )
-  , ((modm .|. shiftMask, xK_equal), sendMessage $ ToggleGaps)  -- increment the right-hand gap
-  -- , ((modMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
-  --, ((modMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
-  , ((modm                , xK_b    ), sendMessage ToggleStruts)
-  , ((modm                , xK_s    ), cycleRecentWindows [xK_Super_L] xK_s xK_w)
-  , ((modm                , xK_z    ), rotOpposite)
-  , ((modm                , xK_i    ), rotUnfocusedUp)
-  , ((modm                , xK_u    ), rotUnfocusedDown)
-  , ((modm .|. shiftMask  , xK_i    ), rotFocusedUp)
-  , ((modm .|. shiftMask  , xK_u    ), rotFocusedDown)
+  ((myMM, xK_q), spawn "killall conky dzen2; xmonad --recompile; xmonad --restart")
+  , ((myMM               , xK_c     ), kill1) -- @@ remove from current workspace or close if single
+  , ((myMM .|. shiftMask , xK_Tab   ), rotSlavesUp)
+  , ((myMM, xK_minus )   , decreaseLimit )
+  , ((myMM, xK_plus )    , increaseLimit )
+  , ((myMM, xK_equal )    , increaseLimit )
+  , ((myMM .|. shiftMask, xK_equal), sendMessage $ ToggleGaps)  
+  -- , ((myMMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
+  --, ((myMMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
+  , ((myMM                , xK_b    ), sendMessage ToggleStruts)
+  , ((myMM                , xK_s    ), cycleRecentWindows [xK_Super_L] xK_s xK_w)
+  , ((myMM                , xK_z    ), rotOpposite)
+  , ((myMM                , xK_i    ), rotUnfocusedUp)
+  , ((myMM                , xK_u    ), rotUnfocusedDown)
+  , ((myMM .|. shiftMask  , xK_i    ), rotFocusedUp)
+  , ((myMM .|. shiftMask  , xK_u    ), rotFocusedDown)
     -- switch back and forth between last two workspaces:
-  , ((modm, xK_w), cycleRecentWS [xK_w] xK_grave xK_grave)
+  , ((myMM, xK_w), cycleRecentWS [xK_w] xK_grave xK_grave)
 --    start cycling amoung all workspaces until super_l is released with key combination 1, stop cycling by pressing one of [keys], swith to next prev by key2 key3
-  --, ((modm, xK_w), cycleRecentWS [xK_Super_L] xK_w xK_q)
-  , ((modm                , xK_Tab  ), nextMatch History (return True))
-  , ((modm                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) (spawnHere my_term_attach))
-  , ((modm .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) (spawnHere my_term_attach))
-  , ((modm,                 xK_d    ), viewEmptyWorkspace)
-  , ((modm .|. shiftMask  , xK_d    ), tagToEmptyWorkspace)
-  , ((modm                , xK_e    ), (spawnHere my_emacs))
-  , ((modm .|. shiftMask  , xK_e    ), nextMatchOrDo Forward (className =? "Emacs") (spawnHere my_emacs))
-  , ((modm .|. shiftMask  , xK_f    ), (spawnHere "firefox"))
-  , ((modm                , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
-  , ((modm .|. shiftMask  , xK_a    ), (spawnHere my_term_new))
-  , ((modm                , xK_a    ), (spawnHere my_term_attach))
-  , ((modm .|. controlMask, xK_a    ), (spawnHere my_term_without_tmux))
-  , ((modm .|. controlMask, xK_x    ), sendMessage $ Toggle REFLECTX)
-  , ((modm .|. controlMask, xK_y    ), sendMessage $ Toggle REFLECTY)
-  , ((modm .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
-  , ((modm .|. controlMask, xK_m    ), sendMessage $ Toggle MIRROR)
-  , ((modm .|. controlMask, xK_p    ), namedScratchpadAction scratchpads "scratch" )
+  --, ((myMM, xK_w), cycleRecentWS [xK_Super_L] xK_w xK_q)
+  , ((myMM                , xK_Tab  ), nextMatch History (return True))
+  , ((myMM                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) (spawnHere my_term_attach))
+  , ((myMM .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) (spawnHere my_term_attach))
+  , ((myMM,                 xK_d    ), viewEmptyWorkspace)
+  , ((myMM .|. shiftMask  , xK_d    ), tagToEmptyWorkspace)
+  , ((myMM                , xK_e    ), (spawnHere my_emacs))
+  , ((myMM .|. shiftMask  , xK_e    ), nextMatchOrDo Forward (className =? "Emacs") (spawnHere my_emacs))
+  , ((myMM .|. shiftMask  , xK_f    ), (spawnHere "firefox"))
+  , ((myMM                , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
+  , ((myMM .|. shiftMask  , xK_a    ), (spawnHere my_term_new))
+  , ((myMM                , xK_a    ), (spawnHere my_term_attach))
+  , ((myMM .|. controlMask, xK_a    ), (spawnHere my_term_without_tmux))
+  , ((myMM .|. controlMask, xK_x    ), sendMessage $ Toggle REFLECTX)
+  , ((myMM .|. controlMask, xK_y    ), sendMessage $ Toggle REFLECTY)
+  , ((myMM .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
+  , ((myMM .|. controlMask, xK_m    ), sendMessage $ Toggle MIRROR)
+  , ((myMM .|. controlMask, xK_p    ), namedScratchpadAction scratchpads "scratch" )
 
   ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
 -- mod-control-[1..9] @@ Copy client to workspace N
-  [((m .|. modm, k), windows $ f i)
+  [((m .|. myMM, k), windows $ f i)
      | (i, k) <- zip (workspaces conf) $ [xK_1..xK_9] ++ [xK_0]
      , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]]
    ++
