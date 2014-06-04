@@ -1,3 +1,4 @@
+
 import           Data.Char
 import qualified Data.Map as M
 import           Graphics.X11.Xlib
@@ -13,11 +14,11 @@ import           XMonad.Actions.RotSlaves
 import           XMonad.Actions.SpawnOn
 import           XMonad.Core
 import           XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops -- chrome/firefox F11 (enabled with handleEventHook = fullscreenEventHook)
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers -- import XMonad.Hooks.ICCCMFocus -- java workaround http://www.eng.uwaterloo.ca/~aavogt/xmonad/docs/xmonad-contrib/XMonad-Hooks-ICCCMFocus.html (angeblich deprecated und nicht mehr benötigt:       , startupHook =  takeTopFocus >> ) -- http://code.google.com/p/xmonad/issues/detail?id=177
-import XMonad.Hooks.SetWMName -- java workaround http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-SetWMName.html
-import XMonad.Hooks.UrgencyHook
+import           XMonad.Hooks.EwmhDesktops -- chrome/firefox F11 (enabled with handleEventHook = fullscreenEventHook)
+import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageHelpers -- import XMonad.Hooks.ICCCMFocus -- java workaround http://www.eng.uwaterloo.ca/~aavogt/xmonad/docs/xmonad-contrib/XMonad-Hooks-ICCCMFocus.html (angeblich deprecated und nicht mehr benötigt:       , startupHook =  takeTopFocus >> ) -- http://code.google.com/p/xmonad/issues/detail?id=177
+import           XMonad.Hooks.SetWMName -- java workaround http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-SetWMName.html
+import           XMonad.Hooks.UrgencyHook
 import           XMonad.Layout hiding ( (|||) )
 import           XMonad.Layout.Gaps
 import           XMonad.Layout.Grid
