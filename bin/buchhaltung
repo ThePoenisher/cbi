@@ -1,3 +1,4 @@
 #!/bin/bash
+a=`pwd`
 cd /home/data/finanzen
-./buchhaltung.sh "$@"
+./buchhaltung.sh "$a" "$@"

@@ -90,7 +90,7 @@ correctly, which would not happen, if org was autoloaded within the
   
   
     ;; from http://emacswiki.org/emacs/ToggleWindowSplit
-    (defun toggle-window-split ()
+    (defun jo/toggle-window-split ()
       (interactive)
       (if (= (count-windows) 2)
           (let* ((this-win-buffer (window-buffer))
@@ -456,7 +456,8 @@ not "include path"
       (global-set-key (kbd "<M-kp-prior>") 'scroll-other-window-down)
       (global-set-key (kbd "<M-prior>") 'scroll-other-window-down)
       (global-set-key (kbd "M-s 7") 'my-multi-occur-in-matching-buffers)
-      (define-key ctl-x-4-map "t" 'toggle-window-split)
+      (define-key ctl-x-4-map "t" 'jo/toggle-window-split)
+      (define-key ctl-x-4-map "|" 'jo/toggle-window-split)
       (global-set-key (kbd "C-x C-,") 'comment-or-uncomment-region)
       (global-set-key (kbd "M-D") 'backward-kill-word)
       (global-set-key (kbd "M-n") 'clone-indirect-buffer)
