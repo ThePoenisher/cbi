@@ -62,7 +62,7 @@ main = do
       , startupHook =  ewmhDesktopsStartup >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
-      , workspaces = myWorkspaces
+      , workspaces = map ( pad . return ) $ fst myWorkspaces
       , handleEventHook = fullscreenEventHook <+> docksEventHook -- >> ewmhDesktopsEventHook -- führt dazu, dass xmonad beim start auf pidgin wechselt (wg. spawnOn " 0 " "pidgin", um wmctrl -l benutzen zu können,  benötigt man das aber eh nicht
       , borderWidth = myBorderWidth
      }   
@@ -151,7 +151,9 @@ myStartupHook = do
   -- spawnOn " 0 " "pidgin -c /home/data/personal/misc/pidgin"
   
 -- Workspaces
-myWorkspaces = map ( pad . show ) ( [1..9] ++ [0] ) 
+myWorkspaces = (['`'] ++ ['1'..'9'] ++ ['0','-','=']
+                , xK_quoteleft:[xK_1..xK_9] ++ [xK_0,xK_minus,xK_equal]
+                )
    -- [
    --    wrapBitmap "sm4tik/arch_10x10.xbm",
    --    wrapBitmap "sm4tik/fox.xbm",
@@ -241,10 +243,10 @@ newKeys conf = [
   ((myMM, xK_q), spawn "killall conky dzen2; xmonad --recompile; xmonad --restart")
   , ((myMM               , xK_c     ), kill1) -- @@ remove from current workspace or close if single
   , ((myMM .|. shiftMask , xK_Tab   ), rotSlavesUp)
-  , ((myMM, xK_minus )   , decreaseLimit )
-  , ((myMM, xK_plus )    , increaseLimit )
-  , ((myMM, xK_equal )    , increaseLimit )
-  , ((myMM .|. shiftMask, xK_equal), sendMessage $ ToggleGaps)  
+  -- , ((myMM, xK_minus )   , decreaseLimit )
+  -- , ((myMM, xK_plus )    , increaseLimit )
+  -- , ((myMM, xK_equal )    , increaseLimit )
+  , ((myMM .|. shiftMask, xK_g), sendMessage $ ToggleGaps)  
   -- , ((myMMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
   --, ((myMMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
   , ((myMM                , xK_b    ), sendMessage ToggleStruts)
@@ -281,7 +283,7 @@ newKeys conf = [
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
 -- mod-control-[1..9] @@ Copy client to workspace N
   [((m .|. myMM, k), windows $ f i)
-     | (i, k) <- zip (workspaces conf) $ [xK_1..xK_9] ++ [xK_0]
+     | (i, k) <- zip (workspaces conf) $ snd myWorkspaces
      , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]]
    ++
 -- get layout jumper bindings
