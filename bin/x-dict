@@ -1,7 +1,7 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 # Created: 05.07.2000
-# Last checked: 24.02.2013
+# Last checked: 15.05.2014
 
 # The script was formerly known as leo.py, it is now called x-dict
 
@@ -261,7 +261,7 @@ def ParseURL(url,proxy=None):
 
 import os, time, cPickle, optparse
 
-XDICT_VERSION = "2013-02-24"
+XDICT_VERSION = "2014-05-15"
 
 DEBUG_ACTIVE = os.environ.has_key("INSIDE_EMACS")
 
@@ -283,8 +283,8 @@ if DEBUG_ACTIVE:
     # sys.argv = ["x-dict", "car"]
     # sys.argv = ["x-dict", "--local-file=~/tmp/leo2.html", "hello"]
     sys.argv = ["x-dict", "--local-file=~/tmp/leo_Giraffe.html", "Giraffe"]
-    sys.argv = ["x-dict", "--local-file=~/tmp/leo_laufen.html", "laufen"]
-    # sys.argv = ["x-dict", "--local-file=~/tmp/leo.html", "hello"]
+    # sys.argv = ["x-dict", "--local-file=~/tmp/leo_laufen.html", "laufen"]
+    sys.argv = ["x-dict", "--local-file=~/tmp/leo.html", "crucial"]
 (options, args) = parser.parse_args()
 
 if options.show_version:
@@ -384,6 +384,8 @@ class Dict(object):
         str = string.replace(str, chr(0xC2),"")
         # remove &#160;
         str = string.replace(str,"&#160;","")
+        # remove <br>
+        str = string.replace(str,"<br>","")
         return str
     def show(self, wl):
         for eng, ger in wl:
@@ -419,45 +421,21 @@ class Dict_leo_org(Dict):
         return wl
 
     def parse_result(self, pd):
-        if len(pd[1]) == 1:
-            wl = self.parse_result_v1(pd)
-        else:
-            wl = self.parse_result_v2(pd)
-        # print "parse_result", len(pd[1]), wl
-        return wl
-
-    def parse_result_v1(self, pd):
-        wordlist = pd[7]
-
-        wl=[]
-
-        for i in range(2,len(wordlist)):
-            if len(wordlist[i]) > 3:
-                eng = self.wash(wordlist[i][1])
-                ger = self.wash(wordlist[i][3])
-                if len(eng) > 0 or len(ger) > 0:
-                    #print "%-40s%-39s"%(eng,ger)
-                    wl.append((eng,ger))
-        return wl
-
-    def parse_result_v2(self, pd):
-        # 19.02.2013: A new format that is sometimes delivered from leo.org
-        # new: Substantive eng=pd[4][1..len][4] vs. ger=pd[5][1..len][7]
-        # new: Weitere Treffer: Substantive eng=pd[5][1..len][4] vs. ger=pd[5][1..len][7]
-        # new: Weitere Treffer: Phrasen eng=pd[6][1..len][4] vs. ger=pd[6][1..len][7]
-        # new: Weitere Treffer: Phrasen eng=pd[7][1..len][4] vs. ger=pd[6][1..len][7]
+        # 15.05.2014: Adjektive / Adverbien: eng=pd[2][1..len][4], ger=pd[2][1..len][7]
+        # 15.05.2014: Substantive:           eng=pd[3][1..len][4], ger=pd[3][1..len][7]
+        # 15.05.2014: Verben:                eng=pd[4][1..len][4], ger=pd[4][1..len][7]
         wl = []
-        for idx in range(4,len(pd)-1):
+
+        for idx in range(2, len(pd)):
             wordlist = pd[idx]
-            for i in range(1, len(wordlist)):
-                # print "##", idx, i, len(wordlist)
-                if len(wordlist[i]) >= 7:
+            for i in range(len(wordlist)):
+                if len(wordlist[i]) > 6:
                     eng = self.wash(wordlist[i][4])
                     ger = self.wash(wordlist[i][7])
-                    # print idx, i, eng, ger
-                    wl.append((eng,ger))
+                    if len(eng) > 0 or len(ger) > 0:
+                        #print "%-40s%-39s"%(eng,ger)
+                        wl.append((eng,ger))
         return wl
-
 
 # --------------------------------------------------------------------------------
 # Support for www.dict.cc
