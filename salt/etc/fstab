@@ -15,8 +15,8 @@ UUID=2626dda2-484a-4786-baf9-52b97eb250a5	/boot     	ext4      	rw,relatime,stri
 # /dev/sda5
 UUID=bd2bbad9-e1f4-4145-90e6-2af152d18f21	/home     	ext4      	rw,relatime	0 2
 
-# /dev/sda3
-UUID=44b8266a-2402-4afd-ab58-083ad3e0e03b	none      	swap      	defaults  	0 0
+# # /dev/sda3
+# UUID=44b8266a-2402-4afd-ab58-083ad3e0e03b	none      	swap      	defaults  	0 0
 
 #/dev/mapper/cr	                          /home/cr    ext4    	  noauto,x-systemd.automount,rw,relatime	0 2
 
