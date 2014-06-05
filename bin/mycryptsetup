@@ -34,12 +34,14 @@ fpf="/tmp/cryptsetup_$name"
 dev="$2"
 
 if [ "$name"  = "-all" ]; then
-		mapfile -t array < <(ls /tmp/cryptsetup_* | sed -re's|/tmp/cryptsetup_(.*)|\1|p')
-		for d in "${array[@]}"; do
-				if [ "$dev" != "-resume" ] || (sudo dmsetup info "$d" | grep -iq "state: *SUSPENDED"); then
-						"${BASH_SOURCE[0]}"  "$d" "$dev"
-				fi
-		done 
+		if mapfile -t array < <(ls /tmp/cryptsetup_* | sed -nre's|/tmp/cryptsetup_(.*)|\1|p'); then
+				echo "${array[@]}"
+				for d in "${array[@]}"; do
+						if [ "$dev" != "-resume" ] || (sudo dmsetup info "$d" | grep -iq "state: *SUSPENDED"); then
+								"${BASH_SOURCE[0]}"  "$d" "$dev"
+						fi
+				done 
+		fi
 		exit
 fi
 
