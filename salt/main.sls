@@ -309,7 +309,7 @@ cups:
 {% set services =
 [('autologin@'       ,true ,['tty1']    ,['systemd/system/autologin@.service'])
 ,('wol@'             ,true ,['eth0']    ,['systemd/system/wol@.service'])
-,('dm-crypt-suspend' ,false,['']        ,['systemd/system/dm-crypt-suspend.service'])
+,('dm-crypt-suspend' ,true,['']        ,['systemd/system/dm-crypt-suspend.service'])
 ,('mycapsremap'      ,true ,['']        ,['systemd/system/mycapsremap.service'])
 ,('resume@'          ,true ,['johannes'],['systemd/system/resume@.service'])
 ,('iptables'         ,true ,['']        ,['iptables/iptables.rules'])
