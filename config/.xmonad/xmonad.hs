@@ -1,4 +1,6 @@
 
+import           Control.Applicative
+import           Control.Monad
 import           Data.Char
 import qualified Data.Map as M
 import           Graphics.X11.Xlib
@@ -151,9 +153,21 @@ myStartupHook = do
   -- spawnOn " 0 " "pidgin -c /home/data/personal/misc/pidgin"
   
 -- Workspaces
-myWorkspaces = (['`'] ++ ['1'..'9'] ++ ['0','-','=']
-                , xK_quoteleft:[xK_1..xK_9] ++ [xK_0,xK_minus,xK_equal]
+myWorkspaces = (['`'] ++ shift ['0'..'9'] ++ ['-','=']
+                , [xK_quoteleft,xK_KP_Delete] : shift numkeys  ++
+                  [[xK_minus,xK_KP_Subtract]
+                  ,[xK_equal,xK_KP_Add]]
                 )
+
+shift (h:t) = t ++ [h]
+
+numkeys = zipWith (\a b -> [a,b]) [xK_0..xK_9] numKP
+  where numKP =[ xK_KP_Insert                            -- 0
+               ,xK_KP_End,  xK_KP_Down,  xK_KP_Page_Down -- 1, 2, 3
+               , xK_KP_Left, xK_KP_Begin, xK_KP_Right     -- 4, 5, 6
+               , xK_KP_Home, xK_KP_Up,    xK_KP_Page_Up   -- 7, 8, 9
+               ]
+  
    -- [
    --    wrapBitmap "sm4tik/arch_10x10.xbm",
    --    wrapBitmap "sm4tik/fox.xbm",
@@ -283,8 +297,9 @@ newKeys conf = [
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
 -- mod-control-[1..9] @@ Copy client to workspace N
   [((m .|. myMM, k), windows $ f i)
-     | (i, k) <- zip (workspaces conf) $ snd myWorkspaces
-     , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]]
+     | (i, ks) <- zip (workspaces conf) $ snd myWorkspaces
+     , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]
+     , k <- ks]
    ++
 -- get layout jumper bindings
   fst myLayouts
