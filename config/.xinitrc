@@ -65,7 +65,9 @@ TMUX= /usr/bin/tmux -2 new-session -ds OfflineIMAP "/usr/bin/offlineimap" >> .xl
 #xmobar &
 xbindkeys
 
-(cd /home/data/personal/projects/gewichteingabe/ && .cabal-sandbox/bin/gewichteingabe ) &! 
+if [ `hostname` = 'debussy' ]; then
+		(cd /home/data/personal/projects/gewichteingabe/ && .cabal-sandbox/bin/gewichteingabe ) &! 
+fi
 
 #xcompmgr & (macht die borders von xmonad irgendwie auf nervige weise durchsichtig)
 exec xmonad

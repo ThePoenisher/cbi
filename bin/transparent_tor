@@ -21,7 +21,7 @@ if (( EUID != 0 )); then
 fi
 
 iptables -t nat -A OUTPUT -m owner --uid-owner $TOR_UID -j RETURN
-# iptables -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT 
+iptables -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT 
 for NET in $NON_TOR 127.0.0.0/9 127.128.0.0/10; do
  iptables -t nat -A OUTPUT -d $NET -j RETURN
 done
