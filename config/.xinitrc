@@ -65,7 +65,7 @@ TMUX= /usr/bin/tmux -2 new-session -ds OfflineIMAP "/usr/bin/offlineimap" >> .xl
 #xmobar &
 xbindkeys
 
-if [ `hostname` = 'debussy' ]; then
+if [ `hostname` = 'scriabin' ]; then
 		(cd /home/data/personal/projects/gewichteingabe/ && .cabal-sandbox/bin/gewichteingabe ) &! 
 fi
 
