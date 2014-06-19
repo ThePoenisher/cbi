@@ -306,6 +306,7 @@ Ursache:
                               icicles
                               w3m
                               evil
+                              rainbow-mode
                               goto-chg
                               php-mode
                              ; evil-leader
