@@ -8,6 +8,7 @@ arch_X11_packages:
       - xorg-server-utils
       - xterm
       - arandr
+      - gnome-font-viewer
       - xorg-xclock
       - xorg-twm
       - xorg-utils
