@@ -138,7 +138,7 @@ myLayoutHook = id
                $ mkToggle1 REFLECTY
                $ mkToggle1 FULL
                $ onWorkspace " 9 " Grid
-               $ limitWindows 6
+               -- $ limitWindows 6
                $ snd myLayouts
 
 

@@ -183,6 +183,7 @@ base_packages:
 # do I need gvfs-mtp-git. given it limited power.  what does ubuntu use ? gphotos2?
 #,'git-annex-standalone' use own PKGBUILD instead
 # ,'mediathek'
+# ,'scid_vs_pc'
 {% for p in
 ['aurvote'
 ,'dbacl'
@@ -199,7 +200,6 @@ base_packages:
 ,'perl-string-util'
 ,'python2-gnupg'
 ,'python2-zbar'
-,'scid_vs_pc'
 ,'scidb'
 ,'stockfish-git'
 ,'ttf-vista-fonts'
