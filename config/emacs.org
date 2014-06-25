@@ -309,6 +309,7 @@ Ursache:
                               rainbow-mode
                               goto-chg
                               php-mode
+                              sr-speedbar
                              ; evil-leader
                               haskell-mode
                               helm
@@ -674,6 +675,7 @@ case-fold-search (sometimes set locally!)
   (add-to-list 'auto-mode-alist '("/salt/etc/"  conf-mode t))
   (add-to-list 'auto-mode-alist '("/\.?mutt/"  conf-mode t))
   (add-to-list 'auto-mode-alist '("\\.dat$"  ledger-mode t))
+  (add-to-list 'auto-mode-alist '("\\.h$"  c++-mode t))
 #+END_SRC
 *** Garbage collection
 as suggested on https://github.com/lewang/flx
@@ -2232,6 +2234,7 @@ http://www.emacswiki.org/emacs/Git
 *** Hippie Expand 
 http://emacswiki.org/emacs/HippieExpand
 *** Auto Completion
+http://cx4a.org/software/auto-complete/manual.html
 #+BEGIN_SRC emacs-lisp
   ;; Auto Complete (via ELPA)
   (when t
@@ -2243,8 +2246,10 @@ http://emacswiki.org/emacs/HippieExpand
     ;;http://stackoverflow.com/questions/5298116/auto-complete-mode-doesnt-turn-on-automatically-in-objc-buffers
     (add-to-list 'ac-modes 'latex-mode)
     (add-to-list 'ac-modes 'org-mode)
+    (add-to-list 'ac-sources 'ac-source-semantic)
     )
 #+END_SRC
+*** company-mode
 ** HELM (old: Anything) (via MELPA)
 http://emacswiki.org/emacs/Icicles_-_Anything
 https://github.com/emacs-helm/helm
@@ -2284,6 +2289,7 @@ M-x speedbar
 Different Frame Configs:
 http://emacswiki.org/emacs/SpeedBar
 http://orgmode.org/worg/users/srose.html
+*** sr-speedbar (same frame, from melpa)
 *** use with org-mode
 ** imenu 
 http://www.emacswiki.org/emacs/ImenuMode
@@ -2418,6 +2424,36 @@ http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 ** Code Browser
 http://ecb.sourceforge.net/
 http://emacs-ide.tuxfamily.org/
+** imenu
+scheiße kann keine classen member oder namespaces??
+auch imenu+ bringt nichts
+** which-function
+funktioniert nicht mit namespaces oder classen members
+
+nicht in mode line, sondern erster zeile
+;; Show the current function name in the header line
+(which-function-mode)
+(setq-default header-line-format
+              '((which-func-mode ("" which-func-format " "))))
+(setq mode-line-misc-info
+            ;; We remove Which Function Mode from the mode line, because it's mostly
+            ;; invisible here anyway.
+            (assq-delete-all 'which-func-mode mode-line-misc-info))
+
+            
+*** alternativ 
+semantic-stickyfunc-menu
+aber auch nur mit top level functions
+
+noch mehr alternativen:
+http://www.emacswiki.org/emacs/WhichFuncMode
+*** GEILER: semantic-idle-breadcrumbs-mode
+** CEDET (included in emacs)
+auch für bessere which-func functionalität? 
+http://stackoverflow.com/questions/2285036/display-nested-function-with-which-function-mode-in-emacs
+
+*** EDE
+http://www.gnu.org/software/emacs/manual/html_mono/ede.html
 ** Code Formatting / Beatification / Pretty Printing
 *** JSON
 Download https://gist.github.com/1789605 and eval.
@@ -2561,6 +2597,29 @@ perl -nle '/ID_LENGTH=([0-9\.]+)/ && ($t +=$1) && printf "%02d:%02d:%02d\n",$t/3
 http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 ** Semantic stuff:
 *** http://www.emacswiki.org/emacs/SemanticBovinator
+*** semantic-mode
+eventuel semantic-force-refresh
+
+hat auswirkungen auf imenu, speedbar und noch mehr?
+
+use with auto-complete
+**** interessant:
+semantic-idle-...
+http://cedet.sourceforge.net/intellisense.shtml
+http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html
+http://stackoverflow.com/questions/1644490/emacs-completions-or-intellisense-the-same-as-on-visual-studio
+**** probleme
+http://sourceforge.net/p/cedet/mailman/message/31346054/
+**** Settings
+#+BEGIN_SRC emacs-lisp
+  (defun jo/dev ()
+    (semantic-mode 1)
+    (semantic-idle-breadcrumbs-mode 1)
+    (setq ac-sources '(ac-source-semantic-raw ac-source-semantic ))
+    (local-set-key "\C-c." 'semantic-ia-fast-jump)
+    )
+  (add-hook 'c++-mode-hook 'jo/dev)
+#+END_SRC
 ** Shell
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
@@ -2621,6 +2680,9 @@ http://youtu.be/18xYbPCJOho?t=1m17s
 semantic-symref
 semantic-ia-fast-jump
 
+** XML / (HTML?)
+C-M-d / u / p / n
+nervig aber geht
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
