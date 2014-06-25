@@ -124,6 +124,8 @@ base_packages:
       - bitcoin-daemon
       - calibre
       - aqbanking
+      - eigen
+      - intel-tbb
       # - wine
       # - winetricks
       - dunst # für libnotify

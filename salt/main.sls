@@ -219,6 +219,7 @@ sambaservices:
 ,('mkinitcpio.conf','')
 ,('modules-load.d/cbi.conf','')
 ,('netctl/wlan0-SBB','')
+,('netctl/wlan0-eduroam','')
 ,('netctl/wlan0-chris-KDG-C32A4','.gpg')
 ,('netctl/hotsplots-7ZsIdg2wumfNziS.key','.gpg')
 ,('netctl/wlan0-test','.gpg')

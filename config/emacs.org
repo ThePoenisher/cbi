@@ -476,6 +476,7 @@ not "include path"
       (global-set-key [M-f4] 'save-and-kill)
       (global-set-key (kbd "C-x k") 'save-and-kill)
       ;;(global-set-key [f5] 'asd)
+      (global-set-key [S-f6] 'compile)
       (global-set-key [f6] 'recompile)
       (global-set-key [f8] 'shell)
       (global-set-key [f9] 'xdict-query)
@@ -2629,7 +2630,14 @@ http://sourceforge.net/p/cedet/mailman/message/31346054/
     (semantic-mode 1)
     (semantic-idle-breadcrumbs-mode 1)
     (setq ac-sources '(ac-source-semantic-raw ac-source-semantic ))
-    (local-set-key "\C-c." 'jo/jump-in-other)
+    (local-set-key "\C-c/" 'jo/jump-in-other)
+    (local-set-key "\C-c." 'semantic-ia-fast-jump)
+    (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
+                 '"/home/data/promotion/Programmierung/fipster/type_traits.h")
+    (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
+                 '"/home/data/promotion/Programmierung/fipster/exceptions.h")
+    (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
+                 '"/home/data/promotion/Programmierung/fipster/utility.h")
     )
   (add-hook 'c++-mode-hook 'jo/dev)
 #+END_SRC

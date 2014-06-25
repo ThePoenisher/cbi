@@ -1,0 +1,18 @@
+Description='Eduroam'
+Interface=wlan0
+Connection=wireless
+Security=wpa-configsection
+IP=dhcp
+WPAConfigSection=(
+				'ssid="eduroam"'
+				'key_mgmt=WPA-EAP'
+				'eap=PEAP'
+				'anonymous_identity="anonymous@zedat.fu-berlin.de"'
+				'phase1="peaplabel=0"'
+				'phase2="auth=MSCHAPV2"'
+				'priority=2'
+    		{{ pillar['zedat-credentials'] }}
+)
+
+# not needed? 
+				#'ca_cert="/etc/ssl/certs/Deutsche_Telekom_Root_CA_2.pem"'
