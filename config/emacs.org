@@ -65,7 +65,7 @@ correctly, which would not happen, if org was autoloaded within the
    (let ((curPoint (point)))
          (switch-to-buffer-other-window (current-buffer))
          (set-window-point nil curPoint)
-         (evil-search-symbol-forward)))
+         (evil-search-word t t t)))
     
   (when t
     
@@ -866,8 +866,17 @@ or use `~' to toggle case
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c C-+") 'evil-numbers/inc-at-pt)
   (global-set-key (kbd "C-c C--") 'evil-numbers/dec-at-pt)
-
+  
   (define-key evil-motion-state-map (kbd "C-*") 'jo/search-symbol-in-other)
+  (define-key evil-motion-state-map (kbd "g*") 
+    (lambda() (interactive) (evil-search-word t t t)))
+  (define-key evil-motion-state-map (kbd "g#") 
+    (lambda() (interactive) (evil-search-word nil t t)))
+  (define-key evil-motion-state-map (kbd "*") 
+    (lambda() (interactive) (evil-search-word t nil t)))
+  (define-key evil-motion-state-map (kbd "#") 
+    (lambda() (interactive) (evil-search-word nil nil t)))
+  
   ;; (define-key evil-motion-state-map "g*" 'evil-search-unbounded-symbol-forward)
   
   (define-key evil-motion-state-map "y" 'evil-yank)
@@ -970,8 +979,13 @@ https://bitbucket.org/lyro/evil/issue/140/regex-searching-issues
 http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
 - yank does NOT include the character under point (which is bad at the end of a lin). wheras visual mode includes it. (Scheint aber in VIM auch so zu sein)
 
-***** Suche mit "*"  und "#" matched scheiße wegen komischem such pattern in 
+***** DONE Suche mit "*"  und "#" matched scheiße wegen komischem such pattern in 
+CLOSED: [2014-06-25 Wed 23:18]
 [[file:~/.emacs.d/elpa/evil-20130129.1415/evil-search.el::(defun%20evil-search-symbol%20(forward)][file:~/.emacs.d/elpa/evil-20130129.1415/evil-search.el::(defun evil-search-symbol (forward)]]
+
+function evil-search-word nimmt einen parameter symbol!
+
+siehe eigene keys
 **** and Org
 Only thing currently used: jo/enter-org-speed
 ***** not used
@@ -1152,6 +1166,8 @@ replay with @ <key> for first time and @@ subsequently
 **** marks
 define with m <key>
 open with ' <key>
+
+global mark: uppercase letter!
 **** merge/ diff
 http://vimdoc.sourceforge.net/htmldoc/diff.html
 do (get)
