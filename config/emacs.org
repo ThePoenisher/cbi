@@ -2162,11 +2162,11 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
         (define-key LaTeX-mode-map
           (kbd "C-c C-d") 'reftex-view-crossref) ;; was: TeX-save-document
         (define-key LaTeX-mode-map
-          [f4] (tex-build-command-function '(jo/Tex-next-command) nil t))
+          [f6] (tex-build-command-function '(jo/Tex-next-command) nil t))
         (define-key LaTeX-mode-map
           [f5] (tex-build-command-function "LaTeX" nil t))
         (define-key LaTeX-mode-map
-          [f6] (tex-build-command-function "Biber" nil t))
+          [f4] (tex-build-command-function "Biber" nil t))
         (define-key LaTeX-mode-map
           [f7] (tex-build-command-function "View" nil))
         ;; (define-key LaTeX-mode-map 
@@ -2645,7 +2645,9 @@ http://sourceforge.net/p/cedet/mailman/message/31346054/
   (defun jo/dev ()
     (semantic-mode 1)
     (semantic-idle-breadcrumbs-mode 1)
-    (setq ac-sources '(ac-source-semantic-raw ac-source-semantic ))
+    ;; (setq ac-sources '(ac-source-semantic-raw ac-source-semantic ))
+    (add-to-list 'ac-sources 'ac-source-semantic-raw)
+    (add-to-list 'ac-sources 'ac-source-semantic )
     (local-set-key "\C-c/" 'jo/jump-in-other)
     (local-set-key "\C-c." 'semantic-ia-fast-jump)
     (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
@@ -2657,6 +2659,17 @@ http://sourceforge.net/p/cedet/mailman/message/31346054/
     )
   (add-hook 'c++-mode-hook 'jo/dev)
 #+END_SRC
+**** symref
+keys:[[file:/usr/share/emacs/24.3/lisp/cedet/semantic/symref/list.el.gz::(define-key%20km%20"n"%20'semantic-symref-list-next-line)][file:/usr/share/emacs/24.3/lisp/cedet/semantic/symref/list.el.gz::(define-key km "n" 'semantic-symref-list-next-line)]] 
+
+    (define-key km "n" 'semantic-symref-list-next-line)
+    (define-key km "p" 'semantic-symref-list-prev-line)
+    (define-key km "q" 'semantic-symref-hide-buffer)
+    (define-key km "\C-c\C-e" 'semantic-symref-list-expand-all)
+    (define-key km "\C-c\C-r" 'semantic-symref-list-contract-all)
+    (define-key km "R" 'semantic-symref-list-rename-open-hits)
+    (define-key km "(" 'semantic-symref-list-create-macro-on-open-hit)
+    (define-key km "E" 'semantic-symref-list-call-macro-on-open-hits)
 ** Shell
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))

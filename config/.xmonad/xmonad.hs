@@ -69,7 +69,7 @@ main = do
       , borderWidth = myBorderWidth
      }   
 
-myGap "scriabin" = [(L,156)]
+myGap "scriabin" = [(L,154)]
 myGap _          = []
  
 -- Paths

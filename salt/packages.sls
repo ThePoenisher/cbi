@@ -186,6 +186,7 @@ base_packages:
 #,'git-annex-standalone' use own PKGBUILD instead
 # ,'mediathek'
 # ,'scid_vs_pc'
+# ,'intel-mkl'
 {% for p in
 ['aurvote'
 ,'dbacl'
