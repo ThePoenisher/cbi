@@ -2380,6 +2380,7 @@ http://marmalade-repo.org/packages/ido-better-flex
          ;; haskell
          '("\\.o$" "\\.hi$") ;; sometimes needed? 
          '("\\.log$" )
+         '("\\.h\\.d$"  "\\.cpp\\.d$" "\\.gch$" )
          ;; TEX
          '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
          )

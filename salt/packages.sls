@@ -114,6 +114,7 @@ base_packages:
       - net-tools
       - haskell-parsec
       - haskell-pandoc
+      - haskell-hxt
       - haddock
       - samba
 {% if pillar['arch_desktop'] %}
