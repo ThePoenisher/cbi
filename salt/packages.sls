@@ -3,6 +3,7 @@ base_packages:
   pkg.installed:
     - names:
       - tree
+      - dos2unix
       - git
       - tmux
       - vim
@@ -119,13 +120,13 @@ base_packages:
       - samba
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - gdb
       - bitcoin-qt
       - ntfs-3g
       - stellarium
       - bitcoin-daemon
       - calibre
       - aqbanking
-      - eigen
       - intel-tbb
       # - wine
       # - winetricks
@@ -192,6 +193,7 @@ base_packages:
 ['aurvote'
 ,'dbacl'
 ,'downgrade'
+,'eigen3-hg'
 ,'electrum'
 ,'epson-inkjet-printer-workforce-635-nx625-series'
 ,'google-talkplugin'

@@ -2497,6 +2497,10 @@ by using nxml's indentation rules."
   (message "Ah, much better!"))
 #+END_SRC
 ** Compiling / Interpreting
+*** settings
+#+BEGIN_SRC emacs-lisp
+(setq compilation-scroll-output 'first-error)
+#+END_SRC
 *** Comint?
 *** emacs lisp
 eval-current-buffer
@@ -2735,6 +2739,26 @@ semantic-ia-fast-jump
 ** XML / (HTML?)
 C-M-d / u / p / n
 nervig aber geht
+** Debugging
+*** gdb
+**** M-x gdb
+lots of buffers available (locals, stack, ...)
+***** variable values:
+watch expressions (e.g. vial the locals buffer)
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Watch-Expressions.html#Watch-Expressions
+**** other buffers
+ M-x gdb-display-buffertype-buffer or M-x gdb-frame-buffertype-buffer,
+
+gdb-many-windows
+**** print
+***** Cannot evaluate function -- may be inlined
+function needs to be called an dwarf or gdb debugging information
+available (or not inlined)
+http://stackoverflow.com/questions/427589/inspecting-standard-container-stdmap-contents-with-gdb
+***** Attempt to take address of value not located in memory.
+http://stackoverflow.com/questions/10460567/cannot-call-function-with-reference-parameter-in-gdb
+**** Commands
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Commands-of-GUD.html
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
