@@ -116,6 +116,9 @@ base_packages:
       - haskell-parsec
       - haskell-pandoc
       - haskell-hxt
+      - haskell-regex-tdfa
+      - haskell-regex-posix
+      - haskell-hslogger
       - haddock
       - samba
 {% if pillar['arch_desktop'] %}
