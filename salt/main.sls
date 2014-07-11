@@ -217,6 +217,7 @@ sambaservices:
 ,('makepkg.conf','')
 ,('minidlna.conf','')
 ,('mkinitcpio.conf','')
+,('udev/rules.d/99-discharge.rules','')
 ,('modules-load.d/cbi.conf','')
 ,('netctl/wlan0-SBB','')
 ,('netctl/wlan0-eduroam','')
@@ -267,7 +268,11 @@ mkinitcpio -p linux:
     - watch:
       - file: /etc/mkinitcpio.conf
         
-
+### udev ruleskernel
+udevadm control --reload-rules:
+  cmd.wait:
+    - watch:
+      - file:   /etc/udev/rules.d/99-discharge.rules
         
 ######  Symlinked etc Files  #########
 {% set files =
@@ -333,7 +338,7 @@ cups:
     - running
     - enable: True
 {% else %}
-    - enabled
+    - disabled
 {% endif %}
     - watch:
       - cmd: systemd-reload-{{service~instance}}

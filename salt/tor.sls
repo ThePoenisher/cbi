@@ -45,7 +45,7 @@ packer --noconfirm --noedit  -S {{ p }}:
     - running
     - enable: True
 {% else %}
-    - enabled
+    - disabled
 {% endif %}
     - watch:
 {% for conf in confs %}

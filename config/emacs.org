@@ -943,6 +943,7 @@ funkioniert irgendwie nicht in help-mode+
   
   (add-to-list 'evil-buffer-regexps '("\\*Reconcile\\*" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*undo-tree\\*" . emacs))
+  (add-to-list 'evil-buffer-regexps '("\\*compilation\\*" . emacs))
 #+END_SRC
 **** evil-numbers (MELPA)
 increment/decrement (see eigene keys, z.Z. C-c C-+/-)
@@ -2393,7 +2394,7 @@ http://www.xsteve.at/prg/emacs/power-user-tips.html
 #+BEGIN_SRC emacs-lisp
   (recentf-mode 1)
   (setq recentf-exclude '("_region_\\.tex"))
-  (setq recentf-max-saved-items 2500)
+  (setq recentf-max-saved-items 25000)
   (defun xsteve-ido-choose-from-recentf ()
     "Use ido to select a recently opened file from the `recentf-list'"
     (interactive)
@@ -2759,6 +2760,12 @@ http://stackoverflow.com/questions/427589/inspecting-standard-container-stdmap-c
 http://stackoverflow.com/questions/10460567/cannot-call-function-with-reference-parameter-in-gdb
 **** Commands
 https://www.gnu.org/software/emacs/manual/html_node/emacs/Commands-of-GUD.html
+** Graphviz
+C-c v
+*** Settings
+#+BEGIN_SRC emacs-lisp
+  (setq graphviz-dot-view-command "dot -Tx11 %s")
+#+END_SRC
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
