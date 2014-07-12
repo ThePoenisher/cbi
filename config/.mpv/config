@@ -1,7 +1,7 @@
 # Write your default config options here!
 dvd-device=/dev/sr0
 stop-screensaver="yes"
-fstype=fullscreen
+#x11-netwm=no
 #font=/usr/share/fonts/TTF/DejaVuSans-Bold.ttf
 vo=xv
 # keep-open 

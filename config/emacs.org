@@ -2166,7 +2166,7 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
         (define-key LaTeX-mode-map
           [f5] (tex-build-command-function "LaTeX" nil t))
         (define-key LaTeX-mode-map
-          [f6] (tex-build-command-function "Biber" nil t))
+          [f6] (tex-build-command-function "BibTeX" nil t))
         (define-key LaTeX-mode-map
           [f7] (tex-build-command-function "View" nil))
         ;; (define-key LaTeX-mode-map 
@@ -2520,6 +2520,8 @@ see also [[*Custom%20Settings][Custom Settings]]
   (setq compilation-ask-about-save nil)
   ;; (setq compilation-auto-jump-to-first-error t) not good, because e.g. in C++ it will jumo to the including file, not to the error
 #+END_SRC
+*** customize error regexp
+http://www.emacswiki.org/emacs/CreatingYourOwnCompileErrorRegexp
 ** Config Files / /etc/files
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'ac-modes 'conf-mode)

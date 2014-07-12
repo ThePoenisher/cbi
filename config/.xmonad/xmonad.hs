@@ -54,7 +54,7 @@ main = do
    myStatusBarPipe <- spawnPipe myStatusBar
    conkyBar <- spawnPipe myConkyBar
    host <- getHostName
-   xmonad $ myUrgencyHook $ defaultConfig
+   xmonad $ ewmh $ myUrgencyHook $ defaultConfig
       { terminal = my_term_attach
       , normalBorderColor  = myInactiveBorderColor
       , logHook = myDzenPP2 myStatusBarPipe  >> historyHook >> ewmhDesktopsLogHook
