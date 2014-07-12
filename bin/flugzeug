@@ -1,0 +1,33 @@
+#!/bin/bash
+
+sudo pm-powersave; sudo rmmod acer_wmi; sudo ip link set eth0 down; 
+sudo systemctl stop lighttpd.service
+sudo systemctl stop cups.socket
+sudo systemctl stop cups.path
+sudo systemctl stop cups.service
+sudo systemctl stop lirc.service
+sudo systemctl stop ntpd.service
+sudo systemctl stop sshd.service
+sudo systemctl stop smbd.service
+sudo systemctl stop nmbd.service
+sudo systemctl stop cronie.service
+pkill gewichteingabe
+sudo rmmod sdhci_pci #card reader                                           
+sudo rmmod tg3 #ethernet
+pkill feh_bg
+
+
+if [ "$1" ]; then
+		sudo rmmod snd_hda_intel #sound
+		killall -SIGUSR1 dunst; xset -dpms; xset s off; killall xscreensaver
+		sudo rmmod ath9k #wlan
+		pkill dzen2
+		pkill firefox
+		pkill -9 maildir_watch
+		pkill udevil
+		pkill -9 pulseaudio
+		pkill offlineimap -9
+		sudo systemctl stop netctl-auto@wlan0.service
+		sudo systemctl stop postfix.service
+		sudo systemctl stop dhcpcd@wlan0.service
+fi

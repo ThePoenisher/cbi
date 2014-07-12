@@ -57,11 +57,11 @@ main = do
    xmonad $ ewmh $ myUrgencyHook $ defaultConfig
       { terminal = my_term_attach
       , normalBorderColor  = myInactiveBorderColor
-      , logHook = myDzenPP2 myStatusBarPipe  >> historyHook >> ewmhDesktopsLogHook
+      , logHook = myDzenPP2 myStatusBarPipe  >> historyHook
       , focusedBorderColor = myActiveBorderColor
       , manageHook = namedScratchpadManageHook scratchpads <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
       , layoutHook = gaps (myGap host)  $ avoidStruts myLayoutHook
-      , startupHook =  ewmhDesktopsStartup >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
+      , startupHook =  setSupported >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
       , workspaces = map ( pad . return ) $ fst myWorkspaces
@@ -69,7 +69,7 @@ main = do
       , borderWidth = myBorderWidth
      }   
 
-myGap "scriabin" = [(L,156)]
+myGap "scriabin" = [(L,154)]
 myGap _          = []
  
 -- Paths
@@ -339,3 +339,27 @@ wrapFg color = wrap ("^fg(" ++ color ++ ")") "^fg()"
 wrapBg color = wrap ("^bg(" ++ color ++ ")") "^bg()"
 
 wrapBitmap bitmap = "^p(5)^i(" ++ myBitmapsPath ++ bitmap ++ ")^p(5)"
+
+
+
+-- from ./XMonad/Hooks/EwmhDesktops.hs 
+-- needed for mpv fullscreen
+setSupported :: X ()
+setSupported = withDisplay $ \dpy -> do
+    r <- asks theRoot
+    a <- getAtom "_NET_SUPPORTED"
+    c <- getAtom "ATOM"
+    supp <- mapM getAtom ["_NET_WM_STATE_HIDDEN"
+                         ,"_NET_WM_STATE_FULLSCREEN"
+                         ,"_NET_NUMBER_OF_DESKTOPS"
+                         ,"_NET_CLIENT_LIST"
+                         ,"_NET_CLIENT_LIST_STACKING"
+                         ,"_NET_CURRENT_DESKTOP"
+                         ,"_NET_DESKTOP_NAMES"
+                         ,"_NET_ACTIVE_WINDOW"
+                         ,"_NET_WM_DESKTOP"
+                         ,"_NET_WM_STRUT"
+                         ]
+    io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
+
+    setWMName "xmonad"

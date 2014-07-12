@@ -3,6 +3,7 @@ base_packages:
   pkg.installed:
     - names:
       - tree
+      - dos2unix
       - git
       - tmux
       - vim
@@ -114,17 +115,21 @@ base_packages:
       - net-tools
       - haskell-parsec
       - haskell-pandoc
+      - haskell-hxt
+      - haskell-regex-tdfa
+      - haskell-regex-posix
+      - haskell-hslogger
       - haddock
       - samba
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - gdb
       - bitcoin-qt
       - ntfs-3g
       - stellarium
       - bitcoin-daemon
       - calibre
       - aqbanking
-      - eigen
       - intel-tbb
       # - wine
       # - winetricks
@@ -186,10 +191,12 @@ base_packages:
 #,'git-annex-standalone' use own PKGBUILD instead
 # ,'mediathek'
 # ,'scid_vs_pc'
+# ,'intel-mkl'
 {% for p in
 ['aurvote'
 ,'dbacl'
 ,'downgrade'
+,'eigen3-hg'
 ,'electrum'
 ,'epson-inkjet-printer-workforce-635-nx625-series'
 ,'google-talkplugin'

@@ -217,6 +217,7 @@ sambaservices:
 ,('makepkg.conf','')
 ,('minidlna.conf','')
 ,('mkinitcpio.conf','')
+,('udev/rules.d/99-discharge.rules','')
 ,('modules-load.d/cbi.conf','')
 ,('netctl/wlan0-SBB','')
 ,('netctl/wlan0-eduroam','')
@@ -267,7 +268,11 @@ mkinitcpio -p linux:
     - watch:
       - file: /etc/mkinitcpio.conf
         
-
+### udev ruleskernel
+udevadm control --reload-rules:
+  cmd.wait:
+    - watch:
+      - file:   /etc/udev/rules.d/99-discharge.rules
         
 ######  Symlinked etc Files  #########
 {% set files =
@@ -310,7 +315,7 @@ cups:
 {% set services =
 [('autologin@'       ,true ,['tty1']    ,['systemd/system/autologin@.service'])
 ,('wol@'             ,true ,['eth0']    ,['systemd/system/wol@.service'])
-,('dm-crypt-suspend' ,true,['']        ,['systemd/system/dm-crypt-suspend.service'])
+,('dm-crypt-suspend' ,false,['']        ,['systemd/system/dm-crypt-suspend.service'])
 ,('mycapsremap'      ,true ,['']        ,['systemd/system/mycapsremap.service'])
 ,('resume@'          ,true ,['johannes'],['systemd/system/resume@.service'])
 ,('iptables'         ,true ,['']        ,['iptables/iptables.rules'])
@@ -333,7 +338,7 @@ cups:
     - running
     - enable: True
 {% else %}
-    - enabled
+    - disabled
 {% endif %}
     - watch:
       - cmd: systemd-reload-{{service~instance}}

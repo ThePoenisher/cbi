@@ -314,14 +314,15 @@ Ursache:
                               haskell-mode
                               helm
                               gnuplot
-                              dired-details
+                              dired+
+                              dired-details+
                               gnuplot-mode
                               pandoc-mode
                               yaml-mode
                               markdown-mode
                               jinja2-mode
                               clojure-mode
-                             ;helm
+                              ;helm
                               latex-pretty-symbols
                               evil-numbers
                               smex
@@ -942,6 +943,7 @@ funkioniert irgendwie nicht in help-mode+
   
   (add-to-list 'evil-buffer-regexps '("\\*Reconcile\\*" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*undo-tree\\*" . emacs))
+  (add-to-list 'evil-buffer-regexps '("\\*compilation\\*" . emacs))
 #+END_SRC
 **** evil-numbers (MELPA)
 increment/decrement (see eigene keys, z.Z. C-c C-+/-)
@@ -2162,11 +2164,11 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
         (define-key LaTeX-mode-map
           (kbd "C-c C-d") 'reftex-view-crossref) ;; was: TeX-save-document
         (define-key LaTeX-mode-map
-          [f4] (tex-build-command-function '(jo/Tex-next-command) nil t))
+          [f6] (tex-build-command-function '(jo/Tex-next-command) nil t))
         (define-key LaTeX-mode-map
           [f5] (tex-build-command-function "LaTeX" nil t))
         (define-key LaTeX-mode-map
-          [f6] (tex-build-command-function "BibTeX" nil t))
+          [f4] (tex-build-command-function "BibTeX" nil t))
         (define-key LaTeX-mode-map
           [f7] (tex-build-command-function "View" nil))
         ;; (define-key LaTeX-mode-map 
@@ -2380,6 +2382,7 @@ http://marmalade-repo.org/packages/ido-better-flex
          ;; haskell
          '("\\.o$" "\\.hi$") ;; sometimes needed? 
          '("\\.log$" )
+         '("\\.h\\.d$"  "\\.cpp\\.d$" "\\.gch$" )
          ;; TEX
          '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
          )
@@ -2391,7 +2394,7 @@ http://www.xsteve.at/prg/emacs/power-user-tips.html
 #+BEGIN_SRC emacs-lisp
   (recentf-mode 1)
   (setq recentf-exclude '("_region_\\.tex"))
-  (setq recentf-max-saved-items 2500)
+  (setq recentf-max-saved-items 25000)
   (defun xsteve-ido-choose-from-recentf ()
     "Use ido to select a recently opened file from the `recentf-list'"
     (interactive)
@@ -2495,6 +2498,10 @@ by using nxml's indentation rules."
   (message "Ah, much better!"))
 #+END_SRC
 ** Compiling / Interpreting
+*** settings
+#+BEGIN_SRC emacs-lisp
+(setq compilation-scroll-output 'first-error)
+#+END_SRC
 *** Comint?
 *** emacs lisp
 eval-current-buffer
@@ -2647,7 +2654,9 @@ http://sourceforge.net/p/cedet/mailman/message/31346054/
   (defun jo/dev ()
     (semantic-mode 1)
     (semantic-idle-breadcrumbs-mode 1)
-    (setq ac-sources '(ac-source-semantic-raw ac-source-semantic ))
+    ;; (setq ac-sources '(ac-source-semantic-raw ac-source-semantic ))
+    (add-to-list 'ac-sources 'ac-source-semantic-raw)
+    (add-to-list 'ac-sources 'ac-source-semantic )
     (local-set-key "\C-c/" 'jo/jump-in-other)
     (local-set-key "\C-c." 'semantic-ia-fast-jump)
     (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
@@ -2659,6 +2668,17 @@ http://sourceforge.net/p/cedet/mailman/message/31346054/
     )
   (add-hook 'c++-mode-hook 'jo/dev)
 #+END_SRC
+**** symref
+keys:[[file:/usr/share/emacs/24.3/lisp/cedet/semantic/symref/list.el.gz::(define-key%20km%20"n"%20'semantic-symref-list-next-line)][file:/usr/share/emacs/24.3/lisp/cedet/semantic/symref/list.el.gz::(define-key km "n" 'semantic-symref-list-next-line)]] 
+
+    (define-key km "n" 'semantic-symref-list-next-line)
+    (define-key km "p" 'semantic-symref-list-prev-line)
+    (define-key km "q" 'semantic-symref-hide-buffer)
+    (define-key km "\C-c\C-e" 'semantic-symref-list-expand-all)
+    (define-key km "\C-c\C-r" 'semantic-symref-list-contract-all)
+    (define-key km "R" 'semantic-symref-list-rename-open-hits)
+    (define-key km "(" 'semantic-symref-list-create-macro-on-open-hit)
+    (define-key km "E" 'semantic-symref-list-call-macro-on-open-hits)
 ** Shell
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
@@ -2722,6 +2742,32 @@ semantic-ia-fast-jump
 ** XML / (HTML?)
 C-M-d / u / p / n
 nervig aber geht
+** Debugging
+*** gdb
+**** M-x gdb
+lots of buffers available (locals, stack, ...)
+***** variable values:
+watch expressions (e.g. vial the locals buffer)
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Watch-Expressions.html#Watch-Expressions
+**** other buffers
+ M-x gdb-display-buffertype-buffer or M-x gdb-frame-buffertype-buffer,
+
+gdb-many-windows
+**** print
+***** Cannot evaluate function -- may be inlined
+function needs to be called an dwarf or gdb debugging information
+available (or not inlined)
+http://stackoverflow.com/questions/427589/inspecting-standard-container-stdmap-contents-with-gdb
+***** Attempt to take address of value not located in memory.
+http://stackoverflow.com/questions/10460567/cannot-call-function-with-reference-parameter-in-gdb
+**** Commands
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Commands-of-GUD.html
+** Graphviz
+C-c v
+*** Settings
+#+BEGIN_SRC emacs-lisp
+  (setq graphviz-dot-view-command "dot -Tx11 %s")
+#+END_SRC
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
@@ -3009,12 +3055,15 @@ editing: http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
 *** emacs integration
 ** dired (file system, also remote)
 *** Settings
+C-u s
+C-u M-x dired
 #+BEGIN_SRC emacs-lisp
-  (require 'dired-x)
+  (require 'dired-details+)
+  (require 'dired+)
   (setq dired-listing-switches "-alh")
 #+END_SRC
-*** dired-details
-hide details from listing (dired-details-toggle)
+*** dired-details+
+hide details from listing (can be switched on/off with `(` and `)` )
 http://www.emacswiki.org/emacs/DiredDetails
 *** dired-x
 **** hide unintereseting files: M-o (see C-h i m dired-x)
