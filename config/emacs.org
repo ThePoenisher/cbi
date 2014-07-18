@@ -2652,11 +2652,12 @@ http://sourceforge.net/p/cedet/mailman/message/31346054/
          (set-window-point nil curPoint)
          (semantic-ia-fast-jump curPoint)))
   (defun jo/dev ()
-    (semantic-mode 1)
+   ;; (semantic-mode 1) einfach zu langsame vervollstandigung
     (semantic-idle-breadcrumbs-mode 1)
     ;; (setq ac-sources '(ac-source-semantic-raw ac-source-semantic ))
     (add-to-list 'ac-sources 'ac-source-semantic-raw)
     (add-to-list 'ac-sources 'ac-source-semantic )
+    (add-to-list 'ac-sources 'ac-source-filenames )
     (local-set-key "\C-c/" 'jo/jump-in-other)
     (local-set-key "\C-c." 'semantic-ia-fast-jump)
     (add-to-list 'semantic-lex-c-preprocessor-symbol-file 

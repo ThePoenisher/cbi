@@ -54,7 +54,7 @@ main = do
    myStatusBarPipe <- spawnPipe myStatusBar
    conkyBar <- spawnPipe myConkyBar
    host <- getHostName
-   xmonad $ ewmh $ myUrgencyHook $ defaultConfig
+   xmonad $ myEwmh $ myUrgencyHook $ defaultConfig
       { terminal = my_term_attach
       , normalBorderColor  = myInactiveBorderColor
       , logHook = myDzenPP2 myStatusBarPipe  >> historyHook
@@ -65,7 +65,7 @@ main = do
       , modMask = myMM
       , keys = myKeys
       , workspaces = map ( pad . return ) $ fst myWorkspaces
-      , handleEventHook = fullscreenEventHook <+> docksEventHook -- >> ewmhDesktopsEventHook -- führt dazu, dass xmonad beim start auf pidgin wechselt (wg. spawnOn " 0 " "pidgin", um wmctrl -l benutzen zu können,  benötigt man das aber eh nicht
+      , handleEventHook = docksEventHook -- >> ewmhDesktopsEventHook -- führt dazu, dass xmonad beim start auf pidgin wechselt (wg. spawnOn " 0 " "pidgin", um wmctrl -l benutzen zu können,  benötigt man das aber eh nicht
       , borderWidth = myBorderWidth
      }   
 
@@ -218,15 +218,16 @@ myUrgencyHook = withUrgencyHook NoUrgencyHook
 -- http://www.haskell.org/haskellwiki/Xmonad/Frequently_asked_questions#I_need_to_find_the_class_title_or_some_other_X_property_of_my_program
 -- find out using xprop
 myManageHook = composeAll $
-   [ isFullscreen --> doFullFloat  ]
+   [ isFullscreen --> doFullFloat
+   -- , className =? "mpv" --> doFloat -- needs mpv --x11-netwm=no
+   ]
    ++
-   composeAll [[ c =? t  --> doFloat | t <- ts ]
-      | (c,ts) <- [
-                  -- problem: xmonad hängt wenn Ediff floating
-                   --(title    ,["Ediff"]        ),
-                   --(resource ,["Ediff"]        ),
-                   (className,["Gimp","Zenity","Xdialog"]  )  -- feh
-                  ]]
+   [ c =? t  --> doFloat |  (c,ts) <- [
+        -- problem: xmonad hängt wenn Ediff floating
+        --(title    ,["Ediff"]        ),
+        --(resource ,["Ediff"]        ),
+        (className,["Gimp","Zenity","Xdialog"]  )  -- feh
+        ], t <- ts]
 
 -- Prompt config
 myXPConfig = defaultXPConfig {
@@ -350,7 +351,7 @@ setSupported = withDisplay $ \dpy -> do
     a <- getAtom "_NET_SUPPORTED"
     c <- getAtom "ATOM"
     supp <- mapM getAtom ["_NET_WM_STATE_HIDDEN"
-                         ,"_NET_WM_STATE_FULLSCREEN"
+                         ,"_NET_WM_STATE_FULLSCREEN" -- the patch
                          ,"_NET_NUMBER_OF_DESKTOPS"
                          ,"_NET_CLIENT_LIST"
                          ,"_NET_CLIENT_LIST_STACKING"
@@ -361,5 +362,11 @@ setSupported = withDisplay $ \dpy -> do
                          ,"_NET_WM_STRUT"
                          ]
     io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
-
     setWMName "xmonad"
+
+    
+myEwmh :: XConfig a -> XConfig a
+myEwmh c = c { startupHook     = startupHook c >> setSupported
+             , handleEventHook = handleEventHook c >>
+                                 ewmhDesktopsEventHook >> fullscreenEventHook  -- this order is important!
+             , logHook         = logHook c >> ewmhDesktopsLogHook }
