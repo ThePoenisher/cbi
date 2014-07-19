@@ -34,6 +34,7 @@ base_packages:
       - acpi
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
+      - reflector
       - p7zip
       - dnsutils
       - exfat-utils
