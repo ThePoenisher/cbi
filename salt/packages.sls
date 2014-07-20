@@ -34,6 +34,7 @@ base_packages:
       - acpi
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
+      - cloc
       - reflector
       - p7zip
       - dnsutils

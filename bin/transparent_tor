@@ -25,14 +25,18 @@ iptables -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT
 for NET in $NON_TOR 127.0.0.0/9 127.128.0.0/10; do
  iptables -t nat -A OUTPUT -d $NET -j RETURN
 done
-if [ -z "$1" ]; then
+if [ "$1" = "all" ]; then
 		echo not redirecting 443,8080,80
 		iptables -t nat -A OUTPUT -p tcp -m multiport ! --dport 443,8080,80 --syn -j REDIRECT --to-ports $TRANS_PORT
+		shift;
 else
 		echo redirecting every port
 		iptables -t nat -A OUTPUT -p tcp -m tcp --syn -j REDIRECT --to-ports $TRANS_PORT
 fi
 
+if [ "$1" = "de" ]; then
+		e="--ExcludeExitNodes {de} --GeoIPExcludeUnknown 0"
+fi
 # iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 # for NET in $NON_TOR 127.0.0.0/8; do
 #  iptables -A OUTPUT -d $NET -j ACCEPT
@@ -41,7 +45,7 @@ fi
 # iptables -A OUTPUT -j REJECT
 
 systemctl stop tor.service
-sudo -u tor tor --FascistFirewall 1
+sudo -u tor tor $e --FascistFirewall 1
 
 systemctl restart iptables.service
 systemctl start tor.service

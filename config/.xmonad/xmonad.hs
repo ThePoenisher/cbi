@@ -61,7 +61,7 @@ main = do
       , focusedBorderColor = myActiveBorderColor
       , manageHook = namedScratchpadManageHook scratchpads <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
       , layoutHook = gaps (myGap host)  $ avoidStruts myLayoutHook
-      , startupHook =  setSupported >> setWMName "LG3D"  >> myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
+      , startupHook = myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
       , workspaces = map ( pad . return ) $ fst myWorkspaces
@@ -362,7 +362,9 @@ setSupported = withDisplay $ \dpy -> do
                          ,"_NET_WM_STRUT"
                          ]
     io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
-    setWMName "xmonad"
+    setWMName "LG3D" --required for JAVA (e.g. jdownloader). without
+                     --it menues and clicks and window drawing
+                     --according to window size do not work
 
     
 myEwmh :: XConfig a -> XConfig a

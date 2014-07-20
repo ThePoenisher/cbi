@@ -10,6 +10,9 @@ sudo systemctl stop ntpd.service
 sudo systemctl stop sshd.service
 sudo systemctl stop smbd.service
 sudo systemctl stop nmbd.service
+sudo systemctl stop tor.service
+sudo systemctl stop netctl-auto@wlan0.service
+sudo systemctl stop dhcpcd@wlan0.service
 sudo systemctl stop cronie.service
 pkill gewichteingabe
 sudo rmmod sdhci_pci #card reader                                           

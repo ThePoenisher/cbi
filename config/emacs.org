@@ -2652,20 +2652,21 @@ http://sourceforge.net/p/cedet/mailman/message/31346054/
          (set-window-point nil curPoint)
          (semantic-ia-fast-jump curPoint)))
   (defun jo/dev ()
-   ;; (semantic-mode 1) einfach zu langsame vervollstandigung
-    (semantic-idle-breadcrumbs-mode 1)
+    ;; (semantic-mode 1) einfach zu langsame vervollstandigung
+    ;; (semantic-idle-breadcrumbs-mode 1)
     ;; (setq ac-sources '(ac-source-semantic-raw ac-source-semantic ))
-    (add-to-list 'ac-sources 'ac-source-semantic-raw)
-    (add-to-list 'ac-sources 'ac-source-semantic )
-    (add-to-list 'ac-sources 'ac-source-filenames )
+    ;; (add-to-list 'ac-sources 'ac-source-semantic-raw)
+    ;; (add-to-list 'ac-sources 'ac-source-semantic )
+    ;; (add-to-list 'ac-sources 'ac-source-filenames )
     (local-set-key "\C-c/" 'jo/jump-in-other)
+    (local-set-key "\C-c\C-f" 'ff-find-other-file)
     (local-set-key "\C-c." 'semantic-ia-fast-jump)
-    (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
-                 '"/home/data/promotion/Programmierung/fipster/type_traits.h")
-    (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
-                 '"/home/data/promotion/Programmierung/fipster/exceptions.h")
-    (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
-                 '"/home/data/promotion/Programmierung/fipster/utility.h")
+    ;; (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
+    ;;              '"/home/data/promotion/Programmierung/fipster/type_traits.h")
+    ;; (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
+    ;;              '"/home/data/promotion/Programmierung/fipster/exceptions.h")
+    ;; (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
+    ;;              '"/home/data/promotion/Programmierung/fipster/utility.h")
     )
   (add-hook 'c++-mode-hook 'jo/dev)
 #+END_SRC
