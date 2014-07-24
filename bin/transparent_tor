@@ -25,7 +25,7 @@ iptables -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT
 for NET in $NON_TOR 127.0.0.0/9 127.128.0.0/10; do
  iptables -t nat -A OUTPUT -d $NET -j RETURN
 done
-if [ "$1" = "all" ]; then
+if [ "$1" != "all" ]; then
 		echo not redirecting 443,8080,80
 		iptables -t nat -A OUTPUT -p tcp -m multiport ! --dport 443,8080,80 --syn -j REDIRECT --to-ports $TRANS_PORT
 		shift;
