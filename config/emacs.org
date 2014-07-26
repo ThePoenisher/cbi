@@ -1279,6 +1279,7 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
 [[info:emacs#Cut%20and%20Paste][info:emacs#Cut and Paste]]
 ** Commands:
 *** read only: C-x C-q
+** auto-revert-mode (auch global)
 * Writing (natural language)
 #+BEGIN_SRC emacs-lisp
   (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
