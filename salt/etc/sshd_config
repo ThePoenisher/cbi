@@ -126,6 +126,11 @@ UsePrivilegeSeparation sandbox		# Default for new installations.
 # override default of no subsystems
 Subsystem	sftp	/usr/lib/ssh/sftp-server
 
+Match Group sftpusers
+  ChrootDirectory %h
+  ForceCommand internal-sftp
+  AllowTcpForwarding no
+
 # Example of overriding settings on a per-user basis
 #Match User anoncvs
 #	X11Forwarding no
