@@ -1846,6 +1846,12 @@ shit. instead use cbi/bin/ediff script
     '(add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
     )
 #+END_SRC
+** directories / tree / recursive
+ediff-directories
+
+anderes zeug
+http://www.emacswiki.org/emacs/EdiffTrees
+http://www.emacs.uniyar.ac.ru/doc/em24h/emacs124.htm
 * DONE LaTeX
 CLOSED: [2012-12-12 Wed 23:57]
 :PROPERTIES:
