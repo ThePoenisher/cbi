@@ -1280,6 +1280,7 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
 ** Commands:
 *** read only: C-x C-q
 ** auto-revert-mode (auch global)
+** open several files: C-x C-f glob
 * Writing (natural language)
 #+BEGIN_SRC emacs-lisp
   (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
@@ -3089,6 +3090,8 @@ Put a dired buffer in a mode in which filenames are editable.
 *** current buffer:
 browse-url-of-buffer (C-c C-v)
 for more control over the url see http://www.emacswiki.org/emacs/BrowseUrl#toc2
+*** open several files
+F find all marked files
 * Help
 ** info docs: C-h i
 ** M-x finder-commentary RET
