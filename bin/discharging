@@ -5,7 +5,7 @@ echo "Discharging: `date` ($1)" >> $file
 udevadm info --path=/sys/class/power_supply/BAT0 >> $file
 if [ "$1" -le 260000 ]; then 
 		echo ACTION >> $file
-		systemctl hybrid-sleep
+		# systemctl hybrid-sleep
 fi;
 
 # kleine battery: 35000 (aber leider keine events)

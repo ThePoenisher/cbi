@@ -1,5 +1,7 @@
 #!/bin/bash
-f="Wortliste"
+
+f="$(dirname "${BASH_SOURCE[0]}")/Wortliste"
+echo $f
 
 # converts a binary number to a list of words
 
