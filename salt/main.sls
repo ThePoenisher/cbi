@@ -215,6 +215,7 @@ sambaservices:
 ,('kismet.conf','')
 ,('locale.gen','')
 ,('makepkg.conf','')
+,('udevil/udevil.conf','')
 ,('minidlna.conf','')
 ,('mkinitcpio.conf','')
 ,('udev/rules.d/99-discharge.rules','')
@@ -280,7 +281,6 @@ udevadm control --reload-rules:
 ,'gitignore'
 ,'locale.conf'
 ,'tmux.conf'
-,'udevil/udevil.conf'
 ,'vimrc'
  ] %}
 {% for file in files %}
