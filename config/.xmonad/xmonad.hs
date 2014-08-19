@@ -2,6 +2,7 @@
 import           Control.Applicative
 import           Control.Monad
 import           Data.Char
+import           Data.List
 import qualified Data.Map as M
 import           Graphics.X11.Xlib
 import           Network.HostName
@@ -222,9 +223,14 @@ myManageHook = composeAll $
    -- , className =? "mpv" --> doFloat -- needs mpv --x11-netwm=no
    ]
    ++
+   [ stringProperty "WM_CLASS" =? "XMathematica"
+     <&&> fmap (\x -> not (isInfixOf "- Wolfram Mathematica" x
+                           && not (isInfixOf "Find and Replace" x)))
+     title --> doFloat ]
+   ++
    [ c =? t  --> doFloat |  (c,ts) <- [
         -- problem: xmonad hängt wenn Ediff floating
-        --(title    ,["Ediff"]        ),
+        -- (title    ,["Find and Replace"]        ),
         --(resource ,["Ediff"]        ),
         (className,["Gimp","Zenity","Xdialog"]  )  -- feh
         ], t <- ts]
