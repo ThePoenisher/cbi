@@ -2212,7 +2212,7 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
          (TeX-command ,cmd 'TeX-master-file (if ,override-confirm 1 -1)))
   )
   
-  ;; warum habe ich eine eigene? keine Ahnung
+  ;; warum habe ich eine eigene? keine Ahnung. gibts den schon?
   (defun jo/Tex-next-command ()
     (interactive)
     (let ((name (TeX-master-file)))
