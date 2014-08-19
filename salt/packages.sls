@@ -3,7 +3,6 @@ base_packages:
   pkg.installed:
     - names:
       - tree
-      - dos2unix
       - git
       - tmux
       - vim
@@ -21,7 +20,6 @@ base_packages:
       - wget
       - colordiff
       - figlet
-      - syslinux
       - ranger
       - subversion
       - lsof
@@ -35,11 +33,13 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - cloc
+      - dos2unix
       - reflector
       - p7zip
       - dnsutils
       - exfat-utils
       - fuse-exfat
+      - syslinux
       - dosfstools
       - pptpclient
       - socat
