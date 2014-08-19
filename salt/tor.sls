@@ -13,11 +13,12 @@ packer --noconfirm --noedit  -S {{ p }}:
   
 {% set files =
 [
+('torsocks.conf','')
 ] %}
-{% for file in files %}
+{% for file,ending in files %}
 /etc/{{ file }}:
   file.managed:
-    - source: salt://etc/{{ file }}
+    - source: salt://etc/{{ file }}{{ ending }}
     - makedirs: True
     - template: jinja
 {% endfor %}
@@ -25,10 +26,10 @@ packer --noconfirm --noedit  -S {{ p }}:
 #services
 
 {% set services =
-[('netctl@',['tor_bridge'],['netctl/tor_bridge'])
-,('tor',[''],['tor/torrc'])
+[('netctl@',true,['tor_bridge'],['netctl/tor_bridge'])
+,('tor',false,[''],['tor/torrc'])
 ]%}
-{% for service, instances, confs in services %}
+{% for service, start, instances, confs in services %}
 {% for conf in confs %}
 /etc/{{ conf }}:
   file.managed:
@@ -39,8 +40,13 @@ packer --noconfirm --noedit  -S {{ p }}:
       
 {% for instance in instances %}
 {{ service~instance }}:
-  service.running:
+  service:
+{% if start %}
+    - running
     - enable: True
+{% else %}
+    - disabled
+{% endif %}
     - watch:
 {% for conf in confs %}
       - file: /etc/{{ conf }}

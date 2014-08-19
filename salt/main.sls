@@ -27,10 +27,15 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
 {% set files =
 ['.config/dunst'
+,'.config/MusicBrainz'
 ,'.lircrc'
 ,'.zlogin'
-,'.xbmc/userdata/keymaps/remote.xml'
 ,'.xbmc/userdata/Lircmap.xml'
+,'.xbmc/userdata/advancedsettings.xml'
+,'.xbmc/userdata/guisettings.xml'
+,'.xbmc/userdata/keymaps/remote.xml'
+,'.xbmc/userdata/sources.xml'
+,'.scidvspc'
 ] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
@@ -38,12 +43,13 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
     - target: {{ grains['cbi_home'] }}/config/{{ file }}
     - user: {{ usr }}
     - group: {{ usr }}
+    - makedirs: true
     - force: True
 {% endfor %}
       
 '{{ home }}/VirtualBox VMs':
   file.symlink:
-    - target: /home/data/downloads/VirtualBox VMs
+    - target: /home/data/VMs
     - user: {{ usr }}
     - group: {{ usr }}
     - force: True
@@ -63,6 +69,7 @@ groupsasd:
     - names:
         - sudo
         - wireshark
+        - kismet
 {% endif %} # arch
 
 ###########  Users ###############
@@ -91,6 +98,7 @@ johannes:
       - optical
       - network
       - scanner
+      - kismet
       - power
       - storage
       - video
@@ -99,6 +107,7 @@ johannes:
     - require:
       - group: sudo
       - group: wireshark
+      - group: kismet
 {% endif %}
 
 
@@ -201,29 +210,31 @@ sambaservices:
       
 #######  managed etc (template) files #######
 {% set files =
-['fstab'
-,'gitconfig'
-,'lirc/lircd.conf'
-,'locale.gen'
-,'makepkg.conf'
-,'minidlna.conf'
-,'mkinitcpio.conf'
-,'modules-load.d/cbi.conf'
-,'netctl/wlan0-chris-KDG-C32A4.gpg'
-,'netctl/wlan0-SBB'
-,'netctl/wlan0-test.gpg'
-,'pacman.conf'
-,'pacman.d/mirrorlist'
-,'samba/smb.conf'
-,'systemd/journald.conf'
-,'systemd/logind.conf'
-,'texmf/web2c/texmf.cnf'
-,'zsh/zshenv'
+[('fstab','')
+,('gitconfig','')
+,('kismet.conf','')
+,('locale.gen','')
+,('makepkg.conf','')
+,('udevil/udevil.conf','')
+,('minidlna.conf','')
+,('mkinitcpio.conf','')
+,('udev/rules.d/99-discharge.rules','')
+,('modules-load.d/cbi.conf','')
+,('netctl/wlan0-SBB','')
+,('netctl/wlan0-eduroam','')
+,('netctl/wlan0-chris-KDG-C32A4','.gpg')
+,('netctl/hotsplots-7ZsIdg2wumfNziS.key','.gpg')
+,('netctl/wlan0-test','.gpg')
+,('pacman.conf','')
+,('samba/smb.conf','')
+,('systemd/journald.conf','')
+,('systemd/logind.conf','')
+,('zsh/zshenv','')
 ] %}
-{% for file in files %}
+{% for file,ending in files %}
 /etc/{{ file }}:
   file.managed:
-    - source: salt://etc/{{ file }}
+    - source: salt://etc/{{ file }}{{ ending }}
     - makedirs: True
     - template: jinja
 {% endfor %}
@@ -258,7 +269,11 @@ mkinitcpio -p linux:
     - watch:
       - file: /etc/mkinitcpio.conf
         
-
+### udev ruleskernel
+udevadm control --reload-rules:
+  cmd.wait:
+    - watch:
+      - file:   /etc/udev/rules.d/99-discharge.rules
         
 ######  Symlinked etc Files  #########
 {% set files =
@@ -266,7 +281,6 @@ mkinitcpio -p linux:
 ,'gitignore'
 ,'locale.conf'
 ,'tmux.conf'
-,'udevil/udevil.conf'
 ,'vimrc'
  ] %}
 {% for file in files %}
@@ -287,32 +301,29 @@ hostnamectl set-hostname {{ grains['cbi_machine'] }}:
 cups:
   service.running:
     - enable: True
+      
 
 ##### pacman #### 
 /etc/pacman.d/mirrorlist:
   file.managed:
     - source: salt://etc/pacman.d/mirrorlist.gpg
 
-/etc/pacman.d/mirrorlist:
-  file.managed:
-    - source: salt://etc/pacman.d/mirrorlist.gpg
-
-
 ##### Systemd services
 
 {% if pillar['arch_desktop'] %}
 
 {% set services =
-[('autologin@',['tty1'],['systemd/system/autologin@.service'])
-,('wol@',['eth0'],['systemd/system/wol@.service'])
-,('resume@',['johannes'],['systemd/system/resume@.service'])
-,('iptables',[''],['iptables/iptables.rules'])
-,('lirc',[''],['lirc/lircd.conf'])
+[('autologin@'       ,true ,['tty1']    ,['systemd/system/autologin@.service'])
+,('wol@'             ,true ,['eth0']    ,['systemd/system/wol@.service'])
+,('dm-crypt-suspend' ,false,['']        ,['systemd/system/dm-crypt-suspend.service'])
+,('mycapsremap'      ,true ,['']        ,['systemd/system/mycapsremap.service'])
+,('resume@'          ,true ,['johannes'],['systemd/system/resume@.service'])
+,('iptables'         ,true ,['']        ,['iptables/iptables.rules'])
+,('lirc'             ,true ,['']        ,['systemd/system/lirc.service','lirc/lircd.conf'])
 ]%}
-#,('dm-crypt-suspend',[''],['systemd/system/dm-crypt-suspend.service'])
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
-{% for service, instances, confs in services %}
+{% for service, start, instances, confs in services %}
 {% for conf in confs %}
 /etc/{{ conf }}:
   file.managed:
@@ -322,8 +333,13 @@ cups:
       
 {% for instance in instances %}
 {{ service~instance }}:
-  service.running:
+  service:
+{% if start %}
+    - running
     - enable: True
+{% else %}
+    - disabled
+{% endif %}
     - watch:
       - cmd: systemd-reload-{{service~instance}}
 {% for conf in confs %}
@@ -344,4 +360,3 @@ systemd-reload-{{service~instance}}:
 
 {% endif %} # arch desktop
 {% endif %} #ARCH OS
-

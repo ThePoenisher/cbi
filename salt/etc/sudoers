@@ -81,10 +81,14 @@ root ALL=(ALL) ALL
 ## Uncomment to allow members of group sudo to execute any command
 %sudo	ALL=(ALL) ALL
 
+johannes ALL=(ALL) NOPASSWD: /usr/bin/cryptsetup close *
 johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup suspend *
 johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup message * 0 key wipe
 johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup table --target crypt
+johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup info *
 
+Cmnd_Alias SCRIPTS = /usr/bin/dmsetup table --target crypt, /usr/bin/dmsetup info *
+Defaults!SCRIPTS !syslog, !pam_session 
 
 ## Uncomment to allow any user to run sudo if they know the password
 ## of the user they are running the command as (root by default).

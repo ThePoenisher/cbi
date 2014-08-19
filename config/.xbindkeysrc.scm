@@ -66,6 +66,7 @@
 
 (xbindkey '(shift "c:135") "xbindkeys_show")
 (xbindkey '(XF86AudioMute) "audio-cli toggle_all")
+(xbindkey '(control XF86AudioMute) "audio-cli 100")
 (xbindkey '(XF86AudioRaiseVolume) "audio-cli volup")
 (xbindkey '(XF86AudioLowerVolume) "audio-cli voldown")
 (xbindkey '(shift XF86MonBrightnessDown) "xbacklight -dec 3")

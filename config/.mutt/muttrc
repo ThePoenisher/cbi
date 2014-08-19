@@ -28,6 +28,7 @@ set edit_headers=yes
 set autoedit=yes
 
 set pager_index_lines=20
+set index_format="%4C %Z %[!%y/%m/%d] %-17.17F %c %s"
 
 set sort_browser=reverse-date
 								 
@@ -45,3 +46,7 @@ source ~/.mutt/scripts/themes.sh|
 #source ~/.mutt/source-muttrc.d|
 auto_view text/html
 auto_view application/pdf
+
+set header_cache = "~/.cache/mutt"
+#set message_cachedir = "/tmp/msg" 
+set certificate_file=~/.mutt/certs

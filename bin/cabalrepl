@@ -1,0 +1,10 @@
+#!/bin/bash
+if cabal sandbox list-sources; then 
+		cabal repl
+else
+		ghci
+fi
+ancestor() {
+  local n=${1:-1}
+  (for ((; n != 0; n--)); do cd $(dirname ${PWD}); done; pwd)
+}

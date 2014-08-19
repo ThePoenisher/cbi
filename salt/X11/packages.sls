@@ -8,6 +8,7 @@ arch_X11_packages:
       - xorg-server-utils
       - xterm
       - arandr
+      - gnome-font-viewer
       - xorg-xclock
       - xorg-twm
       - xorg-utils
@@ -17,8 +18,10 @@ arch_X11_packages:
       - transset-df
       - mesa-demos #glxgears
       - feh
-      - xmonad
-      - xmonad-contrib
+      - eog
+      - haskell-xmonad
+      - haskell-xmonad-contrib
+      - haskell-hostname
       - xmobar
       - xscreensaver
       - rxvt-unicode
@@ -69,5 +72,5 @@ fonts:
         - xorg-fonts-75dpi
         - gtk2fontsel
         - terminus-font
-#        - ttf-ms-fonts (aur)
 #        - monaco  sehr hässlich, z.B. in Firefox
+#        see also packer

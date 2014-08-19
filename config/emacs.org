@@ -54,7 +54,7 @@ which will install the following loader into ~/.emacs.d/init.el:
 This is to assure, that org-confirm-babel-evaluate is loaded
 correctly, which would not happen, if org was autoloaded within the
 (let ((org-confirm-babel-evaluate nil))).
-*** org-load-hook also does not work, as it is already to late, when registered
+*** also org-load-hook does not work, as it is already to late, when registered
 - Use eval-after-load instead
 - org-mode-hook?
 * Defuns Function Definitions
@@ -65,7 +65,7 @@ correctly, which would not happen, if org was autoloaded within the
    (let ((curPoint (point)))
          (switch-to-buffer-other-window (current-buffer))
          (set-window-point nil curPoint)
-         (evil-search-symbol-forward)))
+         (evil-search-word t t t)))
     
   (when t
     
@@ -90,7 +90,7 @@ correctly, which would not happen, if org was autoloaded within the
   
   
     ;; from http://emacswiki.org/emacs/ToggleWindowSplit
-    (defun toggle-window-split ()
+    (defun jo/toggle-window-split ()
       (interactive)
       (if (= (count-windows) 2)
           (let* ((this-win-buffer (window-buffer))
@@ -306,25 +306,32 @@ Ursache:
                               icicles
                               w3m
                               evil
+                              rainbow-mode
                               goto-chg
                               php-mode
+                              sr-speedbar
                              ; evil-leader
                               haskell-mode
                               helm
                               gnuplot
-                              dired-details
+                              dired+
+                              dired-details+
                               gnuplot-mode
                               pandoc-mode
                               yaml-mode
                               markdown-mode
                               jinja2-mode
                               clojure-mode
-                             ;helm
+                              ;helm
                               latex-pretty-symbols
                               evil-numbers
                               smex
                               ido-ubiquitous
                               ido-vertical-mode
+                              ido-complete-space-or-hyphen
+                              ido-sort-mtime
+                              flx
+                              flx-ido
                               graphviz-dot-mode
                               )
         )
@@ -447,35 +454,36 @@ not "include path"
 :END:
 ** Custom Settings
 #+BEGIN_SRC emacs-lisp
-  (when t
-  
-    (global-set-key (kbd "<M-kp-prior>") 'scroll-other-window-down)
-    (global-set-key (kbd "<M-prior>") 'scroll-other-window-down)
-    (global-set-key (kbd "M-s 7") 'my-multi-occur-in-matching-buffers)
-    (define-key ctl-x-4-map "t" 'toggle-window-split)
-    (global-set-key (kbd "C-x C-,") 'comment-or-uncomment-region)
-    (global-set-key (kbd "M-D") 'backward-kill-word)
-    (global-set-key (kbd "M-n") 'clone-indirect-buffer)
-    (global-set-key (kbd "C-x C-b") 'bs-show)
-    (global-set-key (kbd "M-# M-s") 
-                    (lambda()(interactive) (find-file "/home/data/personal/org-notes/LinuxAdoption.org")))
-    (global-set-key (kbd "M-# M-e") 'dotemacs)
-    (global-set-key (kbd "C-# C-c") 'dotemacs-commit)
-    (global-set-key [S-f1] 'browse-url-at-point)
-    (global-set-key [f1] 'browse-url-of-file)
-    (global-set-key [f2] 'grep-find)
-    ;;      (global-set-key [f3] 'isearch-forward)
-    (global-set-key [f3] 'bubble-buffer)
-    (global-set-key [M-f4] 'save-and-kill)
-    (global-set-key (kbd "C-x k") 'save-and-kill)
-    ;;(global-set-key [f5] 'asd)
-    ;;(global-set-key [f6] 'compile)
-    ;;(global-set-key [f7] 'recompile)
-    (global-set-key [f8] 'shell)
-    (global-set-key [f9] 'xdict-query)
-    (global-set-key [f10] 'xdict-query-with-word-at-point)
-    (global-set-key [f12] 'ansi-term)
-    )
+    (when t
+    
+      (global-set-key (kbd "<M-kp-prior>") 'scroll-other-window-down)
+      (global-set-key (kbd "<M-prior>") 'scroll-other-window-down)
+      (global-set-key (kbd "M-s 7") 'my-multi-occur-in-matching-buffers)
+      (define-key ctl-x-4-map "t" 'jo/toggle-window-split)
+      (define-key ctl-x-4-map "|" 'jo/toggle-window-split)
+      (global-set-key (kbd "C-x C-,") 'comment-or-uncomment-region)
+      (global-set-key (kbd "M-D") 'backward-kill-word)
+      (global-set-key (kbd "M-n") 'clone-indirect-buffer)
+      (global-set-key (kbd "C-x C-b") 'bs-show)
+      (global-set-key (kbd "M-s M-s") 'linxad)
+      (defun linxad nil (interactive) (find-file "/home/data/personal/org-notes/LinuxAdoption.org"))
+      (global-set-key (kbd "M-s M-e") 'dotemacs)
+      (global-set-key (kbd "C-# C-c") 'dotemacs-commit)
+      (global-set-key [S-f1] 'browse-url-at-point)
+      (global-set-key [f1] 'browse-url-of-file)
+      (global-set-key [f2] 'grep-find)
+      ;;      (global-set-key [f3] 'isearch-forward)
+      (global-set-key [f3] 'bubble-buffer)
+      (global-set-key [M-f4] 'save-and-kill)
+      (global-set-key (kbd "C-x k") 'save-and-kill)
+      ;;(global-set-key [f5] 'asd)
+      (global-set-key [S-f6] 'compile)
+      (global-set-key [f6] 'recompile)
+      (global-set-key [f8] 'shell)
+      (global-set-key [f9] 'xdict-query)
+      (global-set-key [f10] 'xdict-query-with-word-at-point)
+      (global-set-key [f12] 'ansi-term)
+      )
 #+END_SRC
 
 ** Material / Understanding
@@ -653,6 +661,10 @@ http://ergoemacs.org/emacs/find_replace_inter.html
 ***** ...mehr 
 http://www.emacswiki.org/emacs/SearchBuffers
 http://stackoverflow.com/questions/7494203/how-do-i-m-x-replace-string-across-all-buffers-in-emacs
+**** occurs (aus replace+)
+**** case
+search-upper-case
+case-fold-search (sometimes set locally!)
 *** Undo Limit
 #+BEGIN_SRC emacs-lisp
 (setq undo-limit 10000000)
@@ -664,6 +676,12 @@ http://stackoverflow.com/questions/7494203/how-do-i-m-x-replace-string-across-al
   (add-to-list 'auto-mode-alist '("/salt/etc/"  conf-mode t))
   (add-to-list 'auto-mode-alist '("/\.?mutt/"  conf-mode t))
   (add-to-list 'auto-mode-alist '("\\.dat$"  ledger-mode t))
+  (add-to-list 'auto-mode-alist '("\\.h$"  c++-mode t))
+#+END_SRC
+*** Garbage collection
+as suggested on https://github.com/lewang/flx
+#+BEGIN_SRC emacs-lisp
+(setq gc-cons-threshold 20000000)
 #+END_SRC
 ** Macros
 record and later insert equivalent code!
@@ -747,6 +765,11 @@ http://ergoemacs.org/emacs/emacs_rsi_my_experiences.html
 from http://www.emacswiki.org/emacs/MovingTheCtrlKey
 
 Gegenargument: http://ergoemacs.org/emacs/swap_CapsLock_Ctrl.html
+
+***** Console level:
+(echo `dumpkeys |grep -i keymap`; echo keycode 58 = Control ) | loadkeys -
+
+siehe ./salt/etc/systemd/system/mycapsremap.service
 **** TODO Space 2 CTRL
 :PROPERTIES:
 :ID:       1d97030e-577b-467a-867b-10a786b6bcd9
@@ -844,8 +867,17 @@ or use `~' to toggle case
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c C-+") 'evil-numbers/inc-at-pt)
   (global-set-key (kbd "C-c C--") 'evil-numbers/dec-at-pt)
-
+  
   (define-key evil-motion-state-map (kbd "C-*") 'jo/search-symbol-in-other)
+  (define-key evil-motion-state-map (kbd "g*") 
+    (lambda() (interactive) (evil-search-word t t t)))
+  (define-key evil-motion-state-map (kbd "g#") 
+    (lambda() (interactive) (evil-search-word nil t t)))
+  (define-key evil-motion-state-map (kbd "*") 
+    (lambda() (interactive) (evil-search-word t nil t)))
+  (define-key evil-motion-state-map (kbd "#") 
+    (lambda() (interactive) (evil-search-word nil nil t)))
+  
   ;; (define-key evil-motion-state-map "g*" 'evil-search-unbounded-symbol-forward)
   
   (define-key evil-motion-state-map "y" 'evil-yank)
@@ -861,9 +893,11 @@ or use `~' to toggle case
   
   ;; Now, to make sure that Evil's normal state never touches TAB, just wire this fall-through binding like so:
   (define-key evil-motion-state-map (kbd "TAB") 'evil-undefine)
+  (define-key evil-motion-state-map (kbd "C-j") 'evil-undefine)
   
   (define-key evil-insert-state-map (kbd "C-ö") 'jo/enter-org-speed)
   (define-key evil-normal-state-map "ö" 'jo/enter-org-speed)
+  (define-key evil-normal-state-map (kbd "C-;")  (lambda() (interactive) (org-refile t)))
 #+END_SRC
 ***** Outline ( for Minor Mode and also ORG!!!!!)
 #+BEGIN_SRC emacs-lisp
@@ -909,6 +943,7 @@ funkioniert irgendwie nicht in help-mode+
   
   (add-to-list 'evil-buffer-regexps '("\\*Reconcile\\*" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*undo-tree\\*" . emacs))
+  (add-to-list 'evil-buffer-regexps '("\\*compilation\\*" . emacs))
 #+END_SRC
 **** evil-numbers (MELPA)
 increment/decrement (see eigene keys, z.Z. C-c C-+/-)
@@ -937,7 +972,7 @@ some tips."
 - /c :: confirmation
 - http://vim.wikia.com/wiki/Search_and_replace
 - \C :: Case sensitive search :%s/\C.*/aaa/ 
-- /I :: Deaktivate case-replace :%s/.*/aaa/I
+- /I :: Deaktivate case sensitive-replace :%s/.*/aaa/I
 https://bitbucket.org/lyro/evil/issue/140/regex-searching-issues
 **** Probleme
 ***** Select /cursor off by one: 
@@ -946,8 +981,13 @@ https://bitbucket.org/lyro/evil/issue/140/regex-searching-issues
 http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
 - yank does NOT include the character under point (which is bad at the end of a lin). wheras visual mode includes it. (Scheint aber in VIM auch so zu sein)
 
-***** Suche mit "*"  und "#" matched scheiße wegen komischem such pattern in 
+***** DONE Suche mit "*"  und "#" matched scheiße wegen komischem such pattern in 
+CLOSED: [2014-06-25 Wed 23:18]
 [[file:~/.emacs.d/elpa/evil-20130129.1415/evil-search.el::(defun%20evil-search-symbol%20(forward)][file:~/.emacs.d/elpa/evil-20130129.1415/evil-search.el::(defun evil-search-symbol (forward)]]
+
+function evil-search-word nimmt einen parameter symbol!
+
+siehe eigene keys
 **** and Org
 Only thing currently used: jo/enter-org-speed
 ***** not used
@@ -1128,6 +1168,8 @@ replay with @ <key> for first time and @@ subsequently
 **** marks
 define with m <key>
 open with ' <key>
+
+global mark: uppercase letter!
 **** merge/ diff
 http://vimdoc.sourceforge.net/htmldoc/diff.html
 do (get)
@@ -1218,8 +1260,18 @@ words: M-t
 **** move lines
 is provided my org-metaup?
 *** Line wrap
-M-x toggle-truncate-lines
-*** auto-fill-mode
+http://www.emacswiki.org/emacs/LineWrap
+**** M-x toggle-truncate-lines
+**** fill-paragraph
+**** auto-fill-mode
+**** visual-line-mode (ändert verhalten von navigationsbefehlen)
+**** (setq word-wrap t)
+**** longlines-mode 
+(einzige alternative, wenn umbruch bei fill-column erwünscht)
+
+nicht so toll: 
+- Zeilen nummern sitmmen nicht mehr
+- Kommentare werden nicht erweitert (wie bei fill-paragraph)
 ** Bugs und Warnings
 *** (lambda (a) ...) quoted with ' rather than with #'
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
@@ -1227,6 +1279,8 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
 [[info:emacs#Cut%20and%20Paste][info:emacs#Cut and Paste]]
 ** Commands:
 *** read only: C-x C-q
+** auto-revert-mode (auch global)
+** open several files: C-x C-f glob
 * Writing (natural language)
 #+BEGIN_SRC emacs-lisp
   (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
@@ -1352,45 +1406,44 @@ http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
 :END:
 ** Settings
 #+BEGIN_SRC emacs-lisp
-  ;; Log the time, when TODO is DONE
-  (setq org-log-done t) 
-  
-  ;; (info "(org)Breaking down tasks")
-  ;; If you would like a TODO entry to automatically change to DONE
-  ;; when all children are done, you can use the following setup:
-  
-  (defun org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (let (org-log-done org-log-states)   ; turn off logging
-      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-  
-  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-  
-  
-  
-  ;; do not truncate lines:
-  (setq org-startup-truncated nil)
-  
-  (setq org-directory "/home/data/personal/org-notes/")
-  (setq org-agenda-files (list org-directory "/home/data/promotion"  "/home/data/personal/projects/ProjectX"))
-  ;;               (eval-after-load 'org                   ;; too early
-  
-  ;; doesn't work, use custom-set-variables instead!
-  ;; (setq org-agenda-files '("~/emacs/org-notes/"))
-  ;; (info "(Org)Clean view") 
-  (setq org-startup-indented t)
-  ;; Targets include this file and any file contributing to the agenda - up to 9 levels deep
-  (setq org-refile-targets (quote ((nil :maxlevel . 9)
-                                   (org-agenda-files :maxlevel . 9))))
-  ;; this variable has its use, but needed to be set, due to errors in mobile org stuff
-  (setq org-support-shift-select t)
-  (setq org-log-refile t)
-  ;; Refile / Goto: Pfad konstruieren
-  (setq org-refile-use-outline-path nil)
-  
-  (setq org-startup-with-inline-images t)
-  
-  
+   ;; Log the time, when TODO is DONE
+   (setq org-log-done t) 
+   
+   ;; (info "(org)Breaking down tasks")
+   ;; If you would like a TODO entry to automatically change to DONE
+   ;; when all children are done, you can use the following setup:
+   
+   (defun org-summary-todo (n-done n-not-done)
+     "Switch entry to DONE when all subentries are done, to TODO otherwise."
+     (let (org-log-done org-log-states)   ; turn off logging
+       (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+   
+   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+   
+   
+   
+   ;; do not truncate lines:
+   (setq org-startup-truncated nil)
+   
+   (setq org-directory "/home/data/personal/org-notes/")
+   (setq org-agenda-files (list org-directory "/home/data/promotion"  "/home/data/personal/projects/ProjectX"))
+   ;;               (eval-after-load 'org                   ;; too early
+   
+   ;; doesn't work, use custom-set-variables instead!
+   ;; (setq org-agenda-files '("~/emacs/org-notes/"))
+   ;; (info "(Org)Clean view") 
+   (setq org-startup-indented t)
+   ;; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+   (setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                    (org-agenda-files :maxlevel . 9))))
+   ;; this variable has its use, but needed to be set, due to errors in mobile org stuff
+   ;; Refile / Goto: Pfad konstruieren
+   (setq org-refile-use-outline-path nil)
+   (setq org-completion-use-ido t)
+   
+   ;;(setq org-support-shift-select t) ;; nein, stattdessen: evil (vim bindings)
+   (setq org-log-refile t)
+   (setq org-startup-with-inline-images t)
 #+END_SRC
 ** DONE MobileOrg
 *** settings
@@ -1736,6 +1789,8 @@ will not be overriden, if the package is loaded later on)
       (lambda () 
         (cond ((eq major-mode 'org-mode)
          (visible-mode 0)))))
+
+  ;; lieber doch manuell(setq ediff-diff-options "-w")
 #+END_SRC
 *** problems: ediff multiframe frame als Float bringt xmonad zum hängen
 solution: windows-plain (s.o.)
@@ -1792,6 +1847,12 @@ shit. instead use cbi/bin/ediff script
     '(add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
     )
 #+END_SRC
+** directories / tree / recursive
+ediff-directories
+
+anderes zeug
+http://www.emacswiki.org/emacs/EdiffTrees
+http://www.emacs.uniyar.ac.ru/doc/em24h/emacs124.htm
 * DONE LaTeX
 CLOSED: [2012-12-12 Wed 23:57]
 :PROPERTIES:
@@ -1813,11 +1874,12 @@ Lösungsmöglichkeiten:
 ** AUCTeX
 *** installation
 AUCTeX was installed using archlinux's pacman (most up-to-date source!, newer than  (M)ELPA)
+Dann doch auf MELPA ungestiegen [2014-01-24 Fri]
+und wieder pacman [2014-01-27 Mon]
 *** activation
 #+BEGIN_SRC emacs-lisp
-     (load "auctex.el" nil t t)
-     (load "preview-latex.el" nil t t)
-
+    (load "auctex.el" nil t t)
+    (load "preview-latex.el" nil t t)
 #+END_SRC
 *** WICHTIG: eigentlich geht fast alles automatisch
 z.B: wann er direct DVI previewed und wann erst über umwandlung,
@@ -1853,6 +1915,42 @@ there is also auto-fill-mode
 - i :: goto info page
        
 **** Problem [2013-08-30 Fri]: Funktioniert nicht mit ghostscript 9.09-1 aber mit 9.07-3
+eigentliches Problem: tikz
+**** Problem [2014-03-17 Mon]: mit dem package tikz sind die vorschaubilder alle an der falschen stelle
+***** frage.
+test/preview-latex.tex
+http://tex.stackexchange.com/questions/166023/strange-preview-latex-problem-with-tikz-and-maketitle
+email conversation kuerzn
+http://osdir.com/ml/bug-auctex-gnu/2014-03/msg00008.html
+***** hilft nicht
+\\PreviewEnvironment{tikzpicture} (siehe settings)
+http://tex.stackexchange.com/questions/111726/preview-tikz-figure-in-auctex
+http://tex.stackexchange.com/questions/28564/tikzpicture-blank-in-preview
+**** Setting
+#+BEGIN_SRC emacs-lisp :tangle no
+(eval-after-load "preview"
+  '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)
+  )
+#+END_SRC
+**** newline in Overlay 
+http://www.gnu.org/software/emacs/manual/html_node/elisp/Overlay-Properties.html
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load 'preview
+    '(progn 
+       (defadvice preview-gs-place (before preview-gs-place-newline
+                                           (ov &rest rest))
+         "Append a newline, if the replaced expression has one."
+         (when (string-match "^$.*\n" 
+                             (buffer-substring-no-properties 
+                              (overlay-start ov)
+                              (overlay-end ov)))
+           (overlay-put ov 'after-string "\n")))
+       (ad-activate 'preview-gs-place)
+       ))
+#+END_SRC
+)
+*** fold mode: C-c C-c C-f / C-b
+https://www.gnu.org/software/auctex/manual/auctex/Folding.html
 *** viewer: C-c C-v
 [[info:auctex#Starting%20Viewers][info:auctex#Starting Viewers]]
 **** settings
@@ -1910,7 +2008,7 @@ and then executes: `TeX-view-program-list-builtin'
 
 also some predicates can be used an defined: TeX-view-predicate-list
 
-*** "processing"
+*** "processing"
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
 Read info for:
 - TeX-command-list
@@ -1938,7 +2036,7 @@ C-c ` oder besser. M-g M-n
 ***** BUG geht nicht, weil bei latex die option -file-line-error benötigt wird
 http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=514431
 
-**** warnings: C-c C-t C-w
+**** warnings/references: C-c C-t C-w
 *** BibTex
 **** Settings
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
@@ -2041,6 +2139,10 @@ see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Binding
   ;; ask you for a master file:
   (setq-default TeX-master nil)
 #+END_SRC
+*** Probleme
+**** TeX-toggle-debug-warnings : Could not determine file for warning (when using hyperref)
+***** solution: wait for next version [2014-03-24 Mon]
+https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
 ** Script
 #+BEGIN_SRC emacs-lisp
   ;; TODO: test this
@@ -2066,11 +2168,15 @@ see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Binding
   (eval-after-load 'latex
     '(progn    
         (define-key LaTeX-mode-map
-          [f4] (tex-build-command-function '(jo/Tex-next-command) nil t))
+          (kbd "C-c C-/") 'reftex-view-crossref) ;; was: TeX-save-document
+        (define-key LaTeX-mode-map
+          (kbd "C-c C-d") 'reftex-view-crossref) ;; was: TeX-save-document
+        (define-key LaTeX-mode-map
+          [f6] (tex-build-command-function '(jo/Tex-next-command) nil t))
         (define-key LaTeX-mode-map
           [f5] (tex-build-command-function "LaTeX" nil t))
         (define-key LaTeX-mode-map
-          [f6] (tex-build-command-function "Biber" nil t))
+          [f4] (tex-build-command-function "BibTeX" nil t))
         (define-key LaTeX-mode-map
           [f7] (tex-build-command-function "View" nil))
         ;; (define-key LaTeX-mode-map 
@@ -2106,7 +2212,7 @@ see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Binding
          (TeX-command ,cmd 'TeX-master-file (if ,override-confirm 1 -1)))
   )
   
-  ;; warum habe ich eine eigene? keine Ahnung
+  ;; warum habe ich eine eigene? keine Ahnung. gibts den schon?
   (defun jo/Tex-next-command ()
     (interactive)
     (let ((name (TeX-master-file)))
@@ -2154,6 +2260,7 @@ http://www.emacswiki.org/emacs/Git
 *** Hippie Expand 
 http://emacswiki.org/emacs/HippieExpand
 *** Auto Completion
+http://cx4a.org/software/auto-complete/manual.html
 #+BEGIN_SRC emacs-lisp
   ;; Auto Complete (via ELPA)
   (when t
@@ -2165,15 +2272,21 @@ http://emacswiki.org/emacs/HippieExpand
     ;;http://stackoverflow.com/questions/5298116/auto-complete-mode-doesnt-turn-on-automatically-in-objc-buffers
     (add-to-list 'ac-modes 'latex-mode)
     (add-to-list 'ac-modes 'org-mode)
+    (add-to-list 'ac-sources 'ac-source-semantic)
     )
 #+END_SRC
+*** company-mode
 ** HELM (old: Anything) (via MELPA)
 http://emacswiki.org/emacs/Icicles_-_Anything
 https://github.com/emacs-helm/helm
 https://github.com/emacs-helm/helm/wiki
-#+BEGIN_SRC emacs-lispa :tangle no
+#+BEGIN_SRC emacs-lisp :tangle no
 (helm-mode 1)
 #+END_SRC
+*** Problem: kein gutes fuzzy matching, wie IDO [2014-01-24 Fri]
+https://github.com/bbatsov/prelude/issues/108
+https://github.com/emacs-helm/helm/issues/145
+*** da ist IDO viel besser (auch für find files, wo immer alle dirs durchsucht werden!
 ** Icicles (via ELPA)
 http://www.emacswiki.org/emacs/Icicles_-_Apropos_Completions
 *** Cool stuff
@@ -2202,6 +2315,7 @@ M-x speedbar
 Different Frame Configs:
 http://emacswiki.org/emacs/SpeedBar
 http://orgmode.org/worg/users/srose.html
+*** sr-speedbar (same frame, from melpa)
 *** use with org-mode
 ** imenu 
 http://www.emacswiki.org/emacs/ImenuMode
@@ -2233,29 +2347,53 @@ http://stackoverflow.com/questions/8006347/how-can-i-make-emacs-speedbar-auto-ex
   - C-t :: toggle regex  matching
   - C-p :: toogle prefix matching
   - M-s :: force to search (again)
-
+  - M-f and M-d :: prompts and uses find to locate files or directories.
+  - M-l :: Toggle literal reading of this file.
 
 http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire
 *** possible enhancements
 http://marmalade-repo.org/packages/ido-better-flex
 *** Settings
 #+BEGIN_SRC emacs-lisp
-  (setq ido-enable-flex-matching t)
+  ;; use flx instead (setq ido-enable-flex-matching t)
   (setq ido-everywhere t)
   (setq ido-use-filename-at-point 'guess)
   (setq ido-use-url-at-point 'guess)
+  ;; leave default, and use ctrl-d instead (setq ido-show-dot-for-dired nil)
   (ido-mode 1)
   (ido-ubiquitous-mode 1)
-  (setq ido-ignore-files
-   (append
-    ;; haskell
-    '("\\.o$" "\\.hi$" ) 
-    ;; sometimes needed? '("\\.log$" )
-    ;; TEX
-    '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
-    ido-ignore-files))  
+  (ido-vertical-mode 1)
+  
+  ;; nicht so toll, weil history nicht gut mit einbezgoen wird. z.b. preview-cache-preamble 
+  ;; (flx-ido-mode 1)
+
+  ;; (mapc 
+  ;;  (lambda (x) 
+  ;;    (add-hook (car x) 
+  ;;              (lambda nil 
+  ;;                (set 
+  ;;                 (make-local-variable 'ido-ignore-files)
+  ;;                 (append (cdr x) ido-ignore-files)))))
+  ;;  '(
+  ;;    (LaTeX-mode-hook 
+  ;;     '("\\.log$" "\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/"))
+  ;;    (haskell-mode-hook 
+  ;;     '("\\.o$" "\\.hi$" ))
+  ;;    ))
+  
   (setq ido-max-work-file-list 1000)
   (setq ido-max-dir-file-cache 1000)
+  ;; maybe better use flx? -> (ido-sort-mtime-mode 1)
+  (ido-complete-space-or-hyphen-enable)
+  
+  (nconc ido-ignore-files
+         ;; haskell
+         '("\\.o$" "\\.hi$") ;; sometimes needed? 
+         '("\\.log$" )
+         '("\\.h\\.d$"  "\\.cpp\\.d$" "\\.gch$" )
+         ;; TEX
+         '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
+         )
 #+END_SRC
 *** Files
 **** Other's 
@@ -2263,6 +2401,8 @@ http://www.xsteve.at/prg/emacs/power-user-tips.html
 **** recentf                                                        :keys:
 #+BEGIN_SRC emacs-lisp
   (recentf-mode 1)
+  (setq recentf-exclude '("_region_\\.tex"))
+  (setq recentf-max-saved-items 25000)
   (defun xsteve-ido-choose-from-recentf ()
     "Use ido to select a recently opened file from the `recentf-list'"
     (interactive)
@@ -2298,12 +2438,49 @@ C-h w shows the key bindings for the selected command. (Via where-is.)
 ;; This is your old M-x.
 (global-set-key (kbd "C-M-x") 'execute-extended-command)
 #+END_SRC
+*** Ubiquotious for describe-function / describe-variable
+https://github.com/DarwinAwardWinner/ido-ubiquitous/blob/bleeding-edge/ChangeLog
+**** Problem: https://github.com/DarwinAwardWinner/ido-ubiquitous/issues/43
+*** flx (installed via MELPA) [2014-01-24 Fri]
+https://github.com/lewang/flx
+** Projectile? find file ...
+https://github.com/bbatsov/projectile
 * Programming / Development
 ** Allgemeine Tipps
 http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 ** Code Browser
 http://ecb.sourceforge.net/
 http://emacs-ide.tuxfamily.org/
+** imenu
+scheiße kann keine classen member oder namespaces??
+auch imenu+ bringt nichts
+** which-function
+funktioniert nicht mit namespaces oder classen members
+
+nicht in mode line, sondern erster zeile
+;; Show the current function name in the header line
+(which-function-mode)
+(setq-default header-line-format
+              '((which-func-mode ("" which-func-format " "))))
+(setq mode-line-misc-info
+            ;; We remove Which Function Mode from the mode line, because it's mostly
+            ;; invisible here anyway.
+            (assq-delete-all 'which-func-mode mode-line-misc-info))
+
+            
+*** alternativ 
+semantic-stickyfunc-menu
+aber auch nur mit top level functions
+
+noch mehr alternativen:
+http://www.emacswiki.org/emacs/WhichFuncMode
+*** GEILER: semantic-idle-breadcrumbs-mode
+** CEDET (included in emacs)
+auch für bessere which-func functionalität? 
+http://stackoverflow.com/questions/2285036/display-nested-function-with-which-function-mode-in-emacs
+
+*** EDE
+http://www.gnu.org/software/emacs/manual/html_mono/ede.html
 ** Code Formatting / Beatification / Pretty Printing
 *** JSON
 Download https://gist.github.com/1789605 and eval.
@@ -2329,6 +2506,10 @@ by using nxml's indentation rules."
   (message "Ah, much better!"))
 #+END_SRC
 ** Compiling / Interpreting
+*** settings
+#+BEGIN_SRC emacs-lisp
+(setq compilation-scroll-output 'first-error)
+#+END_SRC
 *** Comint?
 *** emacs lisp
 eval-current-buffer
@@ -2347,6 +2528,15 @@ Change to standard compilation / eval key, but only in shell mode
   ;; (view-buffer-other-window (get-buffer "*Shell Command Output*"))
   )
 #+END_SRC
+*** compile
+**** settings
+see also [[*Custom%20Settings][Custom Settings]]
+#+BEGIN_SRC emacs-lisp
+  (setq compilation-ask-about-save nil)
+  ;; (setq compilation-auto-jump-to-first-error t) not good, because e.g. in C++ it will jumo to the including file, not to the error
+#+END_SRC
+*** customize error regexp
+http://www.emacswiki.org/emacs/CreatingYourOwnCompileErrorRegexp
 ** Config Files / /etc/files
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'ac-modes 'conf-mode)
@@ -2380,13 +2570,21 @@ C-b C-z
   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
   (eval-after-load 'haskell-mode
-    '(define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
+    '(progn    
+       (define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
+       (setq haskell-program-name "cabalrepl")
+       )
     )
+  ;; from https://github.com/haskell/haskell-mode/issues/44
+  (add-hook 'haskell-cabal-mode-hook 
+            (lambda() (setq indent-tabs-mode nil)))
 #+END_SRC
 *** Formatting
 https://github.com/jaspervdj/stylish-haskell
 *** Tags
 http://www.haskell.org/ghc/docs/6.10.3/html/users_guide/utils.html
+*** cabal sandbox
+see settings: "cabal repl"
 ** TODO imenu gives a list of all functions in a file, and lets you jump to them.
 idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
 ** Javascript 
@@ -2439,6 +2637,58 @@ perl -nle '/ID_LENGTH=([0-9\.]+)/ && ($t +=$1) && printf "%02d:%02d:%02d\n",$t/3
 http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
 ** Semantic stuff:
 *** http://www.emacswiki.org/emacs/SemanticBovinator
+*** semantic-mode
+eventuel semantic-force-refresh
+
+hat auswirkungen auf imenu, speedbar und noch mehr?
+
+use with auto-complete
+**** interessant:
+semantic-idle-...
+http://cedet.sourceforge.net/intellisense.shtml
+http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html
+http://stackoverflow.com/questions/1644490/emacs-completions-or-intellisense-the-same-as-on-visual-studio
+https://www.gnu.org/software/emacs/manual/html_node/semantic/Semantic-mode-user-commands.html#Semantic-mode-user-commands
+**** probleme
+http://sourceforge.net/p/cedet/mailman/message/31346054/
+**** Settings
+#+BEGIN_SRC emacs-lisp
+  (defun jo/jump-in-other ()
+   (interactive)
+   (let ((curPoint (point)))
+         (switch-to-buffer-other-window (current-buffer))
+         (set-window-point nil curPoint)
+         (semantic-ia-fast-jump curPoint)))
+  (defun jo/dev ()
+    ;; (semantic-mode 1) einfach zu langsame vervollstandigung
+    ;; (semantic-idle-breadcrumbs-mode 1)
+    ;; (setq ac-sources '(ac-source-semantic-raw ac-source-semantic ))
+    ;; (add-to-list 'ac-sources 'ac-source-semantic-raw)
+    ;; (add-to-list 'ac-sources 'ac-source-semantic )
+    ;; (add-to-list 'ac-sources 'ac-source-filenames )
+    (local-set-key "\C-c/" 'jo/jump-in-other)
+    (local-set-key "\C-c\C-f" 'ff-find-other-file)
+    (local-set-key "\C-c." 'semantic-ia-fast-jump)
+    ;; (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
+    ;;              '"/home/data/promotion/Programmierung/fipster/type_traits.h")
+    ;; (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
+    ;;              '"/home/data/promotion/Programmierung/fipster/exceptions.h")
+    ;; (add-to-list 'semantic-lex-c-preprocessor-symbol-file 
+    ;;              '"/home/data/promotion/Programmierung/fipster/utility.h")
+    )
+  (add-hook 'c++-mode-hook 'jo/dev)
+#+END_SRC
+**** symref
+keys:[[file:/usr/share/emacs/24.3/lisp/cedet/semantic/symref/list.el.gz::(define-key%20km%20"n"%20'semantic-symref-list-next-line)][file:/usr/share/emacs/24.3/lisp/cedet/semantic/symref/list.el.gz::(define-key km "n" 'semantic-symref-list-next-line)]] 
+
+    (define-key km "n" 'semantic-symref-list-next-line)
+    (define-key km "p" 'semantic-symref-list-prev-line)
+    (define-key km "q" 'semantic-symref-hide-buffer)
+    (define-key km "\C-c\C-e" 'semantic-symref-list-expand-all)
+    (define-key km "\C-c\C-r" 'semantic-symref-list-contract-all)
+    (define-key km "R" 'semantic-symref-list-rename-open-hits)
+    (define-key km "(" 'semantic-symref-list-create-macro-on-open-hit)
+    (define-key km "E" 'semantic-symref-list-call-macro-on-open-hits)
 ** Shell
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
@@ -2499,6 +2749,35 @@ http://youtu.be/18xYbPCJOho?t=1m17s
 semantic-symref
 semantic-ia-fast-jump
 
+** XML / (HTML?)
+C-M-d / u / p / n
+nervig aber geht
+** Debugging
+*** gdb
+**** M-x gdb
+lots of buffers available (locals, stack, ...)
+***** variable values:
+watch expressions (e.g. vial the locals buffer)
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Watch-Expressions.html#Watch-Expressions
+**** other buffers
+ M-x gdb-display-buffertype-buffer or M-x gdb-frame-buffertype-buffer,
+
+gdb-many-windows
+**** print
+***** Cannot evaluate function -- may be inlined
+function needs to be called an dwarf or gdb debugging information
+available (or not inlined)
+http://stackoverflow.com/questions/427589/inspecting-standard-container-stdmap-contents-with-gdb
+***** Attempt to take address of value not located in memory.
+http://stackoverflow.com/questions/10460567/cannot-call-function-with-reference-parameter-in-gdb
+**** Commands
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Commands-of-GUD.html
+** Graphviz
+C-c v
+*** Settings
+#+BEGIN_SRC emacs-lisp
+  (setq graphviz-dot-view-command "dot -Tx11 %s")
+#+END_SRC
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
@@ -2786,12 +3065,15 @@ editing: http://emacs-w3m.namazu.org/info/emacs-w3m_29.html
 *** emacs integration
 ** dired (file system, also remote)
 *** Settings
+C-u s
+C-u M-x dired
 #+BEGIN_SRC emacs-lisp
-  (require 'dired-x)
+  (require 'dired-details+)
+  (require 'dired+)
   (setq dired-listing-switches "-alh")
 #+END_SRC
-*** dired-details
-hide details from listing (dired-details-toggle)
+*** dired-details+
+hide details from listing (can be switched on/off with `(` and `)` )
 http://www.emacswiki.org/emacs/DiredDetails
 *** dired-x
 **** hide unintereseting files: M-o (see C-h i m dired-x)
@@ -2808,6 +3090,8 @@ Put a dired buffer in a mode in which filenames are editable.
 *** current buffer:
 browse-url-of-buffer (C-c C-v)
 for more control over the url see http://www.emacswiki.org/emacs/BrowseUrl#toc2
+*** open several files
+F find all marked files
 * Help
 ** info docs: C-h i
 ** M-x finder-commentary RET
@@ -3197,6 +3481,7 @@ http://www.emacswiki.org/BookmarkPlus (indirect via [[info:emacs#Bookmarks]])
 :END:
 ** Project Support (EDE)???
 ** Längere Histories (z.B. M-x)
+** wgrep [2014-01-24 Fri]
 * Funny
 artist-mode
 use middle mouse -> e.g. spray-can 

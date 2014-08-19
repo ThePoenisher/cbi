@@ -1,0 +1,1 @@
+SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", RUN+="{{ grains['cbi_home'] }}/bin/discharging %E{POWER_SUPPLY_CHARGE_NOW}"

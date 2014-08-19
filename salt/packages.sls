@@ -3,6 +3,7 @@ base_packages:
   pkg.installed:
     - names:
       - tree
+      - dos2unix
       - git
       - tmux
       - vim
@@ -20,6 +21,7 @@ base_packages:
       - wget
       - colordiff
       - figlet
+      - syslinux
       - ranger
       - subversion
       - lsof
@@ -32,14 +34,25 @@ base_packages:
       - acpi
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
+      - cloc
+      - reflector
       - p7zip
       - dnsutils
+      - exfat-utils
+      - fuse-exfat
       - dosfstools
       - pptpclient
       - socat
       - aria2
+      - cuetools
+      - shntool
+      - picard
+      - zbar
+      - chromaprint
+      - mac
       - vsftpd
       - cabal-install
+      - xdiskusage
       - perl-mime-tools
       - perl-image-exiftool
       - pastebinit
@@ -62,6 +75,7 @@ base_packages:
       - dia
       - inkscape
       - sqliteman
+      - sqlitebrowser
       - texlive-bibtexextra
       - texlive-bin
       - texlive-core
@@ -81,6 +95,8 @@ base_packages:
       - curlftpfs
       - strace
       - calc
+      - dmidecode #for salt
+      - python2-pip
       - python2-pygments
       - nmap #(includes netcat implementation (ncat) with ipv6 support)
       - encfs
@@ -95,18 +111,28 @@ base_packages:
       - ntp
       - xdialog #for (my) xrename
       # haskell
+      - alex
+      - gtk2hs-buildtools
       - happy
       - net-tools
       - haskell-parsec
+      - haskell-pandoc
+      - haskell-hxt
+      - haskell-regex-tdfa
+      - haskell-regex-posix
+      - haskell-hslogger
       - haddock
       - samba
 {% if pillar['arch_desktop'] %}
       - pdfedit
+      - gdb
       - bitcoin-qt
       - ntfs-3g
+      - stellarium
       - bitcoin-daemon
       - calibre
       - aqbanking
+      - intel-tbb
       # - wine
       # - winetricks
       - dunst # für libnotify
@@ -132,7 +158,7 @@ base_packages:
       - skype
       - lib32-libpulse
       - tk #for gitk
-      - tightvnc
+      - tigervnc
       - smartmontools
       - hdparm
       - cdrkit #cds brennen: https://wiki.archlinux.org/index.php/CD_Burning
@@ -161,26 +187,35 @@ base_packages:
 {% endif %} #archdesktop
     - require:
       - file: /etc/pacman.conf
+    - sysupgrade: False    
 
 # do I need gvfs-mtp-git. given it limited power.  what does ubuntu use ? gphotos2?
+#,'git-annex-standalone' use own PKGBUILD instead
+# ,'mediathek'
+# ,'scid_vs_pc'
+# ,'intel-mkl'
 {% for p in
 ['aurvote'
 ,'dbacl'
 ,'downgrade'
+,'eigen3-hg'
 ,'electrum'
 ,'epson-inkjet-printer-workforce-635-nx625-series'
-,'git-annex-standalone'
 ,'google-talkplugin'
 ,'jdownloader2' 
 ,'ledger-git'
 ,'mendeleydesktop'
+,'otf-texgyre'
 ,'pdftk-bin'
 ,'perl-file-find-rule'
 ,'perl-string-util'
 ,'python2-gnupg'
 ,'python2-zbar'
+,'scidb'
+,'stockfish-git'
+,'ttf-vista-fonts'
 ,'urlview'
-] %}
+] %} #see also bootstrap!!
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
     - unless: pacman -Q {{ p }}

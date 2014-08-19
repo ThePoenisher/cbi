@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if (( EUID != 0 )); then
+    echo "Run this script as root." 1>&2
+    exit 100
+fi
+
+systemctl stop tor.service
+sudo -u tor tor --ExcludeExitNodes "{de}"
+
+systemctl start tor.service

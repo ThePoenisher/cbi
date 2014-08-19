@@ -1,0 +1,509 @@
+# Scid vs. PC (version 4.10) Options file
+# This file contains commands in the Tcl language format.
+# If you edit this file, you must preserve valid its Tcl
+# format or it will not set your Scid options properly.
+
+set boardSize 70
+set boardStyle Merida1
+set language E
+set ::pgn::showColor 1
+set ::pgn::indentVars 1
+set ::pgn::indentComments 1
+set ::defaultBackground white
+set ::pgn::shortHeader 0
+set ::pgn::boldMainLine 0
+set ::pgn::stripMarks 0
+set ::pgn::symbolicNags 1
+set ::pgn::moveNumberSpaces 0
+set ::pgn::columnFormat 0
+set ::pgn::showScrollbar 0
+set myPlayerNames {}
+set tree(order) frequency
+set tree(autoSave) 0
+set optionsAutoSave 1
+set ::tree::mask::recentMask {}
+set ecoFile /usr/share/scid/data/scid.eco
+set suggestMoves 0
+set showVarPopup 0
+set showVarArrows 1
+set glistSize 15
+set glexport {g6: w13 W4  b13 B4  r3:m2 y4 s11 o4}
+set blunderThreshold 1.0
+set addAnnotatorTag 1
+set annotateMoves all
+set annotateWithVars blunders
+set annotateWithScore allmoves
+set useAnalysisBook 0
+set isAnnotateVar 0
+set addAnnotatorComment 0
+set autoplayDelay 5000
+set animateDelay 200
+set boardCoords 0
+set boardSTM 1
+set moveEntry(AutoExpand) 0
+set moveEntry(Coord) 1
+set translatePieces 1
+set highlightLastMove 1
+set highlightLastMoveWidth 2
+set highlightLastMoveColor grey
+set askToReplaceMoves 1
+set ::windows::switcher::icons 1
+set locale(numeric) .,
+set spellCheckFile /usr/share/scid/share/scid/spelling.ssp
+set ::splash::keepopen 1
+set autoRaise 1
+set autoIconify 1
+set windowsDock 1
+set autoLoadLayout 1
+set exportFlags(comments) 1
+set exportFlags(vars) 1
+set exportFlags(indentc) 0
+set exportFlags(indentv) 1
+set exportFlags(column) 0
+set exportFlags(htmldiag) 0
+set email(smtp) 1
+set email(smproc) /usr/lib/sendmail
+set email(server) localhost
+set email(from) {}
+set email(bcc) {}
+set ::windows::gamelist::widths {}
+set ::windows::gamelist::findcase 1
+set ::windows::gamelist::showButtons 1
+set gameInfo(show) 1
+set gameInfo(photos) 1
+set gameInfo(hideNextMove) 0
+set gameInfo(wrap) 0
+set gameInfo(showStatus) 1
+set gameInfo(fullComment) 0
+set gameInfo(showMarks) 1
+set gameInfo(showMenu) 1
+set gameInfo(showTool) 1
+set gameInfo(showMaterial) 1
+set gameInfo(showFEN) 0
+set gameInfo(showButtons) 1
+set gameInfo(showTB) 2
+set analysis(mini) 0
+set engines(F2) 3
+set engines(F3) 1
+set engines(F4) {}
+set analysis(logEngines) 1
+set scidBooksDir /home/data/personal/schach/books
+set scidBasesDir /usr/share/scid/share/scid/bases
+set ::book::lastBook1 performance.bin
+set ::book::lastBook2 {}
+set ::book::lastTuning {}
+set ::book::sortAlpha 0
+set ::book::showTwo 0
+set ::book::oppMovesVisible 0
+set ::gbrowser::size 35
+set crosstab(type) auto
+set crosstab(ages) +ages
+set crosstab(countries) +countries
+set crosstab(ratings) +ratings
+set crosstab(titles) +titles
+set crosstab(breaks) -breaks
+set crosstab(deleted) -deleted
+set crosstab(colors) +colors
+set crosstab(cnumbers) -numcolumns
+set crosstab(groups) -groups
+set crosstab(sort) score
+set crosstab(tallies) +tallies
+set ::utils::sound::soundFolder {}
+set ::utils::sound::announceNew 0
+set ::utils::sound::announceTock 0
+set ::utils::sound::announceForward 0
+set ::utils::sound::announceBack 0
+set ::tacgame::threshold 0.9
+set ::tacgame::blunderwarning false
+set ::tacgame::blunderwarningvalue 0.0
+set ::tacgame::levelMin 1200
+set ::tacgame::levelMax 2200
+set ::tacgame::levelFixed 1500
+set ::tacgame::randomLevel 0
+set ::tacgame::showblunder 1
+set ::tacgame::showblundervalue 1
+set ::tacgame::showblunderfound 1
+set ::tacgame::showmovevalue 1
+set ::tacgame::showevaluation 1
+set ::tacgame::isLimitedAnalysisTime 1
+set ::tacgame::analysisTime 10
+set ::tacgame::openingType new
+set ::tacgame::chosenOpening 0
+set ::sergame::bookToUse {}
+set ::sergame::useBook 1
+set ::sergame::startFromCurrent 0
+set ::sergame::winc 10
+set ::sergame::wtime 5
+set ::sergame::binc 10
+set ::sergame::btime 5
+set ::sergame::timeMode movetime
+set ::sergame::movetime 6
+set ::sergame::current 0
+set ::sergame::chosenOpening 0
+set ::commenteditor::showBoard 0
+set ::commenteditor::State(markColor) purple
+set ::commenteditor::State(markType) +
+set boardfile_lite emptySquare
+set boardfile_dark emptySquare
+set ::file::finder::data(dir) /tmp
+set ::file::finder::data(sort) name
+set ::file::finder::data(recurse) 0
+set ::file::finder::data(Scid) 1
+set ::file::finder::data(PGN) 1
+set ::file::finder::data(EPD) 1
+set ::file::finder::data(Old) 1
+set FilterMaxMoves 80
+set FilterMinMoves 5
+set FilterStepMoves 1
+set FilterMaxElo 2800
+set FilterMinElo 2100
+set FilterStepElo 100
+set FilterMaxYear 2014
+set FilterMinYear 1995
+set FilterStepYear 1
+set FilterGuessELO 1
+set lookTheme default
+set autoResizeBoard 1
+set comp(timecontrol) pergame
+set comp(seconds) 180
+set comp(minutes) 1
+set comp(incr) 0
+set comp(timeout) 0
+set comp(name) {Scid vs. PC}
+set comp(usebook) 0
+set comp(book) {}
+set comp(rounds) 2
+set comp(showclock) 0
+set comp(debug) 1
+set comp(animate) 1
+set comp(firstonly) 0
+set comp(ponder) 0
+set comp(showscores) 0
+set ::tools::graphs::filter::type year
+set ::tools::graphs::absfilter::type year
+set ::tools::graphs::showpoints 1
+set ::maintFlag W
+set glistFlag W
+set ::useGraphFigurine 1
+set ::photosMinimized 0
+
+set winWidth(.analysisWin1)  44
+set winHeight(.analysisWin1) 8
+set winWidth(.analysisWin3)  44
+set winHeight(.analysisWin3) 8
+set winWidth(.baseWin)  310
+set winHeight(.baseWin) 110
+set winWidth(.ccWindow)  10
+set winHeight(.ccWindow) 20
+set winWidth(.commentWin)  40
+set winHeight(.commentWin) 6
+set winWidth(.crosstabWin)  75
+set winHeight(.crosstabWin) 15
+set winWidth(.enginelist)  43
+set winHeight(.enginelist) 34
+set winWidth(.helpWin)  117
+set winHeight(.helpWin) 52
+set winWidth(.pgnWin)  65
+set winHeight(.pgnWin) 20
+set winWidth(.playerInfoWin)  45
+set winHeight(.playerInfoWin) 20
+set winWidth(.spellcheckWin)  55
+set winHeight(.spellcheckWin) 25
+set winWidth(.statsWin)  60
+set winHeight(.statsWin) 13
+set winWidth(.treeWin)  58
+set winHeight(.treeWin) 20
+set winWidth(.uciConfigWin)  681
+set winHeight(.uciConfigWin) 753
+
+set winX(.)  -1
+set winY(.)  -1
+set winX(.baseWin)  -1
+set winY(.baseWin)  -1
+set winX(.commentWin)  -1
+set winY(.commentWin)  -1
+set winX(.crosstabWin)  -1
+set winY(.crosstabWin)  -1
+set winX(.ecograph)  -1
+set winY(.ecograph)  -1
+set winX(.enginelist)  0
+set winY(.enginelist)  13
+set winX(.finder)  -1
+set winY(.finder)  -1
+set winX(.glist)  -1
+set winY(.glist)  -1
+set winX(.glistWin)  -1
+set winY(.glistWin)  -1
+set winX(.helpWin)  0
+set winY(.helpWin)  0
+set winX(.main)  -1
+set winY(.main)  -1
+set winX(.maintWin)  -1
+set winY(.maintWin)  -1
+set winX(.nedit)  -1
+set winY(.nedit)  -1
+set winX(.pgnWin)  -1
+set winY(.pgnWin)  -1
+set winX(.playerInfoWin)  -1
+set winY(.playerInfoWin)  -1
+set winX(.statsWin)  -1
+set winY(.statsWin)  -1
+set winX(.tourney)  -1
+set winY(.tourney)  -1
+set winX(.treeBest)  -1
+set winY(.treeBest)  -1
+set winX(.treeBest1)  -1
+set winY(.treeBest1)  -1
+set winX(.treeBest2)  -1
+set winY(.treeBest2)  -1
+set winX(.treeBest3)  -1
+set winY(.treeBest3)  -1
+set winX(.treeBest4)  -1
+set winY(.treeBest4)  -1
+set winX(.treeBest5)  -1
+set winY(.treeBest5)  -1
+set winX(.treeBest6)  -1
+set winY(.treeBest6)  -1
+set winX(.treeBest7)  -1
+set winY(.treeBest7)  -1
+set winX(.treeBest8)  -1
+set winY(.treeBest8)  -1
+set winX(.treeBest9)  -1
+set winY(.treeBest9)  -1
+set winX(.treeWin)  -1
+set winY(.treeWin)  -1
+set winX(.treeWin1)  -1
+set winY(.treeWin1)  -1
+set winX(.treeWin2)  -1
+set winY(.treeWin2)  -1
+set winX(.treeWin3)  -1
+set winY(.treeWin3)  -1
+set winX(.treeWin4)  -1
+set winY(.treeWin4)  -1
+set winX(.treeWin5)  -1
+set winY(.treeWin5)  -1
+set winX(.treeWin6)  -1
+set winY(.treeWin6)  -1
+set winX(.treeWin7)  -1
+set winY(.treeWin7)  -1
+set winX(.treeWin8)  -1
+set winY(.treeWin8)  -1
+set winX(.treeWin9)  -1
+set winY(.treeWin9)  -1
+set winX(.uciConfigWin)  0
+set winY(.uciConfigWin)  13
+
+set analysisCommand /usr/bin/stockfish
+
+set lite {#f3f3f3}
+set dark {#7389b6}
+set whitecolor {#ffffff}
+set blackcolor {#000000}
+set highcolor {#b0d0e0}
+set bestcolor {#bebebe}
+set bgcolor grey20
+set maincolor black
+set varcolor grey80
+set whiteborder {#000000}
+set blackborder {#ffffff}
+set borderwidth 1
+set pgnColor(Header) {#00008b}
+set pgnColor(Main) {#000000}
+set pgnColor(Var) {#0000ee}
+set pgnColor(Nag) {#aa2c2c}
+set pgnColor(Comment) {#008b00}
+set pgnColor(Background) {#ffffff}
+set pgnColor(Current) lightSteelBlue
+set pgnColor(NextMove) {#fefe80}
+
+set optable(AvgPerf) 1
+set optable(Endgames) 1
+set optable(ExtraMoves) 1
+set optable(HighRating) 8
+set optable(MaxGames) 500
+set optable(MostFrequent) 6
+set optable(MostFrequentBlack) 1
+set optable(MostFrequentWhite) 1
+set optable(MoveOrders) 8
+set optable(MovesFrom) 1
+set optable(Newest) 5
+set optable(Oldest) 5
+set optable(Popular) 1
+set optable(Results) 1
+set optable(Shortest) 5
+set optable(ShortestBlack) 1
+set optable(ShortestWhite) 1
+set optable(Stats) 1
+set optable(Themes) 1
+set startup(book) 0
+set startup(crosstable) 0
+set startup(fics) 0
+set startup(finder) 0
+set startup(gamelist) 0
+set startup(pgn) 0
+set startup(stats) 0
+set startup(switcher) 0
+set startup(tip) 0
+set startup(tree) 0
+set toolbar(bkm) 1
+set toolbar(book) 1
+set toolbar(bsearch) 0
+set toolbar(close) 0
+set toolbar(comment) 0
+set toolbar(copy) 0
+set toolbar(crosst) 1
+set toolbar(eco) 0
+set toolbar(engine) 1
+set toolbar(finder) 0
+set toolbar(gfirst) 1
+set toolbar(glast) 1
+set toolbar(glist) 1
+set toolbar(gnext) 1
+set toolbar(gprev) 1
+set toolbar(hsearch) 0
+set toolbar(maint) 1
+set toolbar(msearch) 0
+set toolbar(new) 0
+set toolbar(newgame) 0
+set toolbar(open) 0
+set toolbar(paste) 0
+set toolbar(pgn) 1
+set toolbar(rfilter) 0
+set toolbar(save) 1
+set toolbar(tmt) 1
+set toolbar(tree) 1
+set twinSettings(colors) Yes
+set twinSettings(comments) Yes
+set twinSettings(day) No
+set twinSettings(delete) Shorter
+set twinSettings(eco) No
+set twinSettings(event) No
+set twinSettings(month) Yes
+set twinSettings(moves) Yes
+set twinSettings(players) Yes
+set twinSettings(result) No
+set twinSettings(round) Yes
+set twinSettings(setfilter) Yes
+set twinSettings(site) Yes
+set twinSettings(skipshort) Yes
+set twinSettings(undelete) Yes
+set twinSettings(usefilter) No
+set twinSettings(variations) Yes
+set twinSettings(year) Yes
+
+set fontOptions(Regular) {{TeX Gyre Heros} 11 normal roman}
+set fontOptions(Menu) {{TeX Gyre Heros} 10 normal roman}
+set fontOptions(Small) {{TeX Gyre Heros} 10 normal roman}
+set fontOptions(Tiny) {{TeX Gyre Heros} 9 normal roman}
+set fontOptions(Fixed) {{Liberation Mono} 11 normal roman}
+
+set glistFields {
+  g Number	e 7
+  w White	w 14
+  b Black	w 14
+  r Result	e 5
+  m Length	e 5
+  d Date	w 10
+  e Event	w 10
+  W WElo	e 5
+  B BElo	e 5
+  n Round	e 5
+  s Site	w 10
+  D Deleted	e 3
+  V Variations	e 3
+  C Comments	e 3
+  A Annos	e 3
+  o ECO		e 5
+  O Opening	w 6
+  U Flags	e 3
+  S Start	e 3
+}
+set initialDir(base) /home/johannes
+set initialDir(book) /home/johannes
+set initialDir(html) /home/johannes
+set initialDir(tex) /home/johannes
+set initialDir(epd) /home/johannes
+set initialDir(stm) /home/johannes
+set initialDir(sso) /home/johannes
+set initialDir(pgn) /tmp
+set initialDir(report) /home/johannes
+set initialDir(tablebase1) {}
+set initialDir(tablebase2) {}
+set initialDir(tablebase3) {}
+set initialDir(tablebase4) {}
+
+set exportStartFile(PGN) {}
+set exportEndFile(PGN) {}
+set exportStartFile(HTML) {<html>
+  <head><title>Scid export</title></head>
+  <body bgcolor="#ffffff">
+}
+set exportEndFile(HTML) {</body>
+  </html>
+}
+set exportStartFile(LaTeX) {\documentclass[10pt,twocolumn]{article}
+  % This is a LaTeX file generated by Scid.
+  % You must have the "chess12" package installed to typeset this file.
+
+  \usepackage{times}
+  \usepackage{a4wide}
+  \usepackage{chess}
+  \usepackage[T1]{fontenc}
+  \usepackage{latexsym}
+
+  \setlength{\columnsep}{7mm}
+  \setlength{\parindent}{0pt}
+
+  % Macros for variations and diagrams:
+  \newenvironment{variation}{\begin{quote}}{\end{quote}}
+  \newenvironment{diagram}{\begin{nochess}}{$$\showboard$$\end{nochess}}
+
+  \begin{document}
+}
+set exportEndFile(LaTeX) {\end{document}
+}
+
+set informant("!?") 0.5
+set informant("++-") 5.5
+set informant("+-") 3.0
+set informant("+/-") 1.5
+set informant("+=") 0.5
+set informant("?!") 0.5
+set informant("?") 1.5
+set informant("??") 3.0
+
+set ::fics::use_timeseal 0
+set ::fics::timeseal_exec timeseal
+set ::fics::port_fics 5000
+set ::fics::port_timeseal 5001
+set ::fics::login {}
+set ::fics::password {}
+set ::fics::consolebg grey35
+set ::fics::consolefg LimeGreen
+set ::fics::chanoff 1
+set ::fics::shouts 1
+set ::fics::server_ip 0.0.0.0
+set ::fics::consolebg grey35
+set ::fics::consolefg LimeGreen
+set ::fics::autopromote 0
+set ::fics::autoraise 1
+set ::fics::smallclocks 1
+set ::fics::size 30
+set ::fics::sound 0
+set ::fics::no_results 0
+set ::fics::no_requests 0
+set ::fics::server freechess.org
+set ::fics::findopponent(color) {}
+set ::fics::findopponent(formula) {}
+set ::fics::findopponent(incTime) 10
+set ::fics::findopponent(initTime) 10
+set ::fics::findopponent(limitrating) 0
+set ::fics::findopponent(manual) manual
+set ::fics::findopponent(rated) rated
+set ::fics::findopponent(rating1) 1000
+set ::fics::findopponent(rating2) 1500
+set ::docking::layout_list(1) {{MainWindowGeometry 834x640+80+50} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 564} {TNotebook .nb .fdockmain} {TNotebook .tb1 .fdockpgnWin}}}}}
+set ::docking::layout_list(2) {{MainWindowGeometry 1311x716+65+36} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 570} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 261} {TPanedwindow {{.pw.pw0.pw2.pw9 horizontal 235} {TNotebook .tb32 .fdockpgnWin} {TPanedwindow {{.pw.pw0.pw2.pw9.pw30 vertical {}} {TNotebook .tb1 {.fdockplayerInfoWin .fdockcommentWin}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw3 horizontal {}} {TNotebook .tb8 {.fdockglistWin .fdockcrosstabWin}}}}}}}}}}
+set ::docking::layout_list(3) {{MainWindowGeometry 968x666+80+50} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 566} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 363} {TNotebook .tb1 {.fdockanalysisWin1 .fdockpgnWin}} {TNotebook .tb3 {.fdocktreeWin1 .fdocktreeBest1}}}}}}}}
+set ::docking::layout_list(4) {}
+set ::docking::layout_list(5) {}

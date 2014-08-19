@@ -15,9 +15,10 @@ UUID=2626dda2-484a-4786-baf9-52b97eb250a5	/boot     	ext4      	rw,relatime,stri
 # /dev/sda5
 UUID=bd2bbad9-e1f4-4145-90e6-2af152d18f21	/home     	ext4      	rw,relatime	0 2
 
-# /dev/sda3
-UUID=44b8266a-2402-4afd-ab58-083ad3e0e03b	none      	swap      	defaults  	0 0
+# # /dev/sda3
+# UUID=44b8266a-2402-4afd-ab58-083ad3e0e03b	none      	swap      	defaults  	0 0
 
+#/dev/mapper/cr	                          /home/cr    ext4    	  noauto,x-systemd.automount,rw,relatime	0 2
 
 {% elif grains['cbi_machine'] == 'debussy' %}
 # 
@@ -35,9 +36,9 @@ UUID=12402a48-b679-4807-8110-f04e3fbbb2ae	/boot     	ext4      	rw,relatime,stri
 UUID=21ca9617-04e4-45d4-8439-e1e7fa5f3be5	/home     	ext4      	rw,relatime	0 2
 
 # /dev/sda3
-UUID=cfbfb905-676f-44d4-9431-f3b9d7003651	none      	swap      	defaults  	0 0
+#UUID=cfbfb905-676f-44d4-9431-f3b9d7003651	none      	swap      	defaults  	0 0
 
-#klein
-UUID=dff541cb-3895-4025-a14d-3708a6df9cfa	/home/data2     	ext4      	noauto,x-systemd.automount,rw,relatime	0 2
+#/dev/mapper/cr1	                          /home/cr1   ext4      	noauto,x-systemd.automount,rw,relatime	0 2
+#/dev/mapper/cr2	                          /home/cr2   ext4      	noauto,x-systemd.automount,rw,relatime	0 2
 
 {% endif %}

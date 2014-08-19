@@ -1,0 +1,9 @@
+
+update md5 sum:
+sudo makepkg --asroot -g -p git-annex
+
+make:
+sudo makepkg --asroot -p git-annex
+
+install:
+pacman -U <tarfile>

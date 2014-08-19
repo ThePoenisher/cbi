@@ -1,0 +1,12 @@
+# Scid 4.10 recent files list
+
+set recentFiles(limit) 10
+
+set recentFiles(menu) 5
+
+set recentFiles(extra) 5
+
+set recentFiles(gamehistory) 5
+
+set recentFiles(data) {/tmp/iulianusapostata19_vs_gerannes_2014_02_25.pgn /tmp/gerannes_vs_iulianusapostata19_2014_02_25.pgn /tmp/gerannes_vs_iulianusapostata19_2014_02_25(1).pgn}
+

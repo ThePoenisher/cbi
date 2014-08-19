@@ -1,0 +1,47 @@
+<sources>
+    <programs>
+        <default pathversion="1"></default>
+    </programs>
+    <video>
+        <default pathversion="1"></default>
+        <source>
+            <name>videos</name>
+            <path pathversion="1">/home/data/videos/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>jdownloader</name>
+            <path pathversion="1">/home/data/downloads/jdownloader/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>VIDEO_TS</name>
+            <path pathversion="1">/media/SHA1-s2409070592--3cc9856f9cd3f1c13b54a41504f22bf979a96bd0/VIDEO_TS/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>movies</name>
+            <path pathversion="1">/home/data/movies/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>johannes</name>
+            <path pathversion="1">/home/johannes/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+    </video>
+    <music>
+        <default pathversion="1"></default>
+    </music>
+    <pictures>
+        <default pathversion="1"></default>
+        <source>
+            <name>pictures</name>
+            <path pathversion="1">/home/data/pictures/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+    </pictures>
+    <files>
+        <default pathversion="1"></default>
+    </files>
+</sources>

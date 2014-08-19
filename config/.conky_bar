@@ -37,6 +37,7 @@ $endif\
 ^fg(\#ff3333)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_up_03.xbm)${upspeed usb0} \
 $endif\
+${exec crypt_enum}\
 ^fg(\#00ffff)\
 ${exec audio-cli conky} \
 ${if_existing /sys/class/power_supply/BAT0/uevent}\

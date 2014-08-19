@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+file=/home/johannes/.battery
+echo "Discharging: `date` ($1)" >> $file 
+# upower -i /org/freedesktop/UPower/devices/battery_BAT0 >> $file
+udevadm info --path=/sys/class/power_supply/BAT0 >> $file
+if [ "$1" -le 260000 ]; then 
+		echo ACTION >> $file
+		# systemctl hybrid-sleep
+fi;
+
+# kleine battery: 35000 (aber leider keine events)

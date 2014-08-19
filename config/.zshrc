@@ -9,16 +9,22 @@ fi
 alias sudo='command sudo'
 
 # run client in terminal
-alias -g en="my_emacs -c -nw"
+alias  en="my_emacs -c -nw"
 # run client in new frame
-alias -g ec="my_emacs -c -n"
+alias  ec="my_emacs -c -n"
 # run client in existing frame
-alias -g e="my_emacs -n"
+alias  e="my_emacs -n"
 
 alias -g gx="git annex"
 alias gvp="git verify-pull"
 alias gvl="git verify-log"
+alias gil="git log --graph --decorate --abbrev-commit"
 alias gsp="git commit-sign-push"
+
+alias scl="sudo systemctl"
+alias uumount="udevil umount"
+
+alias latexdiff2="latexdiff-vc --git  --packages=amsmath,hyperref -c \"$CBI/config/latexdiff.cfg\""
 
 alias feh2="feh --scale-down --keep-zoom-vp --action2 'xrename \"%f\" ' "
 
@@ -40,14 +46,22 @@ alias grepc="grep --color=always"
 alias egrep="egrep --color=auto"
 alias egrepc="egrep --color=always"
 
-alias android-mount="sudo mkdir -p /media/android && sudo chown johannes:johannes /media/android/ && mtpfs -o user,allow_other /media/android && cd /media/android"
-alias android-umount="sudo umount /media/android"
+alias curlm="curl -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0'"
+# alias mpv="mpv --save-position-on-quit" # alternativ, beenden mit `U` 
+alias mpvl="mpv -playlist /dev/fd/0"
+
+alias cmatrix="cmatrix -b -a -u 3"
+
+alias udm="udevil mount"
+alias udu="udevil umount"
+
 
 export MAIL=$HOME/Mail/local
 export GPG_TTY=`tty`
 export BROWSER=firefox
 
 unsetopt correct_all
+unsetopt correct
 
 # does not work anymore since grml-zsh 0.8: DONTSETRPROMPT=1
 #instead:
@@ -153,8 +167,8 @@ RPROMPT='$(my_git_prompt) $(vi_mode_prompt_info)'
 if [ "$CBI_MACHINE" = 'scriabin' -o "$CBI_MACHINE" = 'debussy' ]; then
 HISTFILE=/home/data/personal/zsh_history
 fi
-HISTSIZE=50000
-SAVEHIST=50000
+HISTSIZE=5000000
+SAVEHIST=5000000
 
 #make the esc key faster (to exit vi insert mode!
 KEYTIMEOUT=1
@@ -163,3 +177,6 @@ KEYTIMEOUT=1
 # archey # takes sometimes too lon gto spawn a terminal!
 # cd /home
 unsetopt correct_all
+
+setopt BRACE_CCL #allow {a-z} expansion
+
