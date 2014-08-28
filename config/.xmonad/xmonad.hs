@@ -86,7 +86,7 @@ myBgColor="gray20"
 myHighlightedFgColor="white"
 myHighlightedBgColor="gray40"
  
-myActiveBorderColor = "white"
+myActiveBorderColor = "red"
 myInactiveBorderColor = "black"
 myBorderWidth = 1
  

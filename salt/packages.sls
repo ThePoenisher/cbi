@@ -33,6 +33,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - cloc
+      - ncdu
       - dos2unix
       - reflector
       - p7zip
