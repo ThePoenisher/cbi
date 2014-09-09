@@ -141,7 +141,7 @@ base_packages:
       - gimp
       - virtualbox
       - virtualbox-host-modules
-      - icedtea-web-java7
+      - icedtea-web
       - evince
       - mtpfs
       - graphviz
