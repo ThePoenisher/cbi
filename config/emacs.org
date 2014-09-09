@@ -326,6 +326,7 @@ Ursache:
                               latex-pretty-symbols
                               evil-numbers
                               smex
+                              wolfram-mode
                               ido-ubiquitous
                               ido-vertical-mode
                               ido-complete-space-or-hyphen
