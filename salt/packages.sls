@@ -182,8 +182,8 @@ base_packages:
       - gvfs-mtp
       - gvfs-smb
       - unoconv
-{% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
-      - libreoffice-{{ p }}
+{% for p in ['-de',''] %}
+      - libreoffice-fresh{{ p }}
 {% endfor %}
 {% endif %} #archdesktop
     - require:
