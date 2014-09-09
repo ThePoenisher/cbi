@@ -35,7 +35,8 @@ else
 fi
 
 if [ "$1" = "de" ]; then
-		e="--ExcludeExitNodes {de} --GeoIPExcludeUnknown 0"
+		# e="--ExcludeExitNodes {de} --GeoIPExcludeUnknown 0"
+		e="--ExitNodes {de}"
 fi
 # iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 # for NET in $NON_TOR 127.0.0.0/8; do
