@@ -122,7 +122,7 @@ base_packages:
       - haskell-regex-tdfa
       - haskell-regex-posix
       - haskell-hslogger
-      - haddock
+      # - haddock
       - samba
 {% if pillar['arch_desktop'] %}
       - pdfedit
