@@ -334,6 +334,7 @@ Ursache:
                               flx
                               flx-ido
                               graphviz-dot-mode
+                              ein
                               )
         )
   
@@ -2636,6 +2637,8 @@ perl -nle '/ID_LENGTH=([0-9\.]+)/ && ($t +=$1) && printf "%02d:%02d:%02d\n",$t/3
 #+END_SRC
 ** Python
 http://pedrokroger.net/2010/07/configuring-emacs-as-a-python-ide-2/
+angelesen [2014-09-10 Wed]: 
+http://www.jesshamrick.com/2012/09/18/emacs-as-a-python-ide/
 ** Semantic stuff:
 *** http://www.emacswiki.org/emacs/SemanticBovinator
 *** semantic-mode

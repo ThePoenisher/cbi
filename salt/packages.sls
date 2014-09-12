@@ -122,9 +122,21 @@ base_packages:
       - haskell-regex-tdfa
       - haskell-regex-posix
       - haskell-hslogger
-      - haddock
+      # - haddock
       - samba
 {% if pillar['arch_desktop'] %}
+      - r
+      - ipython
+      - python-sympy
+      - python-scipy
+      - python-pygments
+      - python-pyzmq
+      - python-pandas
+      - python-bottleneck
+      - python-numexpr
+      - python-matplotlib 
+      - python-jinja
+      - python-tornado
       - pdfedit
       - gdb
       - bitcoin-qt
