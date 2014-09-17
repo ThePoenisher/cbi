@@ -335,6 +335,7 @@ Ursache:
                               flx-ido
                               graphviz-dot-mode
                               ein
+                              ess
                               )
         )
   

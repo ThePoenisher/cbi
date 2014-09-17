@@ -122,6 +122,15 @@ base_packages:
       - haskell-regex-tdfa
       - haskell-regex-posix
       - haskell-hslogger
+      - haskell-safe
+      - haskell-polyparse
+      - haskell-th-lift
+      - haskell-parallel
+      - haskell-regex-compat
+      - haskell-regex-tdfa
+      - haskell-regex-pcre
+      - haskell-regex-posix 
+      - haskell-split
       # - haddock
       - samba
 {% if pillar['arch_desktop'] %}
