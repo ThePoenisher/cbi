@@ -680,6 +680,7 @@ case-fold-search (sometimes set locally!)
   (add-to-list 'auto-mode-alist '("/\.?mutt/"  conf-mode t))
   (add-to-list 'auto-mode-alist '("\\.dat$"  ledger-mode t))
   (add-to-list 'auto-mode-alist '("\\.h$"  c++-mode t))
+  (add-to-list 'auto-mode-alist '("\\.mkd$"  markdown-mode t))
 #+END_SRC
 *** Garbage collection
 as suggested on https://github.com/lewang/flx
@@ -2783,6 +2784,9 @@ C-c v
 #+BEGIN_SRC emacs-lisp
   (setq graphviz-dot-view-command "dot -Tx11 %s")
 #+END_SRC
+** C++
+*** switch/jump between header and object file
+M-x ff-find-other-file
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
