@@ -138,15 +138,16 @@ base_packages:
       - r
       - ipython
       - python-sympy
-      - python-scipy
-      - python-pygments
-      - python-pyzmq
-      - python-pandas
-      - python-bottleneck
-      - python-numexpr
-      - python-matplotlib 
-      - python-jinja
-      - python-tornado
+      # - python-scipy
+      # - python-pygments
+      # - python-pyzmq
+      # - python-pandas
+      # - python-bottleneck
+      # - python-numexpr
+      # - python-matplotlib 
+      # - python-jinja
+      # - python-tornado
+      - maxima
       - pdfedit
       - gdb
       - bitcoin-qt

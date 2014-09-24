@@ -1,6 +1,7 @@
 #!/bin/bash
 action="$1"
 homedir="$2"
+filter="$3"
 ngrams=2
 catdir="$homedir"/dbacl_cats
 h=25
@@ -9,8 +10,8 @@ export LANG=de_DE.UTF-8
 
 if [ "$action" = "learn" ]; then
 		mkdir -p "$catdir"
-                rm "$catdir"/.*_cat
-		(cd "$homedir"; find -maxdepth 1 -type d -name ".*") |  sed -re's|.*/([^/].*)|\1|' | grep -Ev "Drafts|Trash|Sent" | while read j; do
+    rm -f "$catdir"/.*_cat
+		(cd "$homedir"; find -maxdepth 1 -type d -name ".*") |  sed -re's|.*/([^/].*)|\1|' | grep -Ev "Drafts|Trash|Sent" | sh -c "$filter" | while read j; do
 				paths=()
 				if [ -d "$homedir/$j/cur" ]; then
 						paths+=("$homedir/$j/cur")
@@ -18,7 +19,11 @@ if [ "$action" = "learn" ]; then
 				if [ -d "$homedir/$j/new" ]; then
 						paths+=("$homedir/$j/new")
 				fi
-				sudo -u vmail dbacl -T "email:headers" -w $ngrams -H$h  -l "$catdir/${j}_cat" "${paths[@]}"
+				if false; then
+						echo "${paths[@]}"
+				else
+						sudo -u vmail dbacl -T "email:headers" -w $ngrams -H$h  -l "$catdir/${j}_cat" "${paths[@]}"
+				fi
 		done
 else
 		cmd="dbacl -T \"email:headers\" -w $ngrams "
@@ -27,7 +32,7 @@ else
 		done
 		if [ -z "$3" ]; then
 			sh /dev/fd/3 3<<<"$cmd -v" | sed -re 's/(.*)_cat/\1/'
-		else
+		else # debug output
 			echo "$cmd \"$3\""
 			sh /dev/fd/3 3<<<"$cmd -n -U \"$3\"" | sed -re 's/ \./\n/g' | sort -k2n
 		fi	
