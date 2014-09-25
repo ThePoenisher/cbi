@@ -1,7 +1,10 @@
 set realname="Johannes Gerer"
 set from="johannes@gerer.name"
+alternates "j@josg.de|j14@josg.de|kuerzn@gmail.com|kuerzn@googlemail.com|johannes@cityhaus.de"
 set use_from=yes
 set use_envelope_from=yes
+
+my_hdr Bcc: sent@josg.de
 
 # andere: http://xblast.sourceforge.net/rado/mutt/
 # https://github.com/redondos/mutt (with theme switcher)
@@ -16,7 +19,7 @@ set move=no
 set sleep_time = 0
 
 set postponed=+"j@g/Drafts"
-set record=+"j@g/INBOX"
+set record=+"j@g/Sent"
 
 set history=1000
 set history_file="~/.mutt/history"

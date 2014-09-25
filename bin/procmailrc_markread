@@ -1,0 +1,23 @@
+# -*- mode: conf-unix; -*-
+# from http://stuffphilwrites.com/2011/01/ultimate-procmail-recipe/
+
+:0
+{
+  :0c # store as new
+  "$foldername/"
+
+  :0
+  * LASTFOLDER ?? /\/[^/]+$
+  { tail=$MATCH }
+  # first, move from "new/" to "cur/", appending the ":2,"
+  # empty flag designator. Then add the "S" flag by
+  # renaming the file accordingly.
+  # If an idling client already moved the message to "cur",
+  # the first move will fail silently, the second will
+  # perform the "mark as read" function
+  TRAP="mv -v '$LASTFOLDER' \
+    '$foldername/cur/$tail:2,' 2> /dev/null ; \
+  mv -v '$foldername/cur/${tail}:2,' \
+    '$foldername/cur/$tail:2,S'"
+  HOST
+}

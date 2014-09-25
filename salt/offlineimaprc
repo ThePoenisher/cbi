@@ -12,8 +12,8 @@
 
 
 [general]
-accounts= j@g, kuerzn
-maxsyncaccounts = 2
+accounts= j@g
+maxsyncaccounts = 1
 # Note: if you are using autorefresh and have more than one account,
 # you must set this number to be >= to the number of accounts you have;
 # since any given sync run never "finishes" due to a timer, you will never
