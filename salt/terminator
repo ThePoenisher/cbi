@@ -16,7 +16,21 @@
 {% elif grains['cbi_machine'] == 'debussy' %}
     font = DejaVu Sans Mono 10
 {% endif %}
-  [[New Profile]]
+  [[black on white]]
+    scrollbar_position = hidden
+    palette = "#000000:#cd0000:#00cd00:#cdcd00:#1e90ff:#cd00cd:#00cdcd:#e5e5e5:#4c4c4c:#ff0000:#00ff00:#ffff00:#4682b4:#ff00ff:#00ffff:#ffffff"
+    background_darkness = 0.93
+    urgent_bell = True
+    background_type = transparent
+    use_system_font = False
+    foreground_color = "#000000"
+    background_color = "#ffffff"
+    show_titlebar = False
+{% if grains['cbi_machine'] == 'scriabin' %}
+    font = DejaVu Sans Mono 9
+{% elif grains['cbi_machine'] == 'debussy' %}
+    font = DejaVu Sans Mono 10
+{% endif %}
 [layouts]
   [[default]]
     [[[child1]]]

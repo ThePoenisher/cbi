@@ -12,8 +12,8 @@
 
 
 [general]
-accounts= j@g, kuerzn
-maxsyncaccounts = 2
+accounts= j@g
+maxsyncaccounts = 1
 # Note: if you are using autorefresh and have more than one account,
 # you must set this number to be >= to the number of accounts you have;
 # since any given sync run never "finishes" due to a timer, you will never
@@ -25,7 +25,7 @@ maxsyncaccounts = 2
 localrepository = LocalKuerzn
 remoterepository = RemoteKuerzn
 status_backend = sqlite
-autorefresh = 5
+autorefresh = 15
 
 
 [Repository LocalKuerzn]
@@ -76,6 +76,7 @@ autorefresh = 5
 [Repository Local]
 type = Maildir
 localfolders = ~/Mail/j@g
+nametrans = lambda f: f if f=="INBOX" else "INBOX." + f
 
 [Repository Remote]
 # does not support imap idle
@@ -86,7 +87,7 @@ nametrans = lambda foldername: re.sub('^INBOX\.', '', foldername)
 
 #without the following would need corresponding reverse nametrans
 # see http://docs.offlineimap.org/en/latest/nametrans.html
-createfolders = False
+createfolders = True
 
 maxconnections = 30
 type = IMAP
@@ -98,6 +99,7 @@ idlefolders = [ 'INBOX.Bestellungen'
                 ,'INBOX.Cityhaus'
                 ,'INBOX.Drafts'
                 ,'INBOX'
+                ,'INBOX.Familie'
                 ,'INBOX.Newsletter'
                 ,'INBOX.Promotion'
                 ,'INBOX.Reisen'

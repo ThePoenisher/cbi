@@ -86,7 +86,7 @@ myBgColor="gray20"
 myHighlightedFgColor="white"
 myHighlightedBgColor="gray40"
  
-myActiveBorderColor = "white"
+myActiveBorderColor = "red"
 myInactiveBorderColor = "black"
 myBorderWidth = 1
  
@@ -222,11 +222,16 @@ myManageHook = composeAll $
    [ isFullscreen --> doFullFloat
    -- , className =? "mpv" --> doFloat -- needs mpv --x11-netwm=no
    ]
+   -- this works for mathematica 9
    ++
    [ stringProperty "WM_CLASS" =? "XMathematica"
-     <&&> fmap (\x -> not (isInfixOf "- Wolfram Mathematica" x
-                           && not (isInfixOf "Find and Replace" x)))
+     <&&> fmap (\x -> (isInfixOf "Find and Replace" x))
      title --> doFloat ]
+   -- this works for mathematica 9  ++
+   -- [ stringProperty "WM_CLASS" =? "XMathematica"
+   --   <&&> fmap (\x -> not (isInfixOf "- Wolfram Mathematica" x
+   --                         && not (isInfixOf "Find and Replace" x)))
+   --   title --> doFloat ]
    ++
    [ c =? t  --> doFloat |  (c,ts) <- [
         -- problem: xmonad hängt wenn Ediff floating

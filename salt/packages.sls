@@ -33,6 +33,7 @@ base_packages:
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
       - cloc
+      - ncdu
       - dos2unix
       - reflector
       - p7zip
@@ -121,9 +122,32 @@ base_packages:
       - haskell-regex-tdfa
       - haskell-regex-posix
       - haskell-hslogger
-      - haddock
+      - haskell-safe
+      - haskell-polyparse
+      - haskell-th-lift
+      - haskell-th-orphans
+      - haskell-parallel
+      - haskell-regex-compat
+      - haskell-regex-tdfa
+      - haskell-regex-pcre
+      - haskell-regex-posix 
+      - haskell-split
+      # - haddock
       - samba
 {% if pillar['arch_desktop'] %}
+      - r
+      - ipython
+      - python-sympy
+      # - python-scipy
+      # - python-pygments
+      # - python-pyzmq
+      # - python-pandas
+      # - python-bottleneck
+      # - python-numexpr
+      # - python-matplotlib 
+      # - python-jinja
+      # - python-tornado
+      - maxima
       - pdfedit
       - gdb
       - bitcoin-qt
@@ -140,7 +164,7 @@ base_packages:
       - gimp
       - virtualbox
       - virtualbox-host-modules
-      - icedtea-web-java7
+      - icedtea-web
       - evince
       - mtpfs
       - graphviz
@@ -181,8 +205,8 @@ base_packages:
       - gvfs-mtp
       - gvfs-smb
       - unoconv
-{% for p in ['de','en-US','base','calc','draw','impress','math','postgresql-connector','writer','gnome'] %}
-      - libreoffice-{{ p }}
+{% for p in ['-de',''] %}
+      - libreoffice-fresh{{ p }}
 {% endfor %}
 {% endif %} #archdesktop
     - require:
