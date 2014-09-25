@@ -125,6 +125,7 @@ base_packages:
       - haskell-safe
       - haskell-polyparse
       - haskell-th-lift
+      - haskell-th-orphans
       - haskell-parallel
       - haskell-regex-compat
       - haskell-regex-tdfa
