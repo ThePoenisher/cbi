@@ -95,11 +95,14 @@ type = IMAP
 #folderfilter = lambda foldername: foldername not in ['INBOX.Sent Items','INBOX.Deleted Items']
 
 idlefolders = [ 'INBOX.Bestellungen'
-                ,'INBOX.Bitcoins'
-                ,'INBOX.Cityhaus'
-                ,'INBOX.Drafts'
+								,'INBOX.Bewerbung'
                 ,'INBOX'
+                ,'INBOX.Bitcoins'
+                ,'INBOX.Daniela'
+                ,'INBOX.Drafts'
+                ,'INBOX.Extern'
                 ,'INBOX.Familie'
+                ,'INBOX.Kalender'
                 ,'INBOX.Newsletter'
                 ,'INBOX.Promotion'
                 ,'INBOX.Reisen'
