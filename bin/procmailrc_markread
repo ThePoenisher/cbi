@@ -4,7 +4,7 @@
 :0
 {
   :0c # store as new
-  "$foldername/"
+  "$foldername"
 
   :0
   * LASTFOLDER ?? /\/[^/]+$
