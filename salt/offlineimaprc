@@ -12,8 +12,8 @@
 
 
 [general]
-accounts= j@g, kuerzn
-maxsyncaccounts = 2
+accounts= j@g
+maxsyncaccounts = 1
 # Note: if you are using autorefresh and have more than one account,
 # you must set this number to be >= to the number of accounts you have;
 # since any given sync run never "finishes" due to a timer, you will never
@@ -95,11 +95,14 @@ type = IMAP
 #folderfilter = lambda foldername: foldername not in ['INBOX.Sent Items','INBOX.Deleted Items']
 
 idlefolders = [ 'INBOX.Bestellungen'
-                ,'INBOX.Bitcoins'
-                ,'INBOX.Cityhaus'
-                ,'INBOX.Drafts'
+								,'INBOX.Bewerbung'
                 ,'INBOX'
+                ,'INBOX.Bitcoins'
+                ,'INBOX.Daniela'
+                ,'INBOX.Drafts'
+                ,'INBOX.Extern'
                 ,'INBOX.Familie'
+                ,'INBOX.Kalender'
                 ,'INBOX.Newsletter'
                 ,'INBOX.Promotion'
                 ,'INBOX.Reisen'

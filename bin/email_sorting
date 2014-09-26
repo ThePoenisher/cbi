@@ -31,9 +31,9 @@ else
 				cmd="$cmd -c \"$i\""
 		done
 		if [ -z "$3" ]; then
-			sh /dev/fd/3 3<<<"$cmd -v" | sed -re 's/(.*)_cat/\1/'
+			sh /dev/fd/3 3<<<"$cmd -v" | sed -re 's/(.*)_cat/\1\//'
 		else # debug output
-			echo "$cmd \"$3\""
-			sh /dev/fd/3 3<<<"$cmd -n -U \"$3\"" | sed -re 's/ \./\n/g' | sort -k2n
+			echo "$cmd -n -U"
+			sh /dev/fd/3 3<<<"$cmd -n -U" | sed -re 's/ \./\n/g' | sort -k2n
 		fi	
 fi
