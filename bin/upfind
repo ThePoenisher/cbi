@@ -1,0 +1,11 @@
+#!/bin/bash
+p=`pwd`
+while [[ $PWD != / ]] ; do
+    s=`find "$PWD"/ -maxdepth 1 "$@" |  head -n1`
+		if [ "$s" ]; then
+				dirname "$s"
+				exit;
+		fi	 
+		cd ..
+done
+echo "$p"

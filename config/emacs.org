@@ -2576,7 +2576,8 @@ C-b C-z
   (eval-after-load 'haskell-mode
     '(progn    
        (define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
-       (setq haskell-program-name "cabalrepl")
+       (setq haskell-program-name 
+             "sh -c \"cd `upfind -name .cabal-sandbox`; cabalrepl\"")
        )
     )
   ;; from https://github.com/haskell/haskell-mode/issues/44

@@ -12,7 +12,7 @@ conflicts=(git-annex git-annex-standalone git-annex-bin git-annex-git)
 depends=(glibc)
 
 source=(http://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz)
-sha512sums=('da8901fe901ce1c10bafa313c48786104ff56f43436daeb7090849d00ec851069f7b53f41d2de22b7a4d10e9461fddb23973f13a7d4db677adaaebfeeb542840')
+sha512sums=('13dc9660d5b5b2804556da5d79cf65afa340d7e33d6fc42020e55c64a043147cd0430521d437a023cdad51fe2011effc4c36fbe5b0f37e6e09acbb5e2edeecdb')
 
 package() {
 		cd $srcdir
