@@ -117,6 +117,9 @@ base_packages:
       - happy
       - net-tools
       - haskell-parsec
+      - haskell-async
+      - haskell-haskell-lexer
+      - haskell-attoparsec
       - haskell-pandoc
       - haskell-hxt
       - haskell-regex-tdfa
@@ -132,6 +135,9 @@ base_packages:
       - haskell-regex-pcre
       - haskell-regex-posix 
       - haskell-split
+      - haskell-haskell-src-exts
+      - haskell-cassava
+      # - haskell-haskeline
       # - haddock
       - samba
 {% if pillar['arch_desktop'] %}

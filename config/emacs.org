@@ -336,6 +336,7 @@ Ursache:
                               graphviz-dot-mode
                               ein
                               ess
+                              shm
                               )
         )
   
@@ -1185,6 +1186,9 @@ dp (push)
 http://vimcasts.org/episodes/modal-editing-undo-redo-and-repeat/
 *** modal editing
 http://stackoverflow.com/questions/555470/semi-modal-editing-auto-prefixing-keys
+
+*** alternative:
+https://github.com/chrisdone/god-mode
 *** Good comparison
 http://mattbriggs.net/blog/2012/02/27/awesome-emacs-plugins-evil-mode/
 http://lists.gnu.org/archive/html/emacs-orgmode/2011-01/msg00498.html
@@ -2558,38 +2562,44 @@ function call you are currently writing. Very handy.
   (add-hook 'org-mode-hook  'turn-on-eldoc-mode)
 #+END_SRC
 ** Haskell
-see Mode Help
-http://www.haskell.org/haskellwiki/Emacs/Inferior_Haskell_processes
+http://haskell.github.io/haskell-mode/manual/latest/
+https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Setup
 *** Keys
 http://www.haskell.org/haskellwiki/Emacs/Keybindings_and_simple_usage
 C-c C-t might need C-c C-l before
-*** inferior-haskell-load-and-run
 *** switch-to-haskell
 interact
 C-c C-b 
 C-b C-z
 *** Settings
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
-  (eval-after-load 'haskell-mode
-    '(progn    
-       (define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
-       (setq haskell-program-name 
-             "sh -c \"cd `upfind -name .cabal-sandbox`; cabalrepl\"")
-       )
-    )
+  (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+  (add-hook 'haskell-mode-hook 'haskell-doc-mode)
+  (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  (define-key haskell-mode-map (kbd "C-c ,") 'haskell-mode-jump-to-def)
+   (eval-after-load 'haskell-mode
+     '(progn    
+        (define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
+        (setq haskell-process-type 'cabal-repl)
+         ;;     "sh -c \"cd `upfind -name .cabal-sandbox`; cabalrepl\"")
+        )
+     )
   ;; from https://github.com/haskell/haskell-mode/issues/44
   (add-hook 'haskell-cabal-mode-hook 
             (lambda() (setq indent-tabs-mode nil)))
 #+END_SRC
 *** Formatting
+check for new stuff, then look at this:
 https://github.com/jaspervdj/stylish-haskell
 *** Tags
-http://www.haskell.org/ghc/docs/6.10.3/html/users_guide/utils.html
-*** cabal sandbox
-see settings: "cabal repl"
+https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Tags
+*** GEIL: shm, structured-haskell-mode
+https://github.com/chrisdone/structured-haskell-mode
+**** Problem: [2014-09-28 Sun]
+buggy (vielleicht wegen evil?) und zu speziell?
+*** TODO: Debug
+http://youtu.be/WAtEmoVN30E?list=UUeoDK51Iln7Wk7QwDdoa9VA
 ** TODO imenu gives a list of all functions in a file, and lets you jump to them.
 idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
 ** Javascript 
@@ -2788,6 +2798,18 @@ C-c v
 ** C++
 *** switch/jump between header and object file
 M-x ff-find-other-file
+** CSS Colors
+http://ergoemacs.org/emacs/emacs_CSS_colors.html
+http://www.emacswiki.org/emacs/CssColor
+*** Rainbow-mode
+Colorize strings that represent colors.
+
+https://julien.danjou.info/projects/emacs-packages:
+Some colors, like HTML colors name (yellow, red, …) and rgb() ones are
+automatically activated in some mode like html-mode or css-mode. On
+the other hand, the X colors are activated only in some mode like
+emacs-lisp-mode or c-mode. The hexadecimal ones (#aabbcc) are always
+activated.
 * Autosaving and Backup files
 ** Recover & Autosave
 http://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html#Recover
