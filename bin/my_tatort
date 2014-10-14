@@ -1,4 +1,8 @@
 #!/usr/bin/bash
 l="http://www.daserste.de"`curl $1 | sed -rn "s/.*dataURL:'([^']+)'.*/\1/p"`
+echo $l
 r="rtmp://vod.daserste.de/ardfs/"`curl "$l" | sed -rn   's/.*<fileName>mp4:([^<]+L)<\/.*/\1/p'`
-rtmpdump -r "$r" -o "$2"
+echo $r
+if ! rtmpdump -r "$r" -o "$2"; then
+		echo use second argument for output file
+fi
