@@ -1,21 +1,35 @@
 #!/bin/zsh
+dir=/home/data/music
+file=/home/data/music/all
+
+zmodload zsh/mapfile
+FLINES=( "${(f)mapfile[$file]}" )
+integer SIZE=$#FLINES
+
 while true; do
 		#ohen /dev/random, of sehr nahe beieinander liegende Ergebnisse (+/- 1) <2014-03-24 Mon>
- 			e=`shuf -n1 --random-source=/dev/random /home/data/music/all`; echo $e\?
-			print -S "nvlc \"$e\" #suggestion" 
-			while true; do
-					read -k 1 a
-					echo
-					if [ "$a" = "n" ]; then break;
-					elif [ "$a" = "u"  ]; then
-							echo updating /home/data/music/all ...
-							find /home/data/music/* -type d | egrep -iv "(Hörspiel|/Scans?|Artwork|Booklet|/Covers)" > /home/data/music/all
-							echo The following item have been expluded:
-							find /home/data/music/* -type d | egrep -i "(Hörspiel|/Scans?|Artwork|Booklet|/Covers)" 
-							echo done
-					else
-							nvlc "$e";
-							break;
-					fi
-			done
+		# immer noch sehr oft die gleichen ordner!!!!! nervt. versuche jetzt $RANDOM <2014-10-08 Wed>
+
+		if false; then
+ 				e=`shuf -n1 --random-source=/dev/random $file`
+		else
+				e=$FLINES[$((RANDOM%SIZE))]
+		fi
+		echo $e\?
+		print -S "nvlc \"$e\" #suggestion" 
+		while true; do
+				read -k 1 a
+				echo
+				if [ "$a" = "n" ]; then break;
+				elif [ "$a" = "u"  ]; then
+						echo updating $file ...
+						find $dir/* -type d | egrep -iv "(Hörspiel|Scans?|Artwork|Booklet|/Covers)" > $file
+						echo The following item have been expluded:
+						find $dir/* -type d | egrep -i "(Hörspiel|Scans?|Artwork|Booklet|/Covers)" 
+						echo done
+				else
+						nvlc "$e";
+						break;
+				fi
+		done
 done  

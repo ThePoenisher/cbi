@@ -43,6 +43,7 @@ base_packages:
       - syslinux
       - dosfstools
       - pptpclient
+      - openconnect
       - socat
       - aria2
       - cuetools

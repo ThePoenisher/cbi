@@ -34,6 +34,11 @@
             <path pathversion="1">smb://compaq/Dani/</path>
             <allowsharing>true</allowsharing>
         </source>
+        <source>
+            <name>scriabin</name>
+            <path pathversion="1">smb://SCRIABIN/home/data/</path>
+            <allowsharing>true</allowsharing>
+        </source>
     </video>
     <music>
         <default pathversion="1"></default>
