@@ -80,7 +80,7 @@
         <addonforeignfilter default="true">false</addonforeignfilter>
         <addonnotifications default="true">true</addonnotifications>
         <settinglevel>1</settinglevel>
-        <systemtotaluptime>29094</systemtotaluptime>
+        <systemtotaluptime>29445</systemtotaluptime>
     </general>
     <input>
         <enablejoystick>true</enablejoystick>
@@ -414,6 +414,7 @@
         <setting type="string" name="skin.confluence.HomeProgramButton4"></setting>
         <setting type="string" name="skin.confluence.HomeProgramButton5"></setting>
         <setting type="string" name="skin.confluence.SubtitleScript_Path"></setting>
+        <setting type="string" name="skin.confluence.Home_Custom_Back_TV_Folder"></setting>
     </skinsettings>
     <resolutions />
     <defaultvideosettings>
@@ -539,6 +540,6 @@
     </viewstates>
     <audio>
         <mute>false</mute>
-        <fvolumelevel>0.000000</fvolumelevel>
+        <fvolumelevel>0.133315</fvolumelevel>
     </audio>
 </settings>
