@@ -1455,7 +1455,7 @@ http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
 #+END_SRC
 ** DONE MobileOrg
 *** settings
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (setq org-mobile-inbox-for-pull (concat org-directory "mobile_inbox.org"))
   (setq org-mobile-directory "/scpc:org@josg.de:")
 #+END_SRC
@@ -3189,25 +3189,25 @@ http://vimgolf.com/
 :ID:       03d12f96-1b4d-471a-8db4-60b595a647da
 :END:
 #+BEGIN_SRC emacs-lisp
-  ;; Installation:
-  
-  
-  
-  ;; TODO http://metasandwich.com/2010/07/30/what-can-i-get-for-10-dolla-anything-el/
-  ;; TODO http://monkey.org/~marius/emacs-as-a-tiling-window-manager.html
-  ;; TODO http://conkeror.org/ http://www.nongnu.org/stumpwm/
-  ;; TODO http://mail-index.netbsd.org/pkgsrc-users/2012/02/11/msg015679.html
-  
- 
-  ;; Don't know wheither this changes anything
-  ;(setq  inhibit-default-init t)
-  
-  
-  (add-to-list 'load-path (expand-file-name "~/"))
-  (add-to-list 'load-path (expand-file-name "~/emacs"))
-  (add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
-  
-  
+   ;; Installation:
+   
+   
+   
+   ;; TODO http://metasandwich.com/2010/07/30/what-can-i-get-for-10-dolla-anything-el/
+   ;; TODO http://monkey.org/~marius/emacs-as-a-tiling-window-manager.html
+   ;; TODO http://conkeror.org/ http://www.nongnu.org/stumpwm/
+   ;; TODO http://mail-index.netbsd.org/pkgsrc-users/2012/02/11/msg015679.html
+   
+
+   ;; Don't know wheither this changes anything
+   ;(setq  inhibit-default-init t)
+   
+  ;; the following 'is likely to cause problems' (emacs init warning) 
+   ;; (add-to-list 'load-path (expand-file-name "~/"))
+   ;; (add-to-list 'load-path (expand-file-name "~/emacs"))
+   ;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
+   
+   
 #+END_SRC
 ** Internal Stuff
 #+BEGIN_SRC emacs-lisp

@@ -22,7 +22,7 @@ usage() {
      This script does:
 
        - install Salt (from GIT, master-less minion, no service)
-          unless <none>.
+          unless 'none' is selected as first arg.
        - configure SALT: file_root <user's home>/cbi/salt
        - create GPG Machine Key  "j0@<machine>"
        - check out the CBI <revision> into <user>'s HOME
@@ -142,25 +142,23 @@ install_salt (){
 
 case $1 in
     arch)
-				(! grep -q  '#BOOTSTRAP' /etc/pacman.d/mirrorlist ) && \
-						sed -i '1i Server = http://ftp.spline.inf.fu-berlin.de/mirrors/archlinux/$repo/os/$arch\n#BOOTSTRAP' /etc/pacman.d/mirrorlist
-				pacman -Syy
-				
+				# not needed, as installation will leave a useable mirror list
+				# (! grep -q  '#BOOTSTRAP' /etc/pacman.d/mirrorlist ) && \
+				# 		sed -i '1i Server = http://ftp.spline.inf.fu-berlin.de/mirrors/archlinux/$repo/os/$arch\n#BOOTSTRAP' /etc/pacman.d/mirrorlist
+				echo -e "\nUpgrading package database and upgrading packages:"
+				# pacman -Syyu
+
 				tp=/tmp/packer_tmp`uuidgen`
 				
 				#packer
 				command -v packer || (
-						echo ASD
-						rm -rf $tp
-						mkdir $tp && \
-								cd $tp && \
-								curl -o PKGBUILD https://aur.archlinux.org/packages/pa/packer/PKGBUILD && \
-								makepkg -s --asroot --noconfirm && \
-								pacman --noconfirm -U *.tar.xz && \
-								rm -rf $tp
+						echo -e "\nInstalling Packer:"
+						curl -o $tp https://raw.githubusercontent.com/keenerd/packer/master/packer \
+						&& chmod +x && \
+						echo -e "\nInstalling all required Packages:"
 				) && \
 						pacman -S --noconfirm --needed  python2-requests python-m2crypto python2 python2-crypto python2-jinja  python2-psutil python2-pyzmq python2-yaml sudo && \
-						packer --noconfirm --noedit -S python2-gnupg && \
+						$tp --noconfirm --noedit -S packer python2-gnupg && \
 						install_salt &&	checkout_cbi 
         ;;
 		
