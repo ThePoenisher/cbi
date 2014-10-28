@@ -15,6 +15,8 @@ arch_X11_packages:
       - xcompmgr
       - xclip
       - xsel
+      - xdiskusage
+      - xdialog #for (my) xrename
       - transset-df
       - mesa-demos #glxgears
       - feh
@@ -41,7 +43,21 @@ arch_X11_packages:
       - gtk-engines
       - pidgin
       - pidgin-otr
+      - evince
+      - tk #for gitk
+      - thunar
+      - tumbler #thumbnails in thunar
+      - zathura-pdf-mupdf
+      - zathura-ps
+      - zathura-djvu
+      - kdegraphics-gwenview
+      - oxygen-icons
+      - ffmpegthumbnailer #thumbnails in thunar
+      - thunar-archive-plugin
       - pidgin-libnotify
+      - sqliteman
+      - sqlitebrowser
+      - emacs #use emacs-nox for emacs without X11 support
 # AUR:       - gtk-nova-theme
 {% if grains['cbi_machine'] == 'scriabin' %}
       - xf86-video-intel      

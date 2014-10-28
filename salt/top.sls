@@ -2,11 +2,15 @@
 base:
   '*':
     - zsh
+    - common
+    - ssh
+    - packages
+{% if grains['cbi_machine'] == 'kasse3og' %}
+    - kasse
+{% else %}
     - main
     - gitolite.main
     - python
-    - packages
-    - ssh
 {% if pillar['arch_desktop'] %}
     - X11.main
     - X11.packages
@@ -17,4 +21,5 @@ base:
 {% endif %}
 {% if pillar['arch_desktop'] %}
     - tor
+{% endif %}
 {% endif %}

@@ -3,7 +3,7 @@ source /etc/zsh/zshenv
 # scheiße: brauche ich, weil xmonad bash aufruft und deshalb der path dann fehlt,
 # mit toller fehler meldung: "Unable to find a shell" bei befehl: terminator -x sasdfhksjfh
 
-{% if pillar['arch_desktop'] %}
+{% if grains['cbi_machine'] in ['scriabin','debussy','kasse3og'] %}
 
 #java and xmonad problems
 #https://wiki.archlinux.org/index.php/Xmonad#Problems_with_Java_applications

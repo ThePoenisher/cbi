@@ -60,10 +60,6 @@ checkout_cbi(){
 		
 		configure_salt
 		
-		# 1. install git and python stuff
-		salt-call state.single pkg.installed name=git
-		salt-call state.sls python
-		
 		# 2. create user
 		salt-call state.single user.present name=$user
 		home=`bash -c "echo ~$user"`
@@ -92,13 +88,8 @@ checkout_cbi(){
 		# 4. generate machine key
 				su -c "$home/cbi/bin/gpg-generate-machine-keys 0 $machine" $user
 
-				grain=`salt-call grains.item cbi_machine` 
-				if [ "$grain" = "local: $machine" ];then
-						echo "SETUP COMPLETE! Use salt to configure the system!"
-				else
-						echo "Problem with cbi_machine grain:
-						$grain"
-				fi
+				salt-call grains.item cbi_machine
+				salt-call grains.item cbi_home
 		fi
 		)
 }
@@ -148,24 +139,23 @@ case $1 in
 				echo -e "\nUpgrading package database and upgrading packages:"
 				# pacman -Syyu
 
-				tp=/tmp/packer_tmp`uuidgen`
-				
 				#packer
 				command -v packer || (
 						echo -e "\nInstalling Packer:"
 						curl -o $tp https://raw.githubusercontent.com/keenerd/packer/master/packer \
-						&& chmod +x && \
-						echo -e "\nInstalling all required Packages:"
+						&& chmod +x $tp && \
+						echo -e "\nInstalling all required Packages:" && \
+						$tp --noconfirm --noedit -S packer
 				) && \
-						pacman -S --noconfirm --needed  python2-requests python-m2crypto python2 python2-crypto python2-jinja  python2-psutil python2-pyzmq python2-yaml sudo && \
-						$tp --noconfirm --noedit -S packer python2-gnupg && \
-						install_salt &&	checkout_cbi 
+						pacman -S --noconfirm --needed  python2-requests jshon python2-msgpack python2-m2crypto python2 python2-crypto python2-jinja  python2-psutil python2-pyzmq python2-yaml sudo && \
+						(pacman -Qq python2-gnupg || packer python2-gnupg) && \
+						install_salt
         ;;
 		
     ubuntu)
         apt-get update
 #				python-gnupg
-				apt-get install python  python-jinja2 python-m2crypto python-support python-yaml python-zmq msgpack-python && install_salt && checkout_cbi				
+				apt-get install python  python-jinja2 python-m2crypto python-support python-yaml python-zmq msgpack-python && install_salt
         ;;
 		none)
 				echo "Skipping Salt installation"
