@@ -24,6 +24,11 @@ arch_X11_packages:
       - tk #for gitk
       - sqliteman
       - sqlitebrowser
+      - haskell-xmonad
+      - haskell-xmonad-contrib
+      - mesa-demos #glxgears
+      - dmenu
+      - numlockx
 {% if grains['cbi_machine'] == 'kasse3og' %}
       - xf86-video-chips
       - mesa-libgl
@@ -33,10 +38,7 @@ arch_X11_packages:
       - gnome-font-viewer
       - xcompmgr
       - transset-df
-      - mesa-demos #glxgears
       - feh
-      - haskell-xmonad
-      - haskell-xmonad-contrib
       - haskell-hostname
       - xmobar
       - xscreensaver
@@ -44,7 +46,6 @@ arch_X11_packages:
       - gksu
       - gconf-editor
 # file opener: https://wiki.archlinux.org/index.php/Xdg-open      
-      - dmenu
       - dzen2
       - conky
       - qtcurve-kde3 #vor themes?

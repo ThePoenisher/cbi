@@ -28,11 +28,13 @@ base_packages:
       - parted
       - lynx
       - unrar
+      - dialog
 {% if pillar['has_battery'] %}
       - powertop
       - acpi
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
+      - evtest
       - p7zip
       - ifplugd
       - dnsutils
@@ -51,6 +53,7 @@ base_packages:
       - strace
       - calc
       - nmap #(includes netcat implementation (ncat) with ipv6 support)
+      - gnu-netcat
       - encfs
       - lftp
       - pacmatic
