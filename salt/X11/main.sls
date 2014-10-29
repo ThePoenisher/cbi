@@ -18,11 +18,19 @@
     - template: jinja
 
 ######  Symlinked Files  #########
-{% set files = ['.xmonad/xmonad.hs','.xmobarrc','.Xresources','.xbindkeysrc.scm','.xinitrc' ] %}
+{% if grains['cbi_machine'] == 'kasse3og' %}
+{% set prefix='kasse/' %}
+{% set files = ['.xbindkeysrc.scm','.xinitrc' ] %}
+{% else %}
+{% set files = ['.xbindkeysrc.scm','.xinitrc'
+                ,'.xmonad/xmonad.hs','.xmobarrc','.Xresources'] %}
+{% set prefix='' %}
+{% endif %}
+
 {% for file in files %}
 {{ home+'/'+file }}:
   file.symlink:
-    - target: {{ grains['cbi_home']+'/config/'+file }}
+    - target: {{ grains['cbi_home']+'/config/'+prefix+file }}
     - user: {{ usr }}
     - group: {{ usr }}
     - require:
@@ -31,6 +39,7 @@
     - makedirs: True
 {% endfor %}
 
+{% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
 ########  gets overridden by xcreensaver settings app ####
 {{ home }}/.xscreensaver:
   file.managed:
@@ -38,34 +47,4 @@
     - user: {{ usr }}
     - group: {{ usr }}
     - force: True
-
-########### fonts #############
-
-fc-cache:
-  cmd.wait:
-    - watch:
-      - file: yesb
-      - file: nob
-      - file: fconf
-        
-yesb:
-  file.symlink:
-    - name:  /etc/fonts/conf.d/70-no-bitmaps.conf
-    - target: /etc/fonts/conf.avail/70-no-bitmaps.conf
-    - force: True
-      
-nob:
-  file.absent:
-    - name: /etc/fonts/conf.d/70-yes-bitmaps.conf
-      
-packer --noconfirm --noedit  -S ttf-ms-fonts:
-  cmd.run:
-    - unless: pacman -Q ttf-ms-fonts
-
-
-fconf:
-  file.managed:
-    - source: salt://etc/fonts_local.conf
-    - name: /etc/fonts/local.conf
-    - template: jinja
-      
+{% endif %}

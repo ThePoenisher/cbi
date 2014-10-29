@@ -7,6 +7,9 @@ base:
     - packages
 {% if grains['cbi_machine'] == 'kasse3og' %}
     - kasse
+    - X11.fonts
+    - X11.main
+    - X11.packages
 {% else %}
     - main
     - gitolite.main
@@ -14,6 +17,7 @@ base:
 {% if pillar['arch_desktop'] %}
     - X11.main
     - X11.packages
+    - X11.fonts
     - apps
     - media
     - email

@@ -53,6 +53,8 @@ zsh_users:
 ssh_users_with_auth_keys:
   - root
 
+desktop_user: kasse
+
 users:  
   root:
   kasse:

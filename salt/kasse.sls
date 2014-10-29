@@ -12,14 +12,25 @@ dhcp2:
   service.disabled:
     - name: dhcpcd@{{ pillar['eth0'] }}
 
-# /home/kasse/.zlogin:
-#   file.symlink:
-#     - target: {{ grains['cbi_home'] }}/config/kasse/zlogin_user
-#     - user: root
-#     - makedirs: true
+
+kasse:
+  user.present:
+    - shell: /bin/zsh
+
+/home/kasse/.zlogin:
+  file.managed:
+    - source: salt://zlogin_kasse
+    - user: kasse
+    - makedirs: true
+    - mode: 744
+    - require:
+      - user: kasse
+
 
 {% set services =
-[('netctl-ifplugd@'       ,true ,['enp2s8']    ,['netctl/eth0_kassen_innkaufhaus'])
+[
+('getty@'           ,true ,['tty1']    ,['systemd/system/getty@tty1.service.d/autologin.conf'])
+,('netctl-ifplugd@'       ,true ,['enp2s8']    ,['netctl/eth0_kassen_innkaufhaus'])
 ]%}
 {% for service, start, instances, confs in services %}
 {% for conf in confs %}
@@ -55,3 +66,5 @@ systemd-reload-{{service~instance}}:
 {% endfor %}
 
 {% endfor %}
+
+

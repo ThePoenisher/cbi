@@ -5,6 +5,7 @@ base_packages:
       - tree
       - git
       - tmux
+      - screen
       - vim
       - htop
       - unzip

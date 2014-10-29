@@ -204,9 +204,10 @@ cups:
 ##### Systemd services
 
 {% if pillar['arch_desktop'] %}
-
+,
 {% set services =
-[('autologin@'       ,true ,['tty1']    ,['systemd/system/autologin@.service'])
+[
+('getty@'           ,true ,['tty1']    ,['systemd/system/getty@tty1.service.d/autologin.conf'])
 ,('wol@'             ,true ,['eth0']    ,['systemd/system/wol@.service'])
 ,('dm-crypt-suspend' ,false,['']        ,['systemd/system/dm-crypt-suspend.service'])
 ,('mycapsremap'      ,true ,['']        ,['systemd/system/mycapsremap.service'])
