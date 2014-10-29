@@ -4,6 +4,8 @@
     - user: root
     - makedirs: true
 
+mysql:
+  pkg.installed
       
 dhcp1:
   service.dead:
