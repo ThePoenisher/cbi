@@ -11,7 +11,7 @@ export ALTERNATE_EDITOR
 PATH=$PATH:$CBI/bin
 
 {% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
-PATH=/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin:./.cabal-sandbox/bin
+PATH=$PATH:/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin:./.cabal-sandbox/bin
 
 EDITOR="my_emacs -c -nw"
 export EDITOR

@@ -1,6 +1,7 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../
 export GNUPGHOME="$(gpgconf --list-dirs | sed -nre 's/homedir://p')"
+# this is required to be able to pass it to salt-call via 'sudo -E'
 
 (cd $DIR && 
 git-verify-commit-signature HEAD &&
