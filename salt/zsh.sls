@@ -7,6 +7,10 @@ zshgit:
     - target: /usr/share/oh-my-zsh
     - force:
 
+#habe mal die neueste version getestet vom 
+# 2014-10-28 7f07facf41e97d0de250f565d5e514f1e6c998a2
+# 'cd' in order mit git war viel langsamer. würde oh-my-zsh lieber loswerden
+
 /usr/share/oh-my-zsh/cache:
   file.directory:
     - require:

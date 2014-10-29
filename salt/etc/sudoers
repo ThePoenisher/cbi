@@ -28,6 +28,7 @@
 ## Groups of commands.  Often used to group related commands together.
 # Cmnd_Alias	PROCESSES = /usr/bin/nice, /bin/kill, /usr/bin/renice, \
 # 			    /usr/bin/pkill, /usr/bin/top
+# Cmnd_Alias	REBOOT = /sbin/halt, /sbin/reboot, /sbin/poweroff
 
 ##
 ## Defaults specification
@@ -61,7 +62,7 @@
 # Defaults log_output
 # Defaults!/usr/bin/sudoreplay !log_output
 # Defaults!/usr/local/bin/sudoreplay !log_output
-# Defaults!/sbin/reboot !log_output
+# Defaults!REBOOT !log_output
 
 ##
 ## Runas alias specification
@@ -79,6 +80,7 @@ root ALL=(ALL) ALL
 # %wheel ALL=(ALL) NOPASSWD: ALL
 
 ## Uncomment to allow members of group sudo to execute any command
+{% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
 %sudo	ALL=(ALL) ALL
 
 johannes ALL=(ALL) NOPASSWD: /usr/bin/cryptsetup close *
@@ -89,6 +91,7 @@ johannes ALL=(ALL) NOPASSWD: /usr/bin/dmsetup info *
 
 Cmnd_Alias SCRIPTS = /usr/bin/dmsetup table --target crypt, /usr/bin/dmsetup info *
 Defaults!SCRIPTS !syslog, !pam_session 
+{% endif %}
 
 ## Uncomment to allow any user to run sudo if they know the password
 ## of the user they are running the command as (root by default).
@@ -99,6 +102,7 @@ Defaults!SCRIPTS !syslog, !pam_session
 ## (the '#' here does not indicate a comment)
 #includedir /etc/sudoers.d
 
+{% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
 #change password cache timeout
 Defaults:%sudo      timestamp_timeout=20
 
@@ -106,3 +110,4 @@ Defaults:%sudo      timestamp_timeout=20
 #Defaults:%sudo      !authenticate
 
 #?Defaults secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/some/custom/directory
+{% endif %}

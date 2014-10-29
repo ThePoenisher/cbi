@@ -46,4 +46,17 @@ ssh_users_with_auth_keys:
 users:  
   root:
 
+{% elif grains['cbi_machine'] == 'kasse3og' %}
+zsh_users:
+  - root
+
+ssh_users_with_auth_keys:
+  - root
+
+users:  
+  root:
+  kasse:
+
+eth0: enp2s8 
+
 {% endif %}

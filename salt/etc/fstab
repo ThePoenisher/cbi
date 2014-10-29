@@ -1,4 +1,13 @@
 # -*- mode: conf-unix; -*-
+####################
+####################
+####################
+####################
+# ~/cbi/salt/etc #########
+####################
+####################
+####################
+####################
 
 {% if grains['cbi_machine'] == 'scriabin' %}
 # 
@@ -40,5 +49,12 @@ UUID=21ca9617-04e4-45d4-8439-e1e7fa5f3be5	/home     	ext4      	rw,relatime	0 2
 
 #/dev/mapper/cr1	                          /home/cr1   ext4      	noauto,x-systemd.automount,rw,relatime	0 2
 #/dev/mapper/cr2	                          /home/cr2   ext4      	noauto,x-systemd.automount,rw,relatime	0 2
+
+{% elif grains['cbi_machine'] == 'kasse3og' %}
+UUID=efd31952-cea1-40cd-b8e7-7e33eee1d6ae	/         	ext4      	rw,relatime,noatime,discard	0 1
+
+# /dev/sda2
+UUID=4653abe6-6d54-472a-9361-dc646c6e31ef	none      	swap      	defaults,discard  	0 0
+
 
 {% endif %}
