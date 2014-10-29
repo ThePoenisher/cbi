@@ -204,7 +204,7 @@ cups:
 ##### Systemd services
 
 {% if pillar['arch_desktop'] %}
-,
+
 {% set services =
 [
 ('getty@'           ,true ,['tty1']    ,['systemd/system/getty@tty1.service.d/autologin.conf'])
@@ -221,6 +221,7 @@ cups:
 {% for conf in confs %}
 /etc/{{ conf }}:
   file.managed:
+    - makedirs: true
     - template: jinja
     - source: salt://etc/{{ conf }}
 {% endfor %}
