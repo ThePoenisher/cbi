@@ -1,0 +1,9 @@
+# -*- mode: sh; -*-
+if [[ $TERM != "dumb" ]]; then
+		if [[ $TERM != "screen-"*  ]]; then
+				if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+						startx
+						systemctl poweroff -i
+				fi
+		fi
+fi

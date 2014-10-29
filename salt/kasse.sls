@@ -3,9 +3,26 @@
     - target: {{ grains['cbi_home'] }}/config/kasse/zlogin_root
     - user: root
     - makedirs: true
+    - force: True
 
-mysql:
-  pkg.installed
+/home/kasse/.zlogin:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/kasse/zlogin_kasse
+    - user: kasse
+    - makedirs: true
+    - force: True
+      
+mysqld:
+  service.running:
+    - enable: true
+    - require:
+      - pkg: mariadb
+
+kasse_pkgs:
+  pkg.installed:
+    - names:
+      - mariadb
+      - setserial
       
 dhcp1:
   service.dead:
@@ -17,16 +34,11 @@ dhcp2:
 
 kasse:
   user.present:
+    - groups:
+      - cbi
+      - uucp #for serial ttyS*
     - shell: /bin/zsh
 
-/home/kasse/.zlogin:
-  file.managed:
-    - source: salt://zlogin_kasse
-    - user: kasse
-    - makedirs: true
-    - mode: 744
-    - require:
-      - user: kasse
 
 
 {% set services =
