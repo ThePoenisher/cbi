@@ -1,15 +1,4 @@
-###########  Profile   ###############
-/etc/zsh/zprofile:
-  file.managed:
-    - source: salt://etc/zsh/zprofile
-    - template: jinja
-
-/etc/profile.d/cbi.sh:
-  file.managed:
-    - source: salt://etc/profile.d-cbi.sh
-    - template: jinja
-    - mode: 755
-
+###########  env (see also zshenv)    ###############
 {% if grains['os'] == 'Ubuntu' %}
 {% set file="/etc/environment" %}
 if grep -q PATH {{ file }}; then sed -i -re 's/(PATH=".*)"/\1:{{ grains['cbi_home']|replace('/','\/') }}\/bin"/' {{ file }}; else echo PATH=\"{{ grains['cbi_home'] }}/bin\"\; export PATH >> {{ file }}; fi:
@@ -73,12 +62,6 @@ groupsasd:
 {% endif %} # arch
 
 ###########  Users ###############
-{% if pillar['users']['root'] is defined %}
-root:
-  user.present:
-    - shell: /bin/zsh
-{% endif %}
-
 {% if pillar['users']['daniela'] is defined %}
 # geht irgendwie nicht
 daniela:
@@ -138,60 +121,9 @@ org:
 {% endif %}
 
 
-####### services ########
-{% if grains['os'] == 'Arch' %}
-{% if grains['cbi_machine'] == 'debussy' %}
-dhcpcd@eth0:
-  service.running:
-    - enable: true
-    - watch:
-      - file: /etc/dhcpcd.conf
-{% endif %} #debussy
-
-
-ntpd:
-  service.running:
-    - enable: true
-#    - watch:
-#      - file: /etc/ntp.conf
-
-cronie:
-  service.running:
-    - enable: True
-
-systemd-logind:
-  service.running:
-    - watch:
-      - file: /etc/systemd/logind.conf
-{% endif %} # arch
-
-
 ####### config #####
 {% if grains['os'] == 'Arch' %}
-/etc/dhcpcd.conf:
-  file.append:
-    - text: clientid  #für Fritzbox etc
-
       
-
-/etc/default/grub:
-  file.managed:
-    - template: jinja
-    - source: salt://etc/grub
-
-grub-mkconfig -o /boot/grub/grub.cfg:
-  cmd.wait:
-    - watch:
-        - file: /etc/default/grub
-      
-
-/etc/sudoers:
-  file.managed:
-    - source: salt://etc/sudoers
-    - user: root
-    - mode: 400
-      
-## fstab
 /etc/vconsole.conf:
   file.append:
     - text: KEYMAP=de-latin1
@@ -210,26 +142,15 @@ sambaservices:
       
 #######  managed etc (template) files #######
 {% set files =
-[('fstab','')
-,('gitconfig','')
-,('kismet.conf','')
-,('locale.gen','')
-,('makepkg.conf','')
-,('udevil/udevil.conf','')
+[('kismet.conf','')
 ,('minidlna.conf','')
-,('mkinitcpio.conf','')
 ,('udev/rules.d/99-discharge.rules','')
-,('modules-load.d/cbi.conf','')
 ,('netctl/wlan0-SBB','')
 ,('netctl/wlan0-eduroam','')
 ,('netctl/wlan0-chris-KDG-C32A4','.gpg')
 ,('netctl/hotsplots-7ZsIdg2wumfNziS.key','.gpg')
 ,('netctl/wlan0-test','.gpg')
-,('pacman.conf','')
 ,('samba/smb.conf','')
-,('systemd/journald.conf','')
-,('systemd/logind.conf','')
-,('zsh/zshenv','')
 ] %}
 {% for file,ending in files %}
 /etc/{{ file }}:
@@ -250,24 +171,12 @@ sambaservices:
     - makedirs: True
 {% endfor %}
 
-locale-gen:
-  cmd.wait:
-    - watch:
-      - file: /etc/locale.gen
-
-
-
 /usr/lib/systemd/system-sleep/lock.sh:
   file.managed:
     - source: salt://system-sleep-lock.sh
     - template: jinja
     - mode: 755
 
-### kernel
-mkinitcpio -p linux:
-  cmd.wait:
-    - watch:
-      - file: /etc/mkinitcpio.conf
         
 ### udev ruleskernel
 udevadm control --reload-rules:
@@ -278,11 +187,7 @@ udevadm control --reload-rules:
 ######  Symlinked etc Files  #########
 {% set files =
 ['fuse.conf'
-,'gitignore'
-,'locale.conf'
-,'tmux.conf'
-,'vimrc'
- ] %}
+] %}
 {% for file in files %}
 /etc/{{ file }}:
   file.symlink:
@@ -290,30 +195,19 @@ udevadm control --reload-rules:
     - force: True
 {% endfor %}
       
-########  network ###########
-hostnamectl set-hostname {{ grains['cbi_machine'] }}:
-  cmd.run:
-    - unless: test `hostname` = "{{ grains['cbi_machine'] }}"
-
-
-
 ##### printing ####
 cups:
   service.running:
     - enable: True
       
 
-##### pacman #### 
-/etc/pacman.d/mirrorlist:
-  file.managed:
-    - source: salt://etc/pacman.d/mirrorlist.gpg
-
 ##### Systemd services
 
 {% if pillar['arch_desktop'] %}
 
 {% set services =
-[('autologin@'       ,true ,['tty1']    ,['systemd/system/autologin@.service'])
+[
+('getty@'           ,true ,['tty1']    ,['systemd/system/getty@tty1.service.d/autologin.conf'])
 ,('wol@'             ,true ,['eth0']    ,['systemd/system/wol@.service'])
 ,('dm-crypt-suspend' ,false,['']        ,['systemd/system/dm-crypt-suspend.service'])
 ,('mycapsremap'      ,true ,['']        ,['systemd/system/mycapsremap.service'])
@@ -327,6 +221,7 @@ cups:
 {% for conf in confs %}
 /etc/{{ conf }}:
   file.managed:
+    - makedirs: true
     - template: jinja
     - source: salt://etc/{{ conf }}
 {% endfor %}

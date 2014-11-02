@@ -5,6 +5,7 @@ base_packages:
       - tree
       - git
       - tmux
+      - screen
       - vim
       - htop
       - unzip
@@ -27,25 +28,46 @@ base_packages:
       - parted
       - lynx
       - unrar
+      - dialog
 {% if pillar['has_battery'] %}
       - powertop
       - acpi
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
-      - cloc
-      - ncdu
-      - dos2unix
-      - reflector
+      - evtest
       - p7zip
+      - ifplugd
       - dnsutils
       - exfat-utils
       - fuse-exfat
       - syslinux
       - dosfstools
-      - pptpclient
-      - openconnect
       - socat
       - aria2
+      - pass
+      - traceroute
+      - iptraf-ng
+      - iftop
+      - rlwrap
+      - pkgfile
+      - strace
+      - calc
+      - nmap #(includes netcat implementation (ncat) with ipv6 support)
+      - gnu-netcat
+      - encfs
+      - lftp
+      - pacmatic
+      - keychain 
+      - smartmontools
+      - hdparm
+      - jdk8-openjdk
+{% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
+      - cloc
+      - ncdu
+      - dos2unix
+      - reflector
+      - pptpclient
+      - openconnect
       - cuetools
       - shntool
       - picard
@@ -54,21 +76,14 @@ base_packages:
       - mac
       - vsftpd
       - cabal-install
-      - xdiskusage
       - perl-mime-tools
       - perl-image-exiftool
       - pastebinit
       - python2-eyed3
-      - pass
       - html2text
       - inotify-tools
       - perl-rename
       - vbetool
-      - traceroute
-      - iptraf-ng
-      - iftop
-      - rlwrap
-      - pkgfile
       - perl-switch
       - perl-dbd-sqlite
       - perl-dbi
@@ -76,8 +91,6 @@ base_packages:
       - auctex
       - dia
       - inkscape
-      - sqliteman
-      - sqlitebrowser
       - texlive-bibtexextra
       - texlive-bin
       - texlive-core
@@ -95,8 +108,6 @@ base_packages:
       - texlive-publishers
       - texlive-science
       - curlftpfs
-      - strace
-      - calc
       - dmidecode #for salt
       - python2-pip
       - python2-pygments
@@ -110,8 +121,6 @@ base_packages:
       - lftp
       - putty
       - sshfs
-      - ntp
-      - xdialog #for (my) xrename
       # haskell
       - alex
       - gtk2hs-buildtools
@@ -141,85 +150,12 @@ base_packages:
       # - haskell-haskeline
       # - haddock
       - samba
-{% if pillar['arch_desktop'] %}
-      - r
-      - ipython
-      - python-sympy
-      # - python-scipy
-      # - python-pygments
-      # - python-pyzmq
-      # - python-pandas
-      # - python-bottleneck
-      # - python-numexpr
-      # - python-matplotlib 
-      # - python-jinja
-      # - python-tornado
-      - maxima
-      - pdfedit
-      - gdb
-      - bitcoin-qt
-      - ntfs-3g
-      - stellarium
-      - bitcoin-daemon
-      - calibre
-      - aqbanking
-      - intel-tbb
-      # - wine
-      # - winetricks
-      - dunst # für libnotify
-      - espeak
-      - gimp
-      - virtualbox
-      - virtualbox-host-modules
-      - icedtea-web
-      - evince
-      - mtpfs
-      - graphviz
-      - thunar
-      - tumbler #thumbnails in thunar
-      - ffmpegthumbnailer #thumbnails in thunar
-      - thunar-archive-plugin
-      - zenity #(Display graphical dialog boxes from shell scripts) what for?
-# früher      - openjdk6
-      - jdk7-openjdk
-      - emacs
-      - mercurial
-      - gptfdisk
-      - keychain 
-      - skype
-      - lib32-libpulse
-      - tk #for gitk
-      - tigervnc
-      - smartmontools
-      - hdparm
-      - cdrkit #cds brennen: https://wiki.archlinux.org/index.php/CD_Burning
-      - udevil
-      - zathura-pdf-mupdf
-      - zathura-ps
-      - zathura-djvu
-      - kdegraphics-gwenview
-      - oxygen-icons
-      - sane
-      - xsane
-      - xsane-gimp
-{% if grains['cbi_machine'] == 'scriabin' %}
-      - hplip
-{% endif %}
-      - gvfs-afc
-      - gvfs-afp
-      - gvfs-gphoto2 # für andoird phone via usb (geht nicht, doch
-                     # besser mtp?)
-      - gvfs-mtp
-      - gvfs-smb
-      - unoconv
-{% for p in ['-de',''] %}
-      - libreoffice-fresh{{ p }}
-{% endfor %}
-{% endif %} #archdesktop
+{% endif %} #debussy+scriabin
     - require:
       - file: /etc/pacman.conf
     - sysupgrade: False    
 
+{% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
 # do I need gvfs-mtp-git. given it limited power.  what does ubuntu use ? gphotos2?
 #,'git-annex-standalone' use own PKGBUILD instead
 # ,'mediathek'
@@ -263,6 +199,7 @@ makepkg --asroot -i -p {{ grains['cbi_home'] }}/PKGBUILDS/{{ p }} --noconfirm -c
 #   cmd.run:
 #     - unless: test -d /usr/share/git-annex.linux
 
+{% endif %} #debussy+scriabin2
 {% else %} # not archOS
       - python-pygments
       - apcalc

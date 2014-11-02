@@ -5,7 +5,7 @@ if [[ $TERM != "dumb" ]]; then
 				export PASSWORD_STORE_DIR=$PASSWORD_STORE_GIT/password_store
 		if [[ $TERM != "screen-"*  ]]; then
 				if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-						startx >> .xlog
+						startx
 						vlock
 				elif [[ $TERM != "linux" ]]; then
 						exec tmux -2

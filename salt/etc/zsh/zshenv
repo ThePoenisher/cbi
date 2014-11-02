@@ -5,14 +5,18 @@ export CBI
 CBI_MACHINE="{{ grains['cbi_machine'] }}"
 export CBI_MACHINE
 
-EDITOR="my_emacs -c -nw"
-export EDITOR
-
 ALTERNATE_EDITOR=""
 export ALTERNATE_EDITOR
 
+PATH=$PATH:$CBI/bin
 
-PATH=$PATH:$CBI/bin:/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin:./.cabal-sandbox/bin
+{% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
+PATH=$PATH:/home/johannes/.gem/ruby/2.0.0/bin:/home/johannes/.cabal/bin:./.cabal-sandbox/bin
+
+EDITOR="my_emacs -c -nw"
+export EDITOR
+
+{% endif %}
 
 export PATH
 
