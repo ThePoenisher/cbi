@@ -198,6 +198,9 @@ udevadm control --reload-rules:
 ##### printing ####
 cups:
   service.running:
+    - names:
+      - org.cups.cupsd
+      - cups-browsed
     - enable: True
       
 
