@@ -61,6 +61,7 @@ base_packages:
       - smartmontools
       - hdparm
       - jdk8-openjdk
+      - apache-ant
 {% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
       - cloc
       - ncdu
@@ -182,6 +183,9 @@ base_packages:
 ,'stockfish-git'
 ,'ttf-vista-fonts'
 ,'urlview'
+,'dbvis'
+,'yed'
+,'mediathek'
 ] %} #see also bootstrap!!
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
