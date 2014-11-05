@@ -2768,6 +2768,7 @@ semantic-ia-fast-jump
 
 ** XML / (HTML?)
 C-M-d / u / p / n
+C-c / close
 nervig aber geht
 ** Debugging
 *** gdb
