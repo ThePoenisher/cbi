@@ -61,6 +61,7 @@ base_packages:
       - smartmontools
       - hdparm
       - jdk8-openjdk
+      - icedtea-web
       - apache-ant
 {% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
       - cloc
