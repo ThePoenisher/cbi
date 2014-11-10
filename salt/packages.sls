@@ -61,6 +61,7 @@ base_packages:
       - smartmontools
       - hdparm
       - jdk8-openjdk
+      - icedtea-web
       - apache-ant
 {% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
       - cloc
@@ -167,6 +168,7 @@ base_packages:
 {% for p in
 ['aurvote'
 ,'dbacl'
+,'dbvis'
 ,'downgrade'
 ,'eigen3-hg'
 ,'electrum'
@@ -174,20 +176,20 @@ base_packages:
 ,'google-talkplugin'
 ,'jdownloader2' 
 ,'ledger-git'
+,'mediathek'
 ,'mendeleydesktop'
 ,'otf-texgyre'
 ,'pdftk-bin'
 ,'perl-file-find-rule'
 ,'perl-string-util'
 ,'python2-gnupg'
+,'python2-pypdf'
 ,'python2-zbar'
 ,'scidb'
 ,'stockfish-git'
 ,'ttf-vista-fonts'
 ,'urlview'
-,'dbvis'
 ,'yed'
-,'mediathek'
 ] %} #see also bootstrap!!
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
