@@ -151,6 +151,8 @@ base_packages:
       # - haskell-haskeline
       # - haddock
       - samba
+      - android-tools
+      - android-udev
 {% endif %} #debussy+scriabin
     - require:
       - file: /etc/pacman.conf

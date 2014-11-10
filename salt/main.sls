@@ -25,6 +25,7 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
 ,'.xbmc/userdata/keymaps/remote.xml'
 ,'.xbmc/userdata/sources.xml'
 ,'.scidvspc'
+,'.android'
 ] %}
 {% for file in files %}
 {{ home }}/{{ file }}:
