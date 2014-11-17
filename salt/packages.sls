@@ -34,6 +34,8 @@ base_packages:
       - acpi
 {% endif %} #battery
 {% if grains['os'] == 'Arch' %}
+      - automake
+      - libtool
       - evtest
       - p7zip
       - ifplugd

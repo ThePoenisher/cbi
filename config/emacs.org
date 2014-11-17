@@ -2153,16 +2153,16 @@ see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Binding
 https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
 ** Script
 #+BEGIN_SRC emacs-lisp
-  ;; TODO: test this
-  (setq LaTeX-math-abbrev-prefix "M-#")
-  
+  ;; muss man anders setzen und was soll das überhaupt
+  ;; (setq LaTeX-math-abbrev-prefix "M-#")
+
   (add-hook 'LaTeX-mode-hook 'jo/latex-mode-hook-command)
   (defun jo/latex-mode-hook-command ()
     (setq ac-sources
           (append '(ac-source-math-unicode ac-source-math-latex
                                            ac-source-latex-commands)
                   ac-sources))
-  
+
     (setq preview-scale-function 
           (lambda nil 
             (if (boundp (quote text-scale-mode-step)) 
@@ -2172,7 +2172,7 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
     (outline-minor-mode)
     ;;(speck-mode)
     )
-  
+
   (eval-after-load 'latex
     '(progn    
         (define-key LaTeX-mode-map
@@ -2201,11 +2201,11 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
         ;;  [(super f8)] (tex-build-command-function "Ghostview" nil))
         ;; (define-key LaTeX-mode-map 
         ;;  [(super meta f8)] (tex-build-command-function "View PDF" nil))
-  
+
         ;;(require 'auto-complete-latex);does not include math
         ;;commands. Use ac-math instead:
         (require 'ac-math)         
-  
+
         ;; (require 'tex-mik)
         )
     )
@@ -2219,8 +2219,14 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
          (when ,recenter-output-buffer (TeX-recenter-output-buffer nil))
          (TeX-command ,cmd 'TeX-master-file (if ,override-confirm 1 -1)))
   )
-  
-  ;; warum habe ich eine eigene? keine Ahnung. gibts den schon?
+
+  (defun jo/TeX-Bib-command ()
+    (interactive)
+    (if LaTeX-biblatex-use-Biber
+        TeX-command-Biber
+      TeX-command-BibTeX))
+
+  ;; warum habe ich eine eigene? weil die vorhandene C-c C-c immer nachfragt
   (defun jo/Tex-next-command ()
     (interactive)
     (let ((name (TeX-master-file)))
@@ -2237,7 +2243,7 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
                                            (LaTeX-bibliography-list))
                                    BibTeX-file-extensions))
              ;; We should check for bst files here as well.
-             TeX-command-Biber)
+             jo/TeX-Bib-command)
             ((TeX-process-get-variable name
                                        'TeX-command-next
                                        TeX-command-Show))
@@ -2246,12 +2252,6 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
       cmd
       ))
     )
-  
-  
-  
-  
-  
-  
 #+END_SRC
 ** pretty symbols (latex-pretty-symbols via melpa)
 https://bitbucket.org/mortiferus/latex-pretty-symbols.el
