@@ -59,11 +59,6 @@ Host ghk
     User git
     IdentityFile ~/.ssh/github-kuerzn
 
-Host github.com
-    HostName github.com
-    User git
-    IdentityFile ~/.ssh/github-kuerzn
-
 #GitHub johannesgerer
 Host ghj
     HostName github.com
