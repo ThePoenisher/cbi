@@ -1,0 +1,40 @@
+#!/bin/bash
+#This script takes one argument: the to a folder in a git repo. All databases are dumped into this folder and the commited and pushed
+
+err=0
+
+if [ -z "$1" ]; then echo specify backup dir; exit 1; fi
+BACKUP_DIR=$1
+mkdir -p $BACKUP_DIR 
+cd $BACKUP_DIR || (echo cannot enter $BACKUP_DIR; exit 1)
+
+#delete old files
+git rm *.sql
+#removes parent dir, so recreate it
+mkdir -p $BACKUP_DIR 
+cd $BACKUP_DIR 
+
+
+# skip-extended-insert ist needed to provide row based diff possibilities for svn
+
+dumpoptions="--opt --skip-extended-insert --hex-blob --single-transaction"
+PW=`cat /root/mysql_password`
+for db in `mysql -p$PW -e 'show databases' -NB | grep -Ev  "^(information_schema|performance_schema|mysql)$"`; do
+	echo "dumping mysql database: $db"
+	mysqldump -p$PW --databases $db $dumpoptions > $db.sql
+ 	(( err+="$?"))
+done
+
+git add *.sql
+ 	(( err+="$?"))
+
+git commit -m "Automatic mysql backup `date +'%y-%m-%d-%A-%H-%M-%S'`"
+ 	(( err+="$?"))
+git gc --aggressive	
+ 	(( err+="$?"))
+git push
+ 	(( err+="$?"))
+
+exit $err
+
+
