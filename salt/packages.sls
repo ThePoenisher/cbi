@@ -211,7 +211,7 @@ makepkg --asroot -i -p {{ grains['cbi_home'] }}/PKGBUILDS/{{ p }} --noconfirm -c
 
 {% elif grains['cbi_machine'] in [ 'kasse3og' ] %} #debussy+scriabin2
 {% for p in
-['cronic'
+[
 ] %} 
 packer --noconfirm --noedit  -S {{ p }}:
   cmd.run:
