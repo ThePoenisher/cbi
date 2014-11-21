@@ -28,7 +28,6 @@ git add *.sql
 
 git commit -m "Automatic mysql backup `date +'%y-%m-%d-%A-%H-%M-%S'`"
 git gc --aggressive	
-git push
-
+git push 2>&1
 
 
