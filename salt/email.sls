@@ -1,7 +1,6 @@
 mail_packages:
   pkg.installed:
     - names:
-      - postfix
       - offlineimap
       - notmuch
       - notmuch-mutt
@@ -10,32 +9,11 @@ mail_packages:
         - pkg: perl-mime-tools
 
 
-postfix:
-  service.running:
-    - enable: True
-    - require:
-      - pkg: postfix
-    - watch:
-      - file: /etc/postfix/main.cf
-
 ############  Offlineimap  is startet in xinitrc ########
 # the systemd service has the problem, that tmux is startet without my
 # env and I no not want login shells in every new tmux window
 # 13-04-28
 
-{% set files = ['main.cf','sasl_passwd'] %}
-{% for file in files %}
-/etc/postfix/{{ file }}:
-    file.managed:
-    - template: jinja
-    - source: salt://etc/postfix/{{ file }}
-{% endfor %}
-  
-postmap /etc/postfix/sasl_passwd:
-  cmd.wait:
-    - watch:
-        - file: /etc/postfix/sasl_passwd
-      
 {% set usr = "johannes" %}
 {% set home = salt['cmd.run']("bash -c 'echo ~{0}'".format(usr))  %}
 {{ home }}/.offlineimaprc:
