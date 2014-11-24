@@ -1,5 +1,7 @@
 xmonad &!
 
+numlockx
+
 xsetroot -cursor_name left_ptr
 
 while true; do

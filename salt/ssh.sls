@@ -27,6 +27,7 @@ sshd:
         keys:
           - johannes@debussy
           - johannes@scriabin
+          - johannes@scarlatti
 {% endfor %}
 
 
