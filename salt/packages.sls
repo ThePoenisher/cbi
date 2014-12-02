@@ -209,7 +209,16 @@ makepkg --asroot -i -p {{ grains['cbi_home'] }}/PKGBUILDS/{{ p }} --noconfirm -c
 #   cmd.run:
 #     - unless: test -d /usr/share/git-annex.linux
 
+{% elif grains['cbi_machine'] in [ 'kasse3og' ] %} #debussy+scriabin2
+{% for p in
+[
+] %} 
+packer --noconfirm --noedit  -S {{ p }}:
+  cmd.run:
+    - unless: pacman -Q {{ p }}
+{% endfor %}
 {% endif %} #debussy+scriabin2
+
 {% else %} # not archOS
       - python-pygments
       - apcalc

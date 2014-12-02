@@ -55,6 +55,8 @@ kasse:
 {% endfor %}
       
 {% for instance in instances %}
+
+# these service are to delicate to be restartet in this remotely accessed box
 {{ service~instance }}:
   service:
 {% if start %}
@@ -63,10 +65,10 @@ kasse:
 {% else %}
     - disabled
 {% endif %}
-    - watch:
-      - cmd: systemd-reload-{{service~instance}}
-{% for conf in confs %}
-      - file: /etc/{{ conf }}
+#     - watch:
+#       - cmd: systemd-reload-{{service~instance}}
+# {% for conf in confs %}
+#       - file: /etc/{{ conf }}
 {% endfor %}
 
         
@@ -76,9 +78,9 @@ systemd-reload-{{service~instance}}:
     - watch:
 {% for conf in confs %}
       - file: /etc/{{ conf }}
-{% endfor %}
-{% endfor %}
+{% endfor %} 
+{% endfor %} #instance
 
-{% endfor %}
+{% endfor %} #service
 
 

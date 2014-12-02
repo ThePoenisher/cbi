@@ -10,6 +10,7 @@ base:
     - X11.fonts
     - X11.main
     - X11.packages
+    - postfix
 {% else %}
     - main
     - gitolite.main
@@ -22,6 +23,7 @@ base:
     - media
     - email
     - web
+    - postfix
 {% endif %}
 {% if pillar['arch_desktop'] %}
     - tor

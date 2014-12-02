@@ -80,7 +80,7 @@
         <addonforeignfilter default="true">false</addonforeignfilter>
         <addonnotifications default="true">true</addonnotifications>
         <settinglevel>1</settinglevel>
-        <systemtotaluptime>29898</systemtotaluptime>
+        <systemtotaluptime>30444</systemtotaluptime>
     </general>
     <input>
         <enablejoystick>true</enablejoystick>
@@ -540,6 +540,6 @@
     </viewstates>
     <audio>
         <mute>false</mute>
-        <fvolumelevel>0.393663</fvolumelevel>
+        <fvolumelevel>0.144444</fvolumelevel>
     </audio>
 </settings>
