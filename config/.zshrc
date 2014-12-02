@@ -168,6 +168,9 @@ HISTFILE=/home/data/personal/zsh_history
 fi
 HISTSIZE=5000000
 SAVEHIST=5000000
+setopt HIST_FIND_NO_DUPS
+# setopt HIST_IGNORE_DUPS #is default
+unsetopt HIST_IGNORE_ALL_DUPS
 
 #make the esc key faster (to exit vi insert mode!
 KEYTIMEOUT=1

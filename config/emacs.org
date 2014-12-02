@@ -2184,7 +2184,7 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
         (define-key LaTeX-mode-map
           [f5] (tex-build-command-function "LaTeX" nil t))
         (define-key LaTeX-mode-map
-          [f4] (tex-build-command-function "BibTeX" nil t))
+          [f4] (tex-build-command-function '(jo/TeX-Bib-command) nil t))
         (define-key LaTeX-mode-map
           [f7] (tex-build-command-function "View" nil))
         ;; (define-key LaTeX-mode-map 
@@ -2231,26 +2231,26 @@ https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
     (interactive)
     (let ((name (TeX-master-file)))
       (let (
-                (cmd (cond ((if (string-equal name TeX-region)
-                 (TeX-check-files (concat name "." (TeX-output-extension))
-                                  (list name)
-                                  TeX-file-extensions)
-               (TeX-save-document (TeX-master-file)))
-             TeX-command-default)
-            ((and (memq major-mode '(doctex-mode latex-mode))
-                  (TeX-check-files (concat name ".bbl")
-                                   (mapcar 'car
-                                           (LaTeX-bibliography-list))
-                                   BibTeX-file-extensions))
-             ;; We should check for bst files here as well.
-             jo/TeX-Bib-command)
-            ((TeX-process-get-variable name
-                                       'TeX-command-next
-                                       TeX-command-Show))
-            (TeX-command-Show))))
-      (message (concat "Running " cmd))
-      cmd
-      ))
+            (cmd (cond ((if (string-equal name TeX-region)
+                            (TeX-check-files (concat name "." (TeX-output-extension))
+                                             (list name)
+                                             TeX-file-extensions)
+                          (TeX-save-document (TeX-master-file)))
+                        TeX-command-default)
+                       ((and (memq major-mode '(doctex-mode latex-mode))
+                             (TeX-check-files (concat name ".bbl")
+                                              (mapcar 'car
+                                                      (LaTeX-bibliography-list))
+                                              BibTeX-file-extensions))
+                        ;; We should check for bst files here as well.
+                        (jo/TeX-Bib-command))
+                       ((TeX-process-get-variable name
+                                                  'TeX-command-next
+                                                  TeX-command-Show))
+                       (TeX-command-Show))))
+        (message (concat "Running " cmd))
+        cmd
+        ))
     )
 #+END_SRC
 ** pretty symbols (latex-pretty-symbols via melpa)
