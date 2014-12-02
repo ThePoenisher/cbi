@@ -84,7 +84,7 @@ base_packages:
       - perl-image-exiftool
       - pastebinit
       - python2-eyed3
-      - html2text
+      - python-html2text
       - inotify-tools
       - perl-rename
       - vbetool
@@ -157,6 +157,19 @@ base_packages:
       - haskell-persistent-sqlite
       - haskell-persistent-template
       - haskell-warp
+      - haskell-wai-extra
+      - haskell-wai-logger
+      - haskell-uuid
+      - haskell-word8
+      - haskell-unix-time
+      - haskell-stringsearch
+      - haskell-cmdargs
+      - haskell-easy-file
+      - haskell-byteorder
+      - haskell-ansi-terminal
+      - haskell-network-info
+      - haskell-setenv
+      - haskell-base16-bytestring
       # - haskell-haskeline
       # - haddock
       - samba
