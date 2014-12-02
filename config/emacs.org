@@ -2582,6 +2582,7 @@ C-b C-z
      '(progn    
         (define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
         (setq haskell-process-type 'cabal-repl)
+        (setq haskell-process-suggest-overloaded-strings nil)
          ;;     "sh -c \"cd `upfind -name .cabal-sandbox`; cabalrepl\"")
         )
      )

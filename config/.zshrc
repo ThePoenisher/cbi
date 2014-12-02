@@ -42,7 +42,6 @@ alias hd=/home/data
 alias f="find"
 alias pidgin="pidgin -c /home/data/personal/misc/pidgin"
 
-alias grepc="grep --color=always"
 alias egrep="egrep --color=auto"
 alias egrepc="egrep --color=always"
 
@@ -180,3 +179,6 @@ unsetopt correct_all
 
 setopt BRACE_CCL #allow {a-z} expansion
 
+
+alias history="fc -nlE 0"
+alias history_sorted="fc -nlE 0 | sort -k3n -k2n -k1n -t ."

@@ -131,11 +131,13 @@ base_packages:
       - happy
       - net-tools
       - haskell-parsec
+      - haskell-strict
       - haskell-async
       - haskell-haskell-lexer
       - haskell-attoparsec
       - haskell-pandoc
       - haskell-hxt
+      - haskell-either
       - haskell-regex-tdfa
       - haskell-regex-posix
       - haskell-hslogger
@@ -151,6 +153,10 @@ base_packages:
       - haskell-split
       - haskell-haskell-src-exts
       - haskell-cassava
+      - haskell-persistent
+      - haskell-persistent-sqlite
+      - haskell-persistent-template
+      - haskell-warp
       # - haskell-haskeline
       # - haddock
       - samba
