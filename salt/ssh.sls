@@ -28,6 +28,8 @@ sshd:
           - johannes@debussy
           - johannes@scriabin
           - johannes@scarlatti
+          - test
+          - compaq
 {% endfor %}
 
 

@@ -125,12 +125,17 @@ base_packages:
       - lftp
       - putty
       - sshfs
-      # haskell
       - alex
       - gtk2hs-buildtools
       - happy
       - net-tools
       - haskell-parsec
+      - haskell-edit-distance
+      - haskell-utf8-string
+      - haskell-mime-types
+      - haskell-system-filepath
+      - haskell-pretty-show
+      - haskell-system-fileio
       - haskell-strict
       - haskell-async
       - haskell-haskell-lexer
@@ -139,17 +144,16 @@ base_packages:
       - haskell-hxt
       - haskell-either
       - haskell-regex-tdfa
+      - haskell-regex-pcre
       - haskell-regex-posix
       - haskell-hslogger
+      - haskell-diff
       - haskell-safe
       - haskell-polyparse
       - haskell-th-lift
       - haskell-th-orphans
       - haskell-parallel
       - haskell-regex-compat
-      - haskell-regex-tdfa
-      - haskell-regex-pcre
-      - haskell-regex-posix 
       - haskell-split
       - haskell-haskell-src-exts
       - haskell-cassava
@@ -170,6 +174,7 @@ base_packages:
       - haskell-network-info
       - haskell-setenv
       - haskell-base16-bytestring
+      - haskell-csv
       # - haskell-haskeline
       # - haddock
       - samba

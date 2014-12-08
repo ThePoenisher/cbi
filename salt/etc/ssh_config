@@ -64,6 +64,20 @@ Host ghj
     HostName github.com
     User git
     IdentityFile ~/.ssh/github-jg
+		
+Host kasse3og
+    HostName inn.mxgr.us
+    User root
+		Port 18000
+
+Host innk
+    HostName inn.mxgr.us
+    User root
+
+Host mo
+    HostName inn.mxgr.us
+    User root
+		Port 18002
 
 Host strauss
     HostName josg.de
