@@ -822,11 +822,11 @@ http://gitorious.org/evil/evil/blobs/master/evil-vars.el#line195
   (evil-define-text-object evil-inner-mathtag (count &optional beg end type)
     "Select inner mathtag $$."
     :extend-selection nil
-    (evil-paren-range count beg end type ?$ ?$ t))
+    (evil-select-quote ?$ beg end type count))
   (evil-define-text-object evil-a-mathtag (count &optional beg end type)
     "Select an mathtag $$."
     :extend-selection nil
-    (evil-paren-range count beg end type ?$ ?$))
+    (evil-select-quote ?$ beg end type count t))
 #+END_SRC
 **** Keys                                                            :ATTACH:
 :PROPERTIES:

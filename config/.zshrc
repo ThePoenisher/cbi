@@ -26,7 +26,7 @@ alias uumount="udevil umount"
 
 alias latexdiff2="latexdiff-vc --git  --packages=amsmath,hyperref -c \"$CBI/config/latexdiff.cfg\""
 
-alias feh2="feh --scale-down --keep-zoom-vp --action2 'xrename \"%f\" ' "
+alias feh2="feh --scale-down --keep-zoom-vp --action2 'xrename %F' "
 
 alias -g vi="vim"
 # global collides with unrar x so use \x
