@@ -66,9 +66,10 @@ base_packages:
       - icedtea-web
       - apache-ant
 {% if grains['cbi_machine'] in [ 'debussy', 'scriabin' ] %}
-      - bitcoin-cli
-      - bitcoin-daemon
-      - bitcoin-qt
+      # better use the deterministically compiled binaries from bitcoin foundation
+      # - bitcoin-cli
+      # - bitcoin-daemon
+      # - bitcoin-qt
       - cloc
       - ncdu
       - dos2unix
