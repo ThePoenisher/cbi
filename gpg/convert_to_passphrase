@@ -1,12 +1,13 @@
 #!/bin/bash
 
 f="$(dirname "${BASH_SOURCE[0]}")/Wortliste"
-echo $f
+echo $f 1>&2
 
 # converts a binary number to a list of words
 
 # the list:
 # http://www1.ids-mannheim.de/kl/projekte/methoden/derewo.html
+# für english: http://www.kilgarriff.co.uk/BNClists/all.num.gz oder kostenplfichtig: http://www.wordfrequency.info/100k_compare.asp
 if false; then
 		e=`mktemp`
 		curl -LO http://www.ids-mannheim.de/kl/derewo/derewo-v-ww-bll-320000g-2012-12-31-1.0.zip

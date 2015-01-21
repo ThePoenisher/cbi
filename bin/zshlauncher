@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+a=$(ZDOTDIR=~/.zshlauncher zsh -t -i 2>&1)
+nohup $a >> ~/zshlauncher.log &!
+disown
+sleep 1
+exit 0

@@ -28,8 +28,7 @@ else
 fi
 
 # console vs. X
-if [ "${TERM}" = "linux" ]; then
-    unset DISPLAY
+if [ -z "${DISPLAY}" ]; then
     _EMACSCLIENTOPTS="-t"
 else
     _EMACSCLIENTOPTS="-c"

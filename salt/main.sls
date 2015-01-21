@@ -37,6 +37,12 @@ echo CBI=\"{{ grains['cbi_home'] }}\"\; export CBI >> /etc/profile:
     - force: True
 {% endfor %}
       
+/etc/lirc/lircd.conf.d:
+  file.symlink:
+    - target: {{ grains['cbi_home'] }}/config/lircd.conf.d
+    - makedirs: true
+    - force: True
+
 '{{ home }}/VirtualBox VMs':
   file.symlink:
     - target: /home/data/VMs
@@ -217,7 +223,7 @@ cups:
 ,('mycapsremap'      ,true ,['']        ,['systemd/system/mycapsremap.service'])
 ,('resume@'          ,true ,['johannes'],['systemd/system/resume@.service'])
 ,('iptables'         ,true ,['']        ,['iptables/iptables.rules'])
-,('lirc'             ,true ,['']        ,['systemd/system/lirc.service','lirc/lircd.conf'])
+,('lirc'             ,true ,['']        ,['systemd/system/lirc.service'])
 ]%}
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
