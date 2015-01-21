@@ -13,10 +13,10 @@ sound_packages:
       - vlc
       - gecko-mediaplayer
       - rtmpdump
-      - lirc-utils
+      - lirc
       - minidlna
       - rygel
-      - xbmc
+      - kodi
 {% if grains['cbi_machine'] == 'scriabin' %}
 {% endif %}
 {% endif %}
