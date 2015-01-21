@@ -2152,6 +2152,16 @@ see "extra keybindings" in [[info:reftex#Key%20Bindings][info:reftex#Key Binding
 **** TeX-toggle-debug-warnings : Could not determine file for warning (when using hyperref)
 ***** solution: wait for next version [2014-03-24 Mon]
 https://lists.gnu.org/archive/html/bug-auctex/2014-01/msg00026.html
+***** immernoch [2014-12-10 Wed]
+#+BEGIN_SRC fundamental
+  (/usr/share/texmf-dist/tex/latex/tools/xr.sty) (./abkuerzungen.tex
+  *************************************************
+  * LaTeX warning: "xparse/redefine-command"
+  * 
+  * Redefining document command \ast with arg. spec. ' O{t} ' on line 117.
+  *************************************************
+  ) (./paper2.aux) (/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii
+#+END_SRC
 ** Script
 #+BEGIN_SRC emacs-lisp
   ;; muss man anders setzen und was soll das überhaupt

@@ -196,6 +196,7 @@ base_packages:
 # ,'intel-mkl'
 {% for p in
 ['aurvote'
+,'chromium-pepper-flash'
 ,'dbacl'
 ,'dbvis'
 ,'downgrade'
