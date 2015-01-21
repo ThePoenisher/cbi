@@ -666,6 +666,7 @@ http://ergoemacs.org/emacs/find_replace_inter.html
 http://www.emacswiki.org/emacs/SearchBuffers
 http://stackoverflow.com/questions/7494203/how-do-i-m-x-replace-string-across-all-buffers-in-emacs
 **** occurs (aus replace+)
+case-fold-search
 **** case
 search-upper-case
 case-fold-search (sometimes set locally!)

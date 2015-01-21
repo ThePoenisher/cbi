@@ -265,6 +265,7 @@ myKeys x  = M.union (M.fromList (newKeys x)) (keys defaultConfig x)
 newKeys conf = [
   -- Use shellPrompt instead of default dmenu
   ((myMM                 , xK_p    ), shellPrompt myXPConfig),
+  -- ((myMM                 , xK_p    ), shell "terminator --title Launcher -x tmux -2 new-session -As Launcher zshlauncher),
   -- Do not leave useless conky and dzen after restart
   ((myMM, xK_q), spawn "killall conky dzen2; xmonad --recompile; xmonad --restart")
   , ((myMM               , xK_c     ), kill1) -- @@ remove from current workspace or close if single
@@ -287,17 +288,17 @@ newKeys conf = [
 --    start cycling amoung all workspaces until super_l is released with key combination 1, stop cycling by pressing one of [keys], swith to next prev by key2 key3
   --, ((myMM, xK_w), cycleRecentWS [xK_Super_L] xK_w xK_q)
   , ((myMM                , xK_Tab  ), nextMatch History (return True))
-  , ((myMM                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) (spawnHere my_term_attach))
-  , ((myMM .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) (spawnHere my_term_attach))
+  , ((myMM                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) $ spawnHere my_term_attach)
+  , ((myMM .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) $ spawnHere my_term_attach)
   , ((myMM,                 xK_d    ), viewEmptyWorkspace)
   , ((myMM .|. shiftMask  , xK_d    ), tagToEmptyWorkspace)
-  , ((myMM                , xK_e    ), (spawnHere my_emacs))
-  , ((myMM .|. shiftMask  , xK_e    ), nextMatchOrDo Forward (className =? "Emacs") (spawnHere my_emacs))
-  , ((myMM .|. shiftMask  , xK_f    ), (spawnHere "firefox"))
-  , ((myMM                , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") (spawnHere "firefox"))
-  , ((myMM .|. shiftMask  , xK_a    ), (spawnHere my_term_new))
-  , ((myMM                , xK_a    ), (spawnHere my_term_attach))
-  , ((myMM .|. controlMask, xK_a    ), (spawnHere my_term_without_tmux))
+  , ((myMM                , xK_e    ), spawnHere my_emacs)
+  , ((myMM .|. shiftMask  , xK_e    ), nextMatchOrDo Forward (className =? "Emacs") $ spawnHere my_emacs)
+  , ((myMM .|. shiftMask  , xK_f    ), spawnHere "firefox")
+  , ((myMM                , xK_f    ), nextMatchOrDo Forward (className =? "Firefox") $ spawnHere "firefox")
+  , ((myMM .|. shiftMask  , xK_a    ), spawnHere my_term_new)
+  , ((myMM                , xK_a    ), spawnHere my_term_attach)
+  , ((myMM .|. controlMask, xK_a    ), spawnHere my_term_without_tmux)
   , ((myMM .|. controlMask, xK_x    ), sendMessage $ Toggle REFLECTX)
   , ((myMM .|. controlMask, xK_y    ), sendMessage $ Toggle REFLECTY)
   , ((myMM .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
