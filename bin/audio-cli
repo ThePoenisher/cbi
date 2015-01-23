@@ -35,12 +35,12 @@ switch($ARGV[0]){
 						print "^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/".($v =~ m/Mute: yes/ ? "vol-mute.xbm) M": "spkr_01.xbm)")." $p%";
 				}
 		}
-		case ["voldown","volup"] {
+		case ["vol"] {
 				my @a=`pactl list short sinks`;
 				for (my $i=0;$i<scalar @a;$i++)
 				{
 						$a[$i] =~ m/([0-9])+\t/;
-					  system "pactl -- set-sink-volume $1  '".($ARGV[0] eq"voldown"?"-":"+")."10%'"
+					  system "pactl -- set-sink-volume $1  '".$ARGV[1]."'"
 				}
 		}
 }
