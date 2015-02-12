@@ -133,6 +133,7 @@ base_packages:
       - gtk2hs-buildtools
       - happy
       - net-tools
+      - haskell-aeson-pretty
       - haskell-parsec
       - haskell-edit-distance
       - haskell-utf8-string

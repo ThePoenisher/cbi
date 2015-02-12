@@ -1,3 +1,12 @@
+####################
+####################
+####################
+####################
+# ~/cbi/salt/etc #########
+####################
+####################
+####################
+####################
 # Global Postfix configuration file. This file lists only a subset
 # of all parameters. For the syntax, and for a complete parameter
 # list, see the postconf(5) manual page (command: "man 5 postconf").
@@ -9,6 +18,25 @@
 #
 # For best results, change no more than 2-3 parameters at a time,
 # and test if Postfix still works after every change.
+
+# COMPATIBILITY
+#
+# The compatibility_level determines what default settings Postfix
+# will use for main.cf and master.cf settings. These defaults will
+# change over time.
+#
+# To avoid breaking things, Postfix will use backwards-compatible
+# default settings and log where it uses those old backwards-compatible
+# default settings, until the system administrator has determined
+# if any backwards-compatible default settings need to be made
+# permanent in main.cf or master.cf.
+#
+# When this review is complete, update the compatibility_level setting
+# below as recommended in the RELEASE_NOTES file.
+#
+# The level below is what should be used with new (not upgrade) installs.
+#
+compatibility_level = 2
 
 # SOFT BOUNCE
 #
@@ -657,6 +685,8 @@ sample_directory = /etc/postfix/sample
 #
 readme_directory = /usr/share/doc/postfix
 inet_protocols = ipv4
+meta_directory = /etc/postfix
+shlib_directory = /usr/lib/postfix
 mynetworks_style = host
 smtpd_client_restrictions = 
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated 	    defer_unauth_destination
