@@ -1295,6 +1295,16 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
   (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
   (add-hook 'LaTeX-mode-hook 'turn-on-flyspell)
   (add-hook 'org-mode-hook   'turn-on-auto-fill)
+
+  (defun unfill-paragraph ()
+    (interactive)
+    (let ((fill-column (point-max)))
+      (fill-paragraph nil)))
+
+  (defun unfill-region ()
+    (interactive)
+    (let ((fill-column (point-max)))
+      (fill-region (region-beginning) (region-end) nil)))
 #+END_SRC
 see also [[*Auto%20Completion][Auto Completion]]
 * Spelling

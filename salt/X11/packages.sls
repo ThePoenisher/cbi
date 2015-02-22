@@ -58,7 +58,7 @@ arch_X11_packages:
       - zathura-pdf-mupdf
       - zathura-ps
       - zathura-djvu
-      - kdegraphics-gwenview
+      - gwenview
       - oxygen-icons
       - ffmpegthumbnailer #thumbnails in thunar
       - pidgin-libnotify

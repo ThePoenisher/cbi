@@ -8,6 +8,7 @@ import           Graphics.X11.Xlib
 import           Network.HostName
 import           System.IO
 import           XMonad hiding ( (|||) )
+import           XMonad.Actions.WindowBringer
 import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.CycleRecentWS
 import           XMonad.Actions.CycleWindows
@@ -277,7 +278,9 @@ newKeys conf = [
   -- , ((myMMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
   --, ((myMMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
   , ((myMM                , xK_b    ), sendMessage ToggleStruts)
-  , ((myMM                , xK_s    ), cycleRecentWindows [xK_Super_L] xK_s xK_w)
+  , ((myMM .|. controlMask, xK_s    ), cycleRecentWindows [xK_Super_L] xK_s xK_w)
+  , ((myMM .|. shiftMask  , xK_s    ), bringMenu)
+  , ((myMM                , xK_s    ), gotoMenu)
   , ((myMM                , xK_z    ), rotOpposite)
   , ((myMM                , xK_i    ), rotUnfocusedUp)
   , ((myMM                , xK_u    ), rotUnfocusedDown)
