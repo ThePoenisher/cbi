@@ -159,6 +159,7 @@ sambaservices:
 ,('netctl/hotsplots-7ZsIdg2wumfNziS.key','.gpg')
 ,('netctl/wlan0-test','.gpg')
 ,('samba/smb.conf','')
+,('sysctl.d/99-sysctl.conf','')
 ] %}
 {% for file,ending in files %}
 /etc/{{ file }}:
