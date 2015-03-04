@@ -151,6 +151,7 @@ sambaservices:
 {% set files =
 [('kismet.conf','')
 ,('minidlna.conf','')
+,('nzbget.conf','')
 ,('udev/rules.d/99-discharge.rules','')
 ,('netctl/wlan0-SBB','')
 ,('netctl/wlan0-eduroam','')
