@@ -42,8 +42,6 @@ alias hd=/home/data
 alias f="find"
 alias pidgin="pidgin -c /home/data/personal/misc/pidgin"
 
-alias egrep="egrep --color=auto"
-alias egrepc="egrep --color=always"
 
 alias curlf="curl -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0'"
 # alias mpv="mpv --save-position-on-quit" # alternativ, beenden mit `U` 
@@ -185,3 +183,8 @@ setopt BRACE_CCL #allow {a-z} expansion
 
 alias history="fc -nlE 0"
 alias history_sorted="fc -nlE 0 | sort -k3n -k2n -k1n -t ."
+
+# nach oh-my-zsh (see also zsh.sls)
+alias grep="grep $GREP_OPTIONS"
+alias egrep="egrep $GREP_OPTIONS"
+unset GREP_OPTIONS

@@ -11,6 +11,12 @@ zshgit:
 # 2014-10-28 7f07facf41e97d0de250f565d5e514f1e6c998a2
 # 'cd' in order mit git war viel langsamer. würde oh-my-zsh lieber loswerden
 
+#habe mal die neueste version getestet vom 
+# 2015-02-25 e55c715
+# jump to last dir '-' does not work anymore
+# würde oh-my-zsh lieber loswerden
+# workaround: GREP_OPTIONS in .zshrc losgeworden
+
 /usr/share/oh-my-zsh/cache:
   file.directory:
     - require:

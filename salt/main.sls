@@ -151,6 +151,7 @@ sambaservices:
 {% set files =
 [('kismet.conf','')
 ,('minidlna.conf','')
+,('nzbget.conf','')
 ,('udev/rules.d/99-discharge.rules','')
 ,('netctl/wlan0-SBB','')
 ,('netctl/wlan0-eduroam','')
@@ -158,6 +159,7 @@ sambaservices:
 ,('netctl/hotsplots-7ZsIdg2wumfNziS.key','.gpg')
 ,('netctl/wlan0-test','.gpg')
 ,('samba/smb.conf','')
+,('sysctl.d/99-sysctl.conf','')
 ] %}
 {% for file,ending in files %}
 /etc/{{ file }}:

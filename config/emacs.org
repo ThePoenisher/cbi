@@ -337,6 +337,8 @@ Ursache:
                               ein
                               ess
                               shm
+                              figlet
+                              ;;multiple-cursors
                               )
         )
   
@@ -842,7 +844,6 @@ http://vimdoc.sourceforge.net/htmldoc/motion.html
 + :registers :: zeigt alle yanks und deletes
 + undo / redo :: C-r oder M-
 + scrolling :: down: C-f,C-d,C-e   up: C-b, ... , C-y
-+ Block Visual :: Enter with C-v and then: I (insert) A (append)
 + g;  g, :: goto last change (requires ELPA package goto-chg)
 + D :: delete till end of line
 + man page :: K
@@ -869,6 +870,15 @@ or use `~' to toggle case
 + * :: Search symbol under point
 + g* :: same as bove, but unbounded
 + C-* :: Search symbol under point in another window (eigen)
+****** Block Visual (rectangular region)
+******* Enter with C-v and then: I (insert) A (append),
+******* use $ for lines of differnet lengths
+******* move past ends: virtualedit 
+http://stackoverflow.com/questions/10772598/vim-select-the-ends-of-multiple-lines-block-mode-but-where-the-ending-column-v
+******* evil (not available)
+use picture or artist mode
+http://emacs.stackexchange.com/questions/7272/simulate-vims-virtualedit-and-nostartofline
+http://stackoverflow.com/questions/7019131/how-can-i-draw-to-an-xy-position-in-emacs/18995901
 ***** Eigene
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c C-+") 'evil-numbers/inc-at-pt)
@@ -994,6 +1004,8 @@ CLOSED: [2014-06-25 Wed 23:18]
 function evil-search-word nimmt einen parameter symbol!
 
 siehe eigene keys
+
+***** evil-move-cursor-back
 **** and Org
 Only thing currently used: jo/enter-org-speed
 ***** not used
@@ -1195,7 +1207,7 @@ http://mattbriggs.net/blog/2012/02/27/awesome-emacs-plugins-evil-mode/
 http://lists.gnu.org/archive/html/emacs-orgmode/2011-01/msg00498.html
 http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/
 ** Remote (tramp)
-/prot:user@hoste:path/
+/prot:user@host#port:path/
 *** for passwords check out: ~/.netrc
 works for
 - ange-ftp
@@ -1281,6 +1293,17 @@ http://www.emacswiki.org/emacs/LineWrap
 nicht so toll: 
 - Zeilen nummern sitmmen nicht mehr
 - Kommentare werden nicht erweitert (wie bei fill-paragraph)
+*** multiple-cursors (elpa)
+http://www.emacswiki.org/emacs/init-multiple-cursors.el
+**** evil
+https://github.com/magnars/multiple-cursors.el/issues/17
+http://www.reddit.com/r/emacs/comments/2gx5s3/any_good_tips_to_get_multiplecursors_with_evil/
+**** alternatives?
+http://www.emacswiki.org/emacs/multiple-line-edit.el
+**** Problem [2015-03-04 Wed]
+makes region resize with arrow keys very slow
+*** Mark regions
+**** rectangular
 ** Bugs und Warnings
 *** (lambda (a) ...) quoted with ' rather than with #'
 Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-between-function-lambda-and-lambda
@@ -3537,10 +3560,12 @@ http://www.emacswiki.org/BookmarkPlus (indirect via [[info:emacs#Bookmarks]])
 ** Project Support (EDE)???
 ** Längere Histories (z.B. M-x)
 ** wgrep [2014-01-24 Fri]
-* Funny
-artist-mode
+* ASCII Art / Drawing /...
+** artist-mode
 use middle mouse -> e.g. spray-can 
 do not forget to switch to insert or emacs mode
+** picture-mode
+** figlet (elpa)
 * CBI
 ** EasyPG File Variables:
 #+BEGIN_SRC emacs-lisp
