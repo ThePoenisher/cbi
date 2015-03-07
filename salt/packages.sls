@@ -75,6 +75,7 @@ base_packages:
       - dos2unix
       - reflector
       - pptpclient
+      - nzbget
       - openconnect
       - cuetools
       - shntool
