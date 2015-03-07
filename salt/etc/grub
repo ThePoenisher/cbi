@@ -13,12 +13,12 @@ GRUB_TIMEOUT=1
 GRUB_DISTRIBUTOR="Arch"
 
 {% if grains['cbi_machine'] == 'scriabin' %}
-GRUB_CMDLINE_LINUX_DEFAULT="resume=UUID=44b8266a-2402-4afd-ab58-083ad3e0e03b"
+GRUB_CMDLINE_LINUX_DEFAULT="resume=UUID=44b8266a-2402-4afd-ab58-083ad3e0e03b libahci.ignore_sss=1"
 GRUB_CMDLINE_LINUX="acpi_backlight=vendor"
 #GRUB_CMDLINE_LINUX="acpi_osi=Linux"
 
 {% elif grains['cbi_machine'] == 'debussy' %}
-GRUB_CMDLINE_LINUX_DEFAULT="resume=UUID=cfbfb905-676f-44d4-9431-f3b9d7003651"
+GRUB_CMDLINE_LINUX_DEFAULT="resume=UUID=cfbfb905-676f-44d4-9431-f3b9d7003651 libahci.ignore_sss=1"
 
 {% elif grains['cbi_machine'] == 'kasse3og' %}
 GRUB_CMDLINE_LINUX_DEFAULT=""
