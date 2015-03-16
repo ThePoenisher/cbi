@@ -27,9 +27,12 @@ sshd:
         keys:
           - johannes@debussy
           - johannes@scriabin
+{% if grains['cbi_machine'] == 'kasse3og' %}
+          - kasse_backup
+{% else %}
           - johannes@scarlatti
-          - test
           - compaq
+{% endif %}
 {% endfor %}
 
 
