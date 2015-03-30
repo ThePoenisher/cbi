@@ -2621,10 +2621,10 @@ C-b C-z
   (add-hook 'haskell-mode-hook 'haskell-doc-mode)
   (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  (define-key haskell-mode-map (kbd "C-c ,") 'haskell-mode-jump-to-def)
    (eval-after-load 'haskell-mode
      '(progn    
         (define-key haskell-mode-map (kbd "C-c C-z") 'inferior-haskell-load-and-run)
+        (define-key haskell-mode-map (kbd "C-c ,") 'haskell-mode-jump-to-def)
         (setq haskell-process-type 'cabal-repl)
         (setq haskell-process-suggest-overloaded-strings nil)
          ;;     "sh -c \"cd `upfind -name .cabal-sandbox`; cabalrepl\"")

@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+img="^i(cbi/desktop-artwork/icons/sm4tik/mail.xbm)"
+r=`postqueue -p 2>&1 `
+i=$?
+[ $i -ne 0 ] && echo "^fg(#ff3333)" $img $r && exit $i
+
+
+r=`echo "$r" | sed -nr 's/^(--.* in ([0-9]) Request.*\.|Mail queue is (empty))/\2\3/p' `
+if [ "$r" == empty ]; then
+		echo -n "^fg(#ebac54) ${img}^fg(#ffffff) "
+		echo -n 0
+else
+		echo -n "^fg(#fbf80d) ${img} "
+		echo -n $r "^fg(#ffffff)"
+fi
