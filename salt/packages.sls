@@ -135,6 +135,9 @@ base_packages:
       - happy
       - net-tools
       - haskell-aeson-pretty
+      - haskell-html
+      - haskell-shakespeare
+      - haskell-missingh
       - haskell-parsec
       - haskell-edit-distance
       - haskell-utf8-string

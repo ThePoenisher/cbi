@@ -1,6 +1,6 @@
 set realname="Johannes Gerer"
 set from="johannes@gerer.name"
-alternates "j@josg.de|j14@josg.de|kuerzn@gmail.com|kuerzn@googlemail.com|johannes@cityhaus.de"
+alternates "j@josg.de|j14@josg.de|j15@josg.de|j16@josg.de|kuerzn@gmail.com|kuerzn@googlemail.com|johannes@cityhaus.de"
 set use_from=yes
 set use_envelope_from=yes
 

@@ -2615,6 +2615,12 @@ C-c C-t might need C-c C-l before
 interact
 C-c C-b 
 C-b C-z
+*** TODO Definitions etc.
+see Settings
+
+more: https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Tags
+*** Block Based indentation and region commands
+https://github.com/haskell/haskell-mode/wiki/Indentation
 *** Settings
 #+BEGIN_SRC emacs-lisp
   (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
@@ -2635,7 +2641,7 @@ C-b C-z
             (lambda() (setq indent-tabs-mode nil)))
 #+END_SRC
 *** Formatting
-check for new stuff, then look at this:
+https://github.com/haskell/haskell-mode/wiki/Autoformatting
 https://github.com/jaspervdj/stylish-haskell
 *** Tags
 https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Tags
@@ -2645,6 +2651,8 @@ https://github.com/chrisdone/structured-haskell-mode
 buggy (vielleicht wegen evil?) und zu speziell?
 *** TODO: Debug
 http://youtu.be/WAtEmoVN30E?list=UUeoDK51Iln7Wk7QwDdoa9VA
+*** Documentation /  Haddock?
+https://github.com/haskell/haskell-mode/wiki/Browsing-Haddocks
 ** TODO imenu gives a list of all functions in a file, and lets you jump to them.
 idomenu (http://emacswiki.org/emacs/idomenu.el) gives you ido functionality for imenu. 
 ** Javascript 
@@ -3125,7 +3133,10 @@ Problems with hard links, that get destroyed:
 #+END_SRC
 * Browsers
 ** w3m (html and file system), through ELPA
-	 
+*** settings
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'w3m-display-hook 'w3m-haddock-display)
+#+END_SRC
 *** Commands
 w3m-browse-url
 w3m-buffer (render current buffer as HTML, krass)
