@@ -181,7 +181,7 @@ unsetopt correct_all
 setopt BRACE_CCL #allow {a-z} expansion
 
 
-alias history="fc -nlE 0"
+alias history="fc -lE 0"
 alias history_sorted="fc -nlE 0 | sort -k3n -k2n -k1n -t ."
 
 # nach oh-my-zsh (see also zsh.sls)
