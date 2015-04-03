@@ -2,7 +2,9 @@
 import           Control.Applicative
 import           Control.Monad
 import           Data.Char
+import           Text.Read
 import           Data.Function
+import           Data.Maybe
 import           Data.List
 import qualified Data.Map as M
 import           Graphics.X11.Xlib
@@ -14,7 +16,7 @@ import           XMonad hiding ( (|||) )
 import           XMonad.Actions.WindowBringer
 import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.CycleRecentWS
-import           XMonad.Layout.IndependentScreens
+import           XMonad.Layout.IndependentScreens hiding (unmarshall, unmarshallS)
 import           XMonad.Actions.CycleWindows
 import           XMonad.Actions.FindEmptyWorkspace
 import           XMonad.Actions.GroupNavigation
@@ -333,21 +335,30 @@ newKeys conf = [
 -- get layout jumper bindings
   fst myLayouts
   
-onCurrentScreen2 :: (PhysicalWorkspace -> WindowSet -> a) -> VirtualWorkspace -> WindowSet -> a
-onCurrentScreen2 f vws = currentPWS >>= f . flip marshall vws . unmarshallS
+onCurrentScreen2 :: (PhysicalWorkspace -> WindowSet -> WindowSet) -> VirtualWorkspace -> WindowSet -> WindowSet
+onCurrentScreen2 f vws = currentPWS >>= onlyWithScreen2 (f . flip marshall vws) . unmarshallS
 
 currentPWS = W.tag . W.workspace . W.current
                          
+onlyWithScreen2 f = maybe id f
+             
 rotScreen2 :: Int -> X ()
-rotScreen2 i = windows $ do
-  (sid,vws) <- unmarshall <$> currentPWS
-  W.view $ marshall ((sid + S i) `mod` myNumberOfScreens) vws
+rotScreen2 i = windows $ onlyWithScreen2 f . unmarshall =<< currentPWS
+   where f (sid,vws) = W.view $ marshall ((sid + S i) `mod` myNumberOfScreens) vws
 
-myMarshallPP :: ScreenId -> PP -> PP
-myMarshallPP s pp  = (marshallPP 0 pp)
+myMarshallPP :: Maybe ScreenId -> PP -> PP
+myMarshallPP Nothing pp  = pp
+myMarshallPP (Just s) pp  = (marshallPP 0 pp)
     -- the upstream marshallPP messes up getSortByIndex
      { ppSort = (. filter onScreen) <$> ppSort pp }
-  where onScreen ws = unmarshallS (W.tag ws) == s
+  where onScreen = maybe False (s==) . unmarshallS . W.tag
+
+
+unmarshall t = do let (l,r) = break (=='_') t
+                  s <- readMaybe l
+                  return (S s,drop 1 r)
+
+unmarshallS = fmap fst . unmarshall
 
     
 myDynLog h = do
@@ -355,13 +366,16 @@ myDynLog h = do
     let color ws | ws `elem` copies = wrapBg myHiddenWsWithCopyBg ws
                  | otherwise = ws
     wset <- gets windowset
-    let s@(S s1) = unmarshallS $ currentPWS wset
+    let s = unmarshallS $ currentPWS wset
     ls <- dynamicLogString $ myMarshallPP s $
           myDzenPP {ppHidden = ppHidden myDzenPP . color }
     a <- maybe (io currentFehBg) (const $ return "") $ W.stack $ W.workspace $ W.current wset
-    io . hPutStrLn h $
-      wrapBg (["#57D300","#D8003A","#0057CF","#EF8D00"] !! s1) ("  ") ++ ls ++ a
+    io . hPutStrLn h $ screenIdColor s ++ ls ++ a
 
+
+screenIdColor (Just (S s1)) = wrapBg (["#57D300","#D8003A","#0057CF","#EF8D00"] !! s1) ("  ")
+screenIdColor Nothing = "  "                         
+    
 currentFehBg = takeBaseName .  (!!1) . reverse . split '\'' <$> readFile "/home/johannes/.fehbg"
 -- somehow does not work in logHook: readProcess (cbi ++ "bin/feh_bg") ["f"] ""
     
