@@ -1,13 +1,13 @@
 #!/usr/bin/env python2
 
-# splits PDF pages from stdin to stdout
+# splits PDF pages in left and right half of first arg to stdout
 
 # needs python2-pypdf
 
 # from http://unix.stackexchange.com/questions/12482/split-pages-in-pdf
 import copy, sys
 from pyPdf import PdfFileWriter, PdfFileReader
-input = PdfFileReader(sys.stdin)
+input = PdfFileReader(open(sys.argv[1],'r'))
 output = PdfFileWriter()
 for p in [input.getPage(i) for i in range(0,input.getNumPages())]:
     q = copy.copy(p)
