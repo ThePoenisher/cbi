@@ -18,7 +18,7 @@ import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.CycleRecentWS
 import           XMonad.Layout.IndependentScreens hiding (unmarshall, unmarshallS)
 import           XMonad.Actions.CycleWindows
-import           XMonad.Actions.FindEmptyWorkspace
+-- import           XMonad.Actions.FindEmptyWorkspace -- imcompatible with IndependentScreens
 import           XMonad.Actions.GroupNavigation
 import           XMonad.Actions.RotSlaves
 import           XMonad.Actions.SpawnOn
@@ -291,6 +291,8 @@ newKeys conf = [
   -- , ((myMMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
   --, ((myMMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
   , ((myMM                , xK_b    ), sendMessage ToggleStruts)
+    -- open background image
+  , ((myMM .|. shiftMask  , xK_b    ), spawn $ "/usr/bin/feh \"`"++cbi++"bin/feh_bg f`\"" )
   , ((myMM .|. controlMask, xK_s    ), cycleRecentWindows [xK_Super_L] xK_s xK_w)
   , ((myMM .|. shiftMask  , xK_s    ), bringMenu)
   , ((myMM                , xK_s    ), gotoMenu)
@@ -350,8 +352,9 @@ myMarshallPP :: Maybe ScreenId -> PP -> PP
 myMarshallPP Nothing pp  = pp
 myMarshallPP (Just s) pp  = (marshallPP 0 pp)
     -- the upstream marshallPP messes up getSortByIndex
-     { ppSort = (. filter onScreen) <$> ppSort pp }
-  where onScreen = maybe False (s==) . unmarshallS . W.tag
+     { ppSort = (. filter (onScreen s)) <$> ppSort pp }
+                            
+onScreen s = maybe False (s==) . unmarshallS . W.tag
 
 
 unmarshall t = do let (l,r) = break (=='_') t
@@ -440,3 +443,18 @@ myEwmh c = c { startupHook     = startupHook c >> setSupported
              , handleEventHook = handleEventHook c >>
                                  ewmhDesktopsEventHook >> fullscreenEventHook  -- this order is important!
              , logHook         = logHook c >> ewmhDesktopsLogHook }
+
+
+
+-- executes action on first empty work space on the current screen
+withEmptyWorkspace :: (WorkspaceId -> X ()) -> X ()
+withEmptyWorkspace f = do
+    ws <- gets windowset
+    ppsort <- ppSort $ myMarshallPP (unmarshallS $ currentPWS ws) $ myDzenPP
+    let allWorkspaces = ppsort $ fmap W.workspace (W.current ws : W.visible ws)
+                        ++ W.hidden ws
+    whenJust (find (isNothing . W.stack) allWorkspaces) (f . W.tag)
+
+viewEmptyWorkspace = withEmptyWorkspace (windows . W.view)
+tagToEmptyWorkspace = withEmptyWorkspace $ \w -> windows $ W.view w . W.shift w
+sendToEmptyWorkspace = withEmptyWorkspace $ windows . W.shift
