@@ -69,6 +69,9 @@ if [ `hostname` = 'scriabin' ]; then
 		(cd /home/data/personal/projects/gewichteingabe/ && .cabal-sandbox/bin/gewichteingabe ) &! 
 fi
 
+firefox &!
+emacsclient -c -n&!
+
 #xcompmgr & (macht die borders von xmonad irgendwie auf nervige weise durchsichtig)
 exec xmonad
 

@@ -2,6 +2,7 @@
 import           Control.Applicative
 import           Control.Monad
 import           Data.Char
+import           Data.Function
 import           Data.List
 import qualified Data.Map as M
 import           Graphics.X11.Xlib
@@ -11,6 +12,7 @@ import           XMonad hiding ( (|||) )
 import           XMonad.Actions.WindowBringer
 import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.CycleRecentWS
+import           XMonad.Layout.IndependentScreens
 import           XMonad.Actions.CycleWindows
 import           XMonad.Actions.FindEmptyWorkspace
 import           XMonad.Actions.GroupNavigation
@@ -51,7 +53,9 @@ my_term_class = "Terminator"
 my_emacs ="emacsclient -c -n"
                 
 myMM=mod4Mask --Windows key
-                
+
+myNumberOfScreens = 4 -- only used to form twp groups of workspaces using XMonad.Layout.IndependentScreens
+
 main = do
    myStatusBarPipe <- spawnPipe myStatusBar
    conkyBar <- spawnPipe myConkyBar
@@ -59,14 +63,14 @@ main = do
    xmonad $ myEwmh $ myUrgencyHook $ defaultConfig
       { terminal = my_term_attach
       , normalBorderColor  = myInactiveBorderColor
-      , logHook = myDzenPP2 myStatusBarPipe  >> historyHook
+      , logHook = myDynLog myStatusBarPipe  >> historyHook
       , focusedBorderColor = myActiveBorderColor
       , manageHook = namedScratchpadManageHook scratchpads <+> manageSpawn <+>  manageDocks <+> myManageHook <+>  manageHook defaultConfig
       , layoutHook = gaps (myGap host)  $ avoidStruts myLayoutHook
       , startupHook = myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
-      , workspaces = map ( pad . return ) $ fst myWorkspaces
+      , workspaces = withScreens myNumberOfScreens $ map ( pad . return ) $ fst myWorkspaces
       , handleEventHook = docksEventHook -- >> ewmhDesktopsEventHook -- führt dazu, dass xmonad beim start auf pidgin wechselt (wg. spawnOn " 0 " "pidgin", um wmctrl -l benutzen zu können,  benötigt man das aber eh nicht
       , borderWidth = myBorderWidth
      }   
@@ -91,12 +95,13 @@ myActiveBorderColor = "red"
 myInactiveBorderColor = "black"
 myBorderWidth = 1
  
-myCurrentWsFgColor = "white"
-myCurrentWsBgColor = "gray40"
+myCurrentWsFgColor = "red"
+myCurrentWsBgColor = "white"
 myVisibleWsFgColor = "gray80"
 myVisibleWsBgColor = "gray20"
 myHiddenWsWithCopyBg = "gray30"
-myHiddenWsFgColor = "gray80"
+myHiddenWsFgColor = "black"
+myHiddenWsBgColor = "gray60"
 myHiddenEmptyWsFgColor = "gray50"
 myUrgentWsBgColor = "red"
 myUrgentWsFgColor = "black"
@@ -147,8 +152,8 @@ myLayoutHook = id
 -- this spawnOn looks at PIDs and if these change during run, it does not work
 -- e.g. firefox, wenn alread running, emacsclient (at least on first startup)
 myStartupHook = do 
-  spawnOn " 1 " my_emacs
-  spawnOn " 2 " "firefox"
+  -- spawnOn " 1 " my_emacs
+  -- spawnOn " 2 " "firefox"
   -- spawnOn " 3 " my_term_attach
   spawnOn " 8 " $ my_term_new ++ " new-session -s mutt \"sleep 10; mutt\""
   -- spawnOn " 9 " my_term_attach
@@ -283,9 +288,9 @@ newKeys conf = [
   , ((myMM                , xK_s    ), gotoMenu)
   , ((myMM                , xK_z    ), rotOpposite)
   , ((myMM                , xK_i    ), rotUnfocusedUp)
-  , ((myMM                , xK_u    ), rotUnfocusedDown)
+  -- , ((myMM                , xK_u    ), rotUnfocusedDown)
   , ((myMM .|. shiftMask  , xK_i    ), rotFocusedUp)
-  , ((myMM .|. shiftMask  , xK_u    ), rotFocusedDown)
+  -- , ((myMM .|. shiftMask  , xK_u    ), rotFocusedDown)
     -- switch back and forth between last two workspaces:
   , ((myMM, xK_w), cycleRecentWS [xK_w] xK_grave xK_grave)
 --    start cycling amoung all workspaces until super_l is released with key combination 1, stop cycling by pressing one of [keys], swith to next prev by key2 key3
@@ -308,38 +313,61 @@ newKeys conf = [
   , ((myMM .|. controlMask, xK_m    ), sendMessage $ Toggle MIRROR)
   , ((myMM .|. controlMask, xK_p    ), namedScratchpadAction scratchpads "scratch" )
 
+  , ((myMM                , xK_u    ), rotScreen2 1 )
+  , ((myMM .|. shiftMask  , xK_u    ), rotScreen2 $ -1 )
   ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
 -- mod-control-[1..9] @@ Copy client to workspace N
-  [((m .|. myMM, k), windows $ f i)
-     | (i, ks) <- zip (workspaces conf) $ snd myWorkspaces
+  [((m .|. myMM, k), windows $ onCurrentScreen2 f i)
+     | (i, ks) <- zip (workspaces' conf) $ snd myWorkspaces
      , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (copy, controlMask)]
      , k <- ks]
    ++
 -- get layout jumper bindings
   fst myLayouts
   
-myDzenPP2 h = do
+onCurrentScreen2 :: (PhysicalWorkspace -> WindowSet -> a) -> VirtualWorkspace -> WindowSet -> a
+onCurrentScreen2 f vws = currentPWS >>= f . flip marshall vws . unmarshallS
+
+currentPWS = W.tag . W.workspace . W.current
+                         
+rotScreen2 :: Int -> X ()
+rotScreen2 i = windows $ do
+  (sid,vws) <- unmarshall <$> currentPWS
+  W.view $ marshall ((sid + S i) `mod` myNumberOfScreens) vws
+
+myMarshallPP :: ScreenId -> PP -> PP
+myMarshallPP s pp  = (marshallPP 0 pp)
+    -- the upstream marshallPP messes up getSortByIndex
+     { ppSort = (. filter onScreen) <$> ppSort pp }
+  where onScreen ws = unmarshallS (W.tag ws) == s
+
+    
+myDynLog h = do
     copies <- wsContainingCopies
     let color ws | ws `elem` copies = wrapBg myHiddenWsWithCopyBg ws
                  | otherwise = ws
-    (dynamicLogWithPP $ (myDzenPP h) {ppHidden = wrapFg myHiddenWsFgColor . color })
-
+    s@(S s1) <- withWindowSet $ return . unmarshallS . currentPWS
+    ls <- dynamicLogString $ myMarshallPP s $
+          myDzenPP {ppHidden = ppHidden myDzenPP . color }
+    io . hPutStrLn h $
+      wrapBg (["#57D300","#D8003A","#0057CF","#EF8D00"] !! s1) ("  ") ++ ls
  
 -- Dzen config
-myDzenPP h = defaultPP {
+myDzenPP = defaultPP {
   -- alternative sorts: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-WorkspaceCompare.html
-  ppSort =   fmap (. namedScratchpadFilterOutWorkspace) $ ppSort defaultPP,
-  ppOutput = hPutStrLn h,
-  ppSep = "^bg(" ++ myBgBgColor ++ ")^r(1,15)^bg()",
-  ppWsSep = "",
-  ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor,
-  ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor,
-  ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor,
-  ppUrgent = wrapFgBg myUrgentWsFgColor myUrgentWsBgColor,
-  ppTitle = (\x -> " " ++ wrapFg myTitleFgColor x),
-  ppLayout  = dzenColor myFgColor"" .  pad . filter f . map m
+  ppSort =   fmap (. namedScratchpadFilterOutWorkspace) $ ppSort defaultPP
+  ,ppSep = "^bg(" ++ myBgBgColor ++ ")^r(1,15)^bg()"
+  ,ppWsSep = ""
+  ,ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor
+  ,ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor
+  ,ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor
+  ,ppHidden = wrapFgBg myHiddenWsFgColor myHiddenWsBgColor
+  ,ppUrgent = wrapFgBg myUrgentWsFgColor myUrgentWsBgColor
+  ,ppTitle = (" " ++) . wrapFg myTitleFgColor
+  ,ppLayout  = dzenColor myFgColor "" .  pad . filter f . map m
+  -- ,ppExtras = 
   }
             where f x = isUpper x || x=='/'
                   m x | x==' ' = '/' | True = x

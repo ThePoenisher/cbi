@@ -12,8 +12,20 @@ output = PdfFileWriter()
 for p in [input.getPage(i) for i in range(0,input.getNumPages())]:
     q = copy.copy(p)
     (w, h) = p.mediaBox.upperRight
-    p.mediaBox.upperRight = (w, h/2)
-    q.mediaBox.lowerRight = (w, h/2)
+    d = int(sys.argv[2]) if len(sys.argv) > 2 else 0
+    if 1:
+        h += d
+        q.mediaBox.lowerRight = (w, h/2)
+
+        p.mediaBox.upperRight = (w, h/2)
+        p.mediaBox.lowerRight = (w, d)
+    else:
+        w += d
+
+        p.mediaBox.upperLeft = (w/2, h)
+
+        q.mediaBox.upperLeft = (d, h)
+        q.mediaBox.upperRight = (w/2, h)
     output.addPage(q)
     output.addPage(p)
 output.write(sys.stdout)
