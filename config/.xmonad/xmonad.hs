@@ -8,6 +8,8 @@ import qualified Data.Map as M
 import           Graphics.X11.Xlib
 import           Network.HostName
 import           System.IO
+import           System.FilePath
+import           System.Process
 import           XMonad hiding ( (|||) )
 import           XMonad.Actions.WindowBringer
 import           XMonad.Actions.CopyWindow
@@ -45,6 +47,8 @@ import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run
 
+cbi = "/home/johannes/cbi/"
+
 my_term_new = "terminator -x tmux -2"
 my_term_without_tmux = "terminator"
 my_term_attach = "terminator -x tmux-detached-or-new"
@@ -79,7 +83,7 @@ myGap "scriabin" = [(L,154)]
 myGap _          = []
  
 -- Paths
-myBitmapsPath = "/home/johannes/cbi/desktop-artwork/icons/"
+myBitmapsPath = cbi ++ "desktop-artwork/icons/"
  
 -- Font
 myFont = "xft:DejaVu Sans Mono:size=8" -- dzen only uses the size. fontname seems to be ignored
@@ -118,7 +122,9 @@ myStatusBar = "dzen2 -ta l " ++ myDzenGenOpts
  
 -- Conky Bar
 -- with needs to start delayed, or otherwise will be behind the status bar.
-myConkyBar = "sleep 1; conky -c ~/cbi/config/.conky_bar | dzen2 -e 'button1=exec:dmenu_session' -ta l -expand l" ++ myDzenGenOpts
+myConkyBar = "sleep 1; conky -c " ++ cbi ++
+             "config/.conky_bar | dzen2 -e 'button1=exec:dmenu_session' -ta l -expand l"
+             ++ myDzenGenOpts
 
 -- Layouts
 fc (x,l) (xs,ls) = ( kb:xs, l ||| ls)
@@ -273,7 +279,7 @@ newKeys conf = [
   ((myMM                 , xK_p    ), shellPrompt myXPConfig),
   -- ((myMM                 , xK_p    ), shell "terminator --title Launcher -x tmux -2 new-session -As Launcher zshlauncher),
   -- Do not leave useless conky and dzen after restart
-  ((myMM, xK_q), spawn "killall conky dzen2; xmonad --recompile; xmonad --restart")
+  ((myMM .|. controlMask, xK_q), spawn "killall conky dzen2; xmonad --recompile; xmonad --restart")
   , ((myMM               , xK_c     ), kill1) -- @@ remove from current workspace or close if single
   , ((myMM .|. shiftMask , xK_Tab   ), rotSlavesUp)
   -- , ((myMM, xK_minus )   , decreaseLimit )
@@ -292,9 +298,9 @@ newKeys conf = [
   , ((myMM .|. shiftMask  , xK_i    ), rotFocusedUp)
   -- , ((myMM .|. shiftMask  , xK_u    ), rotFocusedDown)
     -- switch back and forth between last two workspaces:
-  , ((myMM, xK_w), cycleRecentWS [xK_w] xK_grave xK_grave)
+  , ((myMM, xK_q), cycleRecentWS [xK_Super_L] xK_q xK_w)
+  , ((myMM, xK_w), cycleRecentWS [xK_w] 0 0)
 --    start cycling amoung all workspaces until super_l is released with key combination 1, stop cycling by pressing one of [keys], swith to next prev by key2 key3
-  --, ((myMM, xK_w), cycleRecentWS [xK_Super_L] xK_w xK_q)
   , ((myMM                , xK_Tab  ), nextMatch History (return True))
   , ((myMM                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) $ spawnHere my_term_attach)
   , ((myMM .|. shiftMask  , xK_r    ), nextMatchOrDo Backward (className =? my_term_class) $ spawnHere my_term_attach)
@@ -348,12 +354,17 @@ myDynLog h = do
     copies <- wsContainingCopies
     let color ws | ws `elem` copies = wrapBg myHiddenWsWithCopyBg ws
                  | otherwise = ws
-    s@(S s1) <- withWindowSet $ return . unmarshallS . currentPWS
+    wset <- gets windowset
+    let s@(S s1) = unmarshallS $ currentPWS wset
     ls <- dynamicLogString $ myMarshallPP s $
           myDzenPP {ppHidden = ppHidden myDzenPP . color }
+    a <- maybe (io currentFehBg) (const $ return "") $ W.stack $ W.workspace $ W.current wset
     io . hPutStrLn h $
-      wrapBg (["#57D300","#D8003A","#0057CF","#EF8D00"] !! s1) ("  ") ++ ls
- 
+      wrapBg (["#57D300","#D8003A","#0057CF","#EF8D00"] !! s1) ("  ") ++ ls ++ a
+
+currentFehBg = takeBaseName .  (!!1) . reverse . split '\'' <$> readFile "/home/johannes/.fehbg"
+-- somehow does not work in logHook: readProcess (cbi ++ "bin/feh_bg") ["f"] ""
+    
 -- Dzen config
 myDzenPP = defaultPP {
   -- alternative sorts: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-WorkspaceCompare.html

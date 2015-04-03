@@ -3,17 +3,20 @@
 #          "repeat" to run repeating job
 #          ""       to just change it to the next image
 #          "d"      to delete last BG image
+#          "f"      to get filename of last image
 
-l=`find -L $CBI/desktop-artwork/wallpapers ! -path \*/Christmas/\* ! -path \*/meh/\* \( -name \*.png -o -name \*.jpg \)`
+l=`find -L "/home/dont_backup/Metropolitan Museum Of Art - European Paintings (part I)" \( -name \*.png -o -name \*.jpg \)`
 if [ "$1" = "l" ]; then
 		echo "$l"
+elif [ "$1" = "f" ]; then
+		echo -n `sed -re "s/.*'([^']*)'.*/\1/" /home/johannes/.fehbg`
 elif [ "$1" = "d" ]; then
-		rm `sed -re "s/.*'([^']*)'.*/\1/" /home/johannes/.fehbg`
+		rm "`${BASH_SOURCE[0]} f`"
 		exec ${BASH_SOURCE[0]}
 else
 		f=$(echo "$l" | shuf -n1)
 		echo "[`date`] FEH BACKGROUND: $f" >> ~/.xlog 2>&1
-		feh --bg-fill $f >> ~/.xlog 2>&1
+		feh --bg-max "$f" >> ~/.xlog 2>&1
 		
 		if [ "$1" ]; then
 				sleep 3600
