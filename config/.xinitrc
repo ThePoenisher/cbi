@@ -44,8 +44,7 @@ xset r rate 200  45
 # solve the problem with ZEROS 0000000
 xinput --disable "saa7134 IR (Terratec Cinergy 40"
 
-#if [ -f ~/.fehbg ]; then source ~/.fehbg; fi
-feh_bg BG &
+x11bg repeat &
 
 # setxkbmap -layout de 
 setxkbmap -layout "us" -variant altgr-intl -option ctrl:nocaps

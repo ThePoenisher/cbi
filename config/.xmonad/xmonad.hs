@@ -116,9 +116,10 @@ myTitleFgColor = "white"
  
 myUrgencyHintFgColor = "white"
 myUrgencyHintBgColor = "brown"
- 
+
+dzenHeight = "13"
 -- dzen general options
-myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '13'"
+myDzenGenOpts = " -fg '" ++ myFgColor ++ "' -bg '" ++ myBgColor ++ "' -fn '" ++ myFont ++ "' -h '"++ dzenHeight ++"'"
  
 -- Status Bar
 myStatusBar = "dzen2 -ta l " ++ myDzenGenOpts
@@ -380,7 +381,7 @@ myDynLog h = do
 screenIdColor (Just (S s1)) = wrapBg (["#57D300","#D8003A","#0057CF","#EF8D00"] !! s1) ("  ")
 screenIdColor Nothing = "  "                         
     
-currentFehBg = takeBaseName .  (!!1) . reverse . split '\'' <$> readFile "/home/johannes/.fehbg"
+currentFehBg = takeBaseName <$> readFile "/home/johannes/.x11bg"
 -- somehow does not work in logHook: readProcess (cbi ++ "bin/feh_bg") ["f"] ""
     
 -- Dzen config

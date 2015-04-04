@@ -2,21 +2,22 @@
 # use with "l"      to list all files
 #          "repeat" to run repeating job
 #          ""       to just change it to the next image
-#          "d"      to delete last BG image
+#          "d"      disabled; to delete last BG image
 #          "f"      to get filename of last image
 
 l=`find -L "/home/dont_backup/Metropolitan Museum Of Art - European Paintings (part I)" \( -name \*.png -o -name \*.jpg \)`
 if [ "$1" = "l" ]; then
 		echo "$l"
-elif [ "$1" = "f" ]; then
-		echo -n `sed -re "s/.*'([^']*)'.*/\1/" /home/johannes/.fehbg`
-elif [ "$1" = "d" ]; then
-		rm "`${BASH_SOURCE[0]} f`"
-		exec ${BASH_SOURCE[0]}
+# elif [ "$1" = "d" ]; then
+# 		rm "`cat /home/johannes/.x11bg`"
+# 		exec ${BASH_SOURCE[0]}
 else
 		f=$(echo "$l" | shuf -n1)
-		echo "[`date`] FEH BACKGROUND: $f" >> ~/.xlog 2>&1
-		feh --bg-max "$f" >> ~/.xlog 2>&1
+		echo $f > /home/johannes/.x11bg
+		dim=($(xrandr | sed -rn 's/ *([^x]+)x(\w+)[^*]+\*.*/\1 \2/p'))
+		convert "$f" -gravity South -background black \
+				 -resize ${dim[0]}x$((${dim[1]}-13)) -extent ${dim[0]}x${dim[1]} \
+ 				 png:- | feh --bg-center -
 		
 		if [ "$1" ]; then
 				sleep 3600
