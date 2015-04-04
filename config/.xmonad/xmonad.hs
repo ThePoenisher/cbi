@@ -294,7 +294,7 @@ newKeys conf = [
   --, ((myMMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
   , ((myMM                , xK_b    ), sendMessage ToggleStruts)
     -- open background image
-  , ((myMM .|. shiftMask  , xK_b    ), spawn $ "/usr/bin/feh \"`"++cbi++"bin/feh_bg f`\"" )
+  , ((myMM .|. shiftMask  , xK_b    ), spawn $ "/usr/bin/feh \"`cat "++x11bgfile++"`\"" )
   , ((myMM .|. controlMask, xK_s    ), cycleRecentWindows [xK_Super_L] xK_s xK_w)
   , ((myMM .|. shiftMask  , xK_s    ), bringMenu)
   , ((myMM                , xK_s    ), gotoMenu)
@@ -380,8 +380,9 @@ myDynLog h = do
 
 screenIdColor (Just (S s1)) = wrapBg (["#57D300","#D8003A","#0057CF","#EF8D00"] !! s1) ("  ")
 screenIdColor Nothing = "  "                         
-    
-currentFehBg = takeBaseName <$> readFile "/home/johannes/.x11bg"
+
+x11bgfile = "/home/johannes/.x11bg"
+currentFehBg = takeBaseName <$> readFile x11bgfile
 -- somehow does not work in logHook: readProcess (cbi ++ "bin/feh_bg") ["f"] ""
     
 -- Dzen config
