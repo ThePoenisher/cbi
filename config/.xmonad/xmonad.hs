@@ -10,6 +10,7 @@ import qualified Data.Map as M
 import           Graphics.X11.Xlib
 import           Network.HostName
 import           System.IO
+import           Codec.Binary.UTF8.String
 import           System.FilePath
 import           System.Process
 import           XMonad hiding ( (|||) )
@@ -373,7 +374,7 @@ myDynLog h = do
     ls <- dynamicLogString $ myMarshallPP s $
           myDzenPP {ppHidden = ppHidden myDzenPP . color }
     a <- maybe (io currentFehBg) (const $ return "") $ W.stack $ W.workspace $ W.current wset
-    io . hPutStrLn h $ screenIdColor s ++ ls ++ a
+    io . hPutStrLn h $ screenIdColor s ++ ls ++ encodeString a 
 
 
 screenIdColor (Just (S s1)) = wrapBg (["#57D300","#D8003A","#0057CF","#EF8D00"] !! s1) ("  ")
