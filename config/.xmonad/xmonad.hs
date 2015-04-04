@@ -165,7 +165,7 @@ myStartupHook = do
   -- spawnOn " 1 " my_emacs
   -- spawnOn " 2 " "firefox"
   -- spawnOn " 3 " my_term_attach
-  spawnOn " 8 " $ my_term_new ++ " new-session -s mutt \"sleep 10; mutt\""
+  spawnOn "0_ 8 " $ my_term_new ++ " new-session -s mutt \"sleep 10; mutt\""
   -- spawnOn " 9 " my_term_attach
   -- spawnOn " 0 " "pidgin -c /home/data/personal/misc/pidgin"
   
