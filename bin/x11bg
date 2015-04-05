@@ -13,10 +13,13 @@ if [ "$1" = "l" ]; then
 # 		exec ${BASH_SOURCE[0]}
 else
 		f=$(echo "$l" | shuf -n1)
+		f="`cat /tmp/a`"
 		echo $f > /home/johannes/.x11bg
 		dim=($(xrandr | sed -rn 's/ *([^x]+)x(\w+)[^*]+\*.*/\1 \2/p'))
-		convert "$f" -gravity South -background black \
-				 -resize ${dim[0]}x$((${dim[1]}-13)) -extent ${dim[0]}x${dim[1]} \
+		convert "$f" -gravity Center -background black \
+						-resize ${dim[0]}x$((${dim[1]}-14)) \
+						-extent ${dim[0]}x$((${dim[1]}-14)) \
+						-gravity South -extent ${dim[0]}x${dim[1]} \
  				 png:- | feh --bg-center -
 		
 		if [ "$1" ]; then
