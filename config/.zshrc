@@ -188,3 +188,9 @@ alias history_sorted="fc -nlE 0 | sort -k3n -k2n -k1n -t ."
 alias grep="grep $GREP_OPTIONS"
 alias egrep="egrep $GREP_OPTIONS"
 unset GREP_OPTIONS
+
+# PATH="/home/johannes/perl5/bin${PATH+:}${PATH}"; export PATH;
+# PERL5LIB="/home/johannes/perl5/lib/perl5${PERL5LIB+:}${PERL5LIB}"; export PERL5LIB;
+# PERL_LOCAL_LIB_ROOT="/home/johannes/perl5${PERL_LOCAL_LIB_ROOT+:}${PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
+# PERL_MB_OPT="--install_base \"/home/johannes/perl5\""; export PERL_MB_OPT;
+# PERL_MM_OPT="INSTALL_BASE=/home/johannes/perl5"; export PERL_MM_OPT;
