@@ -9,12 +9,13 @@ update_interval 1.0
 
 #^fg(\#00ffff)${exec rhythmbox-client --print-playing-format "%aa-%at-%tt" | cut -c-70} \
 TEXT
-    ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/cpu.xbm) \
-^fg(\#FFFFFF)${cpu cpu0}% \
-^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/mem.xbm) \
-^fg(\#FFFFFF)${memperc}% \
+^fg(\#FFFFFF)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/diskette.xbm) \
 ${diskio} \
+^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/cpu.xbm) \
+${cpu cpu0}% \
+^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/mem.xbm) \
+^fg(\#FFFFFF)${memperc}% \
 ^i(cbi/desktop-artwork/icons/sm4tik/arch.xbm) ${entropy_avail} \
 ${exec mailqueue_status}\
 ^fg(\#ebac54) ${if_existing /proc/net/route eth0} \
@@ -24,15 +25,19 @@ ${exec mailqueue_status}\
 ^fg(\#ff3333) \
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_up_03.xbm)${upspeed eth0} \
 $endif\
+^fg(\#ebac54)${if_existing /proc/net/route tun0}\
+^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/usb.xbm) \
+$endif\
 ^fg(\#ebac54)${if_existing /proc/net/route wlan0}\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/wifi_01.xbm) \
+${exec iwconfig 2> /dev/null | perl -n0777e 'm/.*ESSID:"([^"]*)".*Link Quality=(\S*)\/(\S*)\s.*/s; print sprintf("$1 %0.0f\%",100*$2/$3);'} \
 ^fg(\#00aa4a)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_down_03.xbm)${downspeed wlan0}\
 ^fg(\#ff3333)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_up_03.xbm)${upspeed wlan0} \
 $endif\
 ^fg(\#ebac54)${if_existing /proc/net/route usb0}\
-^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/wifi_01.xbm) \
+^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/usb_02.xbm) \
 ^fg(\#00aa4a)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/net_down_03.xbm)${downspeed usb0}\
 ^fg(\#ff3333)\
@@ -45,9 +50,7 @@ ${if_existing /sys/class/power_supply/BAT0/uevent}\
 ^fg(\#cc99ff)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/bat_full_01.xbm) \
 ${battery_short} ${battery_time}\
-${endif}\
-^fg(\#ebac54) \
-^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/clock.xbm) \
-^fg(\#FFFFFF) ${time %A %d %m %Y} \
-^fg(\#ebac54) ${time %T} \
-^fg(\#87ea00) ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/ac.xbm) 
+${endif} \
+^fg(\#FFFFFF)${time %a %d %m %Y} \
+^fg(\#ebac54)${time %T} \
+^fg(\#87ea00)^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/ac.xbm) 

@@ -77,7 +77,7 @@ main = do
       , startupHook = myStartupHook -- checkKeymap myConfig myKeys (needs mkKeymap http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html#v:mkKeymap
       , modMask = myMM
       , keys = myKeys
-      , workspaces = withScreens myNumberOfScreens $ map ( pad . return ) $ fst myWorkspaces
+      , workspaces = withScreens myNumberOfScreens $ toName <$> fst myWorkspaces
       , handleEventHook = docksEventHook -- >> ewmhDesktopsEventHook -- führt dazu, dass xmonad beim start auf pidgin wechselt (wg. spawnOn " 0 " "pidgin", um wmctrl -l benutzen zu können,  benötigt man das aber eh nicht
       , borderWidth = myBorderWidth
      }   
@@ -147,17 +147,17 @@ myLayouts =(xK_r, ResizableTall nmaster delta ratio [] )
     nmaster = 1
     delta = 3/100
     ratio = 1/2
-              
+    
 myLayoutHook = id
                $ smartBorders
                $ mkToggle1 MIRROR
                $ mkToggle1 REFLECTX
                $ mkToggle1 REFLECTY
                $ mkToggle1 FULL
-               $ onWorkspace " 9 " Grid
+               $ gr 0 $ gr 1 $ gr 2 $ gr 3
                -- $ limitWindows 6
                $ snd myLayouts
-
+  where gr i  = onWorkspace (marshall i $ toName '9') Grid
 
 -- this spawnOn looks at PIDs and if these change during run, it does not work
 -- e.g. firefox, wenn alread running, emacsclient (at least on first startup)
@@ -165,11 +165,12 @@ myStartupHook = do
   -- spawnOn " 1 " my_emacs
   -- spawnOn " 2 " "firefox"
   -- spawnOn " 3 " my_term_attach
-  spawnOn "0_ 8 " $ my_term_new ++ " new-session -s mutt \"sleep 10; mutt\""
+  spawnOn (marshall 0 $ toName '8') $ my_term_new ++ " new-session -s mutt \"sleep 10; mutt\""
   -- spawnOn " 9 " my_term_attach
   -- spawnOn " 0 " "pidgin -c /home/data/personal/misc/pidgin"
   
 -- Workspaces
+toName = pad . return
 myWorkspaces = (['`'] ++ shift ['0'..'9'] ++ ['-','=']
                 , [xK_quoteleft,xK_KP_Delete] : shift numkeys  ++
                   [[xK_minus,xK_KP_Subtract]
@@ -352,7 +353,7 @@ rotScreen2 i = windows $ onlyWithScreen2 f . unmarshall =<< currentPWS
 
 myMarshallPP :: Maybe ScreenId -> PP -> PP
 myMarshallPP Nothing pp  = pp
-myMarshallPP (Just s) pp  = (marshallPP 0 pp)
+myMarshallPP (Just s) pp  = (marshallPP undefined pp)
     -- the upstream marshallPP messes up getSortByIndex
      { ppSort = (. filter (onScreen s)) <$> ppSort pp }
                             
