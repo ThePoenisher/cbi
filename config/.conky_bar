@@ -50,7 +50,7 @@ ${if_existing /sys/class/power_supply/BAT0/uevent}\
 ^fg(\#cc99ff)\
 ^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/bat_full_01.xbm) \
 ${battery_short} ${battery_time}\
-${endif}\
+${endif} \
 ^fg(\#FFFFFF)${time %a %d %m %Y} \
 ^fg(\#ebac54)${time %T} \
 ^fg(\#87ea00)^i(/home/johannes/cbi/desktop-artwork/icons/sm4tik/ac.xbm) 
