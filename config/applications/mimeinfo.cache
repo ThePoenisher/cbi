@@ -1,6 +1,6 @@
 [MIME Cache]
 application/ogg=mplayer.desktop;
-application/pdf=mendeleydesktop.desktop;
+application/pdf=wine-extension-pdf.desktop;mendeleydesktop.desktop;
 application/sdp=mplayer.desktop;
 application/smil=mplayer.desktop;
 application/streamingmedia=mplayer.desktop;
@@ -10,6 +10,12 @@ application/x-flash-video=mplayer.desktop;
 application/x-ogg=mplayer.desktop;
 application/x-smil=mplayer.desktop;
 application/x-streamingmedia=mplayer.desktop;
+application/x-wine-extension-ex5=wine-extension-ex5.desktop;
+application/x-wine-extension-mq4=wine-extension-mq4.desktop;
+application/x-wine-extension-mq5=wine-extension-mq5.desktop;
+application/x-wine-extension-mqb=wine-extension-mqb.desktop;
+application/x-wine-extension-mqh=wine-extension-mqh.desktop;
+application/x-wine-extension-mt5=wine-extension-mt5.desktop;
 audio/aac=mplayer.desktop;
 audio/m4a=mplayer.desktop;
 audio/mp1=mplayer.desktop;

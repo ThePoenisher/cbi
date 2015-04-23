@@ -209,6 +209,11 @@ scratchpads = [
   
   -- run htop in xterm, find it by title, use default floating window placement
   NS "htop" "xterm -e htop" (title =? "htop") defaultFloating ,
+  
+  -- run htop in xterm, find it by title, use default floating window placement
+  NS "sympy" "terminator --title sympy -x tmux -2 new-session -As Sympy isympy-py3"
+  (title =? "sympy")
+  (customFloating $ niceRect (1/5) (1/4)) ,
 
   -- run stardict, find it by class name, place it in the floating window
   -- 1/6 of screen width from the left, 1/6 of screen height
@@ -300,13 +305,14 @@ newKeys conf = [
   , ((myMM .|. shiftMask  , xK_s    ), bringMenu)
   , ((myMM                , xK_s    ), gotoMenu)
   , ((myMM                , xK_z    ), rotOpposite)
-  , ((myMM                , xK_i    ), rotUnfocusedUp)
+  -- , ((myMM                , xK_i    ), rotUnfocusedUp)
   -- , ((myMM                , xK_u    ), rotUnfocusedDown)
   , ((myMM .|. shiftMask  , xK_i    ), rotFocusedUp)
   -- , ((myMM .|. shiftMask  , xK_u    ), rotFocusedDown)
     -- switch back and forth between last two workspaces:
   , ((myMM, xK_q), cycleRecentWS [xK_Super_L] xK_q xK_w)
   , ((myMM, xK_w), cycleRecentWS [xK_w] 0 0)
+  , ((myMM .|. shiftMask  , xK_w    ), shiftToRecentWS)
 --    start cycling amoung all workspaces until super_l is released with key combination 1, stop cycling by pressing one of [keys], swith to next prev by key2 key3
   , ((myMM                , xK_Tab  ), nextMatch History (return True))
   , ((myMM                , xK_r    ), nextMatchOrDo Forward  (className =? my_term_class) $ spawnHere my_term_attach)
@@ -325,9 +331,12 @@ newKeys conf = [
   , ((myMM .|. controlMask, xK_f    ), sendMessage $ Toggle FULL)
   , ((myMM .|. controlMask, xK_m    ), sendMessage $ Toggle MIRROR)
   , ((myMM .|. controlMask, xK_p    ), namedScratchpadAction scratchpads "scratch" )
+  , ((myMM .|. controlMask, xK_c    ), namedScratchpadAction scratchpads "sympy" )
 
-  , ((myMM                , xK_u    ), rotScreen2 1 )
-  , ((myMM .|. shiftMask  , xK_u    ), rotScreen2 $ -1 )
+  , ((myMM                , xK_u    ), rotScreen2 False    1 )
+  , ((myMM                , xK_i    ), rotScreen2 False $ -1 )
+  , ((myMM .|. shiftMask  , xK_u    ), rotScreen2 True     1 ) 
+  , ((myMM .|. shiftMask  , xK_i    ), rotScreen2 True  $ -1 )
   ]
    ++
 -- the following is s slightly modified version of: http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-CopyWindow.html
@@ -339,6 +348,10 @@ newKeys conf = [
    ++
 -- get layout jumper bindings
   fst myLayouts
+
+shiftToRecentWS = windows f
+  where f w = let new = W.tag $ W.workspaces w !! 1 in
+               W.view new $ W.shift new w
   
 onCurrentScreen2 :: (PhysicalWorkspace -> WindowSet -> WindowSet) -> VirtualWorkspace -> WindowSet -> WindowSet
 onCurrentScreen2 f vws = currentPWS >>= onlyWithScreen2 (f . flip marshall vws) . unmarshallS
@@ -347,9 +360,12 @@ currentPWS = W.tag . W.workspace . W.current
                          
 onlyWithScreen2 f = maybe id f
              
-rotScreen2 :: Int -> X ()
-rotScreen2 i = windows $ onlyWithScreen2 f . unmarshall =<< currentPWS
-   where f (sid,vws) = W.view $ marshall ((sid + S i) `mod` myNumberOfScreens) vws
+rotScreen2 :: Bool -- ^ shift window
+              -> Int -- ^ to screen
+              -> X ()
+rotScreen2 shift i = windows $ onlyWithScreen2 f . unmarshall =<< currentPWS
+   where f (sid,vws) = a $ marshall ((sid + S i) `mod` myNumberOfScreens) vws
+         a = case shift of True -> W.shift; False -> W.view
 
 myMarshallPP :: Maybe ScreenId -> PP -> PP
 myMarshallPP Nothing pp  = pp
