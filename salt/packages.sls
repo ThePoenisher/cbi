@@ -78,6 +78,8 @@ base_packages:
       - nzbget
       - openconnect
       - cuetools
+      - wine
+      - lib32-gnutls
       - shntool
       - picard
       - zbar
