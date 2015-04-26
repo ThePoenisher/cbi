@@ -18,13 +18,13 @@ root:
 
 ####### services ########
 {% if grains['os'] == 'Arch' %}
-{% if grains['cbi_machine'] == 'debussy' %}
+{% if grains['cbi_machine'] in [] %}
 dhcpcd@eth0:
   service.running:
     - enable: true
     - watch:
       - file: /etc/dhcpcd.conf
-{% endif %} #debussy
+{% endif %}
 
 ntp:
   pkg:

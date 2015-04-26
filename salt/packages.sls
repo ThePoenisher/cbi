@@ -141,7 +141,7 @@ base_packages:
       - haskell-shakespeare
       - haskell-missingh
       - haskell-parsec
-      - haskell-edit-distance
+      # - haskell-edit-distance
       - haskell-utf8-string
       - haskell-mime-types
       - haskell-system-filepath
