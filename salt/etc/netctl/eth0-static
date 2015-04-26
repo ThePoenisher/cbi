@@ -1,0 +1,14 @@
+Description='eth0 static connection'
+Interface=eth0
+Connection=ethernet
+IP=static
+{% if grains['cbi_machine'] in [ 'debussy' ] %}
+Address=('10.0.0.2/8')
+Gateway='10.0.0.1'
+DNS=('8.8.8.8')
+{% elif grains['cbi_machine'] in [ 'scriabin' ] %}
+Address=('10.0.0.2/8')
+{% endif %}
+
+ExcludeAuto=no
+

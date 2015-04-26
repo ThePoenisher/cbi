@@ -1,0 +1,12 @@
+Description='dhcp over eth0'
+Interface=eth0
+Connection=ethernet
+IP=dhcp
+TimeoutDHCP=10
+#DHCPClient=dhcpcd
+#DHCPReleaseOnStop=no
+## for DHCPv6
+#IP6=dhcp
+#DHCP6Client=dhclient
+## for IPv6 autoconfiguration
+#IP6=stateless

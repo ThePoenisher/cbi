@@ -226,6 +226,7 @@ cups:
 ,('resume@'          ,true ,['johannes'],['systemd/system/resume@.service'])
 ,('iptables'         ,true ,['']        ,['iptables/iptables.rules'])
 ,('lirc'             ,true ,['']        ,['systemd/system/lirc.service'])
+,('netctl-ifplugd@'   ,true ,['eth0']    ,['netctl/eth0-static','netctl/eth0-dhcp'])
 ]%}
 #### ('offlineimap',['']) ] %}
 ###, ('maildir_watch',['']) ] %}
