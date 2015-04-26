@@ -79,6 +79,8 @@ base_packages:
       - openconnect
       - cuetools
       - wine
+      - wine_gecko
+      - wine-mono
       - lib32-gnutls
       - shntool
       - picard
