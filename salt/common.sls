@@ -105,6 +105,7 @@ mkinitcpio -p linux:
     - source: salt://etc/{{ file }}{{ ending }}
     - makedirs: True
     - template: jinja
+    - follow_symlinks: False
 {% endfor %}
 
 ######  Symlinked etc Files  #########
