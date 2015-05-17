@@ -140,6 +140,8 @@ base_packages:
       - net-tools
       - haskell-aeson-pretty
       - haskell-html
+      - haskell-tagsoup
+      - haskell-lens
       - haskell-shakespeare
       - haskell-missingh
       - haskell-parsec

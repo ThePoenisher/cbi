@@ -60,6 +60,17 @@ correctly, which would not happen, if org was autoloaded within the
 * Defuns Function Definitions
 #+BEGIN_SRC emacs-lisp
   
+
+(defun jo/copy-file-name-to-clipboard ()
+  "Copy the current buffer file name to the clipboard."
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (kill-new filename)
+      (message "Copied buffer file name '%s' to the clipboard." filename))))
+
   (defun jo/search-symbol-in-other ()
    (interactive)
    (let ((curPoint (point)))
@@ -1241,6 +1252,12 @@ C-x RET f
 M-x set-buffer-file-coding-system
 *** Describe the coding systems currently in use.
 C-h C <RET>
+*** Finding the Unicode codepoint of a character
+describe-char
+http://stackoverflow.com/questions/236097/finding-the-unicode-codepoint-of-a-character-in-gnu-emacs
+*** enter unicode code point
+insert-char
+http://superuser.com/questions/394405/how-to-type-a-unicode-character-by-its-number-in-emacs
 ** Local Variables
 [[info:emacs#Specifying%20File%20Variables][info:emacs#Specifying File Variables]]
 - Reset major mode and variables in buffer:
