@@ -7,7 +7,7 @@ Address=('10.0.0.2/8')
 Gateway='10.0.0.1'
 DNS=('8.8.8.8')
 {% elif grains['cbi_machine'] in [ 'scriabin' ] %}
-Address=('10.0.0.2/8')
+Address=('10.0.0.1/8')
 {% endif %}
 
 ExcludeAuto=no
