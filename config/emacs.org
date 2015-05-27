@@ -2400,9 +2400,18 @@ M-x unicode-simplified
        (setq ebib-index-window-size 20)
        (setq ebib-file-search-dirs '("/home/data/promotion/Literatur/"))
        (setq ebib-file-associations '(("pdf" . "zathura")
-                                      ("ps" . "zathura")))
-       
+                                      ("ps" . "zathura"))
+             ebib-layout 'index-only
+             ebib-citation-commands '((any
+                                       (("cite" "\\cite%<[%A]%>{%K}")))
+                                      (org-mode
+                                       (("ebib" "b:%K")))
+                                      (markdown-mode
+                                       (("text" "@%K%< [%A]%>")
+                                        ("paren" "[%(%<%A %>@%K%<, %A%>%; )]")
+                                        ("year" "[-@%K%< %A%>]")))))
 
+       
 
        ;;(add-hook 'ebib-entry-mode-hook  'toggle-truncate-lines)
        (add-hook 'ebib-entry-mode-hook 'visual-line-mode)
@@ -2416,27 +2425,36 @@ M-x unicode-simplified
   completion works."
          (interactive)
          (ebib--execute-when
-          ((database)
-           (let ((collection (ebib--create-collection-from-db)))
-             (when collection
-               (let* ((key (completing-read "Key to insert: " collection nil t nil 'ebib--key-history))
-                      (format-list (or (cadr (assq (buffer-local-value 'major-mode (current-buffer)) ebib-citation-commands))
-                                       (cadr (assq 'any ebib-citation-commands))))
-                      (citation-command
-                       (ebib--ifstring (format-string (cadr (car format-list)))
-                                       (cl-multiple-value-bind (before repeater _ after) (ebib--split-citation-string format-string)
-                                         (concat (ebib--create-citation-command before)
-                                                 (ebib--create-citation-command repeater key)
-                                                 (ebib--create-citation-command after)))
-                                       key))) ; if the user didn't provide a command, we insert just the entry key
-                 (when citation-command
-                   (insert (format "%s" citation-command)))))))
-          ((default)
-           (error "No database loaded"))))
-  ))
+           ((database)
+            (let ((collection (ebib--create-collection-from-db)))
+              (when collection
+                (let* ((key (completing-read "Key to insert: " collection nil t nil 'ebib--key-history))
+                       (format-list (or (cadr (assq (buffer-local-value 'major-mode (current-buffer)) ebib-citation-commands))
+                                        (cadr (assq 'any ebib-citation-commands))))
+                       (citation-command
+                        (ebib--ifstring (format-string (cadr (car format-list)))
+                            (cl-multiple-value-bind (before repeater _ after) (ebib--split-citation-string format-string)
+                              (concat (ebib--create-citation-command before)
+                                      (ebib--create-citation-command repeater key)
+                                      (ebib--create-citation-command after)))
+                          key))) ; if the user didn't provide a command, we insert just the entry key
+                  (when citation-command
+                    (insert (format "%s" citation-command)))))))
+           ((default)
+            (error "No database loaded"))))
+
+       (defun jo/ebib-show-from-org-subtree ()
+         (interactive)
+         (let ((keys (jo/org-extract-references-from-subtree)))
+           (ebib-db-set-filter
+            `(contains "=key=" ,(mapconcat 'identity keys "\\|"))
+            ebib--cur-db)
+           (ebib--redisplay)
+           ))
+
+       ))
 
   (defun jo/org-extract-references-from-subtree ()
-    (interactive)
     (let ((res '()))
       (org-map-tree
        (lambda ()
@@ -2447,10 +2465,8 @@ M-x unicode-simplified
            ;; (print limit)
            (while (re-search-forward "\\<b:\\(\\w+\\)\\>" limit t)
              (push (match-string-no-properties 1) res)
-             )
-           )
-         ))
-      (print res)
+             ))))
+      res
       ))
 #+END_SRC
 ** auto key generations: see bibtex-generate-autokey
@@ -2523,6 +2539,7 @@ interactive("arxiv2ebib", "Download PDF and add bibtex entry for current preprin
 
 define_key(content_buffer_normal_keymap, "C-c c", "arxiv2ebib");
 #+END_SRC
+** Filter recently added entries  https://github.com/joostkremers/ebib/issues/24
 * Git (in emacs)
 http://www.emacswiki.org/emacs/Git
 ** blame: vc-annotate
