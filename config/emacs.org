@@ -622,28 +622,30 @@ Bind `move-text-up' and `move-text-down' to M-up and M-down.
 #+END_SRC
 ***** DONE Does not work in org-mode
 von alleine erledigt ...
-
 *** Colors
 **** color-themes (ELPA)
 http://www.nongnu.org/color-theme/#sec4
 #+BEGIN_SRC emacs-lisp
   (require 'color-theme)
   (color-theme-initialize)
+  ;; not working when issues this early (fset 'color-theme-jo (color-theme-make-snapshot)) ;; to revert to old theme
   ;;(color-theme-dark-laptop)
-  ;; alternativ? color-theme-comidia, 
+  ;; alternativ? , 
 #+END_SRC
 ***** Schöne Themes: 
 ****** color-theme-dark-laptop
 ****** color-theme-solarized
 https://github.com/sellout/emacs-color-theme-solarized (ELPA)
 http://ethanschoonover.com/solarized
-
+****** color-theme-comidia
 ***** TODO Testen
 :PROPERTIES:
 :ID:       c565a3e5-a270-4047-9f2b-cad4a7c21ad3
 :END:
 ****** http://orgmode.org/worg/color-themes-screenshot.html
-
+***** Undo: color-theme-select [RESET] 
+***** color-theme-initialize
+***** color-theme-compare
 *** TODO Searching / Replace
 :PROPERTIES:
 :ID:       3dc7a3cd-15d2-4fd1-b235-514ff0c0bd2f
@@ -925,6 +927,10 @@ http://stackoverflow.com/questions/7019131/how-can-i-draw-to-an-xy-position-in-e
   (define-key evil-insert-state-map (kbd "C-ö") 'jo/enter-org-speed)
   (define-key evil-normal-state-map "ö" 'jo/enter-org-speed)
   (define-key evil-normal-state-map (kbd "C-;")  (lambda() (interactive) (org-refile t)))
+
+  (evil-define-key 'motion help-mode-map "l" 'evil-undefine)
+  (evil-define-key 'motion info-mode-map "l" 'evil-undefine)
+
 #+END_SRC
 ***** Outline ( for Minor Mode and also ORG!!!!!)
 #+BEGIN_SRC emacs-lisp
@@ -952,7 +958,7 @@ http://stackoverflow.com/questions/7019131/how-can-i-draw-to-an-xy-position-in-e
 ***** TODO translation
 z.B. C-c @  outline-minor-mode prefix
 http://emacswiki.org/emacs/Evil#toc12
-**** Initial state
+**** Initial state (mode)
 funkioniert irgendwie nicht in help-mode+
 #+BEGIN_SRC emacs-lisp 
   (evil-set-initial-state 'image-mode 'emacs) 
@@ -963,10 +969,16 @@ funkioniert irgendwie nicht in help-mode+
   (evil-set-initial-state 'xdict-mode 'emacs)
   (evil-set-initial-state 'inferior-haskell-mode 'emacs)
   (evil-set-initial-state 'semantic-symref-results-mode 'emacs)
+
+  (evil-set-initial-state 'ebib-index-mode 'emacs)
+  (evil-set-initial-state 'ebib-entry-mode 'emacs)
+
+  (evil-set-initial-state 'haskell-error-mode 'emacs)
   
   (add-to-list 'evil-buffer-regexps '("\\*notmuch-help" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*Mingus" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*buffer-selection\\*" . emacs))
+
   
   (add-to-list 'evil-buffer-regexps '("\\*Reconcile\\*" . emacs))
   (add-to-list 'evil-buffer-regexps '("\\*undo-tree\\*" . emacs))
@@ -1312,7 +1324,7 @@ nicht so toll:
 - Kommentare werden nicht erweitert (wie bei fill-paragraph)
 *** multiple-cursors (elpa)
 http://www.emacswiki.org/emacs/init-multiple-cursors.el
-**** evil
+**** in Evil
 https://github.com/magnars/multiple-cursors.el/issues/17
 http://www.reddit.com/r/emacs/comments/2gx5s3/any_good_tips_to_get_multiplecursors_with_evil/
 **** alternatives?
@@ -1459,7 +1471,7 @@ http://www.gnu.org/software/emacs/manual/html_node/elisp/Error-Debugging.html
   (setq debug-on-error t)
 #+END_SRC
 
-* Org Mode
+* Org-Mode
 :PROPERTIES:
 :ID:       f9fb5d47-51ce-43d1-bfcb-d2eb8dbdcca2
 :END:
@@ -1811,6 +1823,18 @@ org-de/encrypt-entries/entry
 http://upsilon.cc/~zack/blog/posts/2010/02/integrating_Mutt_with_Org-mode/
 sehr gut!
 [2013-04-06 Sat]
+** Customization
+*** . Search
+**** searching through org files:
+[[file:/usr/share/emacs/24.5/lisp/org/org-agenda.el.gz::(defun%20org-search-view]]     
+after: (while (setq file (pop files))
+**** http://www.chemie.fu-berlin.de/chemnet/use/info/elisp/elisp_31.html
+*** no-properties (without formatting...)
+M-x apropos RET no-properties RET
+*** org-map-*
+*** good sources
+http://orgmode.org/worg/org-hacks.html
+**** Check for misplaced SCHEDULED and DEADLINE cookies in subtree
 * Ledger
 ** in org
 http://sachachua.com/blog/2010/11/emacs-recording-ledger-entries-with-org-capture-templates/
@@ -2100,8 +2124,43 @@ http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=514431
 **** Settings
 [[info:auctex#Selecting%20a%20Command][info:auctex#Selecting a Command]]
 better: specify backend=bibtex for biblatex package
-#+BEGIN_SRC emacs-lisp :tangle no
-(setq LaTeX-biblatex-use-Biber nil)
+bibtex-generate-autokey
+#+BEGIN_SRC emacs-lisp :tangle yes
+  ;;(setq LaTeX-biblatex-use-Biber nil)
+  (eval-after-load 'bibtex
+    '(progn    
+       (setq bibtex-autokey-year-length 2)
+       (setq bibtex-autokey-titleword-separator "")
+       (setq bibtex-autokey-year-title-separator "")
+       (setq bibtex-autokey-titlewords 1)
+       (setq bibtex-autokey-titlewords-stretch 0)
+       (setq bibtex-autokey-titleword-length nil)
+       (setq bibtex-autokey-titleword-ignore 
+             '("A" "An" "On" "The" "Eine?" "Der" "Die" "Das"
+               "a" "an" "on" "the" "eine?" "der" "die" "das"))
+             ;; "[^[:upper:]].*" ".*[^[:upper:][:lower:]0-9].*"))
+       (setq bibtex-autokey-name-case-convert-function 'capitalize)
+       (setq bibtex-autokey-titleword-case-convert-function 'capitalize)
+       ;; (setq bibtex-autokey-name-change-strings 
+       ;;       '(("\\\\aa" . "a")
+       ;;         ("\\\\AA" . "A")
+       ;;         ("\\\"a\\|\\\\\\\"a\\|\\\\ae" . "ae")
+       ;;         ("\\\"A\\|\\\\\\\"A\\|\\\\AE" . "Ae")
+       ;;         ("\\\\i" . "i")
+       ;;         ("\\\\j" . "j")
+       ;;         ("\\\\l" . "l")
+       ;;         ("\\\\L" . "L")
+       ;;         ("\\\"o\\|\\\\\\\"o\\|\\\\o\\|\\\\oe" . "oe")
+       ;;         ("\\\"O\\|\\\\\\\"O\\|\\\\O\\|\\\\OE" . "Oe")
+       ;;         ("\\\"s\\|\\\\\\\"s\\|\\\\3" . "ss")
+       ;;         ("\\\"u\\|\\\\\\\"u" . "ue")
+       ;;         ("\\\"U\\|\\\\\\\"U" . "Ue")
+       ;;         ("\\\\`\\|\\\\'\\|\\\\\\^\\|\\\\~\\|\\\\=\\|\\\\\\.\\|\\\\u\\|\\\\v\\|\\\\H\\|\\\\t\\|\\\\c\\|\\\\d\\|\\\\b" . "")
+       ;;         ("[`'\"{}#]" . "")
+       ;;         ("\\\\-" . "")
+       ;;         ("\\\\?[   \n]+\\|~" . " ")))
+
+       ))
 #+END_SRC
 **** Probleme: 
 ***** undefined control sequence: \endentry
@@ -2321,6 +2380,149 @@ erst
  (require 'latex-pretty-symbols)
 dann
 M-x unicode-simplified 
+* Ebib
+** config
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (org-add-link-type "ebib" 'ebib-open-org-link)
+  (org-add-link-type "b" 'ebib-open-org-link)
+  (eval-after-load 'ebib
+    '(progn    
+       (setq ebib-preload-bib-files
+             '(
+               "/home/data/promotion/TEX/manuell.bib"
+               "/home/data/promotion/Literatur/literatur.bib"
+               "/home/data/promotion/TEX/MendeleyBibtexSync/library.bib"
+               ))
+       (setq ebib-use-timestamp t)
+       (setq ebib-index-display-fields '(;;"author"
+                                         "year" "title" "journal"))
+       (setq ebib-autogenerate-keys t)
+       (setq ebib-index-window-size 20)
+       (setq ebib-file-search-dirs '("/home/data/promotion/Literatur/"))
+       (setq ebib-file-associations '(("pdf" . "zathura")
+                                      ("ps" . "zathura")))
+       
+
+
+       ;;(add-hook 'ebib-entry-mode-hook  'toggle-truncate-lines)
+       (add-hook 'ebib-entry-mode-hook 'visual-line-mode)
+
+       ;; modification from uptream: this version uses first command, without promptin
+       (defun ebib-insert-bibtex-key ()
+         "Inserts a BibTeX key at POINT.
+  The user is prompted for a BibTeX key and has to choose one from
+  the database(s) associated with the current LaTeX file, or from
+  the current database if there is no \\bibliography command. Tab
+  completion works."
+         (interactive)
+         (ebib--execute-when
+          ((database)
+           (let ((collection (ebib--create-collection-from-db)))
+             (when collection
+               (let* ((key (completing-read "Key to insert: " collection nil t nil 'ebib--key-history))
+                      (format-list (or (cadr (assq (buffer-local-value 'major-mode (current-buffer)) ebib-citation-commands))
+                                       (cadr (assq 'any ebib-citation-commands))))
+                      (citation-command
+                       (ebib--ifstring (format-string (cadr (car format-list)))
+                                       (cl-multiple-value-bind (before repeater _ after) (ebib--split-citation-string format-string)
+                                         (concat (ebib--create-citation-command before)
+                                                 (ebib--create-citation-command repeater key)
+                                                 (ebib--create-citation-command after)))
+                                       key))) ; if the user didn't provide a command, we insert just the entry key
+                 (when citation-command
+                   (insert (format "%s" citation-command)))))))
+          ((default)
+           (error "No database loaded"))))
+  ))
+
+  (defun jo/org-extract-references-from-subtree ()
+    (interactive)
+    (let ((res '()))
+      (org-map-tree
+       (lambda ()
+         (re-search-forward "^\\** \\(.*\\)$")
+         ;; (message (concat "headline: " (match-string 1)))
+         (goto-char (match-beginning 1))
+         (let* ((limit (match-end 1)))
+           ;; (print limit)
+           (while (re-search-forward "\\<b:\\(\\w+\\)\\>" limit t)
+             (push (match-string-no-properties 1) res)
+             )
+           )
+         ))
+      (print res)
+      ))
+#+END_SRC
+** auto key generations: see bibtex-generate-autokey
+** insert into buffer
+*** database not loaded
+[[info:ebib#Associating%20a%20Database%20with%20a%20LaTeX%20File][info:ebib#Associating a Database with a LaTeX File]]
+*** ebib-local-bibtex-filenames
+** import from url
+*** https://gist.github.com/mardukbp/6576427
+#+BEGIN_SRC javascript
+function ebib_import_bibtex (url) {
+    var cmd_str = 'emacsclient -ne \'(ebib-import-bibtex \"' + url + '\")\'';
+    shell_command_blind(cmd_str);
+}
+
+interactive("bibtex2ebib", "Download PDF and add bibtex entry for current preprint to ebib",
+            function (I) {
+		ebib_import_bibtex(I.buffer.display_uri_string);
+            });
+
+define_key(content_buffer_normal_keymap, "C-c f", "bibtex2ebib");
+#+END_SRC
+*** https://gist.github.com/mardukbp/6576418
+#+BEGIN_SRC emacs-lisp
+(require 'mm-url)
+
+(defun ebib-import-bibtex (url)
+  (interactive)
+
+  (let ((tempbuff (get-buffer-create "*bibtex*")))  
+    (with-current-buffer tempbuff
+      (mm-url-insert-file-contents url)
+      (ebib-import)
+      (kill-buffer (current-buffer))
+    ) 
+))
+#+END_SRC
+*** https://github.com/joostkremers/ebib/issues/23
+**** https://gist.github.com/mardukbp/6567775
+#+BEGIN_SRC emacs-lisp
+(setq arxiv-dir "~/Papers/arxiv/")
+
+(defun ebib-import-arxiv (arxiv-url)
+  (interactive)
+
+  (let ((tempbuff (get-buffer-create "*arxiv*"))
+	(arxiv-id (car (cdr (split-string arxiv-url "abs/"))))
+	(arxiv-pdf-url (concat (replace-regexp-in-string "abs" "pdf" arxiv-url) ".pdf")))
+
+    (call-process-shell-command "arxiv2bib.py" nil tempbuff nil arxiv-id)
+
+    (call-process-shell-command "links" nil nil nil
+				"-source" arxiv-pdf-url "> " (concat arxiv-dir arxiv-id ".pdf"))
+
+    (with-current-buffer tempbuff
+      (ebib-import)
+      (kill-buffer (current-buffer)))))
+#+END_SRC
+**** https://gist.github.com/mardukbp/6567792
+#+BEGIN_SRC javascript
+function ebib_import_arxiv (url) {
+    var cmd_str = 'emacsclient -ne \'(ebib-import-arxiv \"' + url + '\")\'';
+    shell_command_blind(cmd_str);
+}
+
+interactive("arxiv2ebib", "Download PDF and add bibtex entry for current preprint to ebib",
+            function (I) {
+		ebib_import_arxiv(I.buffer.display_uri_string);
+            });
+
+define_key(content_buffer_normal_keymap, "C-c c", "arxiv2ebib");
+#+END_SRC
 * Git (in emacs)
 http://www.emacswiki.org/emacs/Git
 ** blame: vc-annotate
@@ -2830,7 +3032,10 @@ http://youtu.be/18xYbPCJOho?t=1m17s
 - C-j :: eval-print-last-sexp 
 - C-x C-e :: eval-last-sexp
 - M-: :: eval-buffer
-         
+- C-M-arrows or p/n/f/b/k :: navigation, but problematic (due to
+     point) in evil
+http://www.emacswiki.org/emacs/NavigatingParentheses
+http://ergoemacs.org/emacs/emacs_editing_lisp.html
 ** Finding References / Definitions
 *** M-x semantic-mode
 semantic-symref
@@ -3209,7 +3414,8 @@ info section from files
 https://groups.google.com/forum/?fromgroups=#!topic/gnu.emacs.help/E6covMZec3U
 http://www.emacswiki.org/emacs/SexMode
 gut: http://www.emacswiki.org/emacs/CategoryExternalUtilities
-
+** dired: ! or &
+** http://stackoverflow.com/questions/6845005/how-can-i-open-files-externally-in-emacs-dired-mode
 * TODO Undo/Redo
 :PROPERTIES:
 :ID:       69f98682-5040-40f0-a390-bf003376c2e4

@@ -73,6 +73,7 @@ base_packages:
       - cloc
       - ncdu
       - dos2unix
+      - markdown
       - reflector
       - pptpclient
       - nzbget
