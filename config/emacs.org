@@ -511,10 +511,18 @@ http://lists.gnu.org/archive/html/emacs-devel/2010-07/msg00747.html
 * Emacs
 :LOGBOOK:
 :END:
-** Hooks
-*** Point Movement
-**** https://mail.cs.drexel.edu/pipermail/unix-dev/2005-August/000894.html
-**** http://www.gnu.org/software/emacs/manual/html_node/elisp/Special-Properties.html#Inhibit%20point%20motion%20hooks
+** Problems
+*** Slow Point Movement
+**** examples:
+***** very very long 27000 lines (like sinlge line html files in grep search) in truncate-lines mode
+moving down and up, even in fundamental mode
+without global-hl-line-mode it is only slow going up
+***** visual selecting in org mode in evil at the end of a 17000 line long file
+**** Hooks?
+***** https://mail.cs.drexel.edu/pipermail/unix-dev/2005-August/000894.html
+***** http://www.gnu.org/software/emacs/manual/html_node/elisp/Special-Properties.html#Inhibit%20point%20motion%20hooks
+**** Seems to be a deeper Problem
+http://comments.gmane.org/gmane.emacs.devel/159671
 ** Windows
 *** Winner Mode                                                      :keys:
 (info "(Emacs)Window Convenience")
@@ -1029,6 +1037,8 @@ function evil-search-word nimmt einen parameter symbol!
 siehe eigene keys
 
 ***** evil-move-cursor-back
+***** performance: sehr langsam in org files mit umlauten in überschrift
+verbringt sehr viel zeit in. line-number-at-pos
 **** and Org
 Only thing currently used: jo/enter-org-speed
 ***** not used
@@ -1315,7 +1325,7 @@ http://www.emacswiki.org/emacs/LineWrap
 **** fill-paragraph
 **** auto-fill-mode
 **** visual-line-mode (ändert verhalten von navigationsbefehlen)
-**** (setq word-wrap t)
+**** (setq word-wrap t) (most users set it through visual line mode)
 **** longlines-mode 
 (einzige alternative, wenn umbruch bei fill-column erwünscht)
 
@@ -1342,6 +1352,17 @@ Look for #' on http://stackoverflow.com/questions/1852844/emacs-lisp-difference-
 *** read only: C-x C-q
 ** auto-revert-mode (auch global)
 ** open several files: C-x C-f glob
+** Mode Line
+*** Problem: Mail is shown because $MAIL is not empty due to mailbox format
+#+BEGIN_SRC emacs-lisp
+(setq display-time-mail-string ""
+      display-time-default-load-average nil
+)
+#+END_SRC
+** Profiling:
+profiler-start
+profiler-report
+profiler-stop
 * Writing (natural language)
 #+BEGIN_SRC emacs-lisp
   (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
@@ -1835,6 +1856,8 @@ M-x apropos RET no-properties RET
 *** good sources
 http://orgmode.org/worg/org-hacks.html
 **** Check for misplaced SCHEDULED and DEADLINE cookies in subtree
+** Performance
+http://orgmode.org/worg/agenda-optimization.html
 * Ledger
 ** in org
 http://sachachua.com/blog/2010/11/emacs-recording-ledger-entries-with-org-capture-templates/
@@ -2637,6 +2660,8 @@ http://stackoverflow.com/questions/8006347/how-can-i-make-emacs-speedbar-auto-ex
   - M-s :: force to search (again)
   - M-f and M-d :: prompts and uses find to locate files or directories.
   - M-l :: Toggle literal reading of this file.
+           
+  -   (ido-vertical-mode) ;changes a lot of key bindings!!!!!!!
 
 http://stackoverflow.com/questions/7479565/emacs-ido-mode-and-creating-new-files-in-directories-it-keeps-changing-the-dire
 *** possible enhancements
@@ -2644,13 +2669,14 @@ http://marmalade-repo.org/packages/ido-better-flex
 *** Settings
 #+BEGIN_SRC emacs-lisp
   ;; use flx instead (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
+  (require 'ido)
+  (ido-everywhere)
   (setq ido-use-filename-at-point 'guess)
   (setq ido-use-url-at-point 'guess)
   ;; leave default, and use ctrl-d instead (setq ido-show-dot-for-dired nil)
   (ido-mode 1)
   (ido-ubiquitous-mode 1)
-  (ido-vertical-mode 1)
+  ;; (ido-vertical-mode 1) ;changes a lot of key bindings!!!!!!!
   
   ;; nicht so toll, weil history nicht gut mit einbezgoen wird. z.b. preview-cache-preamble 
   ;; (flx-ido-mode 1)
@@ -2669,9 +2695,10 @@ http://marmalade-repo.org/packages/ido-better-flex
   ;;     '("\\.o$" "\\.hi$" ))
   ;;    ))
   
-  (setq ido-max-work-file-list 1000)
-  (setq ido-max-dir-file-cache 1000)
-  ;; maybe better use flx? -> (ido-sort-mtime-mode 1)
+  (setq ido-max-work-file-list 10000)
+  (setq ido-max-dir-file-cache 10000)
+
+  (ido-sort-mtime-mode 1)  ;; (old comment: maybe better use flx?)
   (ido-complete-space-or-hyphen-enable)
   
   (nconc ido-ignore-files
@@ -2683,7 +2710,7 @@ http://marmalade-repo.org/packages/ido-better-flex
          '("\\.toc$" "\\.out$" "\\.blg$" "\\.bbl$" "\\.aux$" "\\.bcf$" "\\.nav$" "\\.snm$" "\\-blx.bib$" "\\.synctex.gz$" "\\.run.xml$" "\\.fmt$" "\\.loe$" "\\.prv/")
          )
 #+END_SRC
-*** Files
+*** COMMENT Files
 **** Other's 
 http://www.xsteve.at/prg/emacs/power-user-tips.html
 **** recentf                                                        :keys:
@@ -2708,6 +2735,39 @@ http://www.xsteve.at/prg/emacs/power-user-tips.html
 superseded by  (setq ido-use-filename-at-point 'guess) etc.
 #+BEGIN_SRC emacs-lisp :tangle no
 (ffap-bindings)
+#+END_SRC
+**** sort by mtime
+http://emacswiki.org/emacs/InteractivelyDoThings#toc25
+or better: use ido-sort-mtime package
+#+BEGIN_SRC emacs-lisp :tangle no
+  ; sort ido filelist by mtime instead of alphabetically
+   (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
+   (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
+  (defun ido-sort-mtime ()
+    (message ido-current-directory)
+    (setq ido-temp-list
+          (sort ido-temp-list
+                (lambda (a b)
+                  if (not (or (char-equal (string-to-char a) ?@) (char-equal (string-to-char b) ?@)))
+                  (time-less-p
+                   (sixth (file-attributes (concat ido-current-directory b))
+                          (sixth (file-attributes (concat ido-current-directory a)))))
+                   nil)))
+                        (ido-to-end  ;; move . files to end (again)
+                         (delq nil (mapcar
+                                    (lambda (x) (and (string-match-p "^\\.." x) x))
+                                    ido-temp-list))))
+   ;; (defun ido-sort-mtime ()
+     ;; (setq ido-temp-list
+     ;;       (sort ido-temp-list 
+     ;;             (lambda (a b)
+     ;;               (time-less-p
+     ;;                (sixth (file-attributes (concat ido-current-directory b)))
+     ;;                (sixth (file-attributes (concat ido-current-directory a)))))))
+     ;; (ido-to-end  ;; move . files to end (again)
+     ;;  (delq nil (mapcar
+     ;;             (lambda (x) (and (char-equal (string-to-char x) ?.) x))
+     ;;             ido-temp-list))))
 #+END_SRC
 *** Smex
 **** docs
